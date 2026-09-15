@@ -1,6 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { getCurrentUser } from '@/lib/supabaseClient';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
 import BackButton from './components/BackButton';
 import MessageList from './components/MessageList';
@@ -13,6 +15,18 @@ export default function AXChatPage() {
   const [hasStarted, setHasStarted] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const router = useRouter();
+
+  // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS
+  useEffect(() => {
+    const checkUser = async () => {
+      const user = await getCurrentUser();
+      if (!user) {
+        router.replace('/login'); 
+      }
+    };
+    checkUser();
+  }, [router]);
 
   React.useEffect(() => {
     // Read URL parameters on mount

@@ -1,11 +1,26 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { getCurrentUser } from '@/lib/supabaseClient';
 import GravityBackground from '../AX_chat/components/GravityBackground';
 import VoiceOrb from './components/VoiceOrb';
 import BackButton from '../AX_chat/components/BackButton';
 
 export default function AXVoicePage() {
+  const router = useRouter();
+
+  // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS
+  useEffect(() => {
+    const checkUser = async () => {
+      const user = await getCurrentUser();
+      if (!user) {
+        router.replace('/login'); 
+      }
+    };
+    checkUser();
+  }, [router]);
+
   return (
     <div style={{ 
       width: '100%', 

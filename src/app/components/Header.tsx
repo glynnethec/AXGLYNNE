@@ -4,10 +4,13 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
+import { FaUser } from 'react-icons/fa';
+import { supabaseGoogle } from '@/lib/supabaseClient';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const pathname = usePathname();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -15,6 +18,25 @@ export default function Header() {
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
+
+  // Auth listener
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const { data } = await supabaseGoogle.auth.getSession();
+        setIsLoggedIn(!!data?.session);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    checkSession();
+
+    const { data: { subscription } } = supabaseGoogle.auth.onAuthStateChange((_event, session) => {
+      setIsLoggedIn(!!session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -278,11 +300,16 @@ export default function Header() {
                 fontWeight: 500,
                 textDecoration: 'none',
                 transition: 'all 0.2s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '32px',
+                minWidth: '70px',
               }}
               onMouseOver={(e) => { e.currentTarget.style.borderColor = '#111111'; e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.03)' }}
               onMouseOut={(e) => { e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)'; e.currentTarget.style.backgroundColor = 'transparent' }}
             >
-              Log In
+              {isLoggedIn ? <FaUser size={14} /> : "Log In"}
             </Link>
             <Link href="/contact" className="nav-btn" style={{ textDecoration: 'none' }}>Contact</Link>
             
