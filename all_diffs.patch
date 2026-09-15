@@ -1,0 +1,218 @@
+--- a/recovered_page.tsx
++++ b/recovered_page.tsx
+@@ -9,7 +9,7 @@
+   const containerRef = useRef<HTMLDivElement>(null);
+   const canvasRef = useRef<HTMLCanvasElement>(null);
+   const overlayRef = useRef<HTMLDivElement>(null);
+-  
++
+   // Storytelling Phase Refs
+   const phase1Ref = useRef<HTMLDivElement>(null);
+   const phase2Ref = useRef<HTMLDivElement>(null);
+
+--- a/recovered_page.tsx
++++ b/recovered_page.tsx
+@@ -38,9 +38,9 @@
+         try {
+           const THREE = await import('three');
+           (window as any).THREE = THREE;
+-          
++
+           const VantaFog = (await import('vanta/dist/vanta.fog.min' as any)).default || require('vanta/dist/vanta.fog.min');
+-          
++
+           effect = VantaFog({
+             el: vantaRef.current,
+             THREE: THREE,
+
+--- a/recovered_page.tsx
++++ b/recovered_page.tsx
+@@ -110,20 +110,20 @@
+     const render = () => {
+       const img = images[Math.round(seq.frame)];
+       if (!img || !img.complete) return;
+-      
++
+       canvas.width = window.innerWidth;
+       canvas.height = window.innerHeight;
+-      
++
+       // Use Math.min (contain) to guarantee the entire server is always 100% visible on any screen
+       const baseScale = Math.min(canvas.width / img.width, canvas.height / img.height);
+       const scale = baseScale * 0.75; // 75% size for a premium, spacious look
+-      
++
+       const baseX = (canvas.width / 2) - (img.width / 2) * scale;
+       const y = (canvas.height / 2) - (img.height / 2) * scale;
+-      
++
+       // Shift internally instead of moving the DOM element to prevent hard clipping at window edges
+       const x = baseX + (canvas.width * (seq.xOffset / 100));
+-      
++
+       context.clearRect(0, 0, canvas.width, canvas.height);
+       context.drawImage(img, x, y, img.width * scale, img.height * scale);
+     };
+
+--- a/recovered_page.tsx
++++ b/recovered_page.tsx
+@@ -135,7 +135,7 @@
+     const ctx = gsap.context(() => {
+       // 2. Set Initial Spatial States
+       // Canvas element remains perfectly centered to avoid edge clipping
+-      gsap.set(canvasRef.current, { xPercent: -50, yPercent: -50, x: 0 }); 
++      gsap.set(canvasRef.current, { xPercent: -50, yPercent: -50, x: 0 });
+ 
+       // ScrollTrigger timeline for canvas and text
+       const tl = gsap.timeline({
+
+--- a/recovered_page.tsx
++++ b/recovered_page.tsx
+@@ -149,14 +149,14 @@
+       });
+ 
+       // 1. Canvas Animation (Frame scrubbing)
+-      tl.to(seq, { 
+-        frame: frameCount - 1, 
+-        roundProps: 'frame', 
+-        ease: 'none', 
+-        onUpdate: render, 
+-        duration: 100 
++      tl.to(seq, {
++        frame: frameCount - 1,
++        roundProps: 'frame',
++        ease: 'none',
++        onUpdate: render,
++        duration: 100
+       }, 0);
+-      
++
+       // Canvas Position Shifting (Right -> Left -> Center)
+       tl.to(seq, { xOffset: -15, duration: 40, ease: 'power1.inOut', onUpdate: render }, 0)
+         .to(seq, { xOffset: 0, duration: 40, ease: 'power1.inOut', onUpdate: render }, 50);
+@@ -165,8 +165,8 @@
+ 
+       // --- STORYTELLING COREOGRAFIA (Minimalista) ---
+       // Initial States: Hidden, shifted down slightly
+-      gsap.set([phase1Ref.current, phase2Ref.current, phase3Ref.current], { 
+-        opacity: 0, 
++      gsap.set([phase1Ref.current, phase2Ref.current, phase3Ref.current], {
++        opacity: 0,
+         y: 40,
+         position: 'absolute',
+         top: '50%',
+
+--- a/recovered_page.tsx
++++ b/recovered_page.tsx
+@@ -223,16 +223,16 @@
+       <div ref={containerRef} className="hero-container">
+         <canvas ref={canvasRef} className="gsap-canvas" />
+         <div ref={overlayRef} className="glass-overlay" />
+-        
++
+         <div className="overlay-content">
+-          
++
+           {/* FASE 01 */}
+           <div ref={phase1Ref} style={{ width: '100%', maxWidth: '650px', pointerEvents: 'none', background: 'rgba(255, 255, 255, 0.85)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', padding: '3rem', borderRadius: '24px', boxShadow: '0 20px 40px rgba(0,0,0,0.05)' }}>
+             <h1 className="title" style={{ fontSize: 'clamp(3rem, 5vw, 4.5rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.1, color: '#1d1d1f', margin: 0 }}>
+-              ¿Qué tienes?
++              Do you see this black box?
+             </h1>
+             <p className="body-text" style={{ fontSize: '1.25rem', color: '#1d1d1f', fontWeight: 500, marginTop: '1rem', letterSpacing: '-0.01em' }}>
+-              Es momento de crear tu propio sistema de inteligencia artificial.
++              We don’t start by building AI. We start by understanding your business.
+             </p>
+           </div>
+ 
+
+--- a/recovered_page.tsx
++++ b/recovered_page.tsx
+@@ -249,10 +249,10 @@
+               ¿Qué puedes construir?
+             </h1>
+           </div>
+-          
++
+         </div>
+       </div>
+-      
++
+       <section className="spacer">
+         <h2>Continúa Explorando</h2>
+         <p>El scroll suave te llevará hasta aquí.</p>
+
+--- a/recovered_page.tsx
++++ b/recovered_page.tsx
+@@ -239,7 +239,7 @@
+           {/* FASE 02 */}
+           <div ref={phase2Ref} style={{ width: '100%', maxWidth: '500px', pointerEvents: 'none' }}>
+             <h1 className="title" style={{ fontSize: 'clamp(3rem, 6vw, 5rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1, color: '#1d1d1f', margin: 0 }}>
+-              ¿Qué puedes transformar?
++              We design the architecture that connects your AI to your business.
+             </h1>
+           </div>
+ 
+
+--- a/recovered_page.tsx
++++ b/recovered_page.tsx
+@@ -168,8 +168,8 @@
+ 
+       // --- STORYTELLING COREOGRAFIA (Minimalista) ---
+       // Initial States
+-      gsap.set([phase2Ref.current, phase3Ref.current], { 
+-        opacity: 0, 
++      gsap.set([phase2Ref.current, phase3Ref.current], {
++        opacity: 0,
+         y: 40,
+         position: 'absolute',
+         top: '50%',
+@@ -176,7 +176,7 @@
+       });
+       // Phase 1 is visible from the very start
+-      gsap.set(phase1Ref.current, { 
+-        opacity: 1, 
++      gsap.set(phase1Ref.current, {
++        opacity: 1,
+         y: 0,
+         position: 'absolute',
+         top: '50%',
+@@ -184,7 +184,7 @@
+ 
+       // Spatial placement (Responsive)
+       const mm = gsap.matchMedia();
+-      
++
+       mm.add("(min-width: 769px)", () => {
+         gsap.set(phase1Ref.current, { left: '10%', right: 'auto', xPercent: 0, textAlign: 'left' });
+         gsap.set(phase2Ref.current, { right: '10%', left: 'auto', xPercent: 0, textAlign: 'right' });
+@@ -191,11 +191,11 @@
+       });
+ 
+       mm.add("(max-width: 768px)", () => {
+-        gsap.set([phase1Ref.current, phase2Ref.current, phase3Ref.current], { 
+-          left: '50%', 
+-          right: 'auto', 
+-          xPercent: -50, 
+-          textAlign: 'center' 
++        gsap.set([phase1Ref.current, phase2Ref.current, phase3Ref.current], {
++          left: '50%',
++          right: 'auto',
++          xPercent: -50,
++          textAlign: 'center'
+         });
+       });
+ 
+
+--- a/recovered_page.tsx
++++ b/recovered_page.tsx
+@@ -268,7 +268,7 @@
+           {/* FASE 03 */}
+           <div ref={phase3Ref} style={{ width: '100%', maxWidth: 'clamp(320px, 90vw, 900px)', pointerEvents: 'none', boxSizing: 'border-box' }}>
+             <h2 className="title" style={{ fontSize: 'clamp(2.8rem, 5vw, 4.5rem)', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1, color: '#1d1d1f', margin: 0, overflowWrap: 'break-word' }}>
+-              ¿Qué puedes construir?
++              It’s time to evolve your business.
+             </h2>
+           </div>
+ 
+

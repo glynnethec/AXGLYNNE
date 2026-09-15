@@ -1,0 +1,47 @@
+@@ -168,8 +168,8 @@
+ 
+       // --- STORYTELLING COREOGRAFIA (Minimalista) ---
+       // Initial States
+-      gsap.set([phase2Ref.current, phase3Ref.current], { 
+-        opacity: 0, 
++      gsap.set([phase2Ref.current, phase3Ref.current], {
++        opacity: 0,
+         y: 40,
+         position: 'absolute',
+         top: '50%',
+@@ -176,7 +176,7 @@
+       });
+       // Phase 1 is visible from the very start
+-      gsap.set(phase1Ref.current, { 
+-        opacity: 1, 
++      gsap.set(phase1Ref.current, {
++        opacity: 1,
+         y: 0,
+         position: 'absolute',
+         top: '50%',
+@@ -184,7 +184,7 @@
+ 
+       // Spatial placement (Responsive)
+       const mm = gsap.matchMedia();
+-      
++
+       mm.add("(min-width: 769px)", () => {
+         gsap.set(phase1Ref.current, { left: '10%', right: 'auto', xPercent: 0, textAlign: 'left' });
+         gsap.set(phase2Ref.current, { right: '10%', left: 'auto', xPercent: 0, textAlign: 'right' });
+@@ -191,11 +191,11 @@
+       });
+ 
+       mm.add("(max-width: 768px)", () => {
+-        gsap.set([phase1Ref.current, phase2Ref.current, phase3Ref.current], { 
+-          left: '50%', 
+-          right: 'auto', 
+-          xPercent: -50, 
+-          textAlign: 'center' 
++        gsap.set([phase1Ref.current, phase2Ref.current, phase3Ref.current], {
++          left: '50%',
++          right: 'auto',
++          xPercent: -50,
++          textAlign: 'center'
+         });
+       });
+ 

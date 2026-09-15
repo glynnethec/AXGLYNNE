@@ -1,0 +1,9 @@
+@@ -268,7 +268,7 @@
+           {/* FASE 03 */}
+           <div ref={phase3Ref} style={{ width: '100%', maxWidth: 'clamp(320px, 90vw, 900px)', pointerEvents: 'none', boxSizing: 'border-box' }}>
+             <h2 className="title" style={{ fontSize: 'clamp(2.8rem, 5vw, 4.5rem)', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1, color: '#1d1d1f', margin: 0, overflowWrap: 'break-word' }}>
+-              ¿Qué puedes construir?
++              It’s time to evolve your business.
+             </h2>
+           </div>
+ 
