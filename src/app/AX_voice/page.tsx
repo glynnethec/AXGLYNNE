@@ -24,10 +24,11 @@ export default function AXVoicePage() {
   return (
     <div style={{ 
       width: '100%', 
-      minHeight: '100vh', 
+      height: '100dvh', /* Use dvh for strict mobile viewport without scrolling */
       position: 'relative', 
       overflow: 'hidden', 
-      backgroundColor: '#000000' 
+      backgroundColor: '#000000',
+      touchAction: 'none' /* Prevents pull-to-refresh and dragging on mobile */
     }}>
       <BackButton />
       
@@ -43,7 +44,7 @@ export default function AXVoicePage() {
             alignItems: 'center',
             justifyContent: 'center',
             width: '100%',
-            height: '100vh',
+            height: '100dvh',
             position: 'relative',
             zIndex: 10
           }}>
