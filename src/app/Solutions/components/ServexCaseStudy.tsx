@@ -21,15 +21,25 @@ export default function ServexCaseStudy() {
         }
         @media (max-width: 700px) {
           .responsive-solutions-width {
-            width: 98vw !important;
+            width: 92vw !important;
           }
           .responsive-card-borderless {
-            border: none !important;
-            padding: 0 !important;
+            border: 1px solid rgba(0,0,0,0.05) !important;
+            padding: 24px !important;
           }
           .responsive-btn {
-            padding: 10px 20px !important;
-            font-size: 12px !important;
+            padding: 12px 24px !important;
+            font-size: 14px !important;
+          }
+          .mobile-super-container {
+            width: 96vw !important;
+            margin-left: calc(-48vw + 50%) !important;
+            padding: 40px 20px !important;
+            gap: 40px !important;
+            border-radius: 24px !important;
+          }
+          .mobile-text-center {
+            text-align: center !important;
           }
         }
       `}</style>
@@ -74,7 +84,7 @@ export default function ServexCaseStudy() {
             </div>
 
             {/* --- TECHNICAL PIPELINE SUPER CONTAINER --- */}
-            <div style={{
+            <div className="mobile-super-container" style={{
               position: 'relative',
               width: '75vw',
               marginLeft: 'calc(-37.5vw + 50%)',

@@ -93,16 +93,43 @@ export default function AutonomousAuditSection() {
   const router = useRouter();
   
   return (
-    <section style={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '2rem 1.5rem', position: 'relative', zIndex: 10 }}>
+    <section className="mobile-audit-section" style={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '2rem 1.5rem', position: 'relative', zIndex: 10 }}>
       <style>{`
         @keyframes console-blink {
           0%, 100% { opacity: 1; }
           50% { opacity: 0; }
         }
+        @media (max-width: 700px) {
+          .responsive-solutions-width {
+            width: 92vw !important;
+          }
+          .mobile-audit-section {
+            align-items: flex-start !important;
+            padding-top: 40px !important;
+            padding-bottom: 80px !important;
+            height: auto !important;
+          }
+          .mobile-stack {
+            flex-direction: column !important;
+            text-align: center !important;
+            gap: 24px !important;
+            padding: 0 16px !important;
+            min-height: auto !important;
+          }
+          .mobile-console-wrapper {
+            justify-content: flex-start !important;
+            width: 100% !important;
+            min-height: 800px !important;
+            padding-bottom: 40px !important;
+          }
+          .mobile-btn-container {
+            justify-content: center !important;
+          }
+        }
       `}</style>
       <div className="responsive-solutions-width" style={{ width: '60vw', maxWidth: 'none', margin: '0 auto', display: 'flex', flexDirection: 'column' }}>
         {/* Console Section (Floating without Card) */}
-        <div style={{ position: 'relative', zIndex: 10, width: '100%', minHeight: '80vh', boxSizing: 'border-box', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '60px', padding: '0', backgroundColor: 'transparent' }}>
+        <div className="mobile-stack" style={{ position: 'relative', zIndex: 10, width: '100%', minHeight: '80vh', boxSizing: 'border-box', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '60px', padding: '0', backgroundColor: 'transparent' }}>
           <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
             <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
               Autonomous Audit
@@ -111,7 +138,7 @@ export default function AutonomousAuditSection() {
               Through its cognitive engine, AX GLYNNE executes deep real-time analysis on Servex processes, operating independently in the background to automate repetitive tasks.
             </p>
             
-            <div style={{ display: 'flex', gap: '16px', marginTop: '32px', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
+            <div className="mobile-btn-container" style={{ display: 'flex', gap: '16px', marginTop: '32px', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
               <button 
                 className="responsive-btn"
                 onClick={() => router.push('/ia_vailable')}
@@ -134,7 +161,7 @@ export default function AutonomousAuditSection() {
             </div>
           </div>
           
-          <div style={{ flex: '1.5 1 400px', display: 'flex', justifyContent: 'flex-end' }}>
+          <div className="mobile-console-wrapper" style={{ flex: '1.5 1 400px', display: 'flex', justifyContent: 'flex-end' }}>
             <div style={{
               backgroundColor: 'transparent', 
               borderRadius: '16px',

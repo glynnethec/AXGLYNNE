@@ -20,19 +20,34 @@ export default function PcCardSolutions() {
         }
         @media (max-width: 700px) {
           .responsive-solutions-width {
-            width: 98vw !important;
+            width: 92vw !important;
           }
           .responsive-card-borderless {
-            border: none !important;
-            padding: 0 !important;
+            padding: 24px !important;
           }
           .responsive-btn {
-            padding: 10px 20px !important;
-            font-size: 12px !important;
+            padding: 12px 24px !important;
+            font-size: 14px !important;
+            width: 100% !important;
+          }
+          .mobile-stack {
+            flex-direction: column !important;
+            text-align: center !important;
+            gap: 24px !important;
+          }
+          .mobile-stack-reverse {
+            flex-direction: column-reverse !important;
+            text-align: center !important;
+            gap: 32px !important;
+          }
+          .mobile-img-wrapper {
+            width: 100% !important;
+            max-width: 300px !important;
+            margin: 0 auto !important;
           }
         }
       `}</style>
-      <div className="responsive-solutions-width" style={{ position: 'relative', zIndex: 10, width: '60vw', boxSizing: 'border-box', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '40px', padding: '0', backgroundColor: 'transparent', minHeight: '50vh' }}>
+      <div className="responsive-solutions-width mobile-stack" style={{ position: 'relative', zIndex: 10, width: '60vw', boxSizing: 'border-box', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '40px', padding: '0', backgroundColor: 'transparent', minHeight: '50vh' }}>
         <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
           <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
             Meet SERVEXcopilot. Our most radical project.
@@ -41,7 +56,7 @@ export default function PcCardSolutions() {
             A glimpse into the operational future. This organization has redefined its core processes, evolving into an intelligent ecosystem where AI takes control of workflows, autonomously solving its greatest challenges.
           </p>
         </div>
-        <div style={{ flex: '1.5 1 400px', display: 'flex', justifyContent: 'center' }}>
+        <div className="mobile-img-wrapper" style={{ flex: '1.5 1 400px', display: 'flex', justifyContent: 'center' }}>
           <img src="/SERVEX/logo.png" alt="Servex Logo" style={{ width: '85%', maxWidth: '480px', objectFit: 'contain', filter: 'grayscale(100%) brightness(1.3) contrast(0.8) opacity(0.85) drop-shadow(0 24px 48px rgba(0,0,0,0.12))' }} />
         </div>
       </div>
@@ -125,8 +140,8 @@ export default function PcCardSolutions() {
       </div>
 
       {/* Independent Card Inserted */}
-      <div className="responsive-solutions-width" style={{ position: 'relative', zIndex: 10, width: '60vw', minHeight: '75vh', boxSizing: 'border-box', margin: '80px auto 0', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '60px', padding: '0', backgroundColor: 'transparent' }}>
-        <div style={{ flex: '1.5 1 400px', display: 'flex', justifyContent: 'center' }}>
+      <div className="responsive-solutions-width mobile-stack-reverse" style={{ position: 'relative', zIndex: 10, width: '60vw', minHeight: '75vh', boxSizing: 'border-box', margin: '80px auto 0', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '60px', padding: '0', backgroundColor: 'transparent' }}>
+        <div className="mobile-img-wrapper" style={{ flex: '1.5 1 400px', display: 'flex', justifyContent: 'center' }}>
           <img src="/SERVEX/mockup.png" alt="Servex Mockup" style={{ width: '85%', maxWidth: '480px', objectFit: 'contain', filter: 'grayscale(100%) drop-shadow(0 24px 48px rgba(0,0,0,0.12))' }} />
         </div>
         <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
@@ -137,7 +152,7 @@ export default function PcCardSolutions() {
             There you will find the most detailed information on how SERVEX wants to evolve into a technological ecosystem.
           </p>
           
-          <div style={{ display: 'flex', gap: '16px', marginTop: '32px', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
+          <div style={{ display: 'flex', gap: '16px', marginTop: '32px', flexWrap: 'wrap', justifyContent: 'center' }}>
             <button 
               className="responsive-btn"
               onClick={() => window.open('https://www.servexcopilot.com/', '_blank')}
