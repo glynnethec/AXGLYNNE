@@ -76,7 +76,7 @@ export default function VideoEcosystemSection() {
           boxShadow: '0 30px 60px rgba(0,0,0,0.08)'
         }}>
           <video
-            src="/Grabación de pantalla 2026-09-10 a las 7.32.48 p. m..mov"
+            src="/Grabación de pantalla 2026-09-10 a las 7.32.48 p. m..mp4"
             autoPlay
             loop
             muted

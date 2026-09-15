@@ -115,6 +115,25 @@ export default function TechLogos() {
         }
 
         @media (max-width: 699px) {
+          .tech-header-container {
+            margin-bottom: 2.5rem !important;
+            gap: 1.5rem !important;
+            padding: 0 1rem;
+          }
+          
+          .tech-title {
+            font-size: 2rem !important;
+          }
+
+          .tech-subtitle {
+            font-size: 0.9rem !important;
+          }
+
+          .tech-desc {
+            font-size: 0.85rem !important;
+            line-height: 1.5 !important;
+          }
+          
           .tech-container {
             width: 100%;
             position: relative;
@@ -145,10 +164,10 @@ export default function TechLogos() {
             opacity: 1;
             background-color: transparent;
             border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 30px;
-            padding: 2rem;
-            min-width: 140px;
-            height: 140px;
+            border-radius: 24px;
+            padding: 1rem;
+            min-width: 110px;
+            height: 110px;
             box-shadow: none;
             cursor: pointer;
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, background-color 0.3s ease;
@@ -161,9 +180,10 @@ export default function TechLogos() {
           }
 
           .tech-icon {
-            width: 44px;
-            height: 44px;
+            width: 32px;
+            height: 32px;
             transition: transform 0.3s ease;
+            margin-bottom: 8px;
           }
 
           .tech-card:hover .tech-icon {
@@ -171,7 +191,7 @@ export default function TechLogos() {
           }
 
           .tech-text {
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 500;
             letter-spacing: 0.02em;
             text-align: center;
@@ -187,7 +207,7 @@ export default function TechLogos() {
 
       <div className="tech-container">
         {/* Restored Header Section */}
-        <div style={{ 
+        <div className="tech-header-container" style={{ 
           display: 'flex', 
           justifyContent: 'space-between', 
           alignItems: 'flex-start',
@@ -195,7 +215,7 @@ export default function TechLogos() {
           flexWrap: 'wrap',
           gap: '2rem'
         }}>
-          <h2 style={{ 
+          <h2 className="tech-title" style={{ 
             fontSize: '3.5rem', 
             fontWeight: 500, 
             color: '#111', 
@@ -206,7 +226,7 @@ export default function TechLogos() {
           </h2>
           
           <div style={{ maxWidth: '500px' }}>
-            <h4 style={{ 
+            <h4 className="tech-subtitle" style={{ 
               fontSize: '1rem', 
               fontWeight: 600, 
               color: '#111',
@@ -214,7 +234,7 @@ export default function TechLogos() {
             }}>
               The AI Ecosystem
             </h4>
-            <p style={{ 
+            <p className="tech-desc" style={{ 
               fontSize: '1rem', 
               lineHeight: 1.6, 
               color: '#333',

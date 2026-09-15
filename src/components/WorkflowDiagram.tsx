@@ -49,7 +49,7 @@ const getPath = (fromCol: number, fromY: number, toCol: number, toY: number) => 
 
 export default function WorkflowDiagram() {
   return (
-    <section style={{
+    <section className="desktop-only-section" style={{
       width: '100%',
       padding: '4rem 2rem',
       display: 'flex',
@@ -230,6 +230,11 @@ export default function WorkflowDiagram() {
             width: 100% !important;
             transform: none !important;
             padding: 0 !important;
+          }
+        }
+        @media (max-width: 700px) {
+          .desktop-only-section {
+            display: none !important;
           }
         }
       `}} />

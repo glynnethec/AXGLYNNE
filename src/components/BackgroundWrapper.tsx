@@ -9,12 +9,77 @@ type HoverStep = {
   neighbors: { dx: number; dy: number; opacity: number }[];
 };
 
-export default function BackgroundWrapper({ children, theme = 'light' }: { children: React.ReactNode, theme?: 'light' | 'dark' }) {
+export default function BackgroundWrapper({ children, theme = 'light', disableAutoAnimate = false }: { children: React.ReactNode, theme?: 'light' | 'dark', disableAutoAnimate?: boolean }) {
   const [history, setHistory] = useState<HoverStep[]>([]);
   const stepIdRef = useRef(0);
   const lastCellRef = useRef({ x: -1, y: -1 });
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined' || window.innerWidth > 700 || disableAutoAnimate) return;
+
+    const intervalId = setInterval(() => {
+      if (!wrapperRef.current) return;
+      
+      const rect = wrapperRef.current.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const viewportWidth = window.innerWidth;
+      
+      // Calculate overlapping region between viewport and wrapper
+      const visibleTop = Math.max(0, rect.top);
+      const visibleBottom = Math.min(viewportHeight, rect.bottom);
+      const visibleHeight = visibleBottom - visibleTop;
+
+      const visibleLeft = Math.max(0, rect.left);
+      const visibleRight = Math.min(viewportWidth, rect.right);
+      const visibleWidth = visibleRight - visibleLeft;
+
+      // If the component is not visible in the viewport at all, do nothing
+      if (visibleHeight <= 0 || visibleWidth <= 0) return;
+
+      // Pick a random point within the visible overlapping area on the screen
+      const randomScreenY = visibleTop + Math.random() * visibleHeight;
+      const randomScreenX = visibleLeft + Math.random() * visibleWidth;
+
+      // Convert screen coordinates to local coordinates within the wrapper
+      const localY = randomScreenY - rect.top;
+      const localX = randomScreenX - rect.left;
+
+      const cx = Math.floor(localX / 96);
+      const cy = Math.floor(localY / 96);
+
+      const numNeighbors = Math.floor(Math.random() * 4) + 1;
+      const neighbors = [];
+      const possibleOffsets = [
+        [-1, 0], [1, 0], [0, -1], [0, 1],
+        [-1, -1], [1, -1], [-1, 1], [1, 1],
+        [-2, 0], [2, 0], [0, -2], [0, 2]
+      ];
+
+      const shuffled = possibleOffsets.sort(() => 0.5 - Math.random());
+      for (let i = 0; i < numNeighbors; i++) {
+        neighbors.push({
+          dx: shuffled[i][0],
+          dy: shuffled[i][1],
+          opacity: (Math.random() * 0.06) + 0.03
+        });
+      }
+
+      const newStep = {
+        id: stepIdRef.current++,
+        cx,
+        cy,
+        neighbors
+      };
+
+      setHistory(prev => [newStep, ...prev].slice(0, 8));
+    }, 1200);
+
+    return () => clearInterval(intervalId);
+  }, [disableAutoAnimate]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 700) return; // Disable hover on mobile to avoid conflicts
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -38,7 +103,7 @@ export default function BackgroundWrapper({ children, theme = 'light' }: { child
         neighbors.push({
           dx: shuffled[i][0],
           dy: shuffled[i][1],
-          opacity: (Math.random() * 0.03) + 0.02 // Opacity between 0.02 and 0.05
+          opacity: (Math.random() * 0.06) + 0.03 // Opacity between 0.03 and 0.09
         });
       }
 
@@ -54,16 +119,24 @@ export default function BackgroundWrapper({ children, theme = 'light' }: { child
   };
 
   const handleMouseLeave = () => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 700) return;
     setHistory([]);
     lastCellRef.current = { x: -1, y: -1 };
   };
 
   return (
     <div
+      ref={wrapperRef}
       style={{ position: 'relative', width: '100%', backgroundColor: theme === 'dark' ? '#0b0b0d' : '#ffffff' }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
+      <style>{`
+        @keyframes cellFadeIn {
+          0% { opacity: 0; }
+          100% { opacity: 1; }
+        }
+      `}</style>
       {/* Interactive SVG Grid */}
       <svg
         width="100%"
@@ -80,7 +153,7 @@ export default function BackgroundWrapper({ children, theme = 'light' }: { child
         {history.map((step, index) => {
           const isCurrent = index === 0;
           return (
-            <g key={step.id} style={{ animation: 'cellFadeIn 0.25s ease forwards' }}>
+            <g key={step.id} style={{ animation: 'cellFadeIn 0.8s ease forwards' }}>
               {/* Random Neighbors */}
               {step.neighbors.map((n, i) => (
                 <rect
@@ -90,7 +163,7 @@ export default function BackgroundWrapper({ children, theme = 'light' }: { child
                   width="96"
                   height="96"
                   fill={theme === 'dark' ? `rgba(255,255,255,${isCurrent ? n.opacity : 0})` : `rgba(0,0,0,${isCurrent ? n.opacity : 0})`}
-                  style={{ transition: 'fill 0.6s ease' }}
+                  style={{ transition: 'fill 1s ease' }}
                 />
               ))}
               {/* Center Cell */}
@@ -99,8 +172,8 @@ export default function BackgroundWrapper({ children, theme = 'light' }: { child
                 y={step.cy * 96}
                 width="96"
                 height="96"
-                fill={theme === 'dark' ? `rgba(255,255,255,${isCurrent ? 0.04 : 0})` : `rgba(0,0,0,${isCurrent ? 0.07 : 0})`}
-                style={{ transition: 'fill 0.6s ease' }}
+                fill={theme === 'dark' ? `rgba(255,255,255,${isCurrent ? 0.08 : 0})` : `rgba(0,0,0,${isCurrent ? 0.12 : 0})`}
+                style={{ transition: 'fill 1s ease' }}
               />
             </g>
           );

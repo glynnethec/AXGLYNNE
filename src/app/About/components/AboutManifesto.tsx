@@ -129,6 +129,26 @@ export default function AboutManifesto() {
           .work-process-item { flex-direction: column; gap: 24px; }
           .work-process-item span.arrow { transform: rotate(90deg); }
         }
+        @media (max-width: 700px) {
+          .glynne-section {
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+          }
+          .mobile-founder-container {
+            width: 92vw !important;
+            padding: 40px 24px !important;
+            flex-direction: column !important;
+            text-align: center !important;
+          }
+          .mobile-founder-text {
+            text-align: center !important;
+          }
+          .mobile-founder-img-wrapper {
+            width: 100% !important;
+            max-width: 300px !important;
+            margin: 0 auto !important;
+          }
+        }
       `}</style>
 
       {/* 1. Header */}
@@ -310,11 +330,11 @@ export default function AboutManifesto() {
       <div className="glynne-arrow">↓</div>
 
       {/* 7. El Fundador Container */}
-      <div className="responsive-solutions-width responsive-card-borderless" style={{ position: 'relative', zIndex: 10, width: '70vw', boxSizing: 'border-box', margin: '0 auto 80px auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '40px', padding: '80px 60px', border: '1px solid rgba(0,0,0,0.05)', borderRadius: '32px', backgroundColor: 'transparent', backdropFilter: 'blur(10px)' }}>
+      <div className="mobile-founder-container" style={{ position: 'relative', zIndex: 10, width: '70vw', boxSizing: 'border-box', margin: '0 auto 80px auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '40px', padding: '80px 60px', border: '1px solid rgba(0,0,0,0.05)', borderRadius: '32px', backgroundColor: 'transparent', backdropFilter: 'blur(10px)' }}>
         
         {/* Left: Bio Text */}
-        <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
-          <div className="glynne-label" style={{ marginBottom: '24px', textAlign: 'left', color: '#111111' }}>The Founder</div>
+        <div className="mobile-founder-text" style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
+          <div className="glynne-label mobile-founder-text" style={{ marginBottom: '24px', textAlign: 'left', color: '#111111' }}>The Founder</div>
           
           <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, marginBottom: '24px' }}>
             <strong style={{ color: '#111111', fontWeight: 400 }}>Software architect, researcher, and developer</strong> specialized in artificial intelligence and automation systems.
@@ -331,7 +351,7 @@ export default function AboutManifesto() {
         </div>
 
         {/* Right: CEO Image with Logo Background and Gradient Name */}
-        <div style={{ flex: '1.5 1 400px', display: 'flex', justifyContent: 'center' }}>
+        <div className="mobile-founder-img-wrapper" style={{ flex: '1.5 1 400px', display: 'flex', justifyContent: 'center' }}>
           <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
             {/* Subtle Logo Background */}
             <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '110%', height: '110%', backgroundImage: 'url(/logos/GLYNNE.svg)', backgroundSize: 'contain', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', opacity: 0.04, zIndex: 0 }} />

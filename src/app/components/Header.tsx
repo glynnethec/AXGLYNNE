@@ -33,14 +33,20 @@ export default function Header() {
   }, []);
 
   const handleMouseEnter = () => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 700) return;
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setIsOpen(true);
   };
 
   const handleMouseLeave = () => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 700) return;
     timeoutRef.current = setTimeout(() => {
       setIsOpen(false);
     }, 150);
+  };
+
+  const toggleMobileMenu = () => {
+    setIsOpen(!isOpen);
   };
 
   return (
@@ -143,6 +149,49 @@ export default function Header() {
         .chevron-icon.open {
           transform: rotate(180deg);
         }
+
+        .mobile-menu-btn {
+          display: none;
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          padding: 8px;
+          margin-left: 4px;
+          z-index: 10000;
+          color: #111111;
+        }
+
+        @media (max-width: 700px) {
+          .mobile-menu-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .mega-menu-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+            width: 100%;
+          }
+          .glynne-mega-dropdown {
+            height: 100dvh;
+            overflow-y: auto;
+            position: fixed;
+          }
+          .mega-dropdown-content {
+            padding: 110px 24px 40px 24px !important;
+            justify-content: flex-start !important;
+            min-height: min-content;
+          }
+          .mega-nav-link {
+            font-size: 14px;
+            padding: 4px 0;
+            margin-bottom: 4px;
+          }
+          .mega-section-title {
+            font-size: 11px;
+            margin-bottom: 8px;
+          }
+        }
       `}</style>
 
       {/* The Dropdown Menu */}
@@ -152,7 +201,7 @@ export default function Header() {
         onMouseLeave={handleMouseLeave}
       >
         <BackgroundWrapper theme="light">
-          <div style={{ position: 'relative', zIndex: 1, display: 'flex', justifyContent: 'center', padding: '140px 20px 60px 20px', width: '100%' }}>
+          <div className="mega-dropdown-content" style={{ position: 'relative', zIndex: 1, display: 'flex', justifyContent: 'center', padding: '110px 24px 40px 24px', width: '100%' }}>
             <div className="mega-menu-grid">
           
           {/* Section 1 */}
@@ -236,6 +285,21 @@ export default function Header() {
               Log In
             </Link>
             <Link href="/contact" className="nav-btn" style={{ textDecoration: 'none' }}>Contact</Link>
+            
+            <button className="mobile-menu-btn" onClick={toggleMobileMenu} aria-label="Toggle menu">
+              {isOpen ? (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              ) : (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="3" y1="12" x2="21" y2="12"></line>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+              )}
+            </button>
           </div>
         </nav>
 
