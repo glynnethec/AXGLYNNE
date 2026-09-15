@@ -105,7 +105,7 @@ export default function ServexCaseStudy() {
                   <div style={{ margin: '24px auto 16px auto', width: '100%', maxWidth: '1100px', boxShadow: 'none' }}>
                     <video 
                       className="white-controls-video"
-                      src="/SERVEX/AITest.mov" 
+                      src="/SERVEX/AITest.mp4" 
                       controls 
                       playsInline 
                       style={{ width: '100%', height: 'auto', display: 'block', boxShadow: 'none' }} 
@@ -155,7 +155,7 @@ export default function ServexCaseStudy() {
                   <div style={{ margin: '24px auto 16px auto', width: '100%', maxWidth: '1100px', boxShadow: 'none' }}>
                     <video 
                       className="white-controls-video"
-                      src="/SERVEX/frontTravel.mov" 
+                      src="/SERVEX/frontTravel.mp4" 
                       controls 
                       playsInline 
                       style={{ width: '100%', height: 'auto', display: 'block', boxShadow: 'none' }} 
