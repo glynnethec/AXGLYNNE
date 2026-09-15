@@ -53,13 +53,13 @@ export async function signInWithAzure() {
   }
 }
 
-// 👤 Obtener user autenticado (TRABAJADORES)
+// 👤 Obtener user autenticado (Google)
 export async function getCurrentUser() {
-  const { data, error } = await supabase.auth.getUser();
+  const { data, error } = await supabaseGoogle.auth.getUser();
 
   if (error) {
     if (error.message.includes('Auth session missing')) {
-        return null; 
+      return null;
     }
     console.error('❌ Error fetching user:', error);
     return null;
@@ -76,13 +76,12 @@ export async function getCurrentUser() {
 
   const provider = user.app_metadata?.provider;
 
-  const isAzure = provider === 'azure';
-  const isAuthorizedDomain =
-    email && email.toLowerCase().endsWith('@servex-us.com');
+  // Permitimos auth con Google
+  const isGoogle = provider === 'google';
 
-  if (!isAzure || !isAuthorizedDomain) {
-    console.warn('🚫 Acceso denegado:', { email, provider });
-    await supabase.auth.signOut();
+  if (!isGoogle) {
+    console.warn('🚫 Acceso denegado: Solo se permite Google', { email, provider });
+    await supabaseGoogle.auth.signOut();
     return null;
   }
 
@@ -98,16 +97,16 @@ export async function getCurrentUser() {
 export function subscribeToAuthState(callback) {
   const {
     data: { subscription },
-  } = supabase.auth.onAuthStateChange((event, session) => {
+  } = supabaseGoogle.auth.onAuthStateChange((event, session) => {
     callback(event, session);
   });
 
   return subscription;
 }
 
-// 🚪 Logout (TRABAJADORES)
+// 🚪 Logout (Google)
 export async function signOut() {
-  const { error } = await supabase.auth.signOut();
+  const { error } = await supabaseGoogle.auth.signOut();
   if (error) {
     console.error('❌ Error al close sesión:', error);
   }
