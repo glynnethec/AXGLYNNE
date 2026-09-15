@@ -292,55 +292,83 @@ export default function Header() {
 
         <nav className="nav-links">
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <Link href="/contact" className="nav-btn" style={{ textDecoration: 'none' }}>Contact</Link>
+            
+            {/* Divisor vertical suave */}
+            <div style={{ width: '1px', height: '16px', backgroundColor: 'rgba(0,0,0,0.1)', margin: '0 4px' }}></div>
+
             <Link 
               href="/login" 
               style={{
-                padding: '0.4rem 1.2rem',
+                padding: isLoggedIn ? '0' : '0.4rem 1.2rem',
                 borderRadius: '999px',
-                backgroundColor: 'transparent',
+                backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
                 color: '#111111',
-                border: '1px solid rgba(0,0,0,0.2)',
+                border: '1px solid rgba(0,0,0,0.08)',
                 fontSize: '0.85rem',
                 fontWeight: 500,
                 textDecoration: 'none',
-                transition: 'all 0.2s ease',
+                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                height: '32px',
-                minWidth: '70px',
+                height: '34px',
+                width: isLoggedIn ? '34px' : 'auto',
+                minWidth: isLoggedIn ? '34px' : '80px',
+                boxShadow: '0 2px 10px rgba(0,0,0,0.02)'
               }}
-              onMouseOver={(e) => { e.currentTarget.style.borderColor = '#111111'; e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.03)' }}
-              onMouseOut={(e) => { e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)'; e.currentTarget.style.backgroundColor = 'transparent' }}
+              onMouseOver={(e) => { 
+                e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)'; 
+                e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.8)'; 
+                e.currentTarget.style.transform = 'translateY(-1px)';
+              }}
+              onMouseOut={(e) => { 
+                e.currentTarget.style.borderColor = 'rgba(0,0,0,0.08)'; 
+                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'; 
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
             >
-              {isLoggedIn ? <FaUser size={14} /> : "Log In"}
+              {isLoggedIn ? <FaUser size={13} color="#333" /> : <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><FaUser size={10} color="#888" /> Log In</span>}
             </Link>
             
             {isLoggedIn && (
               <button 
                 onClick={handleLogout}
                 style={{
-                  padding: '0.4rem',
-                  borderRadius: '999px',
-                  backgroundColor: 'transparent',
+                  width: '34px',
+                  height: '34px',
+                  borderRadius: '50%',
+                  backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
                   color: '#111111',
-                  border: 'none',
+                  border: '1px solid rgba(0,0,0,0.08)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  opacity: 0.6,
+                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                  boxShadow: '0 2px 10px rgba(0,0,0,0.02)'
                 }}
-                onMouseOver={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.color = '#dc2626'; }}
-                onMouseOut={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.color = '#111111'; }}
+                onMouseOver={(e) => { 
+                  e.currentTarget.style.borderColor = 'rgba(220,38,38,0.3)';
+                  e.currentTarget.style.backgroundColor = 'rgba(254,242,242,0.8)';
+                  e.currentTarget.style.color = '#dc2626';
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                }}
+                onMouseOut={(e) => { 
+                  e.currentTarget.style.borderColor = 'rgba(0,0,0,0.08)';
+                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+                  e.currentTarget.style.color = '#111111';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}
                 title="Log Out"
               >
-                <FaSignOutAlt size={16} />
+                <FaSignOutAlt size={13} />
               </button>
             )}
-
-            <Link href="/contact" className="nav-btn" style={{ textDecoration: 'none' }}>Contact</Link>
             
             <button className="mobile-menu-btn" onClick={toggleMobileMenu} aria-label="Toggle menu">
               {isOpen ? (
