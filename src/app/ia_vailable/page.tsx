@@ -40,54 +40,84 @@ const previewModels = [
 ];
 
 export default function IaAvailablePage() {
-  const renderTable = (title: string, desc: string, data: any[]) => (
-    <div style={{ marginBottom: '80px', width: '100%' }}>
-      <div style={{ marginBottom: '24px' }}>
-        <h2 style={{ fontSize: '24px', fontWeight: 500, color: '#111111', marginBottom: '8px' }}>{title}</h2>
-        <p style={{ fontSize: '14px', color: '#86868b', lineHeight: 1.5, margin: 0 }}>{desc}</p>
-      </div>
-
-      <div style={{ 
-        width: '100%', 
-        overflowX: 'auto', 
-        backgroundColor: '#ffffff', 
-        borderRadius: '16px', 
-        border: '1px solid rgba(0,0,0,0.05)',
-        boxShadow: '0 4px 24px rgba(0,0,0,0.02)'
-      }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '800px' }}>
-          <thead>
-            <tr style={{ borderBottom: '1px solid rgba(0,0,0,0.05)', backgroundColor: '#fcfcfd' }}>
-              <th style={{ padding: '16px 24px', fontSize: '11px', fontWeight: 600, color: '#86868b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Model ID</th>
-              <th style={{ padding: '16px 24px', fontSize: '11px', fontWeight: 600, color: '#86868b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Speed (T/s)</th>
-              <th style={{ padding: '16px 24px', fontSize: '11px', fontWeight: 600, color: '#86868b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Price</th>
-              <th style={{ padding: '16px 24px', fontSize: '11px', fontWeight: 600, color: '#86868b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Rate Limits</th>
-              <th style={{ padding: '16px 24px', fontSize: '11px', fontWeight: 600, color: '#86868b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Context</th>
-              <th style={{ padding: '16px 24px', fontSize: '11px', fontWeight: 600, color: '#86868b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Max Comp.</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((item, index) => (
-              <tr key={item.id} style={{ borderBottom: index === data.length - 1 ? 'none' : '1px solid rgba(0,0,0,0.03)', transition: 'background-color 0.2s', cursor: 'default' }} onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#fafafa'} onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
-                <td style={{ padding: '16px 24px' }}>
-                  <div style={{ fontSize: '14px', fontWeight: 500, color: '#111111' }}>{item.name}</div>
-                  <div style={{ fontSize: '12px', color: '#86868b', fontFamily: 'monospace', marginTop: '4px' }}>{item.id}</div>
-                </td>
-                <td style={{ padding: '16px 24px', fontSize: '14px', color: '#333333', fontFamily: 'monospace' }}>{item.speed}</td>
-                <td style={{ padding: '16px 24px', fontSize: '13px', color: '#555555' }}>{item.price}</td>
-                <td style={{ padding: '16px 24px', fontSize: '13px', color: '#555555' }}>{item.limit}</td>
-                <td style={{ padding: '16px 24px', fontSize: '13px', color: '#333333', fontFamily: 'monospace' }}>{item.context}</td>
-                <td style={{ padding: '16px 24px', fontSize: '13px', color: '#333333', fontFamily: 'monospace' }}>{item.completion}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-
   return (
     <BackgroundWrapper>
+      <style>{`
+        .table-wrapper {
+          width: 100%;
+          overflow-x: auto;
+          background-color: #ffffff;
+          border-radius: 16px;
+          border: 1px solid rgba(0,0,0,0.05);
+          box-shadow: 0 4px 24px rgba(0,0,0,0.02);
+          -webkit-overflow-scrolling: touch;
+        }
+        
+        .premium-table {
+          width: 100%;
+          border-collapse: collapse;
+          text-align: left;
+          min-width: 800px;
+        }
+
+        .premium-table th {
+          padding: 16px 24px;
+          font-size: 11px;
+          font-weight: 600;
+          color: #86868b;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          border-bottom: 1px solid rgba(0,0,0,0.05);
+          background-color: #fcfcfd;
+        }
+
+        @media (max-width: 700px) {
+          .premium-table {
+            min-width: 100%;
+          }
+          .premium-table thead {
+            display: none;
+          }
+          .premium-table tbody {
+            display: block;
+            padding: 12px;
+          }
+          .premium-table tr {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 16px;
+            border: 1px solid rgba(0,0,0,0.05) !important;
+            border-radius: 12px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+          }
+          .premium-table td {
+            display: flex;
+            flex-direction: column;
+            padding: 12px 16px !important;
+            border-bottom: 1px solid rgba(0,0,0,0.03);
+          }
+          .premium-table td:last-child {
+            border-bottom: none;
+          }
+          .premium-table td::before {
+            content: attr(data-label);
+            font-size: 10px;
+            font-weight: 600;
+            color: #86868b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+          }
+          .table-wrapper {
+            background-color: transparent;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+          }
+        }
+      `}</style>
+      
       <div style={{ width: '100%', minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'transparent' }}>
         
         {/* Header Section */}
@@ -135,29 +165,49 @@ export default function IaAvailablePage() {
         {/* Tables Section */}
         <section style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 20px 80px 20px' }}>
           
-          {renderTable(
-            "Elite Foundation Models",
-            "The absolute best-in-class frontier models available via API on the market today. Ideal for complex reasoning, autonomous agent architectures, and high-impact tasks.",
-            eliteModels
-          )}
+          {[ 
+            { title: "Elite Foundation Models", desc: "The absolute best-in-class frontier models available via API on the market today. Ideal for complex reasoning, autonomous agent architectures, and high-impact tasks.", data: eliteModels },
+            { title: "Production Models (Groq Cloud)", desc: "Production models are intended for use in your production environments. They meet or exceed high standards for speed, quality, and reliability.", data: productionModels },
+            { title: "Production Systems", desc: "Systems are a collection of models and tools that work together to answer a user query.", data: productionSystems },
+            { title: "Preview Models", desc: "Preview models are intended for evaluation purposes only and should not be used in production environments as they may be discontinued at short notice.", data: previewModels }
+          ].map((section, idx) => (
+            <div key={idx} style={{ marginBottom: '80px', width: '100%' }}>
+              <div style={{ marginBottom: '24px' }}>
+                <h2 style={{ fontSize: '24px', fontWeight: 500, color: '#111111', marginBottom: '8px' }}>{section.title}</h2>
+                <p style={{ fontSize: '14px', color: '#86868b', lineHeight: 1.5, margin: 0 }}>{section.desc}</p>
+              </div>
 
-          {renderTable(
-            "Production Models (Groq Cloud)",
-            "Production models are intended for use in your production environments. They meet or exceed high standards for speed, quality, and reliability.",
-            productionModels
-          )}
-
-          {renderTable(
-            "Production Systems",
-            "Systems are a collection of models and tools that work together to answer a user query.",
-            productionSystems
-          )}
-
-          {renderTable(
-            "Preview Models",
-            "Preview models are intended for evaluation purposes only and should not be used in production environments as they may be discontinued at short notice.",
-            previewModels
-          )}
+              <div className="table-wrapper">
+                <table className="premium-table">
+                  <thead>
+                    <tr>
+                      <th>Model ID</th>
+                      <th>Speed (T/s)</th>
+                      <th>Price</th>
+                      <th>Rate Limits</th>
+                      <th>Context</th>
+                      <th>Max Comp.</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {section.data.map((item, index) => (
+                      <tr key={item.id} style={{ borderBottom: index === section.data.length - 1 ? 'none' : '1px solid rgba(0,0,0,0.03)', transition: 'background-color 0.2s', cursor: 'default' }} onMouseOver={(e) => {if(window.innerWidth > 700) e.currentTarget.style.backgroundColor = '#fafafa'}} onMouseOut={(e) => {if(window.innerWidth > 700) e.currentTarget.style.backgroundColor = 'transparent'}}>
+                        <td data-label="Model ID" style={{ padding: '16px 24px' }}>
+                          <div style={{ fontSize: '14px', fontWeight: 500, color: '#111111' }}>{item.name}</div>
+                          <div style={{ fontSize: '12px', color: '#86868b', fontFamily: 'monospace', marginTop: '4px' }}>{item.id}</div>
+                        </td>
+                        <td data-label="Speed (T/s)" style={{ padding: '16px 24px', fontSize: '14px', color: '#333333', fontFamily: 'monospace' }}>{item.speed}</td>
+                        <td data-label="Price" style={{ padding: '16px 24px', fontSize: '13px', color: '#555555' }}>{item.price}</td>
+                        <td data-label="Rate Limits" style={{ padding: '16px 24px', fontSize: '13px', color: '#555555' }}>{item.limit}</td>
+                        <td data-label="Context" style={{ padding: '16px 24px', fontSize: '13px', color: '#333333', fontFamily: 'monospace' }}>{item.context}</td>
+                        <td data-label="Max Comp." style={{ padding: '16px 24px', fontSize: '13px', color: '#333333', fontFamily: 'monospace' }}>{item.completion}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ))}
 
         </section>
 
