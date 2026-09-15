@@ -4,8 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
-import { FaUser } from 'react-icons/fa';
-import { supabaseGoogle } from '@/lib/supabaseClient';
+import { FaUser, FaSignOutAlt } from 'react-icons/fa';
+import { supabaseGoogle, signOut } from '@/lib/supabaseClient';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -53,6 +53,10 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleLogout = async () => {
+    await signOut();
+  };
 
   const handleMouseEnter = () => {
     if (typeof window !== 'undefined' && window.innerWidth <= 700) return;
@@ -311,6 +315,31 @@ export default function Header() {
             >
               {isLoggedIn ? <FaUser size={14} /> : "Log In"}
             </Link>
+            
+            {isLoggedIn && (
+              <button 
+                onClick={handleLogout}
+                style={{
+                  padding: '0.4rem',
+                  borderRadius: '999px',
+                  backgroundColor: 'transparent',
+                  color: '#111111',
+                  border: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  opacity: 0.6,
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.color = '#dc2626'; }}
+                onMouseOut={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.color = '#111111'; }}
+                title="Log Out"
+              >
+                <FaSignOutAlt size={16} />
+              </button>
+            )}
+
             <Link href="/contact" className="nav-btn" style={{ textDecoration: 'none' }}>Contact</Link>
             
             <button className="mobile-menu-btn" onClick={toggleMobileMenu} aria-label="Toggle menu">
