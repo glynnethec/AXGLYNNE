@@ -4,10 +4,29 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { FaDiscord, FaInstagram, FaSpotify, FaYoutube, FaTiktok, FaEye, FaEyeSlash, FaGoogle, FaApple } from 'react-icons/fa';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
+import { supabaseGoogle } from '@/lib/supabaseClient';
 import './Login.css';
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleGoogleLogin = async () => {
+    try {
+      const { error } = await supabaseGoogle.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/`,
+        },
+      });
+
+      if (error) {
+        console.error('Login error:', error.message);
+        alert('Error al iniciar sesión con Google');
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <BackgroundWrapper>
@@ -46,7 +65,7 @@ export default function LoginPage() {
           </p>
 
           <div className="social-logins" style={{ marginTop: '2rem' }}>
-            <button className="btn-social">
+            <button className="btn-social" onClick={handleGoogleLogin}>
               <FaGoogle size={18} color="#111111" /> Login with Google
             </button>
           </div>
