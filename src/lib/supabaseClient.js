@@ -7,8 +7,8 @@ import { createClient } from '@supabase/supabase-js';
 // =======================
 //
 
-const supabaseUrl = 'https://zotgxyupuiifnbuwwjkl.supabase.co';
-const supabaseAnonKey = 'sb_publishable_usgTKwhsIpmNIiGa_F4tiw_ah3THCTJ';
+const supabaseUrl = 'https://qfxxspgxsvlbsbeosqgu.supabase.co';
+const supabaseAnonKey = 'sb_publishable_MHwQqLk6xwTwRKPT0BFUKg_u67pLrCL';
 
 /**
  * 💡 SOLUCIÓN PARA SEPARAR SESIONES:
