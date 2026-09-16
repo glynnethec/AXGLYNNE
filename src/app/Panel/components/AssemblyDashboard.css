@@ -45,7 +45,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 16px;
+  margin-top: 0px;
 }
 
 /* LEFT SIDEBAR */
@@ -439,6 +439,7 @@
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 0;
   overflow: hidden;
+  margin-top: -16px;
   margin-bottom: 0px;
   display: flex;
   flex-direction: column;
