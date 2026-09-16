@@ -70,10 +70,10 @@ export default function AssemblyDashboard() {
                     className={`md-tool-btn ${activeTool === tool ? 'active' : ''}`} 
                     onClick={() => {
                       setActiveTool(tool);
-                      // Add a random 400+ degree rotation on all axes for a fluid spin effect
-                      setRotX(prev => prev + (Math.random() > 0.5 ? 1 : -1) * (400 + Math.random() * 200));
-                      setRotY(prev => prev + (Math.random() > 0.5 ? 1 : -1) * (400 + Math.random() * 200));
-                      setRotZ(prev => prev + (Math.random() > 0.5 ? 1 : -1) * (400 + Math.random() * 200));
+                      // Add a random 120 degree rotation on all axes for a fluid spin effect
+                      setRotX(prev => prev + (Math.random() > 0.5 ? 120 : -120));
+                      setRotY(prev => prev + (Math.random() > 0.5 ? 120 : -120));
+                      setRotZ(prev => prev + (Math.random() > 0.5 ? 120 : -120));
                     }}
                   >
                     <span className="md-tool-icon">
