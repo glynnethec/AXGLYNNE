@@ -8,9 +8,20 @@ import OrbCardSection from './OrbCardSection';
 interface LinPromptSectionProps {
   hideCard?: boolean;
   hideOrbCard?: boolean;
+  customTitle?: string;
+  customDescription?: string;
+  primaryButtonText?: string;
+  primaryButtonUrl?: string;
 }
 
-export default function LinPromptSection({ hideCard = false, hideOrbCard = false }: LinPromptSectionProps = {}) {
+export default function LinPromptSection({ 
+  hideCard = false, 
+  hideOrbCard = false,
+  customTitle = "Govern AI across your enterprise",
+  customDescription = "GLYNNE is the infrastructure layer that integrates artificial intelligence into enterprise systems safely and with total governance. AI shouldn't have unrestricted access. We provide the architecture of control, permissions, and traceability that filters every action—allowing AI to provide autonomous reasoning while you retain absolute security.",
+  primaryButtonText = "Discover our architecture",
+  primaryButtonUrl = "/About"
+}: LinPromptSectionProps = {}) {
   const [inputValue, setInputValue] = useState('');
   const router = useRouter();
 
@@ -65,15 +76,21 @@ export default function LinPromptSection({ hideCard = false, hideOrbCard = false
             boxShadow: 'none'
           }}>
             <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 8px 0', letterSpacing: '-0.02em' }}>
-              Govern AI across your enterprise
+              {customTitle}
             </h1>
             <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, lineHeight: 1.6, margin: 0, maxWidth: '800px' }}>
-              GLYNNE is the infrastructure layer that integrates artificial intelligence into enterprise systems safely and with total governance. AI shouldn't have unrestricted access. We provide the architecture of control, permissions, and traceability that filters every action—allowing AI to provide autonomous reasoning while you retain absolute security.
+              {customDescription}
             </p>
             <div style={{ display: 'flex', gap: '16px', justifyContent: 'flex-start', marginTop: '24px', flexWrap: 'wrap' }}>
               <button 
                 className="responsive-btn"
-                onClick={() => router.push('/About')}
+                onClick={() => {
+                  if (primaryButtonUrl.startsWith('http')) {
+                    window.open(primaryButtonUrl, '_blank');
+                  } else {
+                    router.push(primaryButtonUrl);
+                  }
+                }}
                 style={{
                   padding: '14px 28px',
                   borderRadius: '999px',
@@ -88,7 +105,7 @@ export default function LinPromptSection({ hideCard = false, hideOrbCard = false
                 onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#333333'; e.currentTarget.style.transform = 'scale(1.02)' }}
                 onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#111111'; e.currentTarget.style.transform = 'scale(1)' }}
               >
-                Discover our architecture
+                {primaryButtonText}
               </button>
               
               <button 
