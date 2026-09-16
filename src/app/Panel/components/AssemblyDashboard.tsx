@@ -451,7 +451,7 @@ export default function AssemblyDashboard() {
               <button className="md-btn-cancel" onClick={() => setShowLogoutModal(false)}>Cancel</button>
               <button className="md-btn-confirm" onClick={async () => {
                 await signOut();
-                window.location.href = '/login';
+                window.location.href = '/';
               }}>Confirm Disconnect</button>
             </div>
           </div>

@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { FaDiscord, FaInstagram, FaSpotify, FaYoutube, FaTiktok, FaEye, FaEyeSlash, FaGoogle, FaApple } from 'react-icons/fa';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
@@ -9,6 +10,17 @@ import './Login.css';
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data } = await supabaseGoogle.auth.getSession();
+      if (data.session) {
+        router.push('/Panel');
+      }
+    };
+    checkSession();
+  }, [router]);
 
   const handleGoogleLogin = async () => {
     try {
