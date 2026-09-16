@@ -435,12 +435,10 @@
 /* DETAILED PROFILE CARD */
 .md-profile-card {
   width: 100%;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 12px;
   overflow: hidden;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   margin-bottom: 0px;
   display: flex;
   flex-direction: column;
@@ -448,8 +446,8 @@
 
 .md-profile-banner {
   height: 48px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   position: relative;
 }
 
@@ -474,11 +472,12 @@
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  border: 2px solid #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.3);
   object-fit: cover;
   margin-top: -26px;
   margin-bottom: 8px;
   background: #111;
+  filter: grayscale(100%);
 }
 
 .md-profile-avatar-placeholder {

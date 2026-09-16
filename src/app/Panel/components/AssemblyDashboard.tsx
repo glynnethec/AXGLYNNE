@@ -171,7 +171,7 @@ export default function AssemblyDashboard() {
                   </div>
                   <div className="stat">
                     <span>Status</span>
-                    <strong style={{color: '#4ade80'}}>ONLINE</strong>
+                    <strong style={{color: '#ffffff'}}>ONLINE</strong>
                   </div>
                 </div>
               </div>
