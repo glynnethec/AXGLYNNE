@@ -6,9 +6,10 @@ export default function ClientLogosSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const logos = [
+    { src: '/LogosClientes/logo.png', alt: 'SERVEX', height: 60 },
     { src: '/LogosClientes/CUN.svg', alt: 'CUN', height: 75 },
-    { src: '/LogosClientes/nido.svg', alt: 'Nido Automation', height: 80 },
     { src: '/LogosClientes/Logo_el_sol.webp', alt: 'El Sol', height: 85 },
+    { src: '/LogosClientes/nido.svg', alt: 'Nido Automation', height: 80 },
     { src: '/logos/GLYNNE.png', alt: 'GLYNNE', height: 60 },
   ];
 
