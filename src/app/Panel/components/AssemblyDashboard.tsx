@@ -353,6 +353,26 @@ export default function AssemblyDashboard() {
             </div>
           </div>
 
+          <div className="md-section">
+            <h3 className="md-title">System Console</h3>
+            <div className="md-terminal">
+              <div className="md-term-header">
+                <div className="term-dots">
+                  <span className="dot red"></span>
+                  <span className="dot yellow"></span>
+                  <span className="dot green"></span>
+                </div>
+                <span className="term-title">AX_SYS_LOG</span>
+              </div>
+              <div className="md-term-body">
+                <p><span className="prompt">{'>'}</span> SYSTEM_BOOT_SEQ_INITIALIZED</p>
+                <p><span className="prompt">{'>'}</span> NEURAL_NETWORK: <span className="text-green">ONLINE</span></p>
+                <p><span className="prompt">{'>'}</span> ENCRYPTION: AES-256 SECURED</p>
+                <p><span className="prompt">{'>'}</span> STATUS: <span className="text-green">ACTIVE</span></p>
+                <p><span className="prompt">{'>'}</span> AWAITING_DIRECTIVES<span className="cursor-blink">_</span></p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
