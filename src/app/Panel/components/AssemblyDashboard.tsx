@@ -314,12 +314,7 @@ export default function AssemblyDashboard() {
             <span className="value">{Math.round(Math.abs(rotY % 360))}°</span>
           </div>
           
-          <div className="md-gizmo">
-            <div className="axis axis-y"><span>Y</span></div>
-            <div className="axis axis-x"><span>X</span></div>
-            <div className="axis axis-z"><span>Z</span></div>
-            <div className="center"></div>
-          </div>
+
         </div>
 
         {/* Right Sidebar */}

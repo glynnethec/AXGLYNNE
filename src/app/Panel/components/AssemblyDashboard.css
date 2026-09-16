@@ -509,65 +509,6 @@
   color: #fff;
 }
 
-.md-gizmo {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 40px;
-  height: 40px;
-}
-
-.md-gizmo .axis {
-  position: absolute;
-  background: #666;
-}
-
-.md-gizmo .axis span {
-  position: absolute;
-  font-size: 8px;
-  color: #666;
-}
-
-.md-gizmo .axis-y {
-  width: 1px;
-  height: 20px;
-  top: 0;
-  left: 20px;
-}
-
-.md-gizmo .axis-y span {
-  top: -12px;
-  left: -3px;
-}
-
-.md-gizmo .axis-x {
-  width: 20px;
-  height: 1px;
-  top: 20px;
-  left: 20px;
-  transform: rotate(30deg);
-  transform-origin: left;
-}
-
-.md-gizmo .axis-x span {
-  top: -4px;
-  left: 22px;
-}
-
-.md-gizmo .axis-z {
-  width: 20px;
-  height: 1px;
-  top: 20px;
-  left: 0;
-  transform: rotate(-30deg);
-  transform-origin: right;
-}
-
-.md-gizmo .axis-z span {
-  top: -4px;
-  left: -10px;
-}
-
 
 /* RIGHT SIDEBAR */
 .md-right {
