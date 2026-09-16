@@ -191,14 +191,13 @@ export default function AssemblyDashboard() {
           </div>
 
           <div className="md-3d-scene">
-            <div className="md-cube" style={{ transform: `rotateX(${rotX}deg) rotateY(${rotY}deg) rotateZ(${rotZ}deg)` }}>
-              {/* Outer Cube */}
-              <div className="face front"></div>
-              <div className="face back"></div>
-              <div className="face right"></div>
-              <div className="face left"></div>
-              <div className="face top"></div>
-              <div className="face bottom"></div>
+            {/* Outer Sphere */}
+            <div className="md-sphere" style={{ transform: `rotateX(${rotX}deg) rotateY(${rotY}deg) rotateZ(${rotZ}deg)` }}>
+              <div className="ring"></div>
+              <div className="ring"></div>
+              <div className="ring"></div>
+              <div className="ring"></div>
+              <div className="ring"></div>
             </div>
 
             {/* Inner Cube (Tesseract core - Mirrored rotation) */}
