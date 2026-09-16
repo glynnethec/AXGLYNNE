@@ -197,8 +197,8 @@
 
 .md-3d-scene {
   position: relative;
-  width: 340px;
-  height: 340px;
+  width: 420px;
+  height: 420px;
   perspective: 1200px;
   display: flex;
   align-items: center;
@@ -209,8 +209,8 @@
 
 .md-sphere {
   position: relative;
-  width: 200px;
-  height: 200px;
+  width: 260px;
+  height: 260px;
   transform-style: preserve-3d;
   transition: transform 2.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -219,8 +219,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 200px;
-  height: 200px;
+  width: 260px;
+  height: 260px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.3);
   background: rgba(255, 255, 255, 0.02);
@@ -236,8 +236,8 @@
 
 .md-shadow {
   position: absolute;
-  width: 220px;
-  height: 220px;
+  width: 280px;
+  height: 280px;
   background: radial-gradient(circle, rgba(0,0,0,0.8) 0%, transparent 70%);
   filter: blur(14px);
   pointer-events: none;
@@ -246,44 +246,48 @@
 
 .md-rotation-track {
   position: relative;
-  width: 360px;
-  height: 360px;
+  width: 420px;
+  height: 420px;
   border-radius: 50%;
   border: 1px solid rgba(255,255,255,0.1);
   transform: rotateX(75deg);
-  margin-top: -240px; /* pull up under cube */
+  margin-top: -280px; /* pull up under cube */
 }
 
 .md-rotation-marker {
   position: absolute;
   top: 0; left: 50%;
-  width: 360px; height: 360px;
+  width: 420px; height: 420px;
   border-radius: 50%;
   transition: transform 2.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .md-marker-line {
   position: absolute;
-  bottom: -4px; left: 50%;
-  transform: translateX(-50%);
-  width: 40px;
-  height: 8px;
+  top: 0; left: 50%;
+  width: 1px; height: 30px;
   background: #fff;
-  border-radius: 4px;
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px #fff;
 }
 
 .md-rotation-value {
-  margin-top: -40px; /* pull up over track */
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
+  z-index: 10;
 }
 .md-rotation-value .label {
-  font-size: 11px;
-  color: #666;
+  font-size: 14px;
+  color: #a1a1aa;
 }
 .md-rotation-value .value {
-  font-size: 24px;
+  font-size: 28px;
+  font-family: var(--font-orbitron), monospace;
   font-weight: 500;
   color: #fff;
 }
