@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import './AssemblyDashboard.css';
 
 export default function AssemblyDashboard() {
@@ -100,6 +101,9 @@ export default function AssemblyDashboard() {
           <div className="md-info-card" key={activeTool}>
             <div className="info-title">{platformTools.find(t => t.name === activeTool)?.name}</div>
             <div className="info-desc">{platformTools.find(t => t.name === activeTool)?.desc}</div>
+            <Link href={`/${activeTool}`} className="md-start-btn">
+              Start <span>&rarr;</span>
+            </Link>
           </div>
 
           <div className="md-3d-scene">
