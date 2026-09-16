@@ -12,10 +12,15 @@
   top: 0;
   left: 0;
   z-index: 10000;
-  overflow-y: auto;
+  overflow-y: hidden;
   overflow-x: hidden;
   filter: var(--brightness-filter, brightness(1));
   transition: filter 0.1s;
+  box-sizing: border-box;
+}
+
+.md-container * {
+  box-sizing: border-box;
 }
 
 /* Perspective Grid Background */
