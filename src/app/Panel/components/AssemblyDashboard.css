@@ -590,7 +590,7 @@
 }
 
 .md-light-btn {
-  background: transparent;
+  background: rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 12px;
   display: flex;
@@ -601,6 +601,9 @@
   transition: all 0.2s;
   aspect-ratio: 1 / 1;
   width: 100%;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .md-light-btn.active {
@@ -614,12 +617,13 @@
 }
 
 .icon-wrapper.black {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   width: 100%;
   border-radius: 2px;
 }
 .icon-wrapper.dotted {
-  background-image: radial-gradient(#aaa 1px, transparent 1px);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px);
   background-size: 4px 4px;
   width: 100%;
   border-radius: 2px;
@@ -631,9 +635,9 @@
   right: 4px;
   width: 12px;
   height: 12px;
-  background: #000;
+  background: #fff;
   border-radius: 50% 50% 0 0;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
 }
 
 .area-icon {
