@@ -138,29 +138,50 @@ export default function AssemblyDashboard() {
         </svg>
       </div>
 
-      {/* Top Header */}
-      <div className="md-header">
-        {userProfile ? (
-          <div className="md-mini-profile">
-            {userProfile.avatar_url && (
-              <img src={userProfile.avatar_url} alt="Profile" className="md-profile-avatar" />
-            )}
-            <div className="md-profile-info">
-              <div className="md-profile-name">{userProfile.full_name || 'AX_user'}</div>
-              <div className="md-profile-email">{userProfile.email}</div>
-            </div>
-          </div>
-        ) : (
-          <div className="md-date-placeholder">
-            <div className="md-date">{currentDate.split(' 20')[0] || 'Sat \u2014 19 January'}</div>
-            <div className="md-year">{currentDate.split(' ').pop() || '2019'}</div>
-          </div>
-        )}
-      </div>
-
+      {/* Main Layout */}
       <div className="md-main">
         {/* Left Sidebar */}
         <div className="md-left">
+          
+          {/* Detailed Profile Card */}
+          {userProfile ? (
+            <div className="md-profile-card">
+              <div className="md-profile-banner">
+                <div className="md-date-overlay">{currentDate.split(' 20')[0]}</div>
+              </div>
+              <div className="md-profile-content">
+                {userProfile.avatar_url ? (
+                  <img src={userProfile.avatar_url} alt="Profile" className="md-profile-avatar-lg" />
+                ) : (
+                  <div className="md-profile-avatar-placeholder">AX</div>
+                )}
+                <div className="md-profile-name-lg">{userProfile.full_name || 'AX_user'}</div>
+                <div className="md-profile-title">System Architect & Visionary</div>
+                <div className="md-profile-email-lg">{userProfile.email}</div>
+                
+                <div className="md-profile-quote">
+                  "Building the future, one node at a time. The system is living, and you are its architect."
+                </div>
+
+                <div className="md-profile-stats">
+                  <div className="stat">
+                    <span>Access Level</span>
+                    <strong>ROOT</strong>
+                  </div>
+                  <div className="stat">
+                    <span>Status</span>
+                    <strong style={{color: '#4ade80'}}>ONLINE</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="md-date-placeholder" style={{marginBottom: '40px'}}>
+              <div className="md-date">{currentDate.split(' 20')[0] || 'Sat \u2014 19 January'}</div>
+              <div className="md-year">{currentDate.split(' ').pop() || '2019'}</div>
+            </div>
+          )}
+
           <div className="md-section forms-section">
             <h3 className="md-title">Forms</h3>
             <div className="md-icons-row">
