@@ -108,7 +108,7 @@ export default function AssemblyDashboard() {
   };
 
   return (
-    <>
+    <div style={{ background: '#000', minHeight: '100vh', width: '100%' }}>
       <div className="md-container" style={{ '--brightness-filter': `brightness(${0.5 + brightness / 100})` } as React.CSSProperties}
            onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
       
@@ -371,6 +371,6 @@ export default function AssemblyDashboard() {
         </div>
       </div> 
       */}
-    </>
+    </div>
   );
 }
