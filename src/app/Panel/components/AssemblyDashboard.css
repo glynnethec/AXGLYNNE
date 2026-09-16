@@ -5,7 +5,6 @@
   padding: 24px;
   background: linear-gradient(135deg, #1f1f1f, #050505);
   color: #e5e5e5;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -59,11 +58,11 @@
 }
 
 .md-title {
-  font-size: 11px;
+  font-size: 14px;
   text-transform: uppercase;
-  color: #888;
-  letter-spacing: 0.05em;
-  margin-bottom: 12px;
+  letter-spacing: 0.1em;
+  color: #a1a1aa;
+  margin-bottom: 20px;
 }
 
 .md-icons-row {
@@ -309,12 +308,12 @@
 }
 
 .md-mini-card-desc {
-  margin-top: 4px;
-  font-size: 9px;
-  color: #666;
-  line-height: 1.4;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 12px;
+  color: #888;
+  margin-top: 8px;
   padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  line-height: 1.4;
 }
 
 .md-tool-submit {
@@ -551,14 +550,14 @@
   aspect-ratio: 1 / 1;
   width: 100%;
   color: #fff;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   text-decoration: none;
   padding: 8px;
 }
 
 .light-subtext {
-  font-size: 9px;
+  font-size: 10px;
   color: #a1a1aa;
   font-weight: 400;
   text-align: center;
@@ -729,13 +728,13 @@
 }
 
 .md-profile-quote {
-  font-size: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #a1a1aa;
+  margin-bottom: 20px;
   font-style: italic;
-  color: rgba(255, 255, 255, 0.6);
-  line-height: 1.3;
+  padding-left: 12px;
   border-left: 2px solid rgba(255, 255, 255, 0.2);
-  padding-left: 8px;
-  margin-bottom: 12px;
 }
 
 .md-profile-stats {
@@ -811,7 +810,7 @@
 .md-term-body {
   padding: 12px;
   font-family: monospace;
-  font-size: 11px;
+  font-size: 13px;
   color: #a1a1aa;
   line-height: 1.6;
 }
