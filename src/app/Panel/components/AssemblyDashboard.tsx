@@ -1,166 +1,191 @@
 'use client';
 
-import React, { useState } from 'react';
-import { 
-  FaChevronLeft, FaChevronRight, FaPen, FaEraser, FaMousePointer, 
-  FaShareAlt, FaEye, FaPlus, FaCheckCircle, FaCube
-} from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
 import './AssemblyDashboard.css';
 
 export default function AssemblyDashboard() {
-  const [activeStep, setActiveStep] = useState(3);
+  const [rotation, setRotation] = useState(35);
+  const [brightness, setBrightness] = useState(80);
+  const [shadowDensity, setShadowDensity] = useState(60);
   
+  const [activeForm, setActiveForm] = useState('cube');
+  const [activeTool, setActiveTool] = useState('Rotation');
+  const [activeLight, setActiveLight] = useState('Spot');
+  const [currentDate, setCurrentDate] = useState('');
+
+  useEffect(() => {
+    const date = new Date();
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    setCurrentDate(`${days[date.getDay()]} \u2014 ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`);
+  }, []);
+
   return (
-    <div className="assembly-dashboard-container">
-      {/* TOP BAR */}
-      <div className="ad-topbar">
-        <div className="ad-topbar-left">
-          <button className="ad-icon-btn"><FaChevronLeft size={10} style={{ marginRight: '6px' }} /> Back</button>
-          <span className="ad-draft-badge">Draft</span>
-          <span className="ad-title">Assembly steps <span className="ad-chevron-down">v</span></span>
-        </div>
-        
-        <div className="ad-toolbar">
-          <button className="ad-tool-btn active"><FaPen size={12} /></button>
-          <button className="ad-tool-btn"><FaEraser size={12} /></button>
-          <button className="ad-tool-btn"><FaMousePointer size={12} /></button>
-          <div className="ad-divider"></div>
-          <span className="ad-speed">Speed <span className="ad-speed-controls">- 1.0 +</span></span>
-          <div className="ad-divider"></div>
-          <button className="ad-tool-btn text-btn"><FaShareAlt size={12} style={{ marginRight: '6px' }} /> Share</button>
-          <button className="ad-export-btn">Export</button>
+    <div className="md-container" style={{ '--brightness-filter': `brightness(${0.5 + brightness / 100})` } as React.CSSProperties}>
+      
+      {/* Dynamic Background Perspective Grid */}
+      <div className="md-bg-grid"></div>
+
+      {/* Top Header */}
+      <div className="md-header">
+        <div className="md-date">{currentDate.split(' 20')[0] || 'Sat \u2014 19 January'}</div>
+        <div className="md-year">{currentDate.split(' ').pop() || '2019'}</div>
+      </div>
+
+      <div className="md-main">
+        {/* Left Sidebar */}
+        <div className="md-left">
+          <div className="md-section forms-section">
+            <h3 className="md-title">Forms</h3>
+            <div className="md-icons-row">
+              <button className={`md-icon-btn ${activeForm === 'cube' ? 'active' : ''}`} onClick={() => setActiveForm('cube')}>
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+              </button>
+              <button className={`md-icon-btn ${activeForm === 'sphere' ? 'active' : ''}`} onClick={() => setActiveForm('sphere')}>
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path><path d="M2 12h20"></path></svg>
+              </button>
+              <button className={`md-icon-btn ${activeForm === 'pyramid' ? 'active' : ''}`} onClick={() => setActiveForm('pyramid')}>
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.2"><path d="M12 2L2 20h20L12 2z"></path><path d="M12 2v20"></path><path d="M2 20l10-8 10 8"></path></svg>
+              </button>
+              <button className={`md-icon-btn ${activeForm === 'cylinder' ? 'active' : ''}`} onClick={() => setActiveForm('cylinder')}>
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 5v14c0 1.66-4.03 3-9 3s-9-1.34-9-3V5"></path></svg>
+              </button>
+              <button className="md-icon-btn dots">
+                <span>...</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="md-section">
+            <h3 className="md-title">Tools</h3>
+            <ul className="md-tools-list">
+              {['Render', 'Rotation', 'Texture', 'Polygons', 'Points', 'Intrude'].map(tool => (
+                <li key={tool}>
+                  <button 
+                    className={`md-tool-btn ${activeTool === tool ? 'active' : ''}`} 
+                    onClick={() => setActiveTool(tool)}
+                  >
+                    <span className="md-tool-icon">
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    </span>
+                    {tool}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
-        <div className="ad-topbar-right">
-          <span className="ad-user-email">alexglynne7@gmail.com</span>
-          <div className="ad-user-avatar">
-            <img src="/logos/GLYNNE.svg" alt="User" />
+        {/* Center Canvas */}
+        <div className="md-center">
+          <div className="md-3d-scene">
+            <div className="md-cube" style={{ transform: `rotateX(-20deg) rotateY(${rotation}deg)` }}>
+              <div className="face front"></div>
+              <div className="face back"></div>
+              <div className="face right"></div>
+              <div className="face left"></div>
+              <div className="face top"></div>
+              <div className="face bottom"></div>
+            </div>
+            <div className="md-shadow" style={{ 
+              opacity: shadowDensity / 100, 
+              transform: `translateY(120px) rotateX(75deg) rotateZ(${-rotation}deg)` 
+            }}></div>
+          </div>
+
+          <div className="md-rotation-track">
+            <div className="md-rotation-circle"></div>
+            <div className="md-rotation-marker" style={{ transform: `translateX(-50%) rotate(${rotation}deg)` }}>
+              <div className="md-marker-line"></div>
+            </div>
+          </div>
+          
+          <div className="md-rotation-value">
+            <span className="label">Rotation</span>
+            <span className="value">{rotation}°</span>
+          </div>
+          
+          <div className="md-gizmo">
+            <div className="axis axis-y"><span>Y</span></div>
+            <div className="axis axis-x"><span>X</span></div>
+            <div className="axis axis-z"><span>Z</span></div>
+            <div className="center"></div>
+          </div>
+        </div>
+
+        {/* Right Sidebar */}
+        <div className="md-right">
+          <div className="md-window-controls">
+            <span>&mdash;</span>
+            <span style={{ fontSize: '16px' }}>&#x2715;</span>
+          </div>
+
+          <div className="md-section">
+            <h3 className="md-title">Lightning</h3>
+            <div className="md-lighting-grid">
+              <button className={`md-light-btn ${activeLight === 'Spot' ? 'active' : ''}`} onClick={() => setActiveLight('Spot')}>
+                <div className="icon-wrapper black"><div className="spot-icon"></div></div>
+                <span className="light-label">Spot</span>
+              </button>
+              <button className={`md-light-btn ${activeLight === 'Area' ? 'active' : ''}`} onClick={() => setActiveLight('Area')}>
+                <div className="icon-wrapper dotted"><div className="area-icon"></div></div>
+                <span className="light-label">Area</span>
+              </button>
+              <button className={`md-light-btn ${activeLight === 'Target' ? 'active' : ''}`} onClick={() => setActiveLight('Target')}>
+                <div className="icon-wrapper"><div className="target-icon">&#x2199;</div></div>
+                <span className="light-label">Target</span>
+              </button>
+              <button className={`md-light-btn ${activeLight === 'Sun' ? 'active' : ''}`} onClick={() => setActiveLight('Sun')}>
+                <div className="icon-wrapper"><div className="sun-icon"></div></div>
+                <span className="light-label">Sun</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="md-section control-slider">
+            <h3 className="md-title">Rotation</h3>
+            <input 
+              type="range" 
+              min="0" max="360" 
+              value={rotation} 
+              onChange={(e) => setRotation(Number(e.target.value))}
+              className="md-slider"
+              style={{ '--val': `${(rotation/360)*100}%` } as React.CSSProperties}
+            />
+          </div>
+
+          <div className="md-section control-slider">
+            <h3 className="md-title">Brightness</h3>
+            <input 
+              type="range" 
+              min="0" max="100" 
+              value={brightness} 
+              onChange={(e) => setBrightness(Number(e.target.value))}
+              className="md-slider"
+              style={{ '--val': `${brightness}%` } as React.CSSProperties}
+            />
+          </div>
+
+          <div className="md-section control-slider">
+            <h3 className="md-title">Shadow Density</h3>
+            <input 
+              type="range" 
+              min="0" max="100" 
+              value={shadowDensity} 
+              onChange={(e) => setShadowDensity(Number(e.target.value))}
+              className="md-slider"
+              style={{ '--val': `${shadowDensity}%` } as React.CSSProperties}
+            />
           </div>
         </div>
       </div>
 
-      <div className="ad-main-layout">
-        
-        {/* CENTER 3D VIEWER */}
-        <div className="ad-viewer">
-          <div className="ad-viewer-grid"></div>
-          
-          {/* Floating Widget: Hide Parts */}
-          <div className="ad-hide-parts">
-            <div className="ad-hide-header">
-              <FaEye size={12} /> Hide Parts
-            </div>
-            <div className="ad-part-preview">
-              <div className="ad-cylinder-mini"></div>
-            </div>
-            <div className="ad-part-footer">
-              <button className="ad-cube-btn"><FaCube size={10}/></button>
-              <span>Part 1</span>
-              <button className="ad-cube-btn"><FaCube size={10}/></button>
-            </div>
-          </div>
-          
-          {/* Mock 3D Center Object */}
-          <div className="ad-3d-object">
-            <div className="ad-cylinder-layer layer-top"></div>
-            <div className="ad-cylinder-layer layer-mid"></div>
-            <div className="ad-cylinder-layer layer-base"></div>
-            
-            <div className="ad-gizmo">
-              <div className="gizmo-axis axis-x"></div>
-              <div className="gizmo-axis axis-y"></div>
-              <div className="gizmo-axis axis-z"></div>
-              <div className="gizmo-center"></div>
-            </div>
-          </div>
+      {/* Bottom Layout */}
+      <div className="md-bottom">
+        <div className="md-logo">
+          END<br/>IS<br/>UI<span>.</span>
         </div>
-
-        {/* RIGHT SIDEBAR */}
-        <div className="ad-sidebar">
-          <div className="ad-sidebar-nav">
-            <button className="ad-nav-btn"><FaChevronLeft size={10}/> Prev</button>
-            <button className="ad-nav-btn active">Next <FaChevronRight size={10}/></button>
-          </div>
-          
-          <div className="ad-info-row">
-            <span className="ad-info-label">Step</span>
-            <span className="ad-info-value">03</span>
-          </div>
-          <div className="ad-info-row divider">
-            <span className="ad-info-label">Subassembly</span>
-            <span className="ad-info-value">01</span>
-          </div>
-
-          <div className="ad-section">
-            <h4 className="ad-section-title">Name</h4>
-            <p className="ad-section-text">Add part 10 to the assembly / ball 1 inch /</p>
-          </div>
-
-          <div className="ad-section">
-            <h4 className="ad-section-title">Notes <span className="ad-badge">3</span></h4>
-            
-            <div className="ad-note-item">
-              <div className="ad-note-bullet"></div>
-              <p>Check that the distances are set evenly</p>
-              <div className="ad-note-circle"><FaCheckCircle size={10} color="#34d399"/></div>
-            </div>
-            <div className="ad-note-item">
-              <div className="ad-note-bullet"></div>
-              <p>Check that the distances are set evenly</p>
-              <div className="ad-note-circle"><FaCheckCircle size={10} color="#34d399"/></div>
-            </div>
-            <div className="ad-note-item">
-              <div className="ad-note-bullet"></div>
-              <p>Check that the distances are set evenly</p>
-              <div className="ad-note-circle"><FaCheckCircle size={10} color="#34d399"/></div>
-            </div>
-            
-            <button className="ad-add-note-btn">Add note <FaPlus size={10} style={{ marginLeft: '4px' }} /></button>
-          </div>
-        </div>
-      </div>
-
-      {/* BOTTOM TIMELINE */}
-      <div className="ad-timeline-container">
-        <div className="ad-timeline-controls">
-          <span className="ad-view-label">View:</span>
-          <div className="ad-view-toggle">
-            <span className="active">L</span>
-            <span>M</span>
-            <span>S</span>
-          </div>
-          <div className="ad-timeline-slider">
-            <div className="ad-slider-track">
-              <div className="ad-slider-thumb"></div>
-            </div>
-          </div>
-        </div>
-
-        <div className="ad-timeline-cards">
-          {[1,2,3,4,5,6,7].map(num => (
-            <div key={num} className={`ad-card ${activeStep === num ? 'active' : ''}`} onClick={() => setActiveStep(num)}>
-              {num % 3 === 1 && (
-                <div className="ad-card-subassembly">Subassembly 0{Math.ceil(num/3)}</div>
-              )}
-              <div className="ad-card-inner">
-                <div className="ad-card-header">
-                  <span className="ad-card-num">0{num}</span>
-                  <span className="ad-card-dots">...</span>
-                </div>
-                <div className="ad-card-preview">
-                  <div className="ad-cylinder-mini card-mini"></div>
-                </div>
-                <div className="ad-card-desc">
-                  {num === 1 ? 'Start with part 1' : `Add part ${num + 2} to the assembly`}
-                </div>
-                <div className="ad-card-footer">
-                  <div className="ad-note-indicator"></div>
-                  <span>{num % 3 + 1} notes</span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <div className="md-page-number">013</div>
       </div>
     </div>
   );
