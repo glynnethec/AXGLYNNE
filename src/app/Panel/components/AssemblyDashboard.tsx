@@ -108,28 +108,7 @@ export default function AssemblyDashboard() {
   };
 
   return (
-    <div 
-      className="dashboard-wrapper"
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100vh',
-        overflowX: 'hidden',
-        overflowY: 'auto',
-        background: '#000',
-        zIndex: 10000,
-        msOverflowStyle: 'none',
-        scrollbarWidth: 'none',
-      }}
-    >
-      <style>{`
-        .dashboard-wrapper::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
-
+    <>
       <div className="md-container" style={{ '--brightness-filter': `brightness(${0.5 + brightness / 100})` } as React.CSSProperties}
            onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
       
@@ -383,9 +362,11 @@ export default function AssemblyDashboard() {
       </div>
 
       {/* Global Panel Footer */}
-      <div style={{ background: '#000', width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
-        <PanelFooter />
+      <div style={{ background: '#000', width: '100%', display: 'flex', justifyContent: 'center' }}>
+        <div style={{ width: '100%', maxWidth: '1200px' }}>
+          <PanelFooter />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
