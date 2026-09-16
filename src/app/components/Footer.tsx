@@ -10,28 +10,37 @@ export default function Footer() {
       
       {/* Corporate Info Pre-Footer */}
       <div className="footer-pre">
+        <div className="footer-pre-title">GLYNNE S.A.S.</div>
+        <p className="footer-pre-text">Simplified Joint Stock Company (S.A.S.)</p>
+        <p className="footer-pre-text">Tax ID (NIT): 901966512</p>
+        <p className="footer-pre-text">Carrera 2 A 1 24 Sur — Madrid, Cundinamarca · Colombia</p>
+        <p className="footer-pre-text">Phone: +57 312 345 5328</p>
+        <p className="footer-pre-text">Email: alexglynne7@gmail.com</p>
+        <p className="footer-pre-text" style={{ marginTop: '8px' }}>Registered activity: Engineering activities and other related technical consulting activities.</p>
+        
         <a 
           href="https://www.informacolombia.com/directorio-empresas/informacion-empresa/glynne-sas" 
           target="_blank" 
           rel="noopener noreferrer"
-          style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
+          className="footer-pre-text"
+          style={{ 
+            marginTop: '12px', 
+            display: 'inline-block', 
+            textDecoration: 'underline', 
+            color: '#1d1d1f',
+            fontWeight: 500 
+          }}
         >
-          <div className="footer-pre-title">GLYNNE S.A.S.</div>
-          <p className="footer-pre-text">Simplified Joint Stock Company (S.A.S.)</p>
-          <p className="footer-pre-text">Tax ID (NIT): 901966512</p>
-          <p className="footer-pre-text">Carrera 2 A 1 24 Sur — Madrid, Cundinamarca · Colombia</p>
-          <p className="footer-pre-text">Phone: +57 312 345 5328</p>
-          <p className="footer-pre-text">Email: alexglynne7@gmail.com</p>
-          <p className="footer-pre-text" style={{ marginTop: '8px' }}>Registered activity: Engineering activities and other related technical consulting activities.</p>
-          
-          <div className="footer-pre-tags">
-            <span>Technology</span>
-            <span>·</span>
-            <span>Software</span>
-            <span>·</span>
-            <span>Artificial Intelligence</span>
-          </div>
+          Verify all our registration data ↗
         </a>
+
+        <div className="footer-pre-tags" style={{ marginTop: '20px' }}>
+          <span>Technology</span>
+          <span>·</span>
+          <span>Software</span>
+          <span>·</span>
+          <span>Artificial Intelligence</span>
+        </div>
       </div>
 
       <div className="footer-content">
