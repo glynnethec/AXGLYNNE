@@ -290,31 +290,11 @@
 }
 
 .md-sphere {
+  width: 300px;
+  height: 300px;
   position: relative;
-  width: 260px;
-  height: 260px;
-  transform-style: preserve-3d;
-  transition: transform 2.5s cubic-bezier(0.22, 1, 0.36, 1);
+  /* Removed preserve-3d and transform animation because LiquidOrb handles its own 2D projection */
 }
-
-.md-sphere .ring {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 260px;
-  height: 260px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-}
-
-.md-sphere .ring:nth-child(1) { transform: rotateY(0deg); }
-.md-sphere .ring:nth-child(2) { transform: rotateY(45deg); }
-.md-sphere .ring:nth-child(3) { transform: rotateY(90deg); }
-.md-sphere .ring:nth-child(4) { transform: rotateY(135deg); }
-.md-sphere .ring:nth-child(5) { transform: rotateX(90deg); }
 
 .md-shadow {
   position: absolute;

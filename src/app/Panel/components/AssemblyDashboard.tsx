@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabaseClient';
 import PanelFooter from './PanelFooter';
+import LiquidOrb from '@/app/AX_chat/components/LiquidOrb';
 import './AssemblyDashboard.css';
 
 type HoverStep = {
@@ -263,13 +264,11 @@ export default function AssemblyDashboard() {
           </div>
 
           <div className="md-3d-scene">
-            {/* Outer Sphere */}
-            <div className="md-sphere" style={{ transform: `rotateX(${rotX}deg) rotateY(${rotY}deg) rotateZ(${rotZ}deg)` }}>
-              <div className="ring"></div>
-              <div className="ring"></div>
-              <div className="ring"></div>
-              <div className="ring"></div>
-              <div className="ring"></div>
+            {/* Liquid Orb (Replacing abstract wireframe) */}
+            <div className="md-sphere" style={{ overflow: 'visible', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <div style={{ width: '400px', height: '400px', transform: 'scale(1.2)' }}>
+                <LiquidOrb />
+              </div>
             </div>
 
             <div className="md-shadow" style={{ 
