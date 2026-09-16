@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabaseClient';
+import Footer from '@/app/components/Footer';
 import './AssemblyDashboard.css';
 
 type HoverStep = {
@@ -353,9 +354,14 @@ export default function AssemblyDashboard() {
       {/* Bottom Layout */}
       <div className="md-bottom">
         <div className="md-logo">
-          END<br/>IS<br/>UI<span>.</span>
+          END<br/>IS<br/><span>UI.</span>
         </div>
-        <div className="md-page-number">013</div>
+        <div className="md-page-number">01</div>
+      </div>
+
+      {/* Global Footer */}
+      <div style={{ marginTop: '80px', marginX: '-24px', width: '100vw', marginLeft: '-24px' }}>
+        <Footer />
       </div>
     </div>
   );
