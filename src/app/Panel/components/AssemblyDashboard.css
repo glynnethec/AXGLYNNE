@@ -242,6 +242,44 @@
   100% { transform: translateY(-60px) scale(2); opacity: 0; }
 }
 
+.md-mini-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.md-mini-card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  color: #888;
+  letter-spacing: 0.05em;
+  font-family: monospace;
+}
+
+.md-mini-card-row span:last-child {
+  color: #ccc;
+}
+
+.md-mini-card-row span.md-highlight {
+  color: #a1a1aa; 
+}
+
+.md-mini-card-desc {
+  margin-top: 4px;
+  font-size: 9px;
+  color: #666;
+  line-height: 1.4;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding-top: 8px;
+}
+
 .md-tool-submit {
   margin-top: 8px;
   background: transparent;

@@ -245,8 +245,24 @@ export default function AssemblyDashboard() {
                           <div className="md-smoke-particle p3"></div>
                           <div className="md-smoke-text">AWAITING DIRECTIVE...</div>
                         </div>
-                        <label style={{ marginTop: '4px' }}>Payload / Directive</label>
-                        <textarea placeholder="Enter command sequence or data..." rows={3}></textarea>
+                        <label style={{ marginTop: '8px' }}>Payload / Directive</label>
+                        <div className="md-mini-card">
+                          <div className="md-mini-card-row">
+                            <span>STATUS</span>
+                            <span className="md-highlight">AWAITING</span>
+                          </div>
+                          <div className="md-mini-card-row">
+                            <span>LATENCY</span>
+                            <span>12ms</span>
+                          </div>
+                          <div className="md-mini-card-row">
+                            <span>ENCRYPTION</span>
+                            <span>AES-256</span>
+                          </div>
+                          <div className="md-mini-card-desc">
+                            System is ready to receive and process automated infrastructure commands.
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
