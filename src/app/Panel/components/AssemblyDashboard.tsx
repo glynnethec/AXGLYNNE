@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { supabase } from '@/lib/supabaseClient';
 import './AssemblyDashboard.css';
 
 type HoverStep = {
@@ -24,6 +25,7 @@ export default function AssemblyDashboard() {
   const [isFading, setIsFading] = useState(false);
   const [activeLight, setActiveLight] = useState('Spot');
   const [currentDate, setCurrentDate] = useState('');
+  const [userProfile, setUserProfile] = useState<any>(null);
 
   const platformTools = [
     { name: 'AX_core', desc: 'Central processing and neural routing.' },
@@ -44,6 +46,18 @@ export default function AssemblyDashboard() {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     setCurrentDate(`${days[date.getDay()]} \u2014 ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`);
     
+    // Fetch Supabase session for mini profile
+    const getSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session?.user) {
+        setUserProfile({
+          ...data.session.user.user_metadata,
+          email: data.session.user.email
+        });
+      }
+    };
+    getSession();
+
     // Auto hover animator
     const intervalId = setInterval(() => {
       const cx = Math.floor(Math.random() * 20);
@@ -126,8 +140,22 @@ export default function AssemblyDashboard() {
 
       {/* Top Header */}
       <div className="md-header">
-        <div className="md-date">{currentDate.split(' 20')[0] || 'Sat \u2014 19 January'}</div>
-        <div className="md-year">{currentDate.split(' ').pop() || '2019'}</div>
+        {userProfile ? (
+          <div className="md-mini-profile">
+            {userProfile.avatar_url && (
+              <img src={userProfile.avatar_url} alt="Profile" className="md-profile-avatar" />
+            )}
+            <div className="md-profile-info">
+              <div className="md-profile-name">{userProfile.full_name || 'AX_user'}</div>
+              <div className="md-profile-email">{userProfile.email}</div>
+            </div>
+          </div>
+        ) : (
+          <div className="md-date-placeholder">
+            <div className="md-date">{currentDate.split(' 20')[0] || 'Sat \u2014 19 January'}</div>
+            <div className="md-year">{currentDate.split(' ').pop() || '2019'}</div>
+          </div>
+        )}
       </div>
 
       <div className="md-main">
