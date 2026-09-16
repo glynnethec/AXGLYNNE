@@ -47,7 +47,7 @@
 
 /* LEFT SIDEBAR */
 .md-left {
-  width: 280px;
+  width: 360px;
   display: flex;
   flex-direction: column;
   gap: 16px;
