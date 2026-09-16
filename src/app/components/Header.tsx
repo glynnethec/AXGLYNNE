@@ -298,7 +298,7 @@ export default function Header() {
             <div style={{ width: '1px', height: '16px', backgroundColor: 'rgba(0,0,0,0.1)', margin: '0 4px' }}></div>
 
             <Link 
-              href="/login" 
+              href={isLoggedIn ? "/Panel" : "/login"} 
               style={{
                 padding: isLoggedIn ? '0' : '0.4rem 1.2rem',
                 borderRadius: '999px',
