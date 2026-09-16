@@ -508,6 +508,28 @@
   text-transform: uppercase;
 }
 
+.md-loading-bar-container {
+  width: 140px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin-top: 6px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.md-loading-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: rgba(255, 255, 255, 0.6);
+  animation: loadPhrase 3s ease-out forwards;
+}
+
+@keyframes loadPhrase {
+  0% { width: 0%; opacity: 1; }
+  85% { width: 100%; opacity: 1; }
+  100% { width: 100%; opacity: 0; }
+}
+
 
 /* RIGHT SIDEBAR */
 .md-right {

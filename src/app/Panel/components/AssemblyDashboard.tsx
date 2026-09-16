@@ -328,6 +328,9 @@ export default function AssemblyDashboard() {
           
           <div className="md-rotation-value">
             <span className="value">{activePhrase}</span>
+            <div className="md-loading-bar-container" key={activePhrase}>
+              <div className="md-loading-bar-fill"></div>
+            </div>
           </div>
           
 
