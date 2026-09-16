@@ -204,34 +204,40 @@ export default function AssemblyDashboard() {
                     <button 
                       onClick={() => setShowLogoutModal(true)}
                       style={{
-                        background: 'rgba(255, 255, 255, 0.05)',
-                        border: '1px solid rgba(255, 255, 255, 0.2)',
-                        borderRadius: '6px',
+                        position: 'relative',
+                        zIndex: 50,
+                        background: 'rgba(255, 255, 255, 0.1)',
+                        border: '1px solid rgba(255, 255, 255, 0.3)',
+                        borderRadius: '4px',
                         color: '#fff',
                         cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        width: '32px',
-                        height: '32px',
+                        gap: '6px',
+                        padding: '6px 12px',
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        letterSpacing: '0.05em',
                         transition: 'all 0.2s ease',
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
                       }}
                       onMouseOver={(e) => {
                         e.currentTarget.style.background = 'rgba(220,38,38,0.2)';
-                        e.currentTarget.style.borderColor = 'rgba(220,38,38,0.5)';
+                        e.currentTarget.style.borderColor = 'rgba(220,38,38,0.6)';
                         e.currentTarget.style.color = '#ef4444';
-                        e.currentTarget.style.transform = 'scale(1.05)';
+                        e.currentTarget.style.transform = 'translateY(-1px)';
                       }}
                       onMouseOut={(e) => {
-                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)';
                         e.currentTarget.style.color = '#fff';
-                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.transform = 'translateY(0)';
                       }}
                       title="Cerrar sesión"
                     >
-                      <FaSignOutAlt size={14} />
+                      <FaSignOutAlt size={12} />
+                      SIGN OUT
                     </button>
                   </div>
                 </div>
