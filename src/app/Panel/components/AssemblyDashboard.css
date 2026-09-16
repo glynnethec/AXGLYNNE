@@ -533,7 +533,7 @@
 
 /* RIGHT SIDEBAR */
 .md-right {
-  width: 280px;
+  width: 360px;
   display: flex;
   flex-direction: column;
   gap: 40px;
