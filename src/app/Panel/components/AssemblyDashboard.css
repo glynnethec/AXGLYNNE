@@ -811,45 +811,55 @@
 
 /* RESPONSIVE MEDIA QUERIES */
 @media (max-width: 1100px) {
+  .md-container {
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+    padding-bottom: 40px;
+  }
+
   .md-main {
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 60px;
+    margin-top: 100px; /* Space for the absolute header */
   }
 
   .md-left,
   .md-right {
     width: 100%;
-    max-width: 400px;
-    align-items: center;
-    text-align: center;
-  }
-
-  .md-right {
-    align-items: center;
-  }
-
-  .md-tools-list {
-    align-items: center;
-  }
-
-  .md-tool-btn {
-    justify-content: center;
-  }
-
-  .md-profile-quote {
-    border-left: none;
-    border-top: 2px solid rgba(255, 255, 255, 0.2);
-    padding-left: 0;
-    padding-top: 10px;
-    text-align: center;
-  }
-
-  .md-profile-stats {
-    justify-content: center;
+    max-width: 480px;
+    margin: 0 auto;
+    align-self: center;
   }
 
   .md-bottom {
-    margin-top: 60px;
+    margin-top: 80px;
+  }
+}
+
+@media (max-width: 500px) {
+  .md-container {
+    padding: 16px;
+  }
+
+  .md-header {
+    top: 20px;
+    left: 20px;
+  }
+
+  .md-3d-scene {
+    transform: scale(0.75);
+    margin-top: -30px;
+    margin-bottom: -30px;
+  }
+  
+  .md-left,
+  .md-right {
+    max-width: 100%;
+  }
+
+  .md-logo img {
+    height: 40px;
   }
 }
