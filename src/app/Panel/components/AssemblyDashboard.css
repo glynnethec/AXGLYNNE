@@ -866,6 +866,15 @@
 }
 
 /* RESPONSIVE MEDIA QUERIES */
+@media (max-height: 1020px) {
+  .md-container {
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+    padding-bottom: 40px;
+  }
+}
+
 @media (max-width: 1100px) {
   .md-container {
     height: auto;
