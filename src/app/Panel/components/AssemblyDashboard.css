@@ -866,7 +866,7 @@
 }
 
 /* RESPONSIVE MEDIA QUERIES */
-@media (max-height: 1020px) {
+@media (max-height: 900px) {
   .md-container {
     height: auto;
     min-height: 100vh;
