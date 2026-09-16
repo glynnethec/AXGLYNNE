@@ -247,7 +247,6 @@ export default function AssemblyDashboard() {
                         </div>
                         <label style={{ marginTop: '4px' }}>Payload / Directive</label>
                         <textarea placeholder="Enter command sequence or data..." rows={3}></textarea>
-                        <button className="md-tool-submit">EXECUTE ↵</button>
                       </div>
                     </div>
                   </div>
