@@ -13,10 +13,11 @@ export default function ClientLogosSection() {
   return (
     <section style={{ 
       width: '100%', 
+      minHeight: '50vh',
       display: 'flex', 
       justifyContent: 'center', 
       alignItems: 'center',
-      padding: '2rem 1.5rem 6rem 1.5rem',
+      padding: '2rem 1.5rem',
       backgroundColor: 'transparent',
       position: 'relative',
       zIndex: 10
