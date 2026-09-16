@@ -156,7 +156,7 @@ function DocsMenu() {
 export default function HomeTaskAuditSection() {
   
   return (
-    <section className="mobile-audit-section" style={{ width: '100%', minHeight: '80vh', height: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem 1.5rem', position: 'relative', zIndex: 10 }}>
+    <section className="mobile-audit-section" style={{ width: '100%', minHeight: 'auto', height: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4rem 1.5rem', position: 'relative', zIndex: 10 }}>
       <style>{`
         @keyframes console-blink {
           0%, 100% { opacity: 1; }
@@ -184,7 +184,7 @@ export default function HomeTaskAuditSection() {
           .mobile-console-wrapper {
             justify-content: flex-start !important;
             width: 100% !important;
-            min-height: 800px !important;
+            min-height: 480px !important;
             padding-bottom: 40px !important;
           }
         }
