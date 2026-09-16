@@ -129,7 +129,7 @@ export default function HomeAuditSection() {
                 onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#333333'; e.currentTarget.style.transform = 'scale(1.02)' }}
                 onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#111111'; e.currentTarget.style.transform = 'scale(1)' }}
               >
-                Explore Architecture
+                AI Available
               </button>
             </div>
           </div>
