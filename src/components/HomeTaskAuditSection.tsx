@@ -17,7 +17,7 @@ const AUDIT_TASKS = [
 ];
 
 function AuditTaskCards() {
-  const [visibleCount, setVisibleCount] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(4);
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
@@ -28,7 +28,7 @@ function AuditTaskCards() {
       }, 1500); // New card every 1.5 seconds
     } else {
       timeoutId = setTimeout(() => {
-        setVisibleCount(0);
+        setVisibleCount(4);
       }, 4000); // Reset after 4 seconds
     }
 
