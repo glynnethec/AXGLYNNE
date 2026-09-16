@@ -114,7 +114,7 @@ export default function AssemblyDashboard() {
         position: 'absolute',
         top: 0,
         left: 0,
-        width: '100vw',
+        width: '100%',
         height: '100vh',
         overflowX: 'hidden',
         overflowY: 'auto',
@@ -383,7 +383,7 @@ export default function AssemblyDashboard() {
       </div>
 
       {/* Global Panel Footer */}
-      <div style={{ background: '#000', width: '100%' }}>
+      <div style={{ background: '#000', width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
         <PanelFooter />
       </div>
     </div>
