@@ -150,6 +150,14 @@ export default function AssemblyDashboard() {
         </div>
       </div>
 
+      {/* Independent Panel Header */}
+      <div className="md-panel-header">
+        <div className="md-panel-header-logo">
+          <img src="/logos/GLYNNE.svg" alt="GLYNNE" />
+        </div>
+        <div className="md-panel-header-title">INTERACT WITH AI SYSTEMS</div>
+      </div>
+
       {/* Main Layout */}
       <div className="md-main">
         {/* Left Sidebar */}
