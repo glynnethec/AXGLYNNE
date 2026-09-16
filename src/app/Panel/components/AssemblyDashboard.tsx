@@ -60,6 +60,10 @@ export default function AssemblyDashboard() {
     };
     getSession();
 
+    // Prevent white background from showing on scroll bounce
+    const originalBg = document.body.style.backgroundColor;
+    document.body.style.backgroundColor = '#000';
+
     // Auto hover animator
     const intervalId = setInterval(() => {
       const cx = Math.floor(Math.random() * 20);
@@ -76,7 +80,10 @@ export default function AssemblyDashboard() {
       setHistory(prev => [{ id: stepIdRef.current++, cx, cy, neighbors }, ...prev].slice(0, 8));
     }, 1200);
 
-    return () => clearInterval(intervalId);
+    return () => {
+      clearInterval(intervalId);
+      document.body.style.backgroundColor = originalBg;
+    };
   }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
