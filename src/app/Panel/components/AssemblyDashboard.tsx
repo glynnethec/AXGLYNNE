@@ -38,6 +38,20 @@ export default function AssemblyDashboard() {
     { name: 'AX_consol', desc: 'Unified command and control center.', model: 'CMD-CTRL ROOT', details: 'Administrative system privileges granted.' },
   ];
 
+  const aiPhrases = [
+    "Analizando red neuronal",
+    "Optimizando nodo central",
+    "Procesando datos Glynne",
+    "Sintetizando parámetros",
+    "Calibrando visión espacial",
+    "Asegurando red cifrada",
+    "Esperando nueva directiva",
+    "Reestructurando modelo IA",
+    "Sincronizando sistemas Glynne",
+    "Evaluando carga cuántica"
+  ];
+  const activePhrase = aiPhrases[Math.floor(Math.abs(rotY) / 20) % aiPhrases.length];
+
   const [history, setHistory] = useState<HoverStep[]>([]);
   const stepIdRef = useRef(0);
   const lastCellRef = useRef({ x: -1, y: -1 });
@@ -313,8 +327,7 @@ export default function AssemblyDashboard() {
           </div>
           
           <div className="md-rotation-value">
-            <span className="label">Rotation Y</span>
-            <span className="value">{Math.round(Math.abs(rotY % 360))}°</span>
+            <span className="value">{activePhrase}</span>
           </div>
           
 
