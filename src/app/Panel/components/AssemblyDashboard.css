@@ -140,11 +140,12 @@
   justify-content: center;
   position: relative;
   height: 100%;
+  margin-top: 16px;
 }
 
 .md-info-card {
   position: absolute;
-  top: 0px;
+  top: 20px;
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.3);
   padding: 20px 32px;
