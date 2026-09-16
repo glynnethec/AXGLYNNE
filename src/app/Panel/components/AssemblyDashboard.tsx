@@ -16,7 +16,14 @@ export default function AssemblyDashboard() {
   const [activeLight, setActiveLight] = useState('Spot');
   const [currentDate, setCurrentDate] = useState('');
 
-  const platformTools = ['AX_core', 'AX_chat', 'AX_voice', 'AX_vision', 'AX_data', 'AX_consol'];
+  const platformTools = [
+    { name: 'AX_core', desc: 'Central processing and neural routing.' },
+    { name: 'AX_chat', desc: 'Intelligent conversational interfaces.' },
+    { name: 'AX_voice', desc: 'Real-time vocal synthesis and analysis.' },
+    { name: 'AX_vision', desc: 'Advanced image and spatial recognition.' },
+    { name: 'AX_data', desc: 'High-speed predictive data modeling.' },
+    { name: 'AX_consol', desc: 'Unified command and control center.' },
+  ];
 
   useEffect(() => {
     const date = new Date();
@@ -65,11 +72,11 @@ export default function AssemblyDashboard() {
             <h3 className="md-title">Tools</h3>
             <ul className="md-tools-list">
               {platformTools.map(tool => (
-                <li key={tool}>
+                <li key={tool.name}>
                   <button 
-                    className={`md-tool-btn ${activeTool === tool ? 'active' : ''}`} 
+                    className={`md-tool-btn ${activeTool === tool.name ? 'active' : ''}`} 
                     onClick={() => {
-                      setActiveTool(tool);
+                      setActiveTool(tool.name);
                       // Add a random 120 degree rotation on all axes for a fluid spin effect
                       setRotX(prev => prev + (Math.random() > 0.5 ? 120 : -120));
                       setRotY(prev => prev + (Math.random() > 0.5 ? 120 : -120));
@@ -79,7 +86,7 @@ export default function AssemblyDashboard() {
                     <span className="md-tool-icon">
                       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
                     </span>
-                    {tool}
+                    {tool.name}
                   </button>
                 </li>
               ))}
@@ -89,6 +96,12 @@ export default function AssemblyDashboard() {
 
         {/* Center Canvas */}
         <div className="md-center">
+          
+          <div className="md-info-card" key={activeTool}>
+            <div className="info-title">{platformTools.find(t => t.name === activeTool)?.name}</div>
+            <div className="info-desc">{platformTools.find(t => t.name === activeTool)?.desc}</div>
+          </div>
+
           <div className="md-3d-scene">
             <div className="md-cube" style={{ transform: `rotateX(${rotX}deg) rotateY(${rotY}deg) rotateZ(${rotZ}deg)` }}>
               <div className="face front"></div>

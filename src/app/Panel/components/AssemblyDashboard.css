@@ -148,6 +148,42 @@
   height: 100%;
 }
 
+.md-info-card {
+  position: absolute;
+  top: 0;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-align: center;
+  z-index: 20;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  animation: slideUpFade 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.md-info-card .info-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.md-info-card .info-desc {
+  font-size: 12px;
+  color: #a1a1aa;
+}
+
+@keyframes slideUpFade {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .md-3d-scene {
   position: relative;
   width: 240px;
