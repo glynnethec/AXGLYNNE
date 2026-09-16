@@ -238,8 +238,13 @@ export default function AssemblyDashboard() {
                   <div className={`md-tool-accordion ${activeTool === tool.name && !isFading ? 'expanded' : ''}`}>
                     <div className="md-tool-accordion-content">
                       <div className="md-tool-input-group">
-                        <label>Target Identity / IP</label>
-                        <input type="text" placeholder="192.168.1.1 or user@..." />
+                        <label className="md-branding-title">AXGLYNNE <span>//</span> AI SYSTEM</label>
+                        <div className="md-smoke-box">
+                          <div className="md-smoke-particle"></div>
+                          <div className="md-smoke-particle p2"></div>
+                          <div className="md-smoke-particle p3"></div>
+                          <div className="md-smoke-text">AWAITING DIRECTIVE...</div>
+                        </div>
                         <label style={{ marginTop: '4px' }}>Payload / Directive</label>
                         <textarea placeholder="Enter command sequence or data..." rows={3}></textarea>
                         <button className="md-tool-submit">EXECUTE ↵</button>

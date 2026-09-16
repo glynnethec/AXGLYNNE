@@ -173,6 +173,75 @@
 .md-tool-input-group textarea:focus {
   border-color: rgba(255, 255, 255, 0.5);
 }
+.md-tool-input-group label.md-branding-title {
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.15em;
+  margin-bottom: 2px;
+}
+.md-branding-title span {
+  color: #555;
+}
+
+.md-smoke-box {
+  width: 100%;
+  height: 50px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.md-smoke-text {
+  position: absolute;
+  z-index: 10;
+  font-size: 9px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.1em;
+  font-family: monospace;
+}
+
+.md-smoke-particle {
+  position: absolute;
+  bottom: -20px;
+  width: 30px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  filter: blur(8px);
+  animation: smokeRise 3s infinite ease-in;
+  opacity: 0;
+}
+
+.md-smoke-particle.p2 {
+  left: 30%;
+  width: 40px;
+  height: 40px;
+  animation-delay: 1s;
+  animation-duration: 4s;
+}
+
+.md-smoke-particle.p3 {
+  left: 70%;
+  width: 25px;
+  height: 25px;
+  animation-delay: 2s;
+  animation-duration: 2.5s;
+}
+
+@keyframes smokeRise {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  30% { opacity: 0.8; }
+  70% { opacity: 0.4; }
+  100% { transform: translateY(-60px) scale(2); opacity: 0; }
+}
+
 .md-tool-submit {
   margin-top: 8px;
   background: transparent;
