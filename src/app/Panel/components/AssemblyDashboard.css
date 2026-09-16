@@ -504,20 +504,20 @@
 .md-lighting-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4px;
+  gap: 12px;
 }
 
 .md-light-btn {
   background: transparent;
   border: 1px solid rgba(255,255,255,0.1);
-  padding: 8px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 16px;
+  justify-content: space-between;
   cursor: pointer;
   transition: all 0.2s;
-  height: 80px;
+  height: 120px;
 }
 .md-light-btn.active {
   background: rgba(255,255,255,0.05);
