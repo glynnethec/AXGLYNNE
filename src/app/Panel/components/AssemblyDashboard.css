@@ -569,7 +569,7 @@
 
 /* RIGHT SIDEBAR */
 .md-right {
-  width: 240px;
+  width: 280px;
   display: flex;
   flex-direction: column;
   gap: 40px;
