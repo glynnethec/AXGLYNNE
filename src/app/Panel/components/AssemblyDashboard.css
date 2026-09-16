@@ -345,7 +345,7 @@
   justify-content: center;
   position: relative;
   height: 100%;
-  transform: translateY(120px);
+  transform: translateY(0);
 }
 
 .md-info-card {
