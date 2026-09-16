@@ -262,14 +262,6 @@ export default function AssemblyDashboard() {
                             <span>STATUS</span>
                             <span className="md-highlight">AWAITING</span>
                           </div>
-                          <div className="md-mini-card-row">
-                            <span>LATENCY</span>
-                            <span>12ms</span>
-                          </div>
-                          <div className="md-mini-card-row">
-                            <span>ENCRYPTION</span>
-                            <span>AES-256</span>
-                          </div>
                           <div className="md-mini-card-desc">
                             {tool.details}
                           </div>
