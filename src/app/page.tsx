@@ -19,8 +19,8 @@ export default function Home() {
         <HeroSection />
         <LinPromptSection />
         <HomeAuditSection />
-        <ClientLogosSection />
         <HomeTaskAuditSection />
+        <ClientLogosSection />
         <WorkflowDiagram />
         <VideoEcosystemSection />
         <Footer />
