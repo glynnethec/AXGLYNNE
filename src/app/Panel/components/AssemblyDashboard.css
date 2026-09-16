@@ -569,7 +569,7 @@
 
 /* RIGHT SIDEBAR */
 .md-right {
-  width: 200px;
+  width: 240px;
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -592,14 +592,15 @@
 .md-light-btn {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 16px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
   cursor: pointer;
   transition: all 0.2s;
-  height: 120px;
+  aspect-ratio: 1 / 1;
+  width: 100%;
 }
 
 .md-light-btn.active {
@@ -614,13 +615,13 @@
 
 .icon-wrapper.black {
   background: #fff;
-  width: 24px;
+  width: 100%;
   border-radius: 2px;
 }
 .icon-wrapper.dotted {
   background-image: radial-gradient(#aaa 1px, transparent 1px);
   background-size: 4px 4px;
-  width: 24px;
+  width: 100%;
   border-radius: 2px;
 }
 
