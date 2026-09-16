@@ -167,7 +167,7 @@ export default function HomeTaskAuditSection() {
             width: 92vw !important;
           }
           .mobile-stack {
-            flex-direction: column !important;
+            flex-direction: column-reverse !important;
             text-align: center !important;
             gap: 24px !important;
             padding: 0 16px !important;
