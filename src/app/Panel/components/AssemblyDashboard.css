@@ -786,9 +786,9 @@
   height: 10px;
   border-radius: 50%;
 }
-.term-dots .dot.red { background: #ff5f56; }
-.term-dots .dot.yellow { background: #ffbd2e; }
-.term-dots .dot.green { background: #27c93f; }
+.term-dots .dot.red { background: rgba(255, 255, 255, 0.2); }
+.term-dots .dot.yellow { background: rgba(255, 255, 255, 0.4); }
+.term-dots .dot.green { background: rgba(255, 255, 255, 0.6); }
 
 .term-title {
   font-size: 10px;
@@ -815,8 +815,9 @@
 }
 
 .md-term-body .text-green {
-  color: #27c93f;
+  color: #fff;
   font-weight: bold;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
 }
 
 .cursor-blink {
