@@ -15,7 +15,7 @@ export default function LoginPage() {
       const { error } = await supabaseGoogle.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/Panel`,
+          redirectTo: `${window.location.origin}/`,
         },
       });
 
