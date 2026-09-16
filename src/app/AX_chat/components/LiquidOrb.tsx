@@ -9,11 +9,29 @@ type HoverStep = {
   createdAt: number;
 };
 
-export default function LiquidOrb({ orbState = 'idle' }: { orbState?: 'idle' | 'thinking' }) {
+export default function LiquidOrb({ 
+  orbState = 'idle',
+  theme = 'light',
+  customRotX = 0,
+  customRotY = 0,
+  customRotZ = 20
+}: { 
+  orbState?: 'idle' | 'thinking',
+  theme?: 'light' | 'dark',
+  customRotX?: number,
+  customRotY?: number,
+  customRotZ?: number
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   
   const historyRef = useRef<HoverStep[]>([]);
   const stepIdRef = useRef(0);
+  
+  // Ref for rotation to avoid restarting canvas loop
+  const rotRef = useRef({ x: customRotX, y: customRotY, z: customRotZ });
+  useEffect(() => {
+    rotRef.current = { x: customRotX, y: customRotY, z: customRotZ };
+  }, [customRotX, customRotY, customRotZ]);
   
   // Audio reactivity removed to avoid mic permissions
 
@@ -54,16 +72,16 @@ export default function LiquidOrb({ orbState = 'idle' }: { orbState?: 'idle' | '
       // Base sphere background
       ctx.beginPath();
       ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-      ctx.fillStyle = '#ffffff';
+      ctx.fillStyle = theme === 'dark' ? '#000000' : '#ffffff';
       ctx.fill();
 
       ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+      ctx.strokeStyle = theme === 'dark' ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.04)';
       ctx.stroke();
 
-      const rotationX = 0.0;
-      const rotationY = ((Date.now() - mountTime) / 1000) * 0.2; // Smooth continuous spin
-      const rotationZ = 20 * (Math.PI / 180); // 20 degrees tilt
+      const rotationX = (rotRef.current.x * Math.PI / 180);
+      const rotationY = (rotRef.current.y * Math.PI / 180) + ((Date.now() - mountTime) / 1000) * 0.2; // Custom rot + Smooth continuous spin
+      const rotationZ = (rotRef.current.z * Math.PI / 180);
 
       const project = (x: number, y: number, z: number) => {
         const cosX = Math.cos(rotationX);
@@ -205,7 +223,7 @@ export default function LiquidOrb({ orbState = 'idle' }: { orbState?: 'idle' | '
         }
         
         ctx.closePath();
-        ctx.fillStyle = `rgba(0, 0, 0, ${opacity * 1.5})`;
+        ctx.fillStyle = theme === 'dark' ? `rgba(255, 255, 255, ${opacity * 1.5})` : `rgba(0, 0, 0, ${opacity * 1.5})`;
         ctx.fill();
       };
 
@@ -221,8 +239,8 @@ export default function LiquidOrb({ orbState = 'idle' }: { orbState?: 'idle' | '
       }
 
       // --- Draw Grid Lines ---
-      ctx.strokeStyle = `rgba(0, 0, 0, ${gridOpacity})`;
-      ctx.lineWidth = 1; 
+      ctx.strokeStyle = theme === 'dark' ? `rgba(255, 255, 255, ${gridOpacity})` : `rgba(0, 0, 0, ${gridOpacity})`;
+      ctx.lineWidth = 1;  
 
       for (let i = 0; i < numLonLines; i++) {
         const theta = (i * Math.PI * 2) / numLonLines;
@@ -269,7 +287,7 @@ export default function LiquidOrb({ orbState = 'idle' }: { orbState?: 'idle' | '
 
     animationFrame = requestAnimationFrame(render);
     return () => cancelAnimationFrame(animationFrame);
-  }, [orbState]);
+  }, [orbState, theme]);
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>

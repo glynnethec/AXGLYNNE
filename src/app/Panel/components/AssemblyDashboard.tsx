@@ -267,7 +267,12 @@ export default function AssemblyDashboard() {
             {/* Liquid Orb (Replacing abstract wireframe) */}
             <div className="md-sphere" style={{ overflow: 'visible', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <div style={{ width: '400px', height: '400px', transform: 'scale(1.2)' }}>
-                <LiquidOrb />
+                <LiquidOrb 
+                  theme="dark" 
+                  customRotX={rotX} 
+                  customRotY={rotY} 
+                  customRotZ={rotZ} 
+                />
               </div>
             </div>
 
