@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabaseClient';
+import { supabase, signOut } from '@/lib/supabaseClient';
+import { FaSignOutAlt } from 'react-icons/fa';
 import PanelFooter from './PanelFooter';
 import LiquidOrb from '@/app/AX_chat/components/LiquidOrb';
 import './AssemblyDashboard.css';
@@ -196,7 +197,30 @@ export default function AssemblyDashboard() {
                   </div>
                   <div className="stat">
                     <span>Status</span>
-                    <strong style={{color: '#ffffff'}}>ONLINE</strong>
+                    <strong style={{color: '#ffffff', display: 'flex', alignItems: 'center', gap: '8px'}}>
+                      ONLINE 
+                      <button 
+                        onClick={async () => {
+                          await signOut();
+                          window.location.href = '/login';
+                        }}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          color: '#a1a1aa',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          padding: '2px',
+                          transition: 'color 0.2s ease'
+                        }}
+                        onMouseOver={(e) => e.currentTarget.style.color = '#dc2626'}
+                        onMouseOut={(e) => e.currentTarget.style.color = '#a1a1aa'}
+                        title="Cerrar sesión"
+                      >
+                        <FaSignOutAlt size={12} />
+                      </button>
+                    </strong>
                   </div>
                 </div>
               </div>

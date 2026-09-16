@@ -333,42 +333,7 @@ export default function Header() {
               {isLoggedIn ? <FaUser size={13} color="#333" /> : <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><FaUser size={10} color="#888" /> Log In</span>}
             </Link>
             
-            {isLoggedIn && (
-              <button 
-                onClick={handleLogout}
-                style={{
-                  width: '34px',
-                  height: '34px',
-                  borderRadius: '50%',
-                  backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                  backdropFilter: 'blur(10px)',
-                  WebkitBackdropFilter: 'blur(10px)',
-                  color: '#111111',
-                  border: '1px solid rgba(0,0,0,0.08)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                  boxShadow: '0 2px 10px rgba(0,0,0,0.02)'
-                }}
-                onMouseOver={(e) => { 
-                  e.currentTarget.style.borderColor = 'rgba(220,38,38,0.3)';
-                  e.currentTarget.style.backgroundColor = 'rgba(254,242,242,0.8)';
-                  e.currentTarget.style.color = '#dc2626';
-                  e.currentTarget.style.transform = 'translateY(-1px)';
-                }}
-                onMouseOut={(e) => { 
-                  e.currentTarget.style.borderColor = 'rgba(0,0,0,0.08)';
-                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
-                  e.currentTarget.style.color = '#111111';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                }}
-                title="Log Out"
-              >
-                <FaSignOutAlt size={13} />
-              </button>
-            )}
+
             
             <button className="mobile-menu-btn" onClick={toggleMobileMenu} aria-label="Toggle menu">
               {isOpen ? (
