@@ -212,20 +212,8 @@ export default function HomeTaskAuditSection() {
       <div className="responsive-solutions-width" style={{ width: '60vw', maxWidth: 'none', margin: '0 auto', display: 'flex', flexDirection: 'column' }}>
         {/* Console Section (Floating without Card) */}
         <div className="mobile-stack" style={{ position: 'relative', zIndex: 10, width: '100%', boxSizing: 'border-box', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'space-between', gap: '60px', padding: '0', backgroundColor: 'transparent' }}>
-          <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
-            <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
-              Autonomous Audit
-            </h1>
-            <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
-              We want you to see exactly how we achieved this. Dive into our comprehensive documentation and discover the step-by-step technology behind this solution that completely redefined Servex's operational ecosystem.
-            </p>
-            
-            <div className="docs-menu-container">
-              <DocsMenu />
-            </div>
-          </div>
           
-          <div className="mobile-console-wrapper" style={{ flex: '1.5 1 400px', display: 'flex', justifyContent: 'flex-end' }}>
+          <div className="mobile-console-wrapper" style={{ flex: '1.5 1 400px', display: 'flex', justifyContent: 'flex-start' }}>
             <div style={{
               backgroundColor: 'transparent', 
               borderRadius: '16px',
@@ -248,6 +236,20 @@ export default function HomeTaskAuditSection() {
               <AuditTaskCards />
             </div>
           </div>
+          
+          <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
+            <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
+              Autonomous Audit
+            </h1>
+            <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
+              We want you to see exactly how we achieved this. Dive into our comprehensive documentation and discover the step-by-step technology behind this solution that completely redefined Servex's operational ecosystem.
+            </p>
+            
+            <div className="docs-menu-container">
+              <DocsMenu />
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
