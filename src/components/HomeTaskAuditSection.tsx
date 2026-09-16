@@ -56,14 +56,14 @@ function AuditTaskCards() {
           <div key={task.id} style={{
             display: 'grid',
             gridTemplateRows: isCurrentlyVisible ? '1fr' : '0fr',
-            opacity: isCurrentlyVisible ? (index === visibleCount - 6 ? 0.3 : 1) : 0,
+            opacity: isCurrentlyVisible ? (index === visibleCount - 6 || index === visibleCount - 1 ? 0.35 : 1) : 0,
             marginBottom: isCurrentlyVisible ? '12px' : '0px',
             transform: isCurrentlyVisible 
               ? 'translateY(0) scale(1)' 
               : (hasBeenAdded ? 'translateY(-30px) scale(0.95)' : 'translateY(30px) scale(0.95)'),
-            transition: 'grid-template-rows 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease, margin-bottom 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+            transition: 'grid-template-rows 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease, margin-bottom 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease',
             width: '100%',
-            filter: isCurrentlyVisible && index === visibleCount - 6 ? 'blur(2px)' : 'blur(0px)',
+            filter: isCurrentlyVisible && (index === visibleCount - 6 || index === visibleCount - 1) ? 'blur(1.5px)' : 'blur(0px)',
           }}>
             <div style={{ overflow: 'hidden' }}>
               <div style={{
