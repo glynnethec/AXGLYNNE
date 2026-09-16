@@ -199,17 +199,18 @@ export default function AssemblyDashboard() {
               <div className="face left"></div>
               <div className="face top"></div>
               <div className="face bottom"></div>
-
-              {/* Inner Cube (Tesseract core) */}
-              <div className="inner-cube">
-                <div className="face front"></div>
-                <div className="face back"></div>
-                <div className="face right"></div>
-                <div className="face left"></div>
-                <div className="face top"></div>
-                <div className="face bottom"></div>
-              </div>
             </div>
+
+            {/* Inner Cube (Tesseract core - Mirrored rotation) */}
+            <div className="inner-cube" style={{ transform: `translate(-50%, -50%) rotateX(${-rotX}deg) rotateY(${-rotY}deg) rotateZ(${-rotZ}deg)` }}>
+              <div className="face front"></div>
+              <div className="face back"></div>
+              <div className="face right"></div>
+              <div className="face left"></div>
+              <div className="face top"></div>
+              <div className="face bottom"></div>
+            </div>
+            
             <div className="md-shadow" style={{ 
               opacity: shadowDensity / 100, 
               transform: `translateY(120px) rotateX(75deg) rotateZ(${-rotY}deg)` 

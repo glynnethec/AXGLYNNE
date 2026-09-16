@@ -232,7 +232,7 @@
 .face.top    { transform: rotateX(90deg) translateZ(70px); }
 .face.bottom { transform: rotateX(-90deg) translateZ(70px); }
 
-/* INNER CUBE (TESSERACT EFFECT) */
+/* INNER CUBE (TESSERACT EFFECT - MIRRORED) */
 .inner-cube {
   position: absolute;
   top: 50%;
@@ -240,12 +240,7 @@
   width: 70px;
   height: 70px;
   transform-style: preserve-3d;
-  animation: tesseractSpin 20s linear infinite;
-}
-
-@keyframes tesseractSpin {
-  0%   { transform: translate(-50%, -50%) rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-  100% { transform: translate(-50%, -50%) rotateX(360deg) rotateY(720deg) rotateZ(-360deg); }
+  transition: transform 2.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .inner-cube .face {
