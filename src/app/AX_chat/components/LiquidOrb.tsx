@@ -46,6 +46,11 @@ export default function LiquidOrb({
     let smoothedVolume = 0;
     const mountTime = Date.now();
 
+    // Variables for smooth rotation interpolation
+    let currentRotX = rotRef.current.x;
+    let currentRotY = rotRef.current.y;
+    let currentRotZ = rotRef.current.z;
+
     const numLatLines = 8;
     const numLonLines = 16;
     const resolution = 250;
@@ -79,9 +84,14 @@ export default function LiquidOrb({
       ctx.strokeStyle = theme === 'dark' ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.04)';
       ctx.stroke();
 
-      const rotationX = (rotRef.current.x * Math.PI / 180);
-      const rotationY = (rotRef.current.y * Math.PI / 180) + ((Date.now() - mountTime) / 1000) * 0.2; // Custom rot + Smooth continuous spin
-      const rotationZ = (rotRef.current.z * Math.PI / 180);
+      // Smoothly interpolate towards the target rotation from the dashboard
+      currentRotX += (rotRef.current.x - currentRotX) * 0.035;
+      currentRotY += (rotRef.current.y - currentRotY) * 0.035;
+      currentRotZ += (rotRef.current.z - currentRotZ) * 0.035;
+
+      const rotationX = (currentRotX * Math.PI / 180);
+      const rotationY = (currentRotY * Math.PI / 180) + ((Date.now() - mountTime) / 1000) * 0.2; // Interpolated target + Continuous spin
+      const rotationZ = (currentRotZ * Math.PI / 180);
 
       const project = (x: number, y: number, z: number) => {
         const cosX = Math.cos(rotationX);
