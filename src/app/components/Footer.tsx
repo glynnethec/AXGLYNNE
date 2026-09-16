@@ -75,17 +75,17 @@ export default function Footer() {
         <div className="footer-links-col">
           <h4 className="footer-title">Platform</h4>
           <Link href="/Solutions" className="footer-link">Solutions</Link>
-          <Link href="#" className="footer-link">Infrastructure</Link>
-          <Link href="#" className="footer-link">Integrations</Link>
-          <Link href="#" className="footer-link">API Documentation</Link>
+          <Link href="/ia_vailable" className="footer-link">AI Available</Link>
+          <Link href="/AX_voice" className="footer-link">AX Voice</Link>
+          <Link href="/AX_chat" className="footer-link">AX Chat</Link>
+          <Link href="/security-data-protection" className="footer-link">Security & Data</Link>
         </div>
 
         <div className="footer-links-col">
           <h4 className="footer-title">Company</h4>
           <Link href="/About" className="footer-link">About Us</Link>
-          <Link href="#" className="footer-link">Careers</Link>
-          <Link href="#" className="footer-link">Blog</Link>
           <Link href="/contact" className="footer-link">Contact</Link>
+          <Link href="/login" className="footer-link">Customer Login</Link>
         </div>
 
         {/* Newsletter Section */}
@@ -114,9 +114,9 @@ export default function Footer() {
           © {new Date().getFullYear()} GLYNNE. All rights reserved.
         </p>
         <div className="footer-legal">
-          <Link href="#" className="footer-legal-link">Privacy Policy</Link>
-          <Link href="#" className="footer-legal-link">Terms of Service</Link>
-          <Link href="#" className="footer-legal-link">Cookie Policy</Link>
+          <Link href="/privacy-policy" className="footer-legal-link">Privacy Policy</Link>
+          <Link href="/terms-of-service" className="footer-legal-link">Terms of Service</Link>
+          <Link href="/cookie-policy" className="footer-legal-link">Cookie Policy</Link>
         </div>
       </div>
     </footer>
