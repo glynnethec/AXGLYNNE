@@ -9,7 +9,7 @@ export default function PanelNotFound() {
   return (
     <>
       <Header />
-      <BackgroundWrapper>
+      <BackgroundWrapper theme="dark">
         <div style={{
           minHeight: '100vh',
           display: 'flex',
@@ -26,7 +26,7 @@ export default function PanelNotFound() {
             fontWeight: 500,
             letterSpacing: '0.1em',
             textTransform: 'uppercase',
-            color: '#111111',
+            color: '#a1a1aa',
             marginBottom: '24px'
           }}>
             Panel Error 404
@@ -36,7 +36,7 @@ export default function PanelNotFound() {
             fontSize: 'clamp(64px, 10vw, 160px)',
             fontWeight: 400,
             letterSpacing: '-0.04em',
-            color: '#111111',
+            color: '#ffffff',
             lineHeight: 1,
             margin: '0 0 24px 0'
           }}>
@@ -59,15 +59,15 @@ export default function PanelNotFound() {
             style={{
               padding: '16px 32px',
               borderRadius: '999px',
-              backgroundColor: '#111111',
-              color: '#ffffff',
+              backgroundColor: '#ffffff',
+              color: '#111111',
               fontSize: '16px',
               fontWeight: 500,
               textDecoration: 'none',
               transition: 'transform 0.2s ease, background-color 0.2s ease',
             }}
-            onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#333333'; e.currentTarget.style.transform = 'scale(1.02)' }}
-            onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#111111'; e.currentTarget.style.transform = 'scale(1)' }}
+            onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#e5e5e5'; e.currentTarget.style.transform = 'scale(1.02)' }}
+            onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#ffffff'; e.currentTarget.style.transform = 'scale(1)' }}
           >
             Return to Panel
           </Link>
