@@ -90,6 +90,8 @@ function AuditTaskCards() {
 }
 
 function DocsMenu() {
+  const router = useRouter();
+  
   return (
     <div style={{ position: 'relative', width: '100%', maxWidth: '360px', marginTop: '32px' }}>
       <div 
@@ -108,8 +110,8 @@ function DocsMenu() {
         }}
       >
         <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-          Explore Technical Specs
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+          Explore the Case Study
         </span>
       </div>
 
@@ -125,37 +127,25 @@ function DocsMenu() {
       }}>
         <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
           
-          <a href="https://deepwiki.com/aiservex-us/SERVEX_AI" target="_blank" rel="noreferrer" style={{
+          <button onClick={() => router.push('/Solutions')} style={{
             display: 'block',
+            width: '100%',
+            textAlign: 'left',
             padding: '16px',
             borderRadius: '8px',
             backgroundColor: 'transparent',
             border: '1px solid transparent',
-            textDecoration: 'none',
-            transition: 'border 0.2s',
-          }} onMouseOver={e => e.currentTarget.style.borderColor = 'rgba(0,0,0,0.1)'} onMouseOut={e => e.currentTarget.style.borderColor = 'transparent'}>
-            <div style={{ fontSize: '13px', fontWeight: 600, color: '#111111', marginBottom: '6px', display: 'flex', justifyContent: 'space-between' }}>
-              Project Architecture
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#86868b" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+          }} onMouseOver={e => { e.currentTarget.style.borderColor = 'rgba(0,0,0,0.1)'; e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.02)'; }} onMouseOut={e => { e.currentTarget.style.borderColor = 'transparent'; e.currentTarget.style.backgroundColor = 'transparent'; }}>
+            <div style={{ fontSize: '14px', fontWeight: 600, color: '#111111', marginBottom: '6px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              The SERVEX Initiative
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#111111" strokeWidth="2"><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path></svg>
             </div>
-            <div style={{ fontSize: '12px', color: '#86868b', lineHeight: 1.5 }}>Where the AI lives. The complete structural design of the Servex project and environmental setups.</div>
-          </a>
-
-          <a href="https://app.devin.ai/org/aiservex-us/wiki/aiservex-us/SERVEX_AI_BACK?branch=main" target="_blank" rel="noreferrer" style={{
-            display: 'block',
-            padding: '16px',
-            borderRadius: '8px',
-            backgroundColor: 'transparent',
-            border: '1px solid transparent',
-            textDecoration: 'none',
-            transition: 'border 0.2s',
-          }} onMouseOver={e => e.currentTarget.style.borderColor = 'rgba(0,0,0,0.1)'} onMouseOut={e => e.currentTarget.style.borderColor = 'transparent'}>
-            <div style={{ fontSize: '13px', fontWeight: 600, color: '#111111', marginBottom: '6px', display: 'flex', justifyContent: 'space-between' }}>
-              AI System Logic
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#86868b" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            <div style={{ fontSize: '13px', color: '#86868b', lineHeight: 1.5 }}>
+              Dive into our most radical project yet. Discover how we built a fully autonomous AI ecosystem capable of executing complex workflows in real-time.
             </div>
-            <div style={{ fontSize: '12px', color: '#86868b', lineHeight: 1.5 }}>Ultra-detailed documentation of the underlying intelligence backend, logic flows, and processing rules.</div>
-          </a>
+          </button>
 
         </div>
       </div>
@@ -164,7 +154,6 @@ function DocsMenu() {
 }
 
 export default function HomeTaskAuditSection() {
-  const router = useRouter();
   
   return (
     <section className="mobile-audit-section" style={{ width: '100%', minHeight: '80vh', height: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem 1.5rem', position: 'relative', zIndex: 10 }}>
@@ -230,10 +219,10 @@ export default function HomeTaskAuditSection() {
           
           <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
             <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
-              Autonomous Audit
+              Inside Our Most Radical Project
             </h1>
             <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
-              We want you to see exactly how we achieved this. Dive into our comprehensive documentation and discover the step-by-step technology behind this solution that completely redefined Servex's operational ecosystem.
+              Witness the autonomous architecture that redefined an entire operational ecosystem. We engineered a fully independent AI system for Servex—capable of processing infinite data, making real-time cognitive decisions, and executing workflows without human intervention. 
             </p>
             
             <div className="docs-menu-container">
