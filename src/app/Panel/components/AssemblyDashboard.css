@@ -1,7 +1,6 @@
 .md-container {
-  width: 100%;
+  width: 100vw;
   height: 100vh;
-  min-height: 100vh;
   margin: 0;
   padding: 24px;
   background: linear-gradient(135deg, #1f1f1f, #050505);
@@ -9,7 +8,12 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   display: flex;
   flex-direction: column;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  overflow-y: auto;
+  overflow-x: hidden;
   filter: var(--brightness-filter, brightness(1));
   transition: filter 0.1s;
 }
