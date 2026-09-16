@@ -372,13 +372,6 @@ export default function AssemblyDashboard() {
         </div>
       </div>
 
-        {/* Bottom Layout */}
-        <div className="md-bottom">
-          <div className="md-logo">
-            <img src="/logos/GLYNNE.svg" alt="GLYNNE" />
-          </div>
-          <div className="md-page-number">01</div>
-        </div>
       </div>
 
       {/* Global Panel Footer (Temporarily Removed) */}
