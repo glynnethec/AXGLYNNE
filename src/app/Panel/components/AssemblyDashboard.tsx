@@ -330,10 +330,6 @@ export default function AssemblyDashboard() {
 
         {/* Right Sidebar */}
         <div className="md-right">
-          <div className="md-window-controls">
-            <span>&mdash;</span>
-            <span style={{ fontSize: '16px' }}>&#x2715;</span>
-          </div>
 
           <div className="md-section">
             <h3 className="md-title">Lightning</h3>
