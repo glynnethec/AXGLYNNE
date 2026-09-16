@@ -112,32 +112,34 @@ export default function AssemblyDashboard() {
       <div className="md-container" style={{ '--brightness-filter': `brightness(${0.5 + brightness / 100})` } as React.CSSProperties}
            onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
       
-      {/* Dynamic Background Perspective Grid */}
-      <div className="md-bg-grid">
-        <style>{`
-          @keyframes cellFadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
-        `}</style>
-        <svg width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0, zIndex: 0 }}>
-          <defs>
-            <pattern id="floor-grid" width="80" height="80" patternUnits="userSpaceOnUse">
-              <path d="M 80 0 L 0 0 0 80" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#floor-grid)" />
-          {history.map((step, index) => {
-            const isCurrent = index === 0;
-            return (
-              <g key={step.id} style={{ animation: 'cellFadeIn 0.8s ease forwards' }}>
-                {step.neighbors.map((n, i) => (
-                  <rect key={i} x={(step.cx + n.dx) * 80} y={(step.cy + n.dy) * 80} width="80" height="80" 
-                        fill={`rgba(255,255,255,${isCurrent ? n.opacity : 0})`} style={{ transition: 'fill 1s ease' }} />
-                ))}
-                <rect x={step.cx * 80} y={step.cy * 80} width="80" height="80" 
-                      fill={`rgba(255,255,255,${isCurrent ? 0.08 : 0})`} style={{ transition: 'fill 1s ease' }} />
-              </g>
-            );
-          })}
-        </svg>
+      {/* Dynamic Background Perspective Grid Wrapper */}
+      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', zIndex: 0, pointerEvents: 'none' }}>
+        <div className="md-bg-grid">
+          <style>{`
+            @keyframes cellFadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+          `}</style>
+          <svg width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0, zIndex: 0 }}>
+            <defs>
+              <pattern id="floor-grid" width="80" height="80" patternUnits="userSpaceOnUse">
+                <path d="M 80 0 L 0 0 0 80" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#floor-grid)" />
+            {history.map((step, index) => {
+              const isCurrent = index === 0;
+              return (
+                <g key={step.id} style={{ animation: 'cellFadeIn 0.8s ease forwards' }}>
+                  {step.neighbors.map((n, i) => (
+                    <rect key={i} x={(step.cx + n.dx) * 80} y={(step.cy + n.dy) * 80} width="80" height="80" 
+                          fill={`rgba(255,255,255,${isCurrent ? n.opacity : 0})`} style={{ transition: 'fill 1s ease' }} />
+                  ))}
+                  <rect x={step.cx * 80} y={step.cy * 80} width="80" height="80" 
+                        fill={`rgba(255,255,255,${isCurrent ? 0.08 : 0})`} style={{ transition: 'fill 1s ease' }} />
+                </g>
+              );
+            })}
+          </svg>
+        </div>
       </div>
 
       {/* Main Layout */}
