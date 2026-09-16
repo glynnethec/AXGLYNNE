@@ -338,22 +338,26 @@ export default function AssemblyDashboard() {
           <div className="md-section">
             <h3 className="md-title">Lightning</h3>
             <div className="md-lighting-grid">
-              <button className={`md-light-btn ${activeLight === 'Spot' ? 'active' : ''}`} onClick={() => setActiveLight('Spot')}>
+              <a href="https://axglynne.com" target="_blank" rel="noopener noreferrer" className={`md-light-btn ${activeLight === 'Spot' ? 'active' : ''}`} onClick={() => setActiveLight('Spot')}>
                 <div className="icon-wrapper black"><div className="spot-icon"></div></div>
                 <span className="light-label">Spot</span>
-              </button>
-              <button className={`md-light-btn ${activeLight === 'Area' ? 'active' : ''}`} onClick={() => setActiveLight('Area')}>
+                <span className="light-subtext">Visita nuestra landing page</span>
+              </a>
+              <a href="https://axglynne.com/About" target="_blank" rel="noopener noreferrer" className={`md-light-btn ${activeLight === 'Area' ? 'active' : ''}`} onClick={() => setActiveLight('Area')}>
                 <div className="icon-wrapper dotted"><div className="area-icon"></div></div>
                 <span className="light-label">Area</span>
-              </button>
-              <button className={`md-light-btn ${activeLight === 'Target' ? 'active' : ''}`} onClick={() => setActiveLight('Target')}>
+                <span className="light-subtext">Conoce en qué se especializa GLYNNE</span>
+              </a>
+              <a href="https://axglynne.com/Solutions" target="_blank" rel="noopener noreferrer" className={`md-light-btn ${activeLight === 'Target' ? 'active' : ''}`} onClick={() => setActiveLight('Target')}>
                 <div className="icon-wrapper"><div className="target-icon">&#x2199;</div></div>
                 <span className="light-label">Target</span>
-              </button>
-              <button className={`md-light-btn ${activeLight === 'Sun' ? 'active' : ''}`} onClick={() => setActiveLight('Sun')}>
+                <span className="light-subtext">Mira cómo modernizamos tu empresa con GLYNNE</span>
+              </a>
+              <a href="https://axglynne.com/terms-of-service" target="_blank" rel="noopener noreferrer" className={`md-light-btn ${activeLight === 'Sun' ? 'active' : ''}`} onClick={() => setActiveLight('Sun')}>
                 <div className="icon-wrapper"><div className="sun-icon"></div></div>
                 <span className="light-label">Sun</span>
-              </button>
+                <span className="light-subtext">Conoce nuestros términos de servicio</span>
+              </a>
             </div>
           </div>
 
