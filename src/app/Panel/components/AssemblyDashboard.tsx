@@ -21,6 +21,7 @@ export default function AssemblyDashboard() {
   
   const [activeForm, setActiveForm] = useState('cube');
   const [activeTool, setActiveTool] = useState('AX_chat');
+  const [isFading, setIsFading] = useState(false);
   const [activeLight, setActiveLight] = useState('Spot');
   const [currentDate, setCurrentDate] = useState('');
 
@@ -159,13 +160,20 @@ export default function AssemblyDashboard() {
               {platformTools.map(tool => (
                 <li key={tool.name}>
                   <button 
-                    className={`md-tool-btn ${activeTool === tool.name ? 'active' : ''}`} 
+                    className={`md-tool-btn ${activeTool === tool.name && !isFading ? 'active' : ''}`} 
                     onClick={() => {
-                      setActiveTool(tool.name);
+                      if (activeTool === tool.name || isFading) return;
+                      setIsFading(true);
+                      
                       // Add a random 120 degree rotation on all axes for a fluid spin effect
                       setRotX(prev => prev + (Math.random() > 0.5 ? 120 : -120));
                       setRotY(prev => prev + (Math.random() > 0.5 ? 120 : -120));
                       setRotZ(prev => prev + (Math.random() > 0.5 ? 120 : -120));
+
+                      setTimeout(() => {
+                        setActiveTool(tool.name);
+                        setIsFading(false);
+                      }, 400); // Wait for the vanish animation to complete
                     }}
                   >
                     <span className="md-tool-icon">
@@ -182,7 +190,7 @@ export default function AssemblyDashboard() {
         {/* Center Canvas */}
         <div className="md-center">
           
-          <div className="md-info-card" key={activeTool}>
+          <div className={`md-info-card ${isFading ? 'fading-out' : 'fading-in'}`}>
             <div className="info-title">{platformTools.find(t => t.name === activeTool)?.name}</div>
             <div className="info-desc">{platformTools.find(t => t.name === activeTool)?.desc}</div>
             <Link href={`/${activeTool}`} className="md-start-btn">
@@ -202,7 +210,7 @@ export default function AssemblyDashboard() {
 
             <div className="md-shadow" style={{ 
               opacity: shadowDensity / 100, 
-              transform: `translateY(160px) rotateX(75deg) rotateZ(${-rotY}deg)` 
+              transform: `translateY(200px) rotateX(75deg) rotateZ(${-rotY}deg)` 
             }}></div>
           </div>
 

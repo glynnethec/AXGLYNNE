@@ -153,7 +153,13 @@
   border-radius: 8px;
   text-align: center;
   z-index: 20;
-  animation: slideUpFade 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.md-info-card.fading-in {
+  animation: emergeFromFog 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.md-info-card.fading-out {
+  animation: vanishIntoFog 0.4s ease forwards;
 }
 .md-info-card .info-title {
   font-size: 14px;
@@ -184,14 +190,29 @@
   opacity: 0.8;
 }
 
-@keyframes slideUpFade {
+@keyframes emergeFromFog {
   0% {
     opacity: 0;
-    transform: translateY(20px);
+    filter: blur(15px);
+    transform: translateY(30px) scale(0.9);
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
+    filter: blur(0px);
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes vanishIntoFog {
+  0% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    filter: blur(15px);
+    transform: translateY(-30px) scale(0.9);
   }
 }
 
