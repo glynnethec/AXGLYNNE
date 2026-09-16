@@ -30,12 +30,12 @@ export default function AssemblyDashboard() {
   const [userProfile, setUserProfile] = useState<any>(null);
 
   const platformTools = [
-    { name: 'AX_core', desc: 'Central processing and neural routing.' },
-    { name: 'AX_chat', desc: 'Intelligent conversational interfaces.' },
-    { name: 'AX_voice', desc: 'Real-time vocal synthesis and analysis.' },
-    { name: 'AX_vision', desc: 'Advanced image and spatial recognition.' },
-    { name: 'AX_data', desc: 'High-speed predictive data modeling.' },
-    { name: 'AX_consol', desc: 'Unified command and control center.' },
+    { name: 'AX_core', desc: 'Central processing and neural routing.', model: 'SYS-CORE v9.4', details: 'Kernel level execution protocols active.' },
+    { name: 'AX_chat', desc: 'Intelligent conversational interfaces.', model: 'GPT OSS 120B OpenAI', details: 'High-parameter natural language processing ready.' },
+    { name: 'AX_voice', desc: 'Real-time vocal synthesis and analysis.', model: 'VOX-SYNTH V2.0', details: 'Acoustic waveform modulation standing by.' },
+    { name: 'AX_vision', desc: 'Advanced image and spatial recognition.', model: 'VISION-NET 4.0', details: 'Spatial point-cloud tracking initialized.' },
+    { name: 'AX_data', desc: 'High-speed predictive data modeling.', model: 'DATA-MINER X', details: 'Quantum heuristic pathways open.' },
+    { name: 'AX_consol', desc: 'Unified command and control center.', model: 'CMD-CTRL ROOT', details: 'Administrative system privileges granted.' },
   ];
 
   const [history, setHistory] = useState<HoverStep[]>([]);
@@ -255,6 +255,10 @@ export default function AssemblyDashboard() {
                         <label style={{ marginTop: '8px' }}>Payload / Directive</label>
                         <div className="md-mini-card">
                           <div className="md-mini-card-row">
+                            <span>MODEL</span>
+                            <span>{tool.model}</span>
+                          </div>
+                          <div className="md-mini-card-row">
                             <span>STATUS</span>
                             <span className="md-highlight">AWAITING</span>
                           </div>
@@ -267,7 +271,7 @@ export default function AssemblyDashboard() {
                             <span>AES-256</span>
                           </div>
                           <div className="md-mini-card-desc">
-                            System is ready to receive and process automated infrastructure commands.
+                            {tool.details}
                           </div>
                         </div>
                       </div>
