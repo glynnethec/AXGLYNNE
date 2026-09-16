@@ -65,7 +65,7 @@ export default function AssemblyDashboard() {
       const cx = Math.floor(Math.random() * 20);
       const cy = Math.floor(Math.random() * 10);
       const numNeighbors = Math.floor(Math.random() * 4) + 1;
-      const neighbors = [];
+      const neighbors: { dx: number; dy: number; opacity: number }[] = [];
       const possibleOffsets = [
         [-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, -1], [-1, 1], [1, 1], [-2, 0], [2, 0], [0, -2], [0, 2]
       ];
@@ -91,7 +91,7 @@ export default function AssemblyDashboard() {
     if (cx !== lastCellRef.current.x || cy !== lastCellRef.current.y) {
       lastCellRef.current = { x: cx, y: cy };
       const numNeighbors = Math.floor(Math.random() * 4) + 1;
-      const neighbors = [];
+      const neighbors: { dx: number; dy: number; opacity: number }[] = [];
       const possibleOffsets = [
         [-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, -1], [-1, 1], [1, 1], [-2, 0], [2, 0], [0, -2], [0, 2]
       ];
