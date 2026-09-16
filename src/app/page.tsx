@@ -5,6 +5,7 @@ import BackgroundWrapper from '@/components/BackgroundWrapper';
 import HeroSection from '@/components/HeroSection';
 import LinPromptSection from '@/components/LinPromptSection';
 import HomeAuditSection from '@/components/HomeAuditSection';
+import ClientLogosSection from '@/components/ClientLogosSection';
 import HomeTaskAuditSection from '@/components/HomeTaskAuditSection';
 import WorkflowDiagram from '@/components/WorkflowDiagram';
 import VideoEcosystemSection from '@/components/VideoEcosystemSection';
@@ -18,6 +19,7 @@ export default function Home() {
         <HeroSection />
         <LinPromptSection />
         <HomeAuditSection />
+        <ClientLogosSection />
         <HomeTaskAuditSection />
         <WorkflowDiagram />
         <VideoEcosystemSection />
