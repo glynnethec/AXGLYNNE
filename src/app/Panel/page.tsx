@@ -8,7 +8,7 @@ export default function PanelPage() {
   return (
     <>
       <Header />
-      <BackgroundWrapper>
+      <BackgroundWrapper theme="dark">
         <div style={{
           minHeight: '100vh',
           display: 'flex',
@@ -20,7 +20,7 @@ export default function PanelPage() {
           position: 'relative',
           zIndex: 10
         }}>
-          <h1 style={{ fontSize: 'clamp(40px, 5vw, 64px)', fontWeight: 400, color: '#111', margin: '0 0 24px 0', letterSpacing: '-0.04em' }}>
+          <h1 style={{ fontSize: 'clamp(40px, 5vw, 64px)', fontWeight: 400, color: '#ffffff', margin: '0 0 24px 0', letterSpacing: '-0.04em' }}>
             Control Panel
           </h1>
           <p style={{ color: '#86868b', maxWidth: '500px', fontSize: '18px', lineHeight: 1.6, fontWeight: 300 }}>
