@@ -1,6 +1,6 @@
 .md-container {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   margin: 0;
   padding: 24px;
   background: linear-gradient(135deg, #1f1f1f, #050505);
@@ -11,10 +11,18 @@
   position: absolute;
   top: 0;
   left: 0;
-  overflow: hidden;
-  z-index: 10000; /* overlay above everything */
+  overflow-x: hidden;
+  overflow-y: auto;
+  z-index: 10000;
   filter: var(--brightness-filter, brightness(1));
   transition: filter 0.1s;
+  
+  /* Hide scrollbar for clean aesthetic */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.md-container::-webkit-scrollbar {
+  display: none;
 }
 
 /* Perspective Grid Background */
@@ -600,4 +608,41 @@
 .md-page-number {
   font-size: 16px;
   font-weight: 600;
+}
+
+/* RESPONSIVE MEDIA QUERIES */
+@media (max-width: 1100px) {
+  .md-main {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 60px;
+  }
+  .md-left, .md-right {
+    width: 100%;
+    max-width: 400px;
+    align-items: center;
+    text-align: center;
+  }
+  .md-right {
+    align-items: center;
+  }
+  .md-tools-list {
+    align-items: center;
+  }
+  .md-tool-btn {
+    justify-content: center;
+  }
+  .md-profile-quote {
+    border-left: none;
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
+    padding-left: 0;
+    padding-top: 10px;
+    text-align: center;
+  }
+  .md-profile-stats {
+    justify-content: center;
+  }
+  .md-bottom {
+    margin-top: 60px;
+  }
 }
