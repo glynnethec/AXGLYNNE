@@ -67,26 +67,6 @@ export default function VideoEcosystemSection() {
           From secure API gateways to deterministic AI agents and traceable data architectures, we leverage enterprise-grade technologies to build the infrastructure that stands between your sensitive business systems and autonomous reasoning engines.
         </p>
 
-        <div className="desktop-only-video" style={{
-          width: '95%',
-          maxWidth: '1200px',
-          margin: '0 auto 4rem auto',
-          borderRadius: '24px',
-          overflow: 'hidden',
-          boxShadow: '0 30px 60px rgba(0,0,0,0.08)'
-        }}>
-          <video
-            src="/Grabación de pantalla 2026-09-10 a las 7.32.48 p. m..mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            onLoadedMetadata={() => {
-              ScrollTrigger.refresh();
-            }}
-            style={{ width: '100%', display: 'block', objectFit: 'cover' }}
-          />
-        </div>
         </div>
 
         {/* TECH LOGOS BELOW VIDEO */}
