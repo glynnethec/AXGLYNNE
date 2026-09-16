@@ -9,9 +9,18 @@ export default function AssemblyDashboard() {
   const [shadowDensity, setShadowDensity] = useState(60);
   
   const [activeForm, setActiveForm] = useState('cube');
-  const [activeTool, setActiveTool] = useState('Rotation');
+  const [activeTool, setActiveTool] = useState('AX_chat');
   const [activeLight, setActiveLight] = useState('Spot');
   const [currentDate, setCurrentDate] = useState('');
+
+  const platformTools = [
+    { name: 'AX_core', angle: 0 },
+    { name: 'AX_chat', angle: 45 },
+    { name: 'AX_voice', angle: 120 },
+    { name: 'AX_vision', angle: 210 },
+    { name: 'AX_data', angle: 280 },
+    { name: 'AX_consol', angle: 330 },
+  ];
 
   useEffect(() => {
     const date = new Date();
@@ -59,16 +68,19 @@ export default function AssemblyDashboard() {
           <div className="md-section">
             <h3 className="md-title">Tools</h3>
             <ul className="md-tools-list">
-              {['Render', 'Rotation', 'Texture', 'Polygons', 'Points', 'Intrude'].map(tool => (
-                <li key={tool}>
+              {platformTools.map(tool => (
+                <li key={tool.name}>
                   <button 
-                    className={`md-tool-btn ${activeTool === tool ? 'active' : ''}`} 
-                    onClick={() => setActiveTool(tool)}
+                    className={`md-tool-btn ${activeTool === tool.name ? 'active' : ''}`} 
+                    onClick={() => {
+                      setActiveTool(tool.name);
+                      setRotation(tool.angle);
+                    }}
                   >
                     <span className="md-tool-icon">
                       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
                     </span>
-                    {tool}
+                    {tool.name}
                   </button>
                 </li>
               ))}
