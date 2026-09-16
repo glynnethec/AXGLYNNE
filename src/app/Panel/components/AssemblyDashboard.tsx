@@ -353,41 +353,6 @@ export default function AssemblyDashboard() {
             </div>
           </div>
 
-          <div className="md-section control-slider">
-            <h3 className="md-title">Rotation Y</h3>
-            <input 
-              type="range" 
-              min="0" max="360" 
-              value={Math.round(Math.abs(rotY % 360))} 
-              onChange={(e) => setRotY(Number(e.target.value))}
-              className="md-slider"
-              style={{ '--val': `${(Math.round(Math.abs(rotY % 360))/360)*100}%` } as React.CSSProperties}
-            />
-          </div>
-
-          <div className="md-section control-slider">
-            <h3 className="md-title">Brightness</h3>
-            <input 
-              type="range" 
-              min="0" max="100" 
-              value={brightness} 
-              onChange={(e) => setBrightness(Number(e.target.value))}
-              className="md-slider"
-              style={{ '--val': `${brightness}%` } as React.CSSProperties}
-            />
-          </div>
-
-          <div className="md-section control-slider">
-            <h3 className="md-title">Shadow Density</h3>
-            <input 
-              type="range" 
-              min="0" max="100" 
-              value={shadowDensity} 
-              onChange={(e) => setShadowDensity(Number(e.target.value))}
-              className="md-slider"
-              style={{ '--val': `${shadowDensity}%` } as React.CSSProperties}
-            />
-          </div>
         </div>
       </div>
 
