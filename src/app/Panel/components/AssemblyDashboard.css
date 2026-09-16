@@ -790,17 +790,12 @@
 }
 
 .md-logo {
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: 0.1em;
-  border: 2px solid #fff;
-  padding: 8px;
+  display: flex;
+  align-items: center;
 }
-
-.md-logo span {
-  font-size: 24px;
-  color: #fff !important;
+.md-logo img {
+  height: 50px;
+  object-fit: contain;
 }
 
 .md-page-number {

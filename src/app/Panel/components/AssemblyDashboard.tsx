@@ -387,7 +387,7 @@ export default function AssemblyDashboard() {
         {/* Bottom Layout */}
         <div className="md-bottom">
           <div className="md-logo">
-            END<br/>IS<br/><span>UI.</span>
+            <img src="/LogosClientes/GLYNNE.png" alt="GLYNNE" />
           </div>
           <div className="md-page-number">01</div>
         </div>
