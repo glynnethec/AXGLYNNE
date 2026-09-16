@@ -2,7 +2,7 @@
   width: 100vw;
   height: 100vh;
   margin: 0;
-  padding: 80px 24px 24px 24px;
+  padding: 24px;
   background: linear-gradient(135deg, #1f1f1f, #050505);
   color: #e5e5e5;
   display: flex;
@@ -32,42 +32,6 @@
   transform: perspective(1000px) rotateX(70deg);
   transform-origin: top center;
   z-index: 0;
-}
-
-/* PANEL HEADER */
-.md-panel-header {
-  position: absolute;
-  top: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: max-content;
-  min-width: 320px;
-  padding: 12px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 40px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: 9999px;
-  z-index: 100;
-}
-
-.md-panel-header-logo img {
-  height: 18px;
-  filter: invert(1);
-  object-fit: contain;
-}
-
-.md-panel-header-title {
-  color: #fff;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  opacity: 0.8;
 }
 
 /* MAIN LAYOUT */
@@ -932,15 +896,7 @@
 
 @media (max-width: 500px) {
   .md-container {
-    padding: 72px 16px 16px 16px;
-  }
-
-  .md-panel-header {
-    width: 90%;
-    min-width: 0;
-    top: 16px;
-    padding: 12px 20px;
-    gap: 16px;
+    padding: 16px;
   }
 
   .md-header {
