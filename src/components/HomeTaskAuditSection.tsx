@@ -4,20 +4,30 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 const AUDIT_TASKS = [
-  { id: 1, action: "Ingestion: Catalog WB Manufacturing", status: "COMPLETED", time: "08:14:02 AM", risk: "Low" },
-  { id: 2, action: "Validation: Price discrepancies detected", status: "RESOLVED", time: "08:14:05 AM", risk: "Medium" },
-  { id: 3, action: "Policy: GLYNNE Access control verified", status: "AUTHORIZED", time: "08:14:08 AM", risk: "Critical" },
-  { id: 4, action: "Sync: ERP Database Update", status: "IN PROGRESS", time: "08:14:12 AM", risk: "Low" },
-  { id: 5, action: "Transform: Standardizing geometry for CET", status: "COMPLETED", time: "08:14:15 AM", risk: "Medium" },
-  { id: 6, action: "Engine: Cognitive match for missing materials", status: "RESOLVED", time: "08:14:18 AM", risk: "Low" },
-  { id: 7, action: "Audit: Structural integrity check on 3D assets", status: "COMPLETED", time: "08:14:21 AM", risk: "Critical" },
-  { id: 8, action: "Ingestion: LESRO 2026 Price List Update", status: "COMPLETED", time: "08:14:24 AM", risk: "Low" },
-  { id: 9, action: "Validation: Detecting duplicate SKUs", status: "RESOLVED", time: "08:14:27 AM", risk: "Medium" },
-  { id: 10, action: "Sync: Publishing to live Servex ecosystem", status: "IN PROGRESS", time: "08:14:30 AM", risk: "Low" }
+  { id: 1, action: "Ingestion: Catalog WB Manufacturing" },
+  { id: 2, action: "Validation: Price discrepancies detected" },
+  { id: 3, action: "Policy: GLYNNE Access control verified" },
+  { id: 4, action: "Sync: ERP Database Update" },
+  { id: 5, action: "Transform: Standardizing geometry for CET" },
+  { id: 6, action: "Engine: Cognitive match for missing materials" },
+  { id: 7, action: "Audit: Structural integrity check on 3D assets" },
+  { id: 8, action: "Ingestion: LESRO 2026 Price List Update" },
+  { id: 9, action: "Validation: Detecting duplicate SKUs" },
+  { id: 10, action: "Sync: Publishing to live Servex ecosystem" },
+  { id: 11, action: "Routing: Cognitive routing of incoming request" },
+  { id: 12, action: "Vector Search: Finding semantic matches in index" },
+  { id: 13, action: "Execution: Dispatching tool call to ERP" },
+  { id: 14, action: "Validation: Verifying payload integrity" },
+  { id: 15, action: "Generation: Synthesizing response via LLM" },
+  { id: 16, action: "Orchestration: Coordinating multi-agent swarm" },
+  { id: 17, action: "Memory: Storing context in episodic memory" },
+  { id: 18, action: "Auth: Zero-trust token validation" },
+  { id: 19, action: "Network: Scaling nodes for traffic spike" },
+  { id: 20, action: "Audit: End-to-end trace completed" }
 ];
 
 function AuditTaskCards() {
-  const [visibleCount, setVisibleCount] = useState(4);
+  const [visibleCount, setVisibleCount] = useState(5);
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
@@ -25,11 +35,11 @@ function AuditTaskCards() {
     if (visibleCount < AUDIT_TASKS.length) {
       timeoutId = setTimeout(() => {
         setVisibleCount(prev => prev + 1);
-      }, 1500); // New card every 1.5 seconds
+      }, 700); // New card every 0.7 seconds for much faster scrolling
     } else {
       timeoutId = setTimeout(() => {
-        setVisibleCount(4);
-      }, 4000); // Reset after 4 seconds
+        setVisibleCount(5); // Reset
+      }, 2000); 
     }
 
     return () => clearTimeout(timeoutId);
@@ -39,55 +49,36 @@ function AuditTaskCards() {
     <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
       {AUDIT_TASKS.map((task, index) => {
         const hasBeenAdded = index < visibleCount;
-        const isScrolledOut = index < visibleCount - 4;
+        const isScrolledOut = index < visibleCount - 5;
         const isCurrentlyVisible = hasBeenAdded && !isScrolledOut;
         
         return (
           <div key={task.id} style={{
             display: 'grid',
             gridTemplateRows: isCurrentlyVisible ? '1fr' : '0fr',
-            opacity: isCurrentlyVisible ? 1 : 0,
-            marginBottom: isCurrentlyVisible ? '16px' : '0px',
-            transform: isCurrentlyVisible ? 'translateY(0)' : (hasBeenAdded ? 'translateY(-20px)' : 'translateY(20px)'),
-            transition: 'grid-template-rows 0.6s ease, opacity 0.6s ease, margin-bottom 0.6s ease, transform 0.6s ease',
-            width: '100%'
+            opacity: isCurrentlyVisible ? (index === visibleCount - 5 ? 0.3 : 1) : 0,
+            marginBottom: isCurrentlyVisible ? '12px' : '0px',
+            transform: isCurrentlyVisible 
+              ? 'translateY(0) scale(1)' 
+              : (hasBeenAdded ? 'translateY(-30px) scale(0.95)' : 'translateY(30px) scale(0.95)'),
+            transition: 'grid-template-rows 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease, margin-bottom 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+            width: '100%',
+            filter: isCurrentlyVisible && index === visibleCount - 5 ? 'blur(2px)' : 'blur(0px)',
           }}>
             <div style={{ overflow: 'hidden' }}>
               <div style={{
-                backgroundColor: 'transparent',
-                border: '1px solid rgba(0,0,0,0.1)',
+                backgroundColor: 'rgba(255,255,255,0.4)',
+                border: '1px solid rgba(0,0,0,0.06)',
                 borderRadius: '12px',
                 padding: '16px 20px',
                 display: 'flex',
-                flexDirection: 'column',
-                gap: '8px',
                 boxShadow: '0 4px 20px rgba(0,0,0,0.02)',
                 fontFamily: 'monospace, ui-monospace, Menlo, Monaco',
                 width: '100%',
                 boxSizing: 'border-box'
               }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '11px', color: '#86868b' }}>{task.time}</span>
-                  <span style={{ 
-                    fontSize: '10px', 
-                    fontWeight: 600, 
-                    padding: '4px 8px', 
-                    borderRadius: '999px',
-                    backgroundColor: 'transparent',
-                    border: task.status === 'COMPLETED' || task.status === 'AUTHORIZED' || task.status === 'RESOLVED' ? '1px solid #2e7d32' : '1px solid #86868b',
-                    color: task.status === 'COMPLETED' || task.status === 'AUTHORIZED' || task.status === 'RESOLVED' ? '#2e7d32' : '#86868b'
-                  }}>
-                    {task.status}
-                  </span>
-                </div>
-                
                 <div style={{ fontSize: '13px', color: '#111111', fontWeight: 500, lineHeight: 1.4 }}>
                   {task.action}
-                </div>
-                
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
-                  <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: task.risk === 'Critical' ? '#ff3b30' : task.risk === 'Medium' ? '#ffcc00' : '#34c759' }} />
-                  <span style={{ fontSize: '11px', color: '#86868b' }}>Risk: {task.risk}</span>
                 </div>
               </div>
             </div>
