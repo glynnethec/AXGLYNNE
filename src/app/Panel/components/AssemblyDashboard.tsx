@@ -197,30 +197,44 @@ export default function AssemblyDashboard() {
                   </div>
                   <div className="stat">
                     <span>Status</span>
-                    <strong style={{color: '#ffffff', display: 'flex', alignItems: 'center', gap: '8px'}}>
-                      ONLINE 
-                      <button 
-                        onClick={async () => {
-                          await signOut();
-                          window.location.href = '/login';
-                        }}
-                        style={{
-                          background: 'none',
-                          border: 'none',
-                          color: '#a1a1aa',
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          padding: '2px',
-                          transition: 'color 0.2s ease'
-                        }}
-                        onMouseOver={(e) => e.currentTarget.style.color = '#dc2626'}
-                        onMouseOut={(e) => e.currentTarget.style.color = '#a1a1aa'}
-                        title="Cerrar sesión"
-                      >
-                        <FaSignOutAlt size={12} />
-                      </button>
-                    </strong>
+                    <strong style={{color: '#ffffff'}}>ONLINE</strong>
+                  </div>
+                  <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
+                    <button 
+                      onClick={async () => {
+                        await signOut();
+                        window.location.href = '/login';
+                      }}
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                        borderRadius: '6px',
+                        color: '#fff',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '32px',
+                        height: '32px',
+                        transition: 'all 0.2s ease',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+                      }}
+                      onMouseOver={(e) => {
+                        e.currentTarget.style.background = 'rgba(220,38,38,0.2)';
+                        e.currentTarget.style.borderColor = 'rgba(220,38,38,0.5)';
+                        e.currentTarget.style.color = '#ef4444';
+                        e.currentTarget.style.transform = 'scale(1.05)';
+                      }}
+                      onMouseOut={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                        e.currentTarget.style.color = '#fff';
+                        e.currentTarget.style.transform = 'scale(1)';
+                      }}
+                      title="Cerrar sesión"
+                    >
+                      <FaSignOutAlt size={14} />
+                    </button>
                   </div>
                 </div>
               </div>
