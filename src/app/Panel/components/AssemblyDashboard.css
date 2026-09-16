@@ -431,6 +431,7 @@
   border-radius: 0;
   overflow: hidden;
   margin-top: 0px;
+  margin-left: -12px;
   margin-bottom: 0px;
   display: flex;
   flex-direction: column;
