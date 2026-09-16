@@ -29,6 +29,7 @@ export default function AssemblyDashboard() {
   const [activeLight, setActiveLight] = useState('Spot');
   const [currentDate, setCurrentDate] = useState('');
   const [userProfile, setUserProfile] = useState<any>(null);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const platformTools = [
     { name: 'AX_core', desc: 'Central processing and neural routing.', model: 'SYS-CORE v9.4', details: 'Kernel level execution protocols active.' },
@@ -201,10 +202,7 @@ export default function AssemblyDashboard() {
                   </div>
                   <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
                     <button 
-                      onClick={async () => {
-                        await signOut();
-                        window.location.href = '/login';
-                      }}
+                      onClick={() => setShowLogoutModal(true)}
                       style={{
                         background: 'rgba(255, 255, 255, 0.05)',
                         border: '1px solid rgba(255, 255, 255, 0.2)',
@@ -436,6 +434,23 @@ export default function AssemblyDashboard() {
         </div>
       </div> 
       */}
+
+      {/* Logout Confirmation Modal */}
+      {showLogoutModal && (
+        <div className="md-logout-overlay">
+          <div className="md-logout-modal">
+            <h3>System Disconnect</h3>
+            <p>Are you sure you want to log out and terminate this secure session?</p>
+            <div className="md-logout-actions">
+              <button className="md-btn-cancel" onClick={() => setShowLogoutModal(false)}>Cancel</button>
+              <button className="md-btn-confirm" onClick={async () => {
+                await signOut();
+                window.location.href = '/login';
+              }}>Confirm Disconnect</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
