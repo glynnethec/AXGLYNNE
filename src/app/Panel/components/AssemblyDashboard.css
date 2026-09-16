@@ -24,14 +24,9 @@
   left: -20%;
   right: -20%;
   height: 80%;
-  background-image: 
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 80px 80px;
   transform: perspective(1000px) rotateX(70deg);
   transform-origin: top center;
   z-index: 0;
-  pointer-events: none;
 }
 
 /* TOP HEADER */

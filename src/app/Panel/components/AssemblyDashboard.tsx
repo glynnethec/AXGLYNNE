@@ -1,8 +1,15 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import './AssemblyDashboard.css';
+
+type HoverStep = {
+  id: number;
+  cx: number;
+  cy: number;
+  neighbors: { dx: number; dy: number; opacity: number }[];
+};
 
 export default function AssemblyDashboard() {
   const [rotX, setRotX] = useState(-20);
@@ -26,18 +33,95 @@ export default function AssemblyDashboard() {
     { name: 'AX_consol', desc: 'Unified command and control center.' },
   ];
 
+  const [history, setHistory] = useState<HoverStep[]>([]);
+  const stepIdRef = useRef(0);
+  const lastCellRef = useRef({ x: -1, y: -1 });
+
   useEffect(() => {
     const date = new Date();
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     setCurrentDate(`${days[date.getDay()]} \u2014 ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`);
+    
+    // Auto hover animator
+    const intervalId = setInterval(() => {
+      const cx = Math.floor(Math.random() * 20);
+      const cy = Math.floor(Math.random() * 10);
+      const numNeighbors = Math.floor(Math.random() * 4) + 1;
+      const neighbors = [];
+      const possibleOffsets = [
+        [-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, -1], [-1, 1], [1, 1], [-2, 0], [2, 0], [0, -2], [0, 2]
+      ];
+      const shuffled = possibleOffsets.sort(() => 0.5 - Math.random());
+      for (let i = 0; i < numNeighbors; i++) {
+        neighbors.push({ dx: shuffled[i][0], dy: shuffled[i][1], opacity: (Math.random() * 0.06) + 0.03 });
+      }
+      setHistory(prev => [{ id: stepIdRef.current++, cx, cy, neighbors }, ...prev].slice(0, 8));
+    }, 1200);
+
+    return () => clearInterval(intervalId);
   }, []);
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 700) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const cx = Math.floor(x / 80);
+    const cy = Math.floor(y / 80);
+
+    if (cx !== lastCellRef.current.x || cy !== lastCellRef.current.y) {
+      lastCellRef.current = { x: cx, y: cy };
+      const numNeighbors = Math.floor(Math.random() * 4) + 1;
+      const neighbors = [];
+      const possibleOffsets = [
+        [-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, -1], [-1, 1], [1, 1], [-2, 0], [2, 0], [0, -2], [0, 2]
+      ];
+      const shuffled = possibleOffsets.sort(() => 0.5 - Math.random());
+      for (let i = 0; i < numNeighbors; i++) {
+        neighbors.push({ dx: shuffled[i][0], dy: shuffled[i][1], opacity: (Math.random() * 0.06) + 0.03 });
+      }
+      setHistory(prev => [{ id: stepIdRef.current++, cx, cy, neighbors }, ...prev].slice(0, 8));
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setHistory([]);
+    lastCellRef.current = { x: -1, y: -1 };
+  };
+
   return (
-    <div className="md-container" style={{ '--brightness-filter': `brightness(${0.5 + brightness / 100})` } as React.CSSProperties}>
+    <div className="md-container" style={{ '--brightness-filter': `brightness(${0.5 + brightness / 100})` } as React.CSSProperties}
+         onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
       
       {/* Dynamic Background Perspective Grid */}
-      <div className="md-bg-grid"></div>
+      <div className="md-bg-grid">
+        <style>{`
+          @keyframes cellFadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+        `}</style>
+        <svg width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0, zIndex: 0 }}>
+          <defs>
+            <pattern id="floor-grid" width="80" height="80" patternUnits="userSpaceOnUse">
+              <path d="M 80 0 L 0 0 0 80" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#floor-grid)" />
+          {history.map((step, index) => {
+            const isCurrent = index === 0;
+            return (
+              <g key={step.id} style={{ animation: 'cellFadeIn 0.8s ease forwards' }}>
+                {step.neighbors.map((n, i) => (
+                  <rect key={i} x={(step.cx + n.dx) * 80} y={(step.cy + n.dy) * 80} width="80" height="80" 
+                        fill={`rgba(255,255,255,${isCurrent ? n.opacity : 0})`} style={{ transition: 'fill 1s ease' }} />
+                ))}
+                <rect x={step.cx * 80} y={step.cy * 80} width="80" height="80" 
+                      fill={`rgba(255,255,255,${isCurrent ? 0.08 : 0})`} style={{ transition: 'fill 1s ease' }} />
+              </g>
+            );
+          })}
+        </svg>
+      </div>
 
       {/* Top Header */}
       <div className="md-header">
