@@ -50,6 +50,11 @@ export default function LiquidOrb({
     let currentRotX = rotRef.current.x;
     let currentRotY = rotRef.current.y;
     let currentRotZ = rotRef.current.z;
+    
+    // Velocity variables for spring physics
+    let velX = 0;
+    let velY = 0;
+    let velZ = 0;
 
     const numLatLines = 8;
     const numLonLines = 16;
@@ -84,13 +89,24 @@ export default function LiquidOrb({
       ctx.strokeStyle = theme === 'dark' ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.04)';
       ctx.stroke();
 
-      // Smoothly interpolate towards the target rotation from the dashboard
-      currentRotX += (rotRef.current.x - currentRotX) * 0.035;
-      currentRotY += (rotRef.current.y - currentRotY) * 0.035;
-      currentRotZ += (rotRef.current.z - currentRotZ) * 0.035;
+      // Smooth spring physics for organic rotation
+      const stiffness = 0.015;
+      const damping = 0.90;
+
+      velX += (rotRef.current.x - currentRotX) * stiffness;
+      velX *= damping;
+      currentRotX += velX;
+
+      velY += (rotRef.current.y - currentRotY) * stiffness;
+      velY *= damping;
+      currentRotY += velY;
+
+      velZ += (rotRef.current.z - currentRotZ) * stiffness;
+      velZ *= damping;
+      currentRotZ += velZ;
 
       const rotationX = (currentRotX * Math.PI / 180);
-      const rotationY = (currentRotY * Math.PI / 180) + ((Date.now() - mountTime) / 1000) * 0.2; // Interpolated target + Continuous spin
+      const rotationY = (currentRotY * Math.PI / 180) + ((Date.now() - mountTime) / 1000) * 0.2; // Spring target + Continuous spin
       const rotationZ = (currentRotZ * Math.PI / 180);
 
       const project = (x: number, y: number, z: number) => {
