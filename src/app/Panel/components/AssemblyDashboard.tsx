@@ -213,7 +213,7 @@ export default function AssemblyDashboard() {
             
             <div className="md-shadow" style={{ 
               opacity: shadowDensity / 100, 
-              transform: `translateY(120px) rotateX(75deg) rotateZ(${-rotY}deg)` 
+              transform: `translateY(160px) rotateX(75deg) rotateZ(${-rotY}deg)` 
             }}></div>
           </div>
 
