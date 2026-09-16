@@ -796,6 +796,7 @@
 .md-logo img {
   height: 50px;
   object-fit: contain;
+  filter: invert(1);
 }
 
 .md-page-number {
