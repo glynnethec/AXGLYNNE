@@ -108,8 +108,30 @@ export default function AssemblyDashboard() {
   };
 
   return (
-    <div className="md-container" style={{ '--brightness-filter': `brightness(${0.5 + brightness / 100})` } as React.CSSProperties}
-         onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
+    <div 
+      className="dashboard-wrapper"
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        overflowX: 'hidden',
+        overflowY: 'auto',
+        background: '#000',
+        zIndex: 10000,
+        msOverflowStyle: 'none',
+        scrollbarWidth: 'none',
+      }}
+    >
+      <style>{`
+        .dashboard-wrapper::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
+
+      <div className="md-container" style={{ '--brightness-filter': `brightness(${0.5 + brightness / 100})` } as React.CSSProperties}
+           onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
       
       {/* Dynamic Background Perspective Grid */}
       <div className="md-bg-grid">
@@ -351,16 +373,17 @@ export default function AssemblyDashboard() {
         </div>
       </div>
 
-      {/* Bottom Layout */}
-      <div className="md-bottom">
-        <div className="md-logo">
-          END<br/>IS<br/><span>UI.</span>
+        {/* Bottom Layout */}
+        <div className="md-bottom">
+          <div className="md-logo">
+            END<br/>IS<br/><span>UI.</span>
+          </div>
+          <div className="md-page-number">01</div>
         </div>
-        <div className="md-page-number">01</div>
       </div>
 
       {/* Global Panel Footer */}
-      <div style={{ marginTop: '80px', marginX: '-24px', width: '100vw', marginLeft: '-24px' }}>
+      <div style={{ background: '#000', width: '100%' }}>
         <PanelFooter />
       </div>
     </div>
