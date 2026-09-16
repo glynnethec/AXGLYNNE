@@ -4,7 +4,10 @@ import React, { useState, useEffect } from 'react';
 import './AssemblyDashboard.css';
 
 export default function AssemblyDashboard() {
-  const [rotation, setRotation] = useState(35);
+  const [rotX, setRotX] = useState(-20);
+  const [rotY, setRotY] = useState(35);
+  const [rotZ, setRotZ] = useState(0);
+  
   const [brightness, setBrightness] = useState(80);
   const [shadowDensity, setShadowDensity] = useState(60);
   
@@ -13,14 +16,7 @@ export default function AssemblyDashboard() {
   const [activeLight, setActiveLight] = useState('Spot');
   const [currentDate, setCurrentDate] = useState('');
 
-  const platformTools = [
-    { name: 'AX_core', angle: 0 },
-    { name: 'AX_chat', angle: 45 },
-    { name: 'AX_voice', angle: 120 },
-    { name: 'AX_vision', angle: 210 },
-    { name: 'AX_data', angle: 280 },
-    { name: 'AX_consol', angle: 330 },
-  ];
+  const platformTools = ['AX_core', 'AX_chat', 'AX_voice', 'AX_vision', 'AX_data', 'AX_consol'];
 
   useEffect(() => {
     const date = new Date();
@@ -69,18 +65,21 @@ export default function AssemblyDashboard() {
             <h3 className="md-title">Tools</h3>
             <ul className="md-tools-list">
               {platformTools.map(tool => (
-                <li key={tool.name}>
+                <li key={tool}>
                   <button 
-                    className={`md-tool-btn ${activeTool === tool.name ? 'active' : ''}`} 
+                    className={`md-tool-btn ${activeTool === tool ? 'active' : ''}`} 
                     onClick={() => {
-                      setActiveTool(tool.name);
-                      setRotation(tool.angle);
+                      setActiveTool(tool);
+                      // Add a random 400+ degree rotation on all axes for a fluid spin effect
+                      setRotX(prev => prev + (Math.random() > 0.5 ? 1 : -1) * (400 + Math.random() * 200));
+                      setRotY(prev => prev + (Math.random() > 0.5 ? 1 : -1) * (400 + Math.random() * 200));
+                      setRotZ(prev => prev + (Math.random() > 0.5 ? 1 : -1) * (400 + Math.random() * 200));
                     }}
                   >
                     <span className="md-tool-icon">
                       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
                     </span>
-                    {tool.name}
+                    {tool}
                   </button>
                 </li>
               ))}
@@ -91,7 +90,7 @@ export default function AssemblyDashboard() {
         {/* Center Canvas */}
         <div className="md-center">
           <div className="md-3d-scene">
-            <div className="md-cube" style={{ transform: `rotateX(-20deg) rotateY(${rotation}deg)` }}>
+            <div className="md-cube" style={{ transform: `rotateX(${rotX}deg) rotateY(${rotY}deg) rotateZ(${rotZ}deg)` }}>
               <div className="face front"></div>
               <div className="face back"></div>
               <div className="face right"></div>
@@ -101,20 +100,20 @@ export default function AssemblyDashboard() {
             </div>
             <div className="md-shadow" style={{ 
               opacity: shadowDensity / 100, 
-              transform: `translateY(120px) rotateX(75deg) rotateZ(${-rotation}deg)` 
+              transform: `translateY(120px) rotateX(75deg) rotateZ(${-rotY}deg)` 
             }}></div>
           </div>
 
           <div className="md-rotation-track">
             <div className="md-rotation-circle"></div>
-            <div className="md-rotation-marker" style={{ transform: `translateX(-50%) rotate(${rotation}deg)` }}>
+            <div className="md-rotation-marker" style={{ transform: `translateX(-50%) rotate(${rotY}deg)` }}>
               <div className="md-marker-line"></div>
             </div>
           </div>
           
           <div className="md-rotation-value">
-            <span className="label">Rotation</span>
-            <span className="value">{rotation}°</span>
+            <span className="label">Rotation Y</span>
+            <span className="value">{Math.round(Math.abs(rotY % 360))}°</span>
           </div>
           
           <div className="md-gizmo">
@@ -155,14 +154,14 @@ export default function AssemblyDashboard() {
           </div>
 
           <div className="md-section control-slider">
-            <h3 className="md-title">Rotation</h3>
+            <h3 className="md-title">Rotation Y</h3>
             <input 
               type="range" 
               min="0" max="360" 
-              value={rotation} 
-              onChange={(e) => setRotation(Number(e.target.value))}
+              value={Math.round(Math.abs(rotY % 360))} 
+              onChange={(e) => setRotY(Number(e.target.value))}
               className="md-slider"
-              style={{ '--val': `${(rotation/360)*100}%` } as React.CSSProperties}
+              style={{ '--val': `${(Math.round(Math.abs(rotY % 360))/360)*100}%` } as React.CSSProperties}
             />
           </div>
 
