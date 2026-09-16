@@ -211,7 +211,7 @@ export default function AssemblyDashboard() {
             <h3 className="md-title">Tools</h3>
             <ul className="md-tools-list">
               {platformTools.map(tool => (
-                <li key={tool.name}>
+                <li key={tool.name} className="md-tool-item">
                   <button 
                     className={`md-tool-btn ${activeTool === tool.name && !isFading ? 'active' : ''}`} 
                     onClick={() => {
@@ -234,6 +234,17 @@ export default function AssemblyDashboard() {
                     </span>
                     {tool.name}
                   </button>
+                  <div className={`md-tool-accordion ${activeTool === tool.name && !isFading ? 'expanded' : ''}`}>
+                    <div className="md-tool-accordion-content">
+                      <div className="md-tool-input-group">
+                        <label>Target Identity / IP</label>
+                        <input type="text" placeholder="192.168.1.1 or user@..." />
+                        <label style={{ marginTop: '4px' }}>Payload / Directive</label>
+                        <textarea placeholder="Enter command sequence or data..." rows={3}></textarea>
+                        <button className="md-tool-submit">EXECUTE ↵</button>
+                      </div>
+                    </div>
+                  </div>
                 </li>
               ))}
             </ul>

@@ -123,6 +123,75 @@
   opacity: 1;
 }
 
+/* Accordion Field for Tools */
+.md-tool-item {
+  display: flex;
+  flex-direction: column;
+}
+.md-tool-accordion {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+}
+.md-tool-accordion.expanded {
+  grid-template-rows: 1fr;
+}
+.md-tool-accordion-content {
+  min-height: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.md-tool-accordion.expanded .md-tool-accordion-content {
+  opacity: 1;
+  padding: 8px 12px 16px 12px;
+}
+.md-tool-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.md-tool-input-group label {
+  font-size: 9px;
+  text-transform: uppercase;
+  color: #666;
+  letter-spacing: 0.1em;
+}
+.md-tool-input-group input,
+.md-tool-input-group textarea {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e5e5e5;
+  padding: 8px;
+  font-size: 11px;
+  font-family: inherit;
+  outline: none;
+  border-radius: 2px;
+  transition: border-color 0.2s;
+  resize: none;
+}
+.md-tool-input-group input:focus,
+.md-tool-input-group textarea:focus {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+.md-tool-submit {
+  margin-top: 8px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  padding: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+.md-tool-submit:hover {
+  background: #fff;
+  color: #000;
+}
+
 
 /* CENTER 3D STAGE */
 .md-center {
