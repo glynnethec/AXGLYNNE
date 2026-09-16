@@ -361,12 +361,14 @@ export default function AssemblyDashboard() {
         </div>
       </div>
 
-      {/* Global Panel Footer */}
+      {/* Global Panel Footer (Temporarily Removed) */}
+      {/* 
       <div style={{ background: '#000', width: '100%', display: 'flex', justifyContent: 'center' }}>
         <div style={{ width: '100%', maxWidth: '1200px' }}>
           <PanelFooter />
         </div>
-      </div>
+      </div> 
+      */}
     </>
   );
 }
