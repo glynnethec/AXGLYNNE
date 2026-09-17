@@ -251,6 +251,7 @@ export default function Header() {
             <span className="mega-section-title">Learn About Our Vision</span>
             <Link href="/About" className={`mega-nav-link ${pathname === '/About' ? 'active' : ''}`}>Discover Our Company Vision</Link>
             <Link href="/contact" className={`mega-nav-link ${pathname === '/contact' ? 'active' : ''}`}>Get in Touch Directly</Link>
+            <Link href="/Support" className={`mega-nav-link ${pathname === '/Support' ? 'active' : ''}`}>Support</Link>
           </div>
 
           {/* Section 4 */}

@@ -68,13 +68,12 @@ export default function ServexCaseStudy() {
               <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', lineHeight: 1.6, fontWeight: 300, letterSpacing: '0.01em', margin: 0 }}>
                 To understand the scale of the problem, the following video captures the manual process Servex relied on. Updating a single item meant an advisor had to meticulously input and configure data, step by step, into CET Designer and Catalogue Creator. Multiplied by hundreds of updates sent by manufacturers at the same time, this granular and manual data entry took weeks to complete, severely limiting the company's scalability and generating a high margin of error.
               </p>
-              <div style={{ margin: '24px auto 16px auto', width: '100%', maxWidth: '1100px', boxShadow: 'none' }}>
-                <video 
-                  className="white-controls-video"
-                  src="/SERVEX/Ejemplo%20cambio%20de%20precios%20(1).mp4" 
-                  controls 
-                  playsInline 
-                  style={{ width: '100%', height: 'auto', display: 'block', boxShadow: 'none' }} 
+              <div style={{ margin: '24px auto 16px auto', width: '100%', maxWidth: '1100px', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.08)', backgroundColor: '#000' }}>
+                <iframe 
+                  src="https://www.youtube.com/embed/7aGhmudM21E?rel=0&modestbranding=1" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  style={{ width: '100%', aspectRatio: '16/9', display: 'block', border: 'none' }} 
                 />
               </div>
             </div>
@@ -112,13 +111,12 @@ export default function ServexCaseStudy() {
                   <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', lineHeight: 1.6, fontWeight: 300, letterSpacing: '0.01em', margin: 0 }}>
                     By automating the validation of thousands of references at once, we compressed a three-week process into a couple of minutes. In the backend, an intelligent pipeline compares catalogs, extracts information matrices, and packages modifications to inject them with exact precision into XML structures. The true revolution lies in its invisible operation: artificial intelligence does all the heavy lifting. The system generates its own audit schema and exposes a clear action plan, allowing massive catalogs to be updated flawlessly and without human intervention.
                   </p>
-                  <div style={{ margin: '24px auto 16px auto', width: '100%', maxWidth: '1100px', boxShadow: 'none' }}>
-                    <video 
-                      className="white-controls-video"
-                      src="/SERVEX/AITest.mp4" 
-                      controls 
-                      playsInline 
-                      style={{ width: '100%', height: 'auto', display: 'block', boxShadow: 'none' }} 
+                  <div style={{ margin: '24px auto 16px auto', width: '100%', maxWidth: '1100px', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.08)', backgroundColor: '#000' }}>
+                    <iframe 
+                      src="https://www.youtube.com/embed/b_Z85hPBoTs?rel=0&modestbranding=1" 
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      style={{ width: '100%', aspectRatio: '16/9', display: 'block', border: 'none' }} 
                     />
                   </div>
                 </div>
@@ -162,13 +160,12 @@ export default function ServexCaseStudy() {
               <ul style={{ paddingLeft: '16px', margin: 0, fontSize: 'clamp(13px, 1.4vw, 15px)', color: '#86868b', lineHeight: 1.6, fontWeight: 300, display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <li>
                   <strong style={{ color: '#111', fontWeight: 500 }}>User Experience and Ecosystem Identity:</strong> GLYNNE designed an immersive and fluid interface that provides the platform with a unique and radical identity. The journey reflects user-centric design, integrating highly complex tools under a clean, hyper-modern, and highly intuitive visual experience, elevating Servex to another level.
-                  <div style={{ margin: '24px auto 16px auto', width: '100%', maxWidth: '1100px', boxShadow: 'none' }}>
-                    <video 
-                      className="white-controls-video"
-                      src="/SERVEX/frontTravel.mp4" 
-                      controls 
-                      playsInline 
-                      style={{ width: '100%', height: 'auto', display: 'block', boxShadow: 'none' }} 
+                  <div style={{ margin: '24px auto 16px auto', width: '100%', maxWidth: '1100px', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.08)', backgroundColor: '#000' }}>
+                    <iframe 
+                      src="https://www.youtube.com/embed/WLz-rhYePYU?rel=0&modestbranding=1" 
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      style={{ width: '100%', aspectRatio: '16/9', display: 'block', border: 'none' }} 
                     />
                   </div>
                 </li>
