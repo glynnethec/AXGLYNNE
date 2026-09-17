@@ -76,7 +76,7 @@ export default function ServexSpecification() {
 
               {/* Links Grid */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
-                <a href="https://deepwiki.com/aiservex-us/SERVEX_AI" target="_blank" rel="noreferrer" style={{
+                <a href="https://app.devin.ai/org/aiservex-us/wiki/aiservex-us/SERVEX_AI?branch=main" target="_blank" rel="noreferrer" style={{
                   padding: '20px',
                   backgroundColor: 'rgba(255,255,255,0.8)',
                   border: '1px solid rgba(0,0,0,0.06)',

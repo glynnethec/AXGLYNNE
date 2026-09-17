@@ -134,7 +134,7 @@ function DocsMenu() {
       }}>
         <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
           
-          <a href="https://deepwiki.com/aiservex-us/SERVEX_AI" target="_blank" rel="noreferrer" style={{
+          <a href="https://app.devin.ai/org/aiservex-us/wiki/aiservex-us/SERVEX_AI?branch=main" target="_blank" rel="noreferrer" style={{
             display: 'block',
             padding: '16px',
             borderRadius: '8px',
