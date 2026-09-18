@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function BackButton() {
   return (
-    <Link href="/" style={{ position: 'fixed', top: '2rem', left: '2rem', zIndex: 200, textDecoration: 'none' }}>
+    <Link href="/Panel" style={{ textDecoration: 'none', display: 'inline-block' }}>
       <div style={{
         padding: '10px 20px',
         borderRadius: '999px',
@@ -27,7 +27,7 @@ export default function BackButton() {
            <line x1="19" y1="12" x2="5" y2="12"></line>
            <polyline points="12 19 5 12 12 5"></polyline>
         </svg>
-        Home
+        Panel
       </div>
     </Link>
   );

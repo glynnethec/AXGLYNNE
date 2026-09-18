@@ -32,25 +32,22 @@ export default function AssemblyDashboard() {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const platformTools = [
-    { name: 'AX_core', desc: 'Central processing and neural routing.', model: 'SYS-CORE v9.4', details: 'Kernel level execution protocols active.' },
-    { name: 'AX_chat', desc: 'Intelligent conversational interfaces.', model: 'GPT OSS 120B OpenAI', details: 'High-parameter natural language processing ready.' },
-    { name: 'AX_voice', desc: 'Real-time vocal synthesis and analysis.', model: 'VOX-SYNTH V2.0', details: 'Acoustic waveform modulation standing by.' },
-    { name: 'AX_vision', desc: 'Advanced image and spatial recognition.', model: 'VISION-NET 4.0', details: 'Spatial point-cloud tracking initialized.' },
-    { name: 'AX_data', desc: 'High-speed predictive data modeling.', model: 'DATA-MINER X', details: 'Quantum heuristic pathways open.' },
-    { name: 'AX_consol', desc: 'Unified command and control center.', model: 'CMD-CTRL ROOT', details: 'Administrative system privileges granted.' },
+    { name: 'AX_core', label: 'AX Core', desc: 'Central processing and neural routing.', model: 'SYS-CORE v9.4', details: 'Kernel level execution protocols active.' },
+    { name: 'AX_chat', label: 'Chat with AX', desc: 'Intelligent conversational interfaces.', model: 'GPT OSS 120B OpenAI', details: 'High-parameter natural language processing ready.' },
+    { name: 'AX_voice', label: 'AX Voice', desc: 'Real-time vocal synthesis and analysis.', model: 'VOX-SYNTH V2.0', details: 'Acoustic waveform modulation standing by.' },
   ];
 
   const aiPhrases = [
-    "Analizando red neuronal",
-    "Optimizando nodo central",
-    "Procesando datos Glynne",
-    "Sintetizando parámetros",
-    "Calibrando visión espacial",
-    "Asegurando red cifrada",
-    "Esperando nueva directiva",
-    "Reestructurando modelo IA",
-    "Sincronizando sistemas Glynne",
-    "Evaluando carga cuántica"
+    "Analyzing neural network",
+    "Optimizing central node",
+    "Processing Glynne data",
+    "Synthesizing parameters",
+    "Calibrating spatial vision",
+    "Securing encrypted network",
+    "Awaiting new directive",
+    "Restructuring AI model",
+    "Synchronizing Glynne systems",
+    "Evaluating quantum load"
   ];
   const activePhrase = aiPhrases[Math.floor(Math.abs(rotY) / 20) % aiPhrases.length];
 
@@ -78,7 +75,7 @@ export default function AssemblyDashboard() {
 
     // Prevent white background from showing on scroll bounce
     const originalBg = document.body.style.backgroundColor;
-    document.body.style.backgroundColor = '#000';
+    document.body.style.backgroundColor = '#0b0b0d';
 
     // Auto hover animator
     const intervalId = setInterval(() => {
@@ -234,7 +231,7 @@ export default function AssemblyDashboard() {
                         e.currentTarget.style.color = '#fff';
                         e.currentTarget.style.transform = 'translateY(0)';
                       }}
-                      title="Cerrar sesión"
+                      title="Sign out"
                     >
                       <FaSignOutAlt size={12} />
                       SIGN OUT
@@ -250,29 +247,29 @@ export default function AssemblyDashboard() {
             </div>
           )}
 
-          <div className="md-section forms-section">
-            <h3 className="md-title">Forms</h3>
-            <div className="md-icons-row">
-              <button className={`md-icon-btn ${activeForm === 'cube' ? 'active' : ''}`} onClick={() => setActiveForm('cube')}>
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-              </button>
-              <button className={`md-icon-btn ${activeForm === 'sphere' ? 'active' : ''}`} onClick={() => setActiveForm('sphere')}>
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path><path d="M2 12h20"></path></svg>
-              </button>
-              <button className={`md-icon-btn ${activeForm === 'pyramid' ? 'active' : ''}`} onClick={() => setActiveForm('pyramid')}>
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.2"><path d="M12 2L2 20h20L12 2z"></path><path d="M12 2v20"></path><path d="M2 20l10-8 10 8"></path></svg>
-              </button>
-              <button className={`md-icon-btn ${activeForm === 'cylinder' ? 'active' : ''}`} onClick={() => setActiveForm('cylinder')}>
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 5v14c0 1.66-4.03 3-9 3s-9-1.34-9-3V5"></path></svg>
-              </button>
-              <button className="md-icon-btn dots">
-                <span>...</span>
-              </button>
+          <div className="md-section">
+            <h3 className="md-title">System Core</h3>
+            <div className="md-mini-card">
+              <div className="md-mini-card-row" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '12px', marginBottom: '12px' }}>
+                <span>PLATFORM</span>
+                <span className="md-highlight">GLYNNE</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '16px 0' }}>
+                <img src="/logos/GLYNNE.svg" alt="GLYNNE Logo" style={{ width: '80px', opacity: 0.4, filter: 'invert(1)' }} />
+              </div>
+              <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '12px', marginTop: '12px', display: 'flex', justifyContent: 'center' }}>
+                <a href="https://axglynne.com/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ color: '#a1a1aa', fontSize: '11px', textDecoration: 'none', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                  Policies
+                </a>
+              </div>
             </div>
           </div>
 
           <div className="md-section">
-            <h3 className="md-title">Tools</h3>
+            <h3 className="md-title" style={{ marginBottom: '8px' }}>Tools</h3>
+            <p style={{ fontSize: '11px', color: '#a1a1aa', marginBottom: '20px', lineHeight: 1.5, opacity: 0.8 }}>
+              Access the AX Artificial Intelligence engine and centralized management tools for your enterprise operations.
+            </p>
             <ul className="md-tools-list">
               {platformTools.map(tool => (
                 <li key={tool.name} className="md-tool-item">
@@ -296,35 +293,8 @@ export default function AssemblyDashboard() {
                     <span className="md-tool-icon">
                       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
                     </span>
-                    {tool.name}
+                    {tool.label}
                   </button>
-                  <div className={`md-tool-accordion ${activeTool === tool.name && !isFading ? 'expanded' : ''}`}>
-                    <div className="md-tool-accordion-content">
-                      <div className="md-tool-input-group">
-                        <label className="md-branding-title">AXGLYNNE <span>//</span> AI SYSTEM</label>
-                        <div className="md-smoke-box">
-                          <div className="md-smoke-particle"></div>
-                          <div className="md-smoke-particle p2"></div>
-                          <div className="md-smoke-particle p3"></div>
-                          <div className="md-smoke-text">AWAITING DIRECTIVE...</div>
-                        </div>
-                        <label style={{ marginTop: '8px' }}>Payload / Directive</label>
-                        <div className="md-mini-card">
-                          <div className="md-mini-card-row">
-                            <span>MODEL</span>
-                            <span>{tool.model}</span>
-                          </div>
-                          <div className="md-mini-card-row">
-                            <span>STATUS</span>
-                            <span className="md-highlight">AWAITING</span>
-                          </div>
-                          <div className="md-mini-card-desc">
-                            {tool.details}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </li>
               ))}
             </ul>
@@ -335,7 +305,7 @@ export default function AssemblyDashboard() {
         <div className="md-center">
           
           <div className={`md-info-card ${isFading ? 'fading-out' : 'fading-in'}`}>
-            <div className="info-title">{platformTools.find(t => t.name === activeTool)?.name}</div>
+            <div className="info-title">{platformTools.find(t => t.name === activeTool)?.label}</div>
             <div className="info-desc">{platformTools.find(t => t.name === activeTool)?.desc}</div>
             <Link href={`/${activeTool}`} className="md-start-btn">
               Start <span>&rarr;</span>
@@ -387,22 +357,22 @@ export default function AssemblyDashboard() {
               <a href="https://axglynne.com" target="_blank" rel="noopener noreferrer" className={`md-light-btn ${activeLight === 'Spot' ? 'active' : ''}`} onClick={() => setActiveLight('Spot')}>
                 <div className="icon-wrapper black"><div className="spot-icon"></div></div>
                 <span className="light-label">Spot</span>
-                <span className="light-subtext">Visita nuestra landing page</span>
+                <span className="light-subtext">Visit our landing page</span>
               </a>
               <a href="https://axglynne.com/About" target="_blank" rel="noopener noreferrer" className={`md-light-btn ${activeLight === 'Area' ? 'active' : ''}`} onClick={() => setActiveLight('Area')}>
                 <div className="icon-wrapper dotted"><div className="area-icon"></div></div>
                 <span className="light-label">Area</span>
-                <span className="light-subtext">Conoce en qué se especializa GLYNNE</span>
+                <span className="light-subtext">Discover what GLYNNE specializes in</span>
               </a>
               <a href="https://axglynne.com/Solutions" target="_blank" rel="noopener noreferrer" className={`md-light-btn ${activeLight === 'Target' ? 'active' : ''}`} onClick={() => setActiveLight('Target')}>
                 <div className="icon-wrapper"><div className="target-icon">&#x2199;</div></div>
                 <span className="light-label">Target</span>
-                <span className="light-subtext">Mira cómo modernizamos tu empresa con GLYNNE</span>
+                <span className="light-subtext">See how we modernize your company with GLYNNE</span>
               </a>
               <a href="https://axglynne.com/terms-of-service" target="_blank" rel="noopener noreferrer" className={`md-light-btn ${activeLight === 'Sun' ? 'active' : ''}`} onClick={() => setActiveLight('Sun')}>
                 <div className="icon-wrapper"><div className="sun-icon"></div></div>
                 <span className="light-label">Sun</span>
-                <span className="light-subtext">Conoce nuestros términos de servicio</span>
+                <span className="light-subtext">Read our terms of service</span>
               </a>
             </div>
           </div>

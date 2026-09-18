@@ -4,17 +4,19 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCurrentUser } from '@/lib/supabaseClient';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
-import BackButton from './components/BackButton';
 import MessageList from './components/MessageList';
 import ChatInput from './components/ChatInput';
 import SettingsPopup from './components/SettingsPopup';
+import ChatSidebar from './components/ChatSidebar';
 
 export default function AXChatPage() {
-  const [messages, setMessages] = useState<{role: 'user' | 'ai', content: string}[]>([]);
+  const [messages, setMessages] = useState<{ role: 'user' | 'ai', content: string }[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [hasStarted, setHasStarted] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [userProfile, setUserProfile] = useState<any>(null);
   const router = useRouter();
 
   // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS
@@ -22,13 +24,18 @@ export default function AXChatPage() {
     const checkUser = async () => {
       const user = await getCurrentUser();
       if (!user) {
-        router.replace('/login'); 
+        router.replace('/login');
+      } else {
+        setUserProfile({
+          ...user.raw.user_metadata,
+          email: user.email
+        });
       }
     };
     checkUser();
   }, [router]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Read URL parameters on mount
     const searchParams = new URLSearchParams(window.location.search);
     const q = searchParams.get('q');
@@ -53,46 +60,80 @@ export default function AXChatPage() {
     // Mock AI response
     setTimeout(() => {
       setIsTyping(false);
-      setMessages(prev => [...prev, { 
-        role: 'ai', 
-        content: "I am the AX Glynne intelligence core. This is a demonstration environment. I have received your message: \"" + userMsg + "\". I am designed to analyze business processes and architect AI solutions. How else can I assist you with your enterprise transformation today?" 
+      setMessages(prev => [...prev, {
+        role: 'ai',
+        content: "I am the AX Glynne intelligence core. This is a demonstration environment. I have received your message: \"" + userMsg + "\". I am designed to analyze business processes and architect AI solutions. How else can I assist you with your enterprise transformation today?"
       }]);
     }, 1500 + Math.random() * 1000); // Random delay between 1.5s and 2.5s
   };
 
   return (
     <BackgroundWrapper theme="dark">
-      <div style={{ 
-        minHeight: '100vh', 
-        width: '100%', 
-        position: 'relative', 
-        overflow: 'hidden'
-      }}>
-        
-        <BackButton />
+      <div style={{ display: 'flex', minHeight: '100vh', width: '100vw' }}>
 
-        <MessageList 
-          messages={messages} 
-          isTyping={isTyping} 
-          hasStarted={hasStarted} 
+        <ChatSidebar
+          isOpen={isSidebarOpen}
+          setIsOpen={setIsSidebarOpen}
+          userProfile={userProfile}
         />
 
-        <ChatInput 
-          inputValue={inputValue}
-          setInputValue={setInputValue}
-          handleSend={handleSend}
-          hasStarted={hasStarted}
-          setIsPopupOpen={setIsPopupOpen}
-        />
+        <div style={{
+          flex: 1,
+          position: 'relative',
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column'
+        }}>
 
+          <div style={{ position: 'absolute', top: 20, left: 20, zIndex: 60, display: 'flex', gap: 12 }}>
+            {!isSidebarOpen && (
+              <button
+                onClick={() => setIsSidebarOpen(true)}
+                style={{
+                  background: 'transparent',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: 6,
+                  color: '#fff',
+                  width: 40,
+                  height: 40,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer'
+                }}
+              >
+                <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
+                  <line x1="3" y1="12" x2="21" y2="12"></line>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+              </button>
+            )}
+          </div>
+
+          <MessageList
+            messages={messages}
+            isTyping={isTyping}
+            hasStarted={hasStarted}
+          />
+
+          <ChatInput
+            inputValue={inputValue}
+            setInputValue={setInputValue}
+            handleSend={handleSend}
+            hasStarted={hasStarted}
+            setIsPopupOpen={setIsPopupOpen}
+          />
+        </div>
       </div>
 
-      <SettingsPopup 
-        isPopupOpen={isPopupOpen} 
-        setIsPopupOpen={setIsPopupOpen} 
+      <SettingsPopup
+        isPopupOpen={isPopupOpen}
+        setIsPopupOpen={setIsPopupOpen}
       />
 
-      <style dangerouslySetInnerHTML={{__html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         @keyframes typingBounce {
           0%, 60%, 100% { transform: translateY(0); }
           30% { transform: translateY(-4px); }

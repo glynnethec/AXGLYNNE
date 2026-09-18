@@ -16,6 +16,15 @@ export default function BackgroundWrapper({ children, theme = 'light', disableAu
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const originalBg = document.body.style.backgroundColor;
+    document.body.style.backgroundColor = theme === 'dark' ? '#0b0b0d' : '#ffffff';
+    return () => {
+      document.body.style.backgroundColor = originalBg;
+    };
+  }, [theme]);
+
+  React.useEffect(() => {
     if (typeof window === 'undefined' || window.innerWidth > 700 || disableAutoAnimate) return;
 
     const intervalId = setInterval(() => {
