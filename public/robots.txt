@@ -1,0 +1,9 @@
+User-Agent: *
+Allow: /
+Disallow: /Panel
+Disallow: /login
+Disallow: /AX_chat
+Disallow: /AX_voice
+Disallow: /api/
+
+Sitemap: https://axglynne.com/sitemap.xml
