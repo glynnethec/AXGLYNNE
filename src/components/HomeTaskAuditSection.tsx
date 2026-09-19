@@ -174,7 +174,20 @@ export default function HomeTaskAuditSection() {
         {/* Console Section (Floating without Card) */}
         <div className="mobile-stack" style={{ position: 'relative', zIndex: 10, width: '100%', boxSizing: 'border-box', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'space-between', gap: '60px', padding: '0', backgroundColor: 'transparent' }}>
           
-          <div className="mobile-console-wrapper" style={{ flex: '1.5 1 400px', display: 'flex', justifyContent: 'flex-start' }}>
+          <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
+            <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
+              Inside Our Most Radical Project
+            </h1>
+            <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
+              Witness the autonomous architecture that redefined an entire operational ecosystem. We engineered a fully independent AI system for Servex—capable of processing infinite data, making real-time cognitive decisions, and executing workflows without human intervention. 
+            </p>
+            
+            <div className="docs-menu-container">
+              <DocsMenu />
+            </div>
+          </div>
+          
+          <div className="mobile-console-wrapper" style={{ flex: '1.5 1 400px', display: 'flex', justifyContent: 'flex-end' }}>
             <div style={{
               backgroundColor: 'transparent', 
               borderRadius: '16px',
@@ -195,19 +208,6 @@ export default function HomeTaskAuditSection() {
                 <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#e5e5e5' }} />
               </div>
               <AuditTaskCards />
-            </div>
-          </div>
-          
-          <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
-            <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
-              Inside Our Most Radical Project
-            </h1>
-            <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
-              Witness the autonomous architecture that redefined an entire operational ecosystem. We engineered a fully independent AI system for Servex—capable of processing infinite data, making real-time cognitive decisions, and executing workflows without human intervention. 
-            </p>
-            
-            <div className="docs-menu-container">
-              <DocsMenu />
             </div>
           </div>
 

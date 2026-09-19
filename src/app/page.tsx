@@ -8,6 +8,7 @@ import HomeAuditSection from '@/components/HomeAuditSection';
 import ClientLogosSection from '@/components/ClientLogosSection';
 import HomeTaskAuditSection from '@/components/HomeTaskAuditSection';
 import HomeSecondAuditSection from '@/components/HomeSecondAuditSection';
+import HomeThirdAuditSection from '@/components/HomeThirdAuditSection';
 import WorkflowDiagram from '@/components/WorkflowDiagram';
 import VideoEcosystemSection from '@/components/VideoEcosystemSection';
 import Footer from '@/app/components/Footer';
@@ -57,7 +58,7 @@ export default function Home() {
             }
             @media (max-width: 700px) {
               .banner-main-container {
-                height: 50vh !important;
+                height: 100vh !important;
               }
               .banner-text-container {
                 align-items: center !important;
@@ -172,6 +173,7 @@ export default function Home() {
           <HomeAuditSection />
           <HomeTaskAuditSection />
           <HomeSecondAuditSection />
+          <HomeThirdAuditSection />
         </div>
         <ClientLogosSection />
         <WorkflowDiagram />

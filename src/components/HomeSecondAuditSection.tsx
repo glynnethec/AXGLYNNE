@@ -91,7 +91,7 @@ function SecondAuditTaskCards() {
 
 export default function HomeSecondAuditSection() {
   return (
-    <section className="mobile-audit-section-two" style={{ width: '100%', minHeight: 'auto', height: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4rem 1.5rem', position: 'relative', zIndex: 10 }}>
+    <section className="mobile-audit-section-two" style={{ width: '100%', minHeight: '70vh', height: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4rem 1.5rem', position: 'relative', zIndex: 10 }}>
       <style>{`
         @keyframes console-blink-two {
           0%, 100% { opacity: 1; }
@@ -149,13 +149,11 @@ export default function HomeSecondAuditSection() {
           
           <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
             <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
-              Inside Our Most Radical Project
+              Absolute Governance & Transparency
             </h1>
             <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
-              Witness the autonomous architecture that redefined an entire operational ecosystem. We engineered a fully independent AI system for Servex—capable of processing infinite data, making real-time cognitive decisions, and executing workflows without human intervention. 
+              We operate on a foundation of zero-trust security and complete transparency. Explore the strict legal frameworks, data privacy protocols, and the core vision that drive our autonomous infrastructure. Manage your enterprise AI nodes securely and independently.
             </p>
-            
-
           </div>
           
           <div className="mobile-console-wrapper-two" style={{ flex: '1.5 1 250px', display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
