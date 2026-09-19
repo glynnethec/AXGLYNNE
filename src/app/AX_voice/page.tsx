@@ -25,6 +25,12 @@ export default function AXVoicePage() {
   
   const recognitionRef = useRef<any>(null);
   const synthRef = useRef<SpeechSynthesis | null>(null);
+  const orbStateRef = useRef(orbState);
+
+  // Keep ref in sync
+  useEffect(() => {
+    orbStateRef.current = orbState;
+  }, [orbState]);
 
   // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS
   useEffect(() => {
@@ -37,7 +43,7 @@ export default function AXVoicePage() {
     checkUser();
   }, [router]);
 
-  // Inicializar Web Speech API
+  // Inicializar Web Speech API (Solo una vez)
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -56,8 +62,10 @@ export default function AXVoicePage() {
         };
 
         recognition.onend = () => {
-          if (orbState === 'listening') {
+          if (orbStateRef.current === 'listening') {
              handleSendTranscript();
+          } else {
+             setOrbState('idle');
           }
         };
         
@@ -75,7 +83,7 @@ export default function AXVoicePage() {
         synthRef.current = window.speechSynthesis;
       }
     }
-  }, [orbState]); // Depend on orbState to know if we should send when recognition ends
+  }, []); // Run only on mount
 
   const handleSendTranscript = async () => {
     // Usamos el valor actual del estado 'transcript' usando una referencia u obteniéndolo directamente
@@ -148,7 +156,14 @@ export default function AXVoicePage() {
     } else {
       setTranscript('');
       setAiResponse('');
-      if (synthRef.current) synthRef.current.cancel(); // Parar a AX si está hablando
+      
+      // DESBLOQUEAR EL MOTOR DE VOZ (Hack para navegadores estrictos)
+      if (synthRef.current) {
+        synthRef.current.cancel();
+        const unlock = new SpeechSynthesisUtterance('');
+        synthRef.current.speak(unlock);
+      }
+      
       setOrbState('listening');
       recognitionRef.current?.start();
     }
