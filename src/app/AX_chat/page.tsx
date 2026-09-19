@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getCurrentUser, fetchChatHistory, saveChatHistory } from '@/lib/supabaseClient';
+import { getCurrentUser, fetchChatList, fetchChatMessages, createChatHistory, updateChatHistory } from '@/lib/supabaseClient';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
 import MessageList from './components/MessageList';
 import ChatInput from './components/ChatInput';
@@ -18,6 +18,11 @@ export default function AXChatPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [showExitModal, setShowExitModal] = useState(false);
+  
+  // Multi-Chat States
+  const [chatList, setChatList] = useState<{ id: number, role: string, created_at: string }[]>([]);
+  const [currentChatId, setCurrentChatId] = useState<number | null>(null);
+  
   const router = useRouter();
 
   // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS
@@ -62,19 +67,35 @@ export default function AXChatPage() {
     };
   }, []);
 
-  // 📥 CARGAR HISTORIAL DE SUPABASE
+  // 📥 CARGAR LISTA DE CHATS DE SUPABASE
   useEffect(() => {
-    const loadHistory = async () => {
+    const loadChats = async () => {
       if (userProfile?.id) {
-        const history = await fetchChatHistory(userProfile.id);
-        if (history && history.length > 0) {
-          setMessages(history);
-          setHasStarted(true);
+        const list = await fetchChatList(userProfile.id);
+        setChatList(list);
+        if (list && list.length > 0) {
+          // Opcional: auto-cargar el último chat
+          // Pero dejaremos que inicie uno nuevo por defecto, 
+          // a menos que el usuario seleccione uno.
         }
       }
     };
-    loadHistory();
+    loadChats();
   }, [userProfile]);
+
+  // 📝 ACTIONS DE LA BARRA LATERAL
+  const handleNewChat = () => {
+    setMessages([]);
+    setCurrentChatId(null);
+    setHasStarted(false);
+  };
+
+  const handleSelectChat = async (chatId: number) => {
+    setCurrentChatId(chatId);
+    const history = await fetchChatMessages(chatId);
+    setMessages(history);
+    setHasStarted(true);
+  };
 
   useEffect(() => {
     // Read URL parameters on mount
@@ -100,8 +121,23 @@ export default function AXChatPage() {
     setIsTyping(true);
 
     // 💾 Guardar TODO el historial (con el mensaje del usuario recién agregado)
+    let activeChatId = currentChatId;
+    
     if (userProfile?.id) {
-      saveChatHistory(userProfile.id, newMessages);
+      if (!activeChatId) {
+        // Crear nuevo chat
+        const newId = await createChatHistory(userProfile.id, newMessages);
+        if (newId) {
+          activeChatId = newId;
+          setCurrentChatId(newId);
+          // Refrescar lista de la barra lateral
+          const list = await fetchChatList(userProfile.id);
+          setChatList(list);
+        }
+      } else {
+        // Actualizar chat existente
+        updateChatHistory(activeChatId, newMessages);
+      }
     }
 
     try {
@@ -119,8 +155,8 @@ export default function AXChatPage() {
         setMessages(prev => {
           const finalMessages = [...prev, { role: 'ai' as const, content: aiResponse }];
           // 💾 Guardar TODO el historial (ahora con la respuesta de la IA)
-          if (userProfile?.id) {
-            saveChatHistory(userProfile.id, finalMessages);
+          if (activeChatId) {
+            updateChatHistory(activeChatId, finalMessages);
           }
           return finalMessages;
         });
@@ -148,6 +184,10 @@ export default function AXChatPage() {
           isOpen={isSidebarOpen}
           setIsOpen={setIsSidebarOpen}
           userProfile={userProfile}
+          chatList={chatList}
+          onNewChat={handleNewChat}
+          onSelectChat={handleSelectChat}
+          currentChatId={currentChatId}
         />
 
         <div style={{
