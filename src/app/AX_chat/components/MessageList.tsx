@@ -25,7 +25,7 @@ export default function MessageList({ messages, isTyping, hasStarted }: MessageL
   }, [messages, isTyping]);
 
   return (
-    <div style={{
+    <div className="msg-list-wrapper" style={{
       position: 'absolute',
       top: 0,
       left: 0,
@@ -48,7 +48,7 @@ export default function MessageList({ messages, isTyping, hasStarted }: MessageL
              justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start',
              width: '100%'
            }}>
-             <div style={{
+             <div className="msg-bubble" style={{
                maxWidth: '80%',
                padding: m.role === 'user' ? '16px 24px' : '16px 0',
                borderRadius: '24px',
@@ -102,6 +102,18 @@ export default function MessageList({ messages, isTyping, hasStarted }: MessageL
          )}
          <div ref={messagesEndRef} style={{ height: '20px' }} />
       </div>
+      <style>{`
+        @media (max-width: 700px) {
+          .msg-list-wrapper {
+            padding: 4rem 1rem 10px 1rem !important;
+            bottom: 120px !important;
+          }
+          .msg-bubble {
+            font-size: 14px !important;
+            max-width: 90% !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

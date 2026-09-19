@@ -188,6 +188,7 @@ export default function AXChatPage() {
           onNewChat={handleNewChat}
           onSelectChat={handleSelectChat}
           currentChatId={currentChatId}
+          onExit={() => setShowExitModal(true)}
         />
 
         <div style={{
@@ -224,33 +225,7 @@ export default function AXChatPage() {
             )}
           </div>
 
-          {/* BOTÓN SALIR MANUAL */}
-          <div style={{ position: 'absolute', top: 20, right: 20, zIndex: 60 }}>
-            <button
-              onClick={() => setShowExitModal(true)}
-              style={{
-                background: 'rgba(20, 20, 20, 0.5)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: '8px',
-                color: '#fff',
-                padding: '8px 12px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                cursor: 'pointer',
-                fontSize: '13px',
-                fontWeight: 500,
-                backdropFilter: 'blur(10px)',
-                transition: 'background 0.3s'
-              }}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-              Exit
-            </button>
-          </div>
+
 
           <MessageList
             messages={messages}

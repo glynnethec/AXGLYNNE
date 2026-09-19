@@ -10,9 +10,10 @@ interface ChatSidebarProps {
   onNewChat: () => void;
   onSelectChat: (chatId: number) => void;
   currentChatId: number | null;
+  onExit: () => void;
 }
 
-export default function ChatSidebar({ isOpen, setIsOpen, userProfile, chatList, onNewChat, onSelectChat, currentChatId }: ChatSidebarProps) {
+export default function ChatSidebar({ isOpen, setIsOpen, userProfile, chatList, onNewChat, onSelectChat, currentChatId, onExit }: ChatSidebarProps) {
 
 
   return (
@@ -25,7 +26,7 @@ export default function ChatSidebar({ isOpen, setIsOpen, userProfile, chatList, 
       <div className={`ax-sidebar-container ${isOpen ? 'open' : ''}`}>
         <div className="ax-sidebar-header" style={{ flexDirection: 'column', alignItems: 'stretch', gap: '16px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <BackButton />
+            <BackButton onClick={onExit} />
             <button className="ax-sidebar-close-btn" onClick={() => setIsOpen(false)}>
               <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
                 <line x1="18" y1="6" x2="6" y2="18"></line>

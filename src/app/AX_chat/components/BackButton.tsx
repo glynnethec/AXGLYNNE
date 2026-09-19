@@ -1,9 +1,8 @@
-import Link from 'next/link';
-
-export default function BackButton() {
+export default function BackButton({ onClick }: { onClick?: () => void }) {
   return (
-    <Link href="/Panel" style={{ textDecoration: 'none', display: 'inline-block' }}>
-      <div style={{
+    <div 
+      onClick={onClick}
+      style={{
         padding: '10px 20px',
         borderRadius: '999px',
         backgroundColor: 'rgba(255,255,255,0.05)',
@@ -22,13 +21,12 @@ export default function BackButton() {
       }}
       onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
       onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'; e.currentTarget.style.transform = 'translateY(0)' }}
-      >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-           <line x1="19" y1="12" x2="5" y2="12"></line>
-           <polyline points="12 19 5 12 12 5"></polyline>
-        </svg>
-        Panel
-      </div>
-    </Link>
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+         <line x1="19" y1="12" x2="5" y2="12"></line>
+         <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Panel
+    </div>
   );
 }

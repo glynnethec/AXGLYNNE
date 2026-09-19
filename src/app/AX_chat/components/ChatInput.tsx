@@ -25,7 +25,7 @@ export default function ChatInput({ inputValue, setInputValue, handleSend, hasSt
     }}>
       
       {/* Centered Heading */}
-      <h1 style={{
+      <h1 className="chat-heading" style={{
         position: 'absolute',
         bottom: '100%',
         left: '50%',
@@ -44,7 +44,7 @@ export default function ChatInput({ inputValue, setInputValue, handleSend, hasSt
         How can AX help you today?
       </h1>
 
-      <form onSubmit={handleSend} style={{
+      <form className="chat-input-form" onSubmit={handleSend} style={{
         display: 'flex',
         flexDirection: 'column',
         width: '100%',
@@ -58,6 +58,7 @@ export default function ChatInput({ inputValue, setInputValue, handleSend, hasSt
         transition: 'all 0.5s ease'
       }}>
         <textarea
+          className="chat-textarea"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={(e) => {
@@ -187,7 +188,17 @@ export default function ChatInput({ inputValue, setInputValue, handleSend, hasSt
           }
           .chat-input-wrapper.started {
             bottom: 1rem !important;
-            width: calc(100% - 2rem) !important;
+            width: calc(100% - 1rem) !important;
+          }
+          .chat-input-form {
+            padding: 10px 12px !important;
+            border-radius: 18px !important;
+          }
+          .chat-textarea {
+            font-size: 14px !important;
+          }
+          .chat-heading {
+            font-size: 26px !important;
           }
         }
       `}</style>
