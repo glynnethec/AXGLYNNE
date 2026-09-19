@@ -1,14 +1,30 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCurrentUser } from '@/lib/supabaseClient';
 import GravityBackground from '../AX_chat/components/GravityBackground';
 import VoiceOrb from './components/VoiceOrb';
 import BackButton from '../AX_chat/components/BackButton';
 
+// Type definitions for Web Speech API
+declare global {
+  interface Window {
+    SpeechRecognition: any;
+    webkitSpeechRecognition: any;
+  }
+}
+
 export default function AXVoicePage() {
   const router = useRouter();
+
+  const [orbState, setOrbState] = useState<'idle' | 'listening' | 'thinking' | 'speaking'>('idle');
+  const [transcript, setTranscript] = useState('');
+  const [aiResponse, setAiResponse] = useState('');
+  const [messages, setMessages] = useState<{role: string, content: string}[]>([]);
+  
+  const recognitionRef = useRef<any>(null);
+  const synthRef = useRef<SpeechSynthesis | null>(null);
 
   // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS
   useEffect(() => {
@@ -20,6 +36,123 @@ export default function AXVoicePage() {
     };
     checkUser();
   }, [router]);
+
+  // Inicializar Web Speech API
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        const recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = true;
+        recognition.lang = 'es-ES'; // o 'en-US'
+        
+        recognition.onresult = (event: any) => {
+          let currentTranscript = '';
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            currentTranscript += event.results[i][0].transcript;
+          }
+          setTranscript(currentTranscript);
+        };
+
+        recognition.onend = () => {
+          if (orbState === 'listening') {
+             handleSendTranscript();
+          }
+        };
+        
+        recognition.onerror = (event: any) => {
+          console.error('Speech recognition error', event.error);
+          setOrbState('idle');
+        };
+
+        recognitionRef.current = recognition;
+      } else {
+        console.warn('SpeechRecognition API not supported in this browser.');
+      }
+      
+      if (window.speechSynthesis) {
+        synthRef.current = window.speechSynthesis;
+      }
+    }
+  }, [orbState]); // Depend on orbState to know if we should send when recognition ends
+
+  const handleSendTranscript = async () => {
+    // Usamos el valor actual del estado 'transcript' usando una referencia u obteniéndolo directamente
+    setTranscript((currentText) => {
+      if (!currentText.trim()) {
+        setOrbState('idle');
+        return currentText;
+      }
+      
+      setOrbState('thinking');
+      
+      const newMessages = [...messages, { role: 'user', content: currentText }];
+      setMessages(newMessages);
+
+      // Fetch al backend
+      fetch('http://localhost:8001/api/voice_chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: newMessages })
+      })
+      .then(res => res.json())
+      .then(data => {
+        const reply = data.reply;
+        setAiResponse(reply);
+        setMessages(prev => [...prev, { role: 'ai', content: reply }]);
+        speakResponse(reply);
+      })
+      .catch(err => {
+        console.error('Error fetching voice_chat:', err);
+        setOrbState('idle');
+      });
+
+      return currentText;
+    });
+  };
+
+  const speakResponse = (text: string) => {
+    if (synthRef.current) {
+      synthRef.current.cancel(); // Stop any previous speech
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'es-ES';
+      utterance.pitch = 1.0;
+      utterance.rate = 1.0;
+      
+      utterance.onstart = () => {
+        setOrbState('speaking');
+      };
+      
+      utterance.onend = () => {
+        setOrbState('idle');
+        setTranscript('');
+        setAiResponse('');
+      };
+      
+      utterance.onerror = (e) => {
+        console.error('SpeechSynthesis error', e);
+        setOrbState('idle');
+      };
+      
+      synthRef.current.speak(utterance);
+    } else {
+      setOrbState('idle');
+    }
+  };
+
+  const toggleListening = () => {
+    if (orbState === 'listening') {
+      recognitionRef.current?.stop();
+      // El onend lanzará handleSendTranscript
+    } else {
+      setTranscript('');
+      setAiResponse('');
+      if (synthRef.current) synthRef.current.cancel(); // Parar a AX si está hablando
+      setOrbState('listening');
+      recognitionRef.current?.start();
+    }
+  };
 
   return (
     <div style={{ 
@@ -64,14 +197,55 @@ export default function AXVoicePage() {
               </svg>
             </div>
 
+            {/* AI Response Text */}
             <div style={{
-              animation: 'orbReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both',
-              width: '100%',
-              maxWidth: '400px',
-              aspectRatio: '1/1'
+              position: 'absolute',
+              top: '15%',
+              width: '80%',
+              maxWidth: '600px',
+              textAlign: 'center',
+              color: '#ffffff',
+              fontSize: '18px',
+              fontWeight: 400,
+              opacity: aiResponse ? 1 : 0,
+              transition: 'opacity 0.5s ease',
+              textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+              zIndex: 20
             }}>
-              <VoiceOrb />
+              {aiResponse}
             </div>
+
+            {/* ORB */}
+            <div 
+              style={{
+                animation: 'orbReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both',
+                width: '100%',
+                maxWidth: '400px',
+                aspectRatio: '1/1',
+                cursor: 'pointer',
+                filter: orbState === 'listening' ? 'brightness(1.5) drop-shadow(0 0 30px rgba(255,255,255,0.2))' : 'none',
+                transition: 'filter 0.3s ease'
+              }}
+              onClick={toggleListening}
+            >
+              <VoiceOrb orbState={orbState === 'thinking' ? 'thinking' : 'idle'} />
+            </div>
+
+            {/* User Transcript Text */}
+            <div style={{
+              position: 'absolute',
+              bottom: '20%',
+              width: '80%',
+              maxWidth: '600px',
+              textAlign: 'center',
+              color: 'rgba(255, 255, 255, 0.7)',
+              fontSize: '16px',
+              minHeight: '24px',
+              zIndex: 20
+            }}>
+              {transcript || (orbState === 'listening' ? "Listening..." : "Tap the orb to speak")}
+            </div>
+            
           </div>
         </GravityBackground>
       </div>
