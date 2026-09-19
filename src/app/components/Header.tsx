@@ -234,7 +234,9 @@ export default function Header() {
           <div className="mega-section">
             <span className="mega-section-title">Explore Core Architecture</span>
             <Link href="/" className={`mega-nav-link ${pathname === '/' ? 'active' : ''}`}>Return to Main Hub</Link>
+            <Link href="/Methodology" className={`mega-nav-link ${pathname === '/Methodology' ? 'active' : ''}`}>Our Methodology (How We Operate)</Link>
             <Link href="/Solutions" className={`mega-nav-link ${pathname === '/Solutions' ? 'active' : ''}`}>Our Most Radical Project</Link>
+            <Link href="/Industries" className={`mega-nav-link ${pathname === '/Industries' ? 'active' : ''}`}>B2B Process Automation</Link>
             <Link href="/ia_vailable" className={`mega-nav-link ${pathname === '/ia_vailable' ? 'active' : ''}`}>Explore Available AI Models</Link>
             <Link href="/Segurity" className={`mega-nav-link ${pathname === '/Segurity' ? 'active' : ''}`}>Contain and Govern AI Power</Link>
           </div>
@@ -250,6 +252,8 @@ export default function Header() {
           <div className="mega-section">
             <span className="mega-section-title">Learn About Our Vision</span>
             <Link href="/About" className={`mega-nav-link ${pathname === '/About' ? 'active' : ''}`}>Discover Our Company Vision</Link>
+            <Link href="/Blog" className={`mega-nav-link ${pathname === '/Blog' ? 'active' : ''}`}>Insights & Blog</Link>
+            <Link href="/faq" className={`mega-nav-link ${pathname === '/faq' ? 'active' : ''}`}>Frequently Asked Questions</Link>
             <Link href="/contact" className={`mega-nav-link ${pathname === '/contact' ? 'active' : ''}`}>Get in Touch Directly</Link>
             <Link href="/Support" className={`mega-nav-link ${pathname === '/Support' ? 'active' : ''}`}>Support</Link>
           </div>

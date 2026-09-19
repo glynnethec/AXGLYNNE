@@ -41,11 +41,11 @@ export default function ClientLogosSection() {
         }
         .desktop-logos {
           display: flex;
-          flex-wrap: wrap;
+          flex-wrap: nowrap;
           justify-content: center;
           align-items: center;
-          gap: 6rem;
-          max-width: 1200px;
+          gap: 2rem;
+          max-width: 1400px;
         }
         .mobile-carousel {
           display: none;
@@ -71,58 +71,80 @@ export default function ClientLogosSection() {
       <div className="desktop-logos">
         {logos.map((logo, i) => (
           <div key={i} style={{ 
-            opacity: 0.65,
-            filter: 'grayscale(100%) contrast(150%)',
-            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            cursor: 'default'
+            gap: '16px',
+            padding: '20px 12px',
+            background: 'rgba(250, 250, 252, 0.5)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(0,0,0,0.06)',
+            borderRadius: '16px',
+            boxShadow: '0 4px 24px rgba(0,0,0,0.02)',
+            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+            cursor: 'default',
+            width: '220px',
+            height: '150px'
           }}
           onMouseOver={(e) => {
-            e.currentTarget.style.opacity = '1';
-            e.currentTarget.style.filter = 'grayscale(0%) contrast(100%)';
-            e.currentTarget.style.transform = 'scale(1.05)';
+            e.currentTarget.style.transform = 'translateY(-6px)';
+            e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.06)';
+            const img = e.currentTarget.querySelector('img');
+            if (img) img.style.filter = 'grayscale(0%) contrast(100%)';
           }}
           onMouseOut={(e) => {
-            e.currentTarget.style.opacity = '0.65';
-            e.currentTarget.style.filter = 'grayscale(100%) contrast(150%)';
-            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 4px 24px rgba(0,0,0,0.02)';
+            const img = e.currentTarget.querySelector('img');
+            if (img) img.style.filter = 'grayscale(100%) opacity(0.7)';
           }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
               src={logo.src} 
               alt={logo.alt} 
-              style={{ maxHeight: logo.height + 'px', maxWidth: '250px', objectFit: 'contain' }} 
+              style={{ maxHeight: (logo.height * 0.8) + 'px', maxWidth: '160px', objectFit: 'contain', filter: 'grayscale(100%) opacity(0.7)', transition: 'all 0.4s ease' }} 
             />
+            <span style={{ fontSize: '14px', fontWeight: 600, color: '#333', textAlign: 'center', letterSpacing: '-0.01em' }}>
+              {logo.alt}
+            </span>
           </div>
         ))}
       </div>
 
       {/* Mobile Carousel Layout */}
       <div className="mobile-carousel">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', maxWidth: '300px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', maxWidth: '340px' }}>
           <button onClick={prev} style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: '10px' }}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2"><path d="M15 18l-6-6 6-6" /></svg>
           </button>
           
           <div style={{ 
-            height: '100px', 
-            width: '180px', 
+            height: '180px', 
+            width: '240px', 
             display: 'flex', 
+            flexDirection: 'column',
             alignItems: 'center', 
             justifyContent: 'center',
-            opacity: 0.75,
-            filter: 'grayscale(100%) contrast(150%)',
+            gap: '20px',
+            padding: '24px 16px',
+            background: 'rgba(250, 250, 252, 0.5)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(0,0,0,0.06)',
+            borderRadius: '16px',
+            boxShadow: '0 4px 24px rgba(0,0,0,0.02)',
           }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
-              key={currentIndex}
+              key={`img-${currentIndex}`}
               src={logos[currentIndex].src} 
               alt={logos[currentIndex].alt} 
-              style={{ maxHeight: logos[currentIndex].height + 'px', maxWidth: '100%', objectFit: 'contain', animation: 'fadeIn 0.3s ease' }} 
+              style={{ maxHeight: (logos[currentIndex].height * 0.8) + 'px', maxWidth: '160px', objectFit: 'contain', filter: 'grayscale(100%) opacity(0.8)', animation: 'fadeIn 0.3s ease' }} 
             />
+            <span key={`text-${currentIndex}`} style={{ fontSize: '14px', fontWeight: 600, color: '#333', textAlign: 'center', letterSpacing: '-0.01em', animation: 'fadeIn 0.3s ease' }}>
+              {logos[currentIndex].alt}
+            </span>
             <style>{`
               @keyframes fadeIn {
                 from { opacity: 0; transform: scale(0.95); }

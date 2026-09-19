@@ -264,49 +264,7 @@ export default function LiquidOrb({
         }
       }
 
-      // --- Draw Grid Lines ---
-      ctx.strokeStyle = theme === 'dark' ? `rgba(255, 255, 255, ${gridOpacity})` : `rgba(0, 0, 0, ${gridOpacity})`;
-      ctx.lineWidth = 1;  
-
-      for (let i = 0; i < numLonLines; i++) {
-        const theta = (i * Math.PI * 2) / numLonLines;
-        
-        ctx.beginPath();
-        let first = true;
-        for (let j = 0; j <= resolution; j++) {
-          const phi = (j * Math.PI) / resolution - Math.PI / 2;
-          const px = Math.cos(phi) * Math.cos(theta);
-          const py = Math.sin(phi);
-          const pz = Math.cos(phi) * Math.sin(theta);
-          const p2d = project(px, py, pz);
-          
-          if (p2d.z > -0.15) {
-             if (first) { ctx.moveTo(p2d.x, p2d.y); first = false; } 
-             else { ctx.lineTo(p2d.x, p2d.y); }
-          } else { first = true; }
-        }
-        ctx.stroke();
-      }
-
-      for (let j = 1; j < numLatLines; j++) {
-        const phi = (j * Math.PI) / numLatLines - Math.PI / 2;
-        
-        ctx.beginPath();
-        let first = true;
-        for (let i = 0; i <= resolution; i++) {
-          const theta = (i * Math.PI * 2) / resolution;
-          const px = Math.cos(phi) * Math.cos(theta);
-          const py = Math.sin(phi);
-          const pz = Math.cos(phi) * Math.sin(theta);
-          const p2d = project(px, py, pz);
-          
-          if (p2d.z > -0.15) {
-             if (first) { ctx.moveTo(p2d.x, p2d.y); first = false; } 
-             else { ctx.lineTo(p2d.x, p2d.y); }
-          } else { first = true; }
-        }
-        ctx.stroke();
-      }
+      // --- Draw Grid Lines Removed ---
 
       animationFrame = requestAnimationFrame(render);
     };

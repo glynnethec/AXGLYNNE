@@ -247,7 +247,7 @@ export default function AssemblyDashboard() {
             </div>
           )}
 
-          <div className="md-section">
+          <div className="md-section system-core-section">
             <h3 className="md-title">System Core</h3>
             <div className="md-mini-card">
               <div className="md-mini-card-row" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '12px', marginBottom: '12px' }}>

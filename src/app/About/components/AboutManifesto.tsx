@@ -370,6 +370,20 @@ export default function AboutManifesto() {
               <p style={{ fontSize: '13px', color: '#111111', fontWeight: 500, letterSpacing: '0.15em', textTransform: 'uppercase', margin: '8px 0 0 0' }}>
                 Founder & CEO
               </p>
+              <div style={{ marginTop: '16px' }}>
+                <a href="/CEO_GLYNNE" style={{
+                  fontSize: '13px',
+                  color: '#86868b',
+                  textDecoration: 'none',
+                  fontWeight: 500,
+                  transition: 'color 0.2s ease'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.color = '#111'}
+                onMouseOut={(e) => e.currentTarget.style.color = '#86868b'}
+                >
+                  View Full Profile →
+                </a>
+              </div>
             </div>
           </div>
         </div>

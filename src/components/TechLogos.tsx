@@ -12,51 +12,51 @@ const techCategories = [
   {
     title: '🧠 AI / LLM',
     techs: [
-      { name: 'OpenAI / ChatGPT', Icon: TbBrain },
-      { name: 'Google Gemini', Icon: SiGooglegemini },
-      { name: 'Groq', Icon: TbBrain },
-      { name: 'LangChain', Icon: SiLangchain },
-      { name: 'LangGraph', Icon: FaNetworkWired },
-      { name: 'scikit-learn', Icon: SiScikitlearn },
-      { name: 'PyTorch', Icon: SiPytorch },
-      { name: 'Hugging Face', Icon: SiHuggingface },
-      { name: 'CrewAI', Icon: TbRobot },
-      { name: 'Llama', Icon: SiMeta }
+      { name: 'OpenAI / ChatGPT', Icon: TbBrain, url: 'https://openai.com' },
+      { name: 'Google Gemini', Icon: SiGooglegemini, url: 'https://gemini.google.com' },
+      { name: 'Groq', Icon: TbBrain, url: 'https://groq.com' },
+      { name: 'LangChain', Icon: SiLangchain, url: 'https://www.langchain.com' },
+      { name: 'LangGraph', Icon: FaNetworkWired, url: 'https://www.langchain.com/langgraph' },
+      { name: 'scikit-learn', Icon: SiScikitlearn, url: 'https://scikit-learn.org' },
+      { name: 'PyTorch', Icon: SiPytorch, url: 'https://pytorch.org' },
+      { name: 'Hugging Face', Icon: SiHuggingface, url: 'https://huggingface.co' },
+      { name: 'CrewAI', Icon: TbRobot, url: 'https://www.crewai.com' },
+      { name: 'Llama', Icon: SiMeta, url: 'https://llama.meta.com' }
     ]
   },
   {
     title: '⚙️ Desarrollo',
     techs: [
-      { name: 'Python', Icon: SiPython },
-      { name: 'JavaScript', Icon: SiJavascript },
-      { name: 'TypeScript', Icon: SiTypescript },
-      { name: 'Next.js', Icon: SiNextdotjs },
-      { name: 'React', Icon: SiReact },
-      { name: 'Node.js', Icon: SiNodedotjs },
-      { name: 'FastAPI', Icon: SiFastapi },
-      { name: 'Pydantic', Icon: SiPython },
-      { name: 'REST APIs', Icon: TbApi },
-      { name: 'WebSockets', Icon: TbPlug }
+      { name: 'Python', Icon: SiPython, url: 'https://www.python.org' },
+      { name: 'JavaScript', Icon: SiJavascript, url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript' },
+      { name: 'TypeScript', Icon: SiTypescript, url: 'https://www.typescriptlang.org' },
+      { name: 'Next.js', Icon: SiNextdotjs, url: 'https://nextjs.org' },
+      { name: 'React', Icon: SiReact, url: 'https://react.dev' },
+      { name: 'Node.js', Icon: SiNodedotjs, url: 'https://nodejs.org' },
+      { name: 'FastAPI', Icon: SiFastapi, url: 'https://fastapi.tiangolo.com' },
+      { name: 'Pydantic', Icon: SiPython, url: 'https://docs.pydantic.dev' },
+      { name: 'REST APIs', Icon: TbApi, url: 'https://aws.amazon.com/what-is/restful-api/' },
+      { name: 'WebSockets', Icon: TbPlug, url: 'https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API' }
     ]
   },
   {
     title: '🗄️ Datos / Backend',
     techs: [
-      { name: 'Supabase', Icon: SiSupabase },
-      { name: 'PostgreSQL', Icon: SiPostgresql },
-      { name: 'SQL', Icon: FaDatabase },
-      { name: 'MySQL', Icon: SiMysql },
-      { name: 'Redis', Icon: SiRedis }
+      { name: 'Supabase', Icon: SiSupabase, url: 'https://supabase.com' },
+      { name: 'PostgreSQL', Icon: SiPostgresql, url: 'https://www.postgresql.org' },
+      { name: 'SQL', Icon: FaDatabase, url: 'https://en.wikipedia.org/wiki/SQL' },
+      { name: 'MySQL', Icon: SiMysql, url: 'https://www.mysql.com' },
+      { name: 'Redis', Icon: SiRedis, url: 'https://redis.io' }
     ]
   },
   {
     title: '☁️ Infraestructura / Deployment',
     techs: [
-      { name: 'AWS', Icon: FaAws },
-      { name: 'Vercel', Icon: SiVercel },
-      { name: 'Render', Icon: SiRender },
-      { name: 'Docker', Icon: SiDocker },
-      { name: 'GitHub', Icon: SiGithub }
+      { name: 'AWS', Icon: FaAws, url: 'https://aws.amazon.com' },
+      { name: 'Vercel', Icon: SiVercel, url: 'https://vercel.com' },
+      { name: 'Render', Icon: SiRender, url: 'https://render.com' },
+      { name: 'Docker', Icon: SiDocker, url: 'https://www.docker.com' },
+      { name: 'GitHub', Icon: SiGithub, url: 'https://github.com' }
     ]
   }
 ];
@@ -248,19 +248,35 @@ export default function TechLogos() {
         <div className="tech-track">
           {/* Main Set */}
           {techCategories.flatMap(c => c.techs).map((tech, index) => (
-            <div key={`main-${index}`} className="tech-card">
-              <tech.Icon className="tech-icon" />
-              <span className="tech-text">{tech.name}</span>
-            </div>
+            <a 
+              key={`main-${index}`} 
+              href={tech.url} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ textDecoration: 'none', display: 'block' }}
+            >
+              <div className="tech-card">
+                <tech.Icon className="tech-icon" />
+                <span className="tech-text">{tech.name}</span>
+              </div>
+            </a>
           ))}
 
           {/* Duplicate Set (Only visible on mobile) */}
           <div className="duplicate-set">
             {techCategories.flatMap(c => c.techs).map((tech, index) => (
-              <div key={`dup-${index}`} className="tech-card">
-                <tech.Icon className="tech-icon" />
-                <span className="tech-text">{tech.name}</span>
-              </div>
+              <a 
+                key={`dup-${index}`} 
+                href={tech.url} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                style={{ textDecoration: 'none', display: 'block' }}
+              >
+                <div className="tech-card">
+                  <tech.Icon className="tech-icon" />
+                  <span className="tech-text">{tech.name}</span>
+                </div>
+              </a>
             ))}
           </div>
         </div>
