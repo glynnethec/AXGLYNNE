@@ -192,6 +192,9 @@ export default function Header() {
         }
 
         @media (max-width: 700px) {
+          .desktop-only {
+            display: none !important;
+          }
           .mobile-menu-btn {
             display: flex;
             align-items: center;
@@ -301,10 +304,10 @@ export default function Header() {
 
         <nav className="nav-links">
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-            <Link href="/contact" className="nav-btn" style={{ textDecoration: 'none' }}>Contact</Link>
+            <Link href="/contact" className="nav-btn desktop-only" style={{ textDecoration: 'none' }}>Contact</Link>
             
             {/* Divisor vertical suave */}
-            <div style={{ width: '1px', height: '16px', backgroundColor: 'rgba(0,0,0,0.1)', margin: '0 4px' }}></div>
+            <div className="desktop-only" style={{ width: '1px', height: '16px', backgroundColor: 'rgba(0,0,0,0.1)', margin: '0 4px' }}></div>
 
             <Link 
               href={isLoggedIn ? "/Panel" : "/login"} 

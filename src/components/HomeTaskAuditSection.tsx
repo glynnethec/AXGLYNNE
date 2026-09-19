@@ -27,64 +27,48 @@ const AUDIT_TASKS = [
 ];
 
 function AuditTaskCards() {
-  const [visibleCount, setVisibleCount] = useState(6);
-
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-    
-    if (visibleCount < AUDIT_TASKS.length) {
-      timeoutId = setTimeout(() => {
-        setVisibleCount(prev => prev + 1);
-      }, 700); // New card every 0.7 seconds for much faster scrolling
-    } else {
-      timeoutId = setTimeout(() => {
-        setVisibleCount(6); // Reset
-      }, 2000); 
-    }
-
-    return () => clearTimeout(timeoutId);
-  }, [visibleCount]);
-
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-      {AUDIT_TASKS.map((task, index) => {
-        const hasBeenAdded = index < visibleCount;
-        const isScrolledOut = index < visibleCount - 6;
-        const isCurrentlyVisible = hasBeenAdded && !isScrolledOut;
-        
-        return (
-          <div key={task.id} style={{
-            display: 'grid',
-            gridTemplateRows: isCurrentlyVisible ? '1fr' : '0fr',
-            opacity: isCurrentlyVisible ? (index === visibleCount - 6 || index === visibleCount - 1 ? 0.35 : 1) : 0,
-            marginBottom: isCurrentlyVisible ? '12px' : '0px',
-            transform: isCurrentlyVisible 
-              ? 'translateY(0) scale(1)' 
-              : (hasBeenAdded ? 'translateY(-30px) scale(0.95)' : 'translateY(30px) scale(0.95)'),
-            transition: 'grid-template-rows 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease, margin-bottom 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease',
+    <div style={{
+      display: 'flex', 
+      flexDirection: 'column', 
+      width: '100%',
+      height: '320px', // Fixed height prevents layout jumps
+      overflow: 'hidden', // Only visual animation
+      position: 'relative',
+      WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent 100%)',
+      maskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent 100%)',
+      pointerEvents: 'none' // Not interactive
+    }}>
+      <style>{`
+        @keyframes verticalScrollCards {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(-50%); }
+        }
+      `}</style>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '12px',
+        animation: 'verticalScrollCards 30s linear infinite',
+      }}>
+        {/* Render twice for infinite seamless scroll */}
+        {[...AUDIT_TASKS, ...AUDIT_TASKS].map((task, index) => (
+          <div key={`${task.id}-${index}`} style={{
+            backgroundColor: 'rgba(255,255,255,0.4)',
+            border: '1px solid rgba(0,0,0,0.06)',
+            borderRadius: '12px',
+            padding: '16px 20px',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.02)',
+            fontFamily: 'monospace, ui-monospace, Menlo, Monaco',
             width: '100%',
-            filter: isCurrentlyVisible && (index === visibleCount - 6 || index === visibleCount - 1) ? 'blur(1.5px)' : 'blur(0px)',
+            boxSizing: 'border-box'
           }}>
-            <div style={{ overflow: 'hidden' }}>
-              <div style={{
-                backgroundColor: 'rgba(255,255,255,0.4)',
-                border: '1px solid rgba(0,0,0,0.06)',
-                borderRadius: '12px',
-                padding: '16px 20px',
-                display: 'flex',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.02)',
-                fontFamily: 'monospace, ui-monospace, Menlo, Monaco',
-                width: '100%',
-                boxSizing: 'border-box'
-              }}>
-                <div style={{ fontSize: '13px', color: '#111111', fontWeight: 500, lineHeight: 1.4 }}>
-                  {task.action}
-                </div>
-              </div>
+            <div style={{ fontSize: '13px', color: '#111111', fontWeight: 500, lineHeight: 1.4 }}>
+              {task.action}
             </div>
           </div>
-        );
-      })}
+        ))}
+      </div>
     </div>
   );
 }

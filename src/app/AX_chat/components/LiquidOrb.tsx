@@ -14,13 +14,15 @@ export default function LiquidOrb({
   theme = 'light',
   customRotX = 0,
   customRotY = 0,
-  customRotZ = 20
+  customRotZ = 20,
+  wireframe = false
 }: { 
   orbState?: 'idle' | 'thinking',
   theme?: 'light' | 'dark',
   customRotX?: number,
   customRotY?: number,
-  customRotZ?: number
+  customRotZ?: number,
+  wireframe?: boolean
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   
@@ -264,8 +266,36 @@ export default function LiquidOrb({
         }
       }
 
-      // --- Draw Grid Lines Removed ---
-
+      // --- Draw Grid Lines ---
+      if (wireframe) {
+        ctx.beginPath();
+        // Latitude lines
+        for (let j = 1; j < numLatLines; j++) {
+          const phi = (j * Math.PI) / numLatLines - Math.PI / 2;
+          let first = true;
+          for (let i = 0; i <= resolution; i++) {
+            const theta = (i * Math.PI * 2) / resolution;
+            const p2d = project(Math.cos(phi) * Math.cos(theta), Math.sin(phi), Math.cos(phi) * Math.sin(theta));
+            if (p2d.z < -0.15) { first = true; continue; }
+            if (first) { ctx.moveTo(p2d.x, p2d.y); first = false; } else { ctx.lineTo(p2d.x, p2d.y); }
+          }
+        }
+        
+        // Longitude lines
+        for (let i = 0; i < numLonLines; i++) {
+          const theta = (i * Math.PI * 2) / numLonLines;
+          let first = true;
+          for (let j = 0; j <= resolution; j++) {
+            const phi = (j * Math.PI) / resolution - Math.PI / 2;
+            const p2d = project(Math.cos(phi) * Math.cos(theta), Math.sin(phi), Math.cos(phi) * Math.sin(theta));
+            if (p2d.z < -0.15) { first = true; continue; }
+            if (first) { ctx.moveTo(p2d.x, p2d.y); first = false; } else { ctx.lineTo(p2d.x, p2d.y); }
+          }
+        }
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = theme === 'dark' ? `rgba(255, 255, 255, ${gridOpacity})` : `rgba(0, 0, 0, ${gridOpacity})`;
+        ctx.stroke();
+      }
       animationFrame = requestAnimationFrame(render);
     };
 

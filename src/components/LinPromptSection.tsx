@@ -14,8 +14,8 @@ interface LinPromptSectionProps {
   primaryButtonUrl?: string;
 }
 
-export default function LinPromptSection({ 
-  hideCard = false, 
+export default function LinPromptSection({
+  hideCard = false,
   hideOrbCard = false,
   customTitle = "Govern AI across your enterprise",
   customDescription = "GLYNNE is the infrastructure layer that integrates artificial intelligence into enterprise systems safely and with total governance. AI shouldn't have unrestricted access. We provide the architecture of control, permissions, and traceability that filters every action—allowing AI to provide autonomous reasoning while you retain absolute security.",
