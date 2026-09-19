@@ -75,7 +75,7 @@ export default function Header() {
     setIsOpen(!isOpen);
   };
 
-  if (pathname === '/AX_chat') {
+  if (pathname === '/AX_chat' || pathname === '/Panel') {
     return null;
   }
 

@@ -120,7 +120,7 @@ export default function Home() {
             {/* Outline Button */}
             <div className="banner-button-container" style={{ display: 'flex' }}>
               <button
-                onClick={() => window.location.href = '/AX_chat'}
+                onClick={() => window.location.href = '/Panel'}
                 style={{
                   padding: '16px 32px',
                   borderRadius: '999px',

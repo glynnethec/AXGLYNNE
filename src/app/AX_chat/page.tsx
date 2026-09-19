@@ -121,7 +121,7 @@ export default function AXChatPage() {
     setIsTyping(true);
 
     // 🚀 Start AI request immediately in parallel to prevent delays
-    const aiRequest = fetch('https://ax-zyxe.onrender.com/api/chat', {
+    const aiRequest = fetch('http://localhost:8001/api/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -32,7 +32,6 @@ export default function PanelPage() {
   if (!isAuthenticated) return null; // Prevent flash of dashboard before redirect
   return (
     <>
-      <Header />
       <AssemblyDashboard />
     </>
   );
