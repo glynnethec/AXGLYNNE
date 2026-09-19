@@ -150,39 +150,61 @@ export async function saveAuditToSupabase({ audit_content, user }) {
 // =======================
 //
 
-// 📥 Fetch chat history
+// 📥 Fetch chat history (One row per user, parsed from JSON)
 export async function fetchChatHistory(userId) {
   if (!userId) return [];
   
   const { data, error } = await supabaseGoogle
     .from('AX_chat')
-    .select('role, content')
+    .select('content')
     .eq('user_id', userId)
-    .order('created_at', { ascending: true });
+    .single();
     
-  if (error) {
+  if (error && error.code !== 'PGRST116') {
+    // PGRST116 means 0 rows returned (normal for new users)
     console.error('❌ Error fetching chat history:', error);
     return [];
   }
   
-  return data || [];
+  if (data && data.content) {
+    try {
+      return JSON.parse(data.content);
+    } catch (e) {
+      console.error('❌ Error parsing chat history JSON:', e);
+      return [];
+    }
+  }
+  
+  return [];
 }
 
-// 📤 Save chat message
-export async function saveChatMessage(userId, role, content) {
-  if (!userId || !role || !content) return;
+// 📤 Save chat history (Overwrites the single user row with the full messages array)
+export async function saveChatHistory(userId, messagesArray) {
+  if (!userId || !messagesArray) return;
   
-  const { error } = await supabaseGoogle
+  const contentString = JSON.stringify(messagesArray);
+
+  // 1. Verificar si ya existe una fila para este usuario
+  const { data: existingRow } = await supabaseGoogle
     .from('AX_chat')
-    .insert([
-      {
-        user_id: userId,
-        role: role,
-        content: content
-      }
-    ]);
-    
-  if (error) {
-    console.error('❌ Error saving chat message:', error);
+    .select('id')
+    .eq('user_id', userId)
+    .single();
+
+  if (existingRow) {
+    // 2. Si existe, actualizamos el content
+    const { error } = await supabaseGoogle
+      .from('AX_chat')
+      .update({ content: contentString })
+      .eq('id', existingRow.id);
+      
+    if (error) console.error('❌ Error updating chat history:', error);
+  } else {
+    // 3. Si no existe, creamos una nueva
+    const { error } = await supabaseGoogle
+      .from('AX_chat')
+      .insert([{ user_id: userId, role: 'history', content: contentString }]);
+      
+    if (error) console.error('❌ Error inserting chat history:', error);
   }
 }

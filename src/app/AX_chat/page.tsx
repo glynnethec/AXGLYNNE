@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getCurrentUser, fetchChatHistory, saveChatMessage } from '@/lib/supabaseClient';
+import { getCurrentUser, fetchChatHistory, saveChatHistory } from '@/lib/supabaseClient';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
 import MessageList from './components/MessageList';
 import ChatInput from './components/ChatInput';
@@ -99,9 +99,9 @@ export default function AXChatPage() {
     setMessages(newMessages);
     setIsTyping(true);
 
-    // 💾 Guardar mensaje del usuario
+    // 💾 Guardar TODO el historial (con el mensaje del usuario recién agregado)
     if (userProfile?.id) {
-      saveChatMessage(userProfile.id, 'user', userMsg);
+      saveChatHistory(userProfile.id, newMessages);
     }
 
     try {
@@ -116,14 +116,14 @@ export default function AXChatPage() {
       const data = await response.json();
       if (data.status === 'success') {
         const aiResponse = data.reply;
-        setMessages(prev => [...prev, {
-          role: 'ai',
-          content: aiResponse
-        }]);
-        // 💾 Guardar respuesta de la IA
-        if (userProfile?.id) {
-          saveChatMessage(userProfile.id, 'ai', aiResponse);
-        }
+        setMessages(prev => {
+          const finalMessages = [...prev, { role: 'ai' as const, content: aiResponse }];
+          // 💾 Guardar TODO el historial (ahora con la respuesta de la IA)
+          if (userProfile?.id) {
+            saveChatHistory(userProfile.id, finalMessages);
+          }
+          return finalMessages;
+        });
       } else {
         setMessages(prev => [...prev, {
           role: 'ai',
