@@ -101,6 +101,71 @@ export default function HomeAuditSection() {
         }
       `}</style>
       <div className="responsive-solutions-width" style={{ width: '60vw', maxWidth: 'none', margin: '0 auto', display: 'flex', flexDirection: 'column' }}>
+        
+        {/* MOVED TEXT BLOCK */}
+        <div style={{ 
+          width: '100%', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          gap: '16px', 
+          marginTop: '0px', 
+          marginBottom: '40px', 
+          padding: '40px 0',
+          border: 'none',
+          borderRadius: '24px',
+          backgroundColor: 'transparent',
+          textAlign: 'left',
+          boxShadow: 'none'
+        }}>
+          <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 8px 0', letterSpacing: '-0.02em' }}>
+            Govern AI across your enterprise
+          </h1>
+          <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, lineHeight: 1.6, margin: 0, maxWidth: '800px' }}>
+            GLYNNE is the infrastructure layer that integrates artificial intelligence into enterprise systems safely and with total governance. AI shouldn't have unrestricted access. We provide the architecture of control, permissions, and traceability that filters every action—allowing AI to provide autonomous reasoning while you retain absolute security.
+          </p>
+          <div style={{ display: 'flex', gap: '16px', justifyContent: 'flex-start', marginTop: '24px', flexWrap: 'wrap' }}>
+            <button 
+              className="responsive-btn"
+              onClick={() => router.push('/About')}
+              style={{
+                padding: '14px 28px',
+                borderRadius: '999px',
+                backgroundColor: '#111111',
+                color: '#ffffff',
+                border: '1px solid #111111',
+                fontSize: '14px',
+                fontWeight: 500,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#333333'; e.currentTarget.style.transform = 'scale(1.02)' }}
+              onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#111111'; e.currentTarget.style.transform = 'scale(1)' }}
+            >
+              Discover our architecture
+            </button>
+            
+            <button 
+              className="responsive-btn"
+              onClick={() => router.push('/AX_chat')}
+              style={{
+                padding: '14px 28px',
+                borderRadius: '999px',
+                backgroundColor: 'transparent',
+                color: '#111111',
+                border: '1px solid rgba(0,0,0,0.2)',
+                fontSize: '14px',
+                fontWeight: 500,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseOver={(e) => { e.currentTarget.style.borderColor = '#111111'; e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.03)' }}
+              onMouseOut={(e) => { e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)'; e.currentTarget.style.backgroundColor = 'transparent' }}
+            >
+              Interact with AX
+            </button>
+          </div>
+        </div>
+
         {/* Console Section (Floating without Card) */}
         <div style={{ position: 'relative', zIndex: 10, width: '100%', minHeight: '80vh', boxSizing: 'border-box', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '60px', padding: '0', backgroundColor: 'transparent' }}>
           <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>

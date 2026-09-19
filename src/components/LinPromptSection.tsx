@@ -60,75 +60,6 @@ export default function LinPromptSection({
         {/* Inner Content Wrapper */}
         <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
 
-          {/* New Text and Buttons Section */}
-          <div style={{ 
-            width: '100%', 
-            display: 'flex', 
-            flexDirection: 'column', 
-            gap: '16px', 
-            marginTop: '0px', 
-            marginBottom: '40px', 
-            padding: '40px 48px',
-            border: 'none',
-            borderRadius: '24px',
-            backgroundColor: 'transparent',
-            textAlign: 'left',
-            boxShadow: 'none'
-          }}>
-            <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 8px 0', letterSpacing: '-0.02em' }}>
-              {customTitle}
-            </h1>
-            <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, lineHeight: 1.6, margin: 0, maxWidth: '800px' }}>
-              {customDescription}
-            </p>
-            <div style={{ display: 'flex', gap: '16px', justifyContent: 'flex-start', marginTop: '24px', flexWrap: 'wrap' }}>
-              <button 
-                className="responsive-btn"
-                onClick={() => {
-                  if (primaryButtonUrl.startsWith('http')) {
-                    window.open(primaryButtonUrl, '_blank');
-                  } else {
-                    router.push(primaryButtonUrl);
-                  }
-                }}
-                style={{
-                  padding: '14px 28px',
-                  borderRadius: '999px',
-                  backgroundColor: '#111111',
-                  color: '#ffffff',
-                  border: '1px solid #111111',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                }}
-                onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#333333'; e.currentTarget.style.transform = 'scale(1.02)' }}
-                onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#111111'; e.currentTarget.style.transform = 'scale(1)' }}
-              >
-                {primaryButtonText}
-              </button>
-              
-              <button 
-                className="responsive-btn"
-                onClick={() => router.push('/AX_chat')}
-                style={{
-                  padding: '14px 28px',
-                  borderRadius: '999px',
-                  backgroundColor: 'transparent',
-                  color: '#111111',
-                  border: '1px solid rgba(0,0,0,0.2)',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                }}
-                onMouseOver={(e) => { e.currentTarget.style.borderColor = '#111111'; e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.03)' }}
-                onMouseOut={(e) => { e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)'; e.currentTarget.style.backgroundColor = 'transparent' }}
-              >
-                Interact with AX
-              </button>
-            </div>
-          </div>
 
           {/* Minimalist Social Proof Pill */}
           <div style={{
@@ -143,7 +74,7 @@ export default function LinPromptSection({
             <svg width="12" height="12" viewBox="0 0 24 24" fill="#1d1d1f"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
             <span style={{ fontSize: '11px', fontWeight: 500, color: '#1d1d1f', letterSpacing: '0.05em', textTransform: 'uppercase' }}>4.98/5 Average</span>
             <div style={{ width: '3px', height: '3px', borderRadius: '50%', backgroundColor: '#d2d2d7' }} />
-            <span style={{ fontSize: '11px', fontWeight: 500, color: '#86868b', letterSpacing: '0.05em', textTransform: 'uppercase' }}>58,980+ Users</span>
+            <span style={{ fontSize: '11px', fontWeight: 500, color: '#86868b', letterSpacing: '0.05em', textTransform: 'uppercase' }}>12 Enterprises Secured</span>
           </div>
 
           {/* Clean Typography Header */}
