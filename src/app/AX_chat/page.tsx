@@ -29,7 +29,8 @@ export default function AXChatPage() {
       } else {
         setUserProfile({
           ...user.raw.user_metadata,
-          email: user.email
+          email: user.email,
+          id: user.id
         });
       }
     };
