@@ -64,7 +64,7 @@ function TypewriterCode() {
   let charsLeft = visibleChars;
 
   return (
-    <pre className="notranslate" translate="no" style={{ margin: 0, whiteSpace: 'pre-wrap', lineHeight: 1.6 }}>
+    <pre className="notranslate" translate="no" style={{ margin: 0, whiteSpace: 'pre-wrap', lineHeight: 1.6, minHeight: '340px' }}>
       {CODE_TOKENS.map((token, index) => {
         if (charsLeft <= 0) return null;
         const textToShow = token.t.slice(0, charsLeft);
@@ -126,7 +126,7 @@ export default function HomeAuditSection() {
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'flex-start', marginTop: '24px', flexWrap: 'wrap' }}>
             <button 
               className="responsive-btn"
-              onClick={() => router.push('/About')}
+              onClick={() => router.push('/Methodology')}
               style={{
                 padding: '14px 28px',
                 borderRadius: '999px',

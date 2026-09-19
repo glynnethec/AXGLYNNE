@@ -7,6 +7,7 @@ import LinPromptSection from '@/components/LinPromptSection';
 import HomeAuditSection from '@/components/HomeAuditSection';
 import ClientLogosSection from '@/components/ClientLogosSection';
 import HomeTaskAuditSection from '@/components/HomeTaskAuditSection';
+import HomeSecondAuditSection from '@/components/HomeSecondAuditSection';
 import WorkflowDiagram from '@/components/WorkflowDiagram';
 import VideoEcosystemSection from '@/components/VideoEcosystemSection';
 import Footer from '@/app/components/Footer';
@@ -170,6 +171,7 @@ export default function Home() {
         }}>
           <HomeAuditSection />
           <HomeTaskAuditSection />
+          <HomeSecondAuditSection />
         </div>
         <ClientLogosSection />
         <WorkflowDiagram />

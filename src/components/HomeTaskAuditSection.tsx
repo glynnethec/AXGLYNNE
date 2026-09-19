@@ -154,7 +154,7 @@ export default function HomeTaskAuditSection() {
             flex-direction: column-reverse !important;
             text-align: center !important;
             gap: 24px !important;
-            padding: 0 16px !important;
+            padding: 0 !important;
           }
           .mobile-stack .docs-menu-container {
             margin: 32px auto 0 !important;
@@ -166,10 +166,7 @@ export default function HomeTaskAuditSection() {
             height: auto !important;
           }
           .mobile-console-wrapper {
-            justify-content: flex-start !important;
-            width: 100% !important;
-            min-height: 480px !important;
-            padding-bottom: 40px !important;
+            display: none !important;
           }
         }
       `}</style>
