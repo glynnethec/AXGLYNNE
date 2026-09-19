@@ -1110,4 +1110,12 @@
   .system-core-section {
     display: none !important;
   }
+  .md-center {
+    position: relative !important;
+    height: auto !important;
+    top: auto !important;
+    transform: none !important;
+    margin-top: -20px;
+    margin-bottom: 20px;
+  }
 }

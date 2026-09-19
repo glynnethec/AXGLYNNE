@@ -30,6 +30,7 @@ export default function AssemblyDashboard() {
   const [currentDate, setCurrentDate] = useState('');
   const [userProfile, setUserProfile] = useState<any>(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const platformTools = [
     { name: 'AX_core', label: 'AX Core', desc: 'Central processing and neural routing.', model: 'SYS-CORE v9.4', details: 'Kernel level execution protocols active.' },
@@ -77,6 +78,11 @@ export default function AssemblyDashboard() {
     const originalBg = document.body.style.backgroundColor;
     document.body.style.backgroundColor = '#0b0b0d';
 
+    // Handle resize for mobile layout
+    const handleResize = () => setIsMobile(window.innerWidth <= 700);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
     // Auto hover animator
     const intervalId = setInterval(() => {
       const cx = Math.floor(Math.random() * 20);
@@ -96,8 +102,44 @@ export default function AssemblyDashboard() {
     return () => {
       clearInterval(intervalId);
       document.body.style.backgroundColor = originalBg;
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  const renderCenterCanvas = () => (
+    <div className="md-center">
+      <div className={`md-info-card ${isFading ? 'fading-out' : 'fading-in'}`}>
+        <div className="info-title">{platformTools.find(t => t.name === activeTool)?.label}</div>
+        <div className="info-desc">{platformTools.find(t => t.name === activeTool)?.desc}</div>
+        <Link href={`/${activeTool}`} className="md-start-btn">
+          Start <span>&rarr;</span>
+        </Link>
+      </div>
+
+      <div className="md-3d-scene">
+        <div className="md-sphere" style={{ overflow: 'visible', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <div style={{ width: '400px', height: '400px', transform: 'scale(1.2)' }}>
+            <LiquidOrb theme="dark" customRotX={rotX} customRotY={rotY} customRotZ={rotZ} />
+          </div>
+        </div>
+        <div className="md-shadow" style={{ opacity: shadowDensity / 100, transform: `translateY(200px) rotateX(75deg) rotateZ(${-rotY}deg)` }}></div>
+      </div>
+
+      <div className="md-rotation-track">
+        <div className="md-rotation-circle"></div>
+        <div className="md-rotation-marker" style={{ transform: `translateX(-50%) rotate(${rotY}deg)` }}>
+          <div className="md-marker-line"></div>
+        </div>
+      </div>
+      
+      <div className="md-rotation-value">
+        <span className="value">{activePhrase}</span>
+        <div className="md-loading-bar-container" key={activePhrase}>
+          <div className="md-loading-bar-fill"></div>
+        </div>
+      </div>
+    </div>
+  );
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
     if (typeof window !== 'undefined' && window.innerWidth <= 700) return;
@@ -247,23 +289,27 @@ export default function AssemblyDashboard() {
             </div>
           )}
 
-          <div className="md-section system-core-section">
-            <h3 className="md-title">System Core</h3>
-            <div className="md-mini-card">
-              <div className="md-mini-card-row" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '12px', marginBottom: '12px' }}>
-                <span>PLATFORM</span>
-                <span className="md-highlight">GLYNNE</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '16px 0' }}>
-                <img src="/logos/GLYNNE.svg" alt="GLYNNE Logo" style={{ width: '80px', opacity: 0.4, filter: 'invert(1)' }} />
-              </div>
-              <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '12px', marginTop: '12px', display: 'flex', justifyContent: 'center' }}>
-                <a href="https://axglynne.com/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ color: '#a1a1aa', fontSize: '11px', textDecoration: 'none', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-                  Policies
-                </a>
+          {!isMobile && (
+            <div className="md-section system-core-section">
+              <h3 className="md-title">System Core</h3>
+              <div className="md-mini-card">
+                <div className="md-mini-card-row" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '12px', marginBottom: '12px' }}>
+                  <span>PLATFORM</span>
+                  <span className="md-highlight">GLYNNE</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '16px 0' }}>
+                  <img src="/logos/GLYNNE.svg" alt="GLYNNE Logo" style={{ width: '80px', opacity: 0.4, filter: 'invert(1)' }} />
+                </div>
+                <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '12px', marginTop: '12px', display: 'flex', justifyContent: 'center' }}>
+                  <a href="https://axglynne.com/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ color: '#a1a1aa', fontSize: '11px', textDecoration: 'none', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                    Policies
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
+          )}
+
+          {isMobile && renderCenterCanvas()}
 
           <div className="md-section">
             <h3 className="md-title" style={{ marginBottom: '8px' }}>Tools</h3>
@@ -302,51 +348,7 @@ export default function AssemblyDashboard() {
         </div>
 
         {/* Center Canvas */}
-        <div className="md-center">
-          
-          <div className={`md-info-card ${isFading ? 'fading-out' : 'fading-in'}`}>
-            <div className="info-title">{platformTools.find(t => t.name === activeTool)?.label}</div>
-            <div className="info-desc">{platformTools.find(t => t.name === activeTool)?.desc}</div>
-            <Link href={`/${activeTool}`} className="md-start-btn">
-              Start <span>&rarr;</span>
-            </Link>
-          </div>
-
-          <div className="md-3d-scene">
-            {/* Liquid Orb (Replacing abstract wireframe) */}
-            <div className="md-sphere" style={{ overflow: 'visible', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <div style={{ width: '400px', height: '400px', transform: 'scale(1.2)' }}>
-                <LiquidOrb 
-                  theme="dark" 
-                  customRotX={rotX} 
-                  customRotY={rotY} 
-                  customRotZ={rotZ} 
-                />
-              </div>
-            </div>
-
-            <div className="md-shadow" style={{ 
-              opacity: shadowDensity / 100, 
-              transform: `translateY(200px) rotateX(75deg) rotateZ(${-rotY}deg)` 
-            }}></div>
-          </div>
-
-          <div className="md-rotation-track">
-            <div className="md-rotation-circle"></div>
-            <div className="md-rotation-marker" style={{ transform: `translateX(-50%) rotate(${rotY}deg)` }}>
-              <div className="md-marker-line"></div>
-            </div>
-          </div>
-          
-          <div className="md-rotation-value">
-            <span className="value">{activePhrase}</span>
-            <div className="md-loading-bar-container" key={activePhrase}>
-              <div className="md-loading-bar-fill"></div>
-            </div>
-          </div>
-          
-
-        </div>
+        {!isMobile && renderCenterCanvas()}
 
         {/* Right Sidebar */}
         <div className="md-right">
