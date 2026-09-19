@@ -1107,6 +1107,10 @@
   }
 }
 @media (max-width: 700px) {
+  .md-main {
+    margin-top: 40px; /* Reduced from 100px to remove the large space at the top */
+    gap: 20px;
+  }
   .system-core-section {
     display: none !important;
   }
