@@ -143,3 +143,46 @@ export async function saveAuditToSupabase({ audit_content, user }) {
 
   return { data, error: null };
 }
+
+//
+// =======================
+// AX CHAT HISTORY
+// =======================
+//
+
+// 📥 Fetch chat history
+export async function fetchChatHistory(userId) {
+  if (!userId) return [];
+  
+  const { data, error } = await supabaseGoogle
+    .from('AX_chat')
+    .select('role, content')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: true });
+    
+  if (error) {
+    console.error('❌ Error fetching chat history:', error);
+    return [];
+  }
+  
+  return data || [];
+}
+
+// 📤 Save chat message
+export async function saveChatMessage(userId, role, content) {
+  if (!userId || !role || !content) return;
+  
+  const { error } = await supabaseGoogle
+    .from('AX_chat')
+    .insert([
+      {
+        user_id: userId,
+        role: role,
+        content: content
+      }
+    ]);
+    
+  if (error) {
+    console.error('❌ Error saving chat message:', error);
+  }
+}

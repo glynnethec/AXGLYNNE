@@ -1,4 +1,6 @@
 import React, { useRef, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 type Message = {
   role: 'user' | 'ai';
@@ -28,8 +30,8 @@ export default function MessageList({ messages, isTyping, hasStarted }: MessageL
       top: 0,
       left: 0,
       right: 0,
-      bottom: 0,
-      padding: '6rem 2rem 150px 2rem',
+      bottom: hasStarted ? '180px' : '0',
+      padding: '6rem 2rem 20px 2rem',
       overflowY: 'auto',
       display: 'flex',
       flexDirection: 'column',
@@ -59,7 +61,27 @@ export default function MessageList({ messages, isTyping, hasStarted }: MessageL
                borderBottomLeftRadius: m.role === 'ai' ? '6px' : '24px',
                boxShadow: m.role === 'user' ? '0 10px 30px rgba(0,0,0,0.5)' : 'none'
              }}>
-               {m.content}
+               {m.role === 'user' ? (
+                 m.content
+               ) : (
+                 <ReactMarkdown 
+                   remarkPlugins={[remarkGfm]}
+                   components={{
+                     p: ({node, ...props}) => <p style={{ margin: '0 0 1em 0' }} {...props} />,
+                     ul: ({node, ...props}) => <ul style={{ paddingLeft: '1.5em', margin: '0 0 1em 0', listStyleType: 'disc' }} {...props} />,
+                     ol: ({node, ...props}) => <ol style={{ paddingLeft: '1.5em', margin: '0 0 1em 0', listStyleType: 'decimal' }} {...props} />,
+                     li: ({node, ...props}) => <li style={{ marginBottom: '0.5em' }} {...props} />,
+                     h1: ({node, ...props}) => <h1 style={{ fontSize: '1.5em', fontWeight: '600', margin: '1em 0 0.5em', color: '#fff' }} {...props} />,
+                     h2: ({node, ...props}) => <h2 style={{ fontSize: '1.3em', fontWeight: '600', margin: '1em 0 0.5em', color: '#fff' }} {...props} />,
+                     h3: ({node, ...props}) => <h3 style={{ fontSize: '1.1em', fontWeight: '600', margin: '1em 0 0.5em', color: '#fff' }} {...props} />,
+                     strong: ({node, ...props}) => <strong style={{ fontWeight: 600, color: '#fff' }} {...props} />,
+                     code: ({node, ...props}) => <code style={{ backgroundColor: 'rgba(255,255,255,0.1)', padding: '0.2em 0.4em', borderRadius: '4px', fontFamily: 'monospace', fontSize: '0.9em' }} {...props} />,
+                     a: ({node, ...props}) => <a style={{ color: '#60a5fa', textDecoration: 'underline' }} target="_blank" rel="noopener noreferrer" {...props} />
+                   }}
+                 >
+                   {m.content}
+                 </ReactMarkdown>
+               )}
              </div>
            </div>
          ))}

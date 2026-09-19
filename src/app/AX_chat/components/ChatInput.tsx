@@ -10,7 +10,7 @@ interface ChatInputProps {
 
 export default function ChatInput({ inputValue, setInputValue, handleSend, hasStarted, setIsPopupOpen }: ChatInputProps) {
   return (
-    <div style={{
+    <div className={`chat-input-wrapper ${hasStarted ? 'started' : ''}`} style={{
       position: 'fixed',
       left: '50%',
       bottom: hasStarted ? '2rem' : '50%',
@@ -169,7 +169,7 @@ export default function ChatInput({ inputValue, setInputValue, handleSend, hasSt
       </form>
       
       {/* Subtext */}
-      <div style={{
+      <div className="chat-subtext" style={{
         fontSize: '11px',
         color: '#888',
         marginTop: '1rem',
@@ -179,6 +179,18 @@ export default function ChatInput({ inputValue, setInputValue, handleSend, hasSt
       }}>
         AX Glynne AI can make mistakes. Consider verifying important information.
       </div>
+      
+      <style>{`
+        @media (max-width: 700px) {
+          .chat-subtext {
+            display: none !important;
+          }
+          .chat-input-wrapper.started {
+            bottom: 1rem !important;
+            width: calc(100% - 2rem) !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }
