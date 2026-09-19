@@ -120,36 +120,39 @@ export default function AXChatPage() {
     setMessages(newMessages);
     setIsTyping(true);
 
-    // 💾 Guardar TODO el historial (con el mensaje del usuario recién agregado)
+    // 🚀 Start AI request immediately in parallel to prevent delays
+    const aiRequest = fetch('https://ax-zyxe.onrender.com/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ messages: newMessages }),
+    });
+
+    // 💾 Manejar base de datos
     let activeChatId = currentChatId;
     
     if (userProfile?.id) {
       if (!activeChatId) {
-        // Crear nuevo chat
+        // Esperamos la creación solo para tener el ID a la hora de guardar la respuesta de la IA
         const newId = await createChatHistory(userProfile.id, newMessages);
         if (newId) {
           activeChatId = newId;
           setCurrentChatId(newId);
-          // Refrescar lista de la barra lateral
-          const list = await fetchChatList(userProfile.id);
-          setChatList(list);
+          // Refrescar lista de la barra lateral EN SEGUNDO PLANO (sin await)
+          fetchChatList(userProfile.id).then(list => setChatList(list));
         }
       } else {
-        // Actualizar chat existente
+        // Actualizar chat existente en segundo plano
         updateChatHistory(activeChatId, newMessages);
       }
     }
 
     try {
-      const response = await fetch('https://ax-zyxe.onrender.com/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ messages: newMessages }),
-      });
-
+      // ⏳ Esperar la respuesta de la IA que ya se estaba procesando
+      const response = await aiRequest;
       const data = await response.json();
+      
       if (data.status === 'success') {
         const aiResponse = data.reply;
         setMessages(prev => {
