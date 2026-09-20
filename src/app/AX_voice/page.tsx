@@ -22,15 +22,18 @@ export default function AXVoicePage() {
   const [transcript, setTranscript] = useState('');
   const [aiResponse, setAiResponse] = useState('');
   const [messages, setMessages] = useState<{role: string, content: string}[]>([]);
+  const [isSessionActive, setIsSessionActive] = useState(false);
   
   const recognitionRef = useRef<any>(null);
   const synthRef = useRef<SpeechSynthesis | null>(null);
   const orbStateRef = useRef(orbState);
+  const isSessionActiveRef = useRef(isSessionActive);
 
-  // Keep ref in sync
+  // Keep refs in sync
   useEffect(() => {
     orbStateRef.current = orbState;
-  }, [orbState]);
+    isSessionActiveRef.current = isSessionActive;
+  }, [orbState, isSessionActive]);
 
   // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS
   useEffect(() => {
@@ -62,16 +65,23 @@ export default function AXVoicePage() {
         };
 
         recognition.onend = () => {
+          if (!isSessionActiveRef.current) {
+            setOrbState('idle');
+            return;
+          }
           if (orbStateRef.current === 'listening') {
              handleSendTranscript();
-          } else {
-             setOrbState('idle');
           }
         };
         
         recognition.onerror = (event: any) => {
           console.error('Speech recognition error', event.error);
-          setOrbState('idle');
+          if (event.error === 'no-speech' && isSessionActiveRef.current) {
+            // Ignore no-speech errors, it will trigger onend and we will restart
+          } else {
+            setIsSessionActive(false);
+            setOrbState('idle');
+          }
         };
 
         recognitionRef.current = recognition;
@@ -89,7 +99,12 @@ export default function AXVoicePage() {
     // Usamos el valor actual del estado 'transcript' usando una referencia u obteniéndolo directamente
     setTranscript((currentText) => {
       if (!currentText.trim()) {
-        setOrbState('idle');
+        if (isSessionActiveRef.current) {
+          setOrbState('listening');
+          try { recognitionRef.current?.start(); } catch(e){}
+        } else {
+          setOrbState('idle');
+        }
         return currentText;
       }
       
@@ -113,6 +128,7 @@ export default function AXVoicePage() {
       })
       .catch(err => {
         console.error('Error fetching voice_chat:', err);
+        setIsSessionActive(false);
         setOrbState('idle');
       });
 
@@ -133,27 +149,41 @@ export default function AXVoicePage() {
       };
       
       utterance.onend = () => {
-        setOrbState('idle');
-        setTranscript('');
         setAiResponse('');
+        setTranscript('');
+        if (isSessionActiveRef.current) {
+          setOrbState('listening');
+          try { recognitionRef.current?.start(); } catch(e){}
+        } else {
+          setOrbState('idle');
+        }
       };
       
       utterance.onerror = (e) => {
         console.error('SpeechSynthesis error', e);
+        setIsSessionActive(false);
         setOrbState('idle');
       };
       
       synthRef.current.speak(utterance);
     } else {
-      setOrbState('idle');
+      if (isSessionActiveRef.current) {
+        setOrbState('listening');
+        try { recognitionRef.current?.start(); } catch(e){}
+      } else {
+        setOrbState('idle');
+      }
     }
   };
 
   const toggleListening = () => {
-    if (orbState === 'listening') {
+    if (isSessionActive) {
+      setIsSessionActive(false);
+      setOrbState('idle');
       recognitionRef.current?.stop();
-      // El onend lanzará handleSendTranscript
+      if (synthRef.current) synthRef.current.cancel();
     } else {
+      setIsSessionActive(true);
       setTranscript('');
       setAiResponse('');
       
@@ -165,7 +195,7 @@ export default function AXVoicePage() {
       }
       
       setOrbState('listening');
-      recognitionRef.current?.start();
+      try { recognitionRef.current?.start(); } catch(e){}
     }
   };
 
