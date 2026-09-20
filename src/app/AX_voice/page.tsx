@@ -25,7 +25,7 @@ export default function AXVoicePage() {
   const [isSessionActive, setIsSessionActive] = useState(false);
   
   const recognitionRef = useRef<any>(null);
-  const synthRef = useRef<SpeechSynthesis | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const orbStateRef = useRef(orbState);
   const isSessionActiveRef = useRef(isSessionActive);
 
@@ -88,9 +88,8 @@ export default function AXVoicePage() {
       } else {
         console.warn('SpeechRecognition API not supported in this browser.');
       }
-      
-      if (window.speechSynthesis) {
-        synthRef.current = window.speechSynthesis;
+      if (typeof window !== 'undefined') {
+        audioRef.current = new Audio();
       }
     }
   }, []); // Run only on mount
@@ -122,9 +121,17 @@ export default function AXVoicePage() {
       .then(res => res.json())
       .then(data => {
         const reply = data.reply;
+        const audioBase64 = data.audio_base64;
+        
         setAiResponse(reply);
         setMessages(prev => [...prev, { role: 'ai', content: reply }]);
-        speakResponse(reply);
+        
+        if (audioBase64) {
+          playAudioFromBase64(audioBase64);
+        } else {
+          // Fallback en caso de error en TTS backend
+          speakResponseFallback(reply);
+        }
       })
       .catch(err => {
         console.error('Error fetching voice_chat:', err);
@@ -136,19 +143,18 @@ export default function AXVoicePage() {
     });
   };
 
-  const speakResponse = (text: string) => {
-    if (synthRef.current) {
-      synthRef.current.cancel(); // Stop any previous speech
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'es-ES';
-      utterance.pitch = 1.0;
-      utterance.rate = 1.0;
+  const playAudioFromBase64 = (base64Str: string) => {
+    if (audioRef.current) {
+      audioRef.current.pause(); // Stop any previous speech
       
-      utterance.onstart = () => {
+      const audioUrl = `data:audio/mp3;base64,${base64Str}`;
+      audioRef.current.src = audioUrl;
+      
+      audioRef.current.onplay = () => {
         setOrbState('speaking');
       };
       
-      utterance.onend = () => {
+      audioRef.current.onended = () => {
         setAiResponse('');
         setTranscript('');
         if (isSessionActiveRef.current) {
@@ -159,20 +165,37 @@ export default function AXVoicePage() {
         }
       };
       
-      utterance.onerror = (e) => {
-        console.error('SpeechSynthesis error', e);
+      audioRef.current.onerror = (e) => {
+        console.error('Audio playback error', e);
         setIsSessionActive(false);
         setOrbState('idle');
       };
       
-      synthRef.current.speak(utterance);
-    } else {
-      if (isSessionActiveRef.current) {
-        setOrbState('listening');
-        try { recognitionRef.current?.start(); } catch(e){}
-      } else {
+      audioRef.current.play().catch(e => {
+        console.error('Error playing audio', e);
+        setIsSessionActive(false);
         setOrbState('idle');
-      }
+      });
+    }
+  };
+
+  const speakResponseFallback = (text: string) => {
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'es-ES';
+      utterance.onstart = () => setOrbState('speaking');
+      utterance.onend = () => {
+        setAiResponse('');
+        setTranscript('');
+        if (isSessionActiveRef.current) {
+          setOrbState('listening');
+          try { recognitionRef.current?.start(); } catch(e){}
+        } else {
+          setOrbState('idle');
+        }
+      };
+      window.speechSynthesis.speak(utterance);
     }
   };
 
@@ -181,17 +204,17 @@ export default function AXVoicePage() {
       setIsSessionActive(false);
       setOrbState('idle');
       recognitionRef.current?.stop();
-      if (synthRef.current) synthRef.current.cancel();
+      if (audioRef.current) audioRef.current.pause();
     } else {
       setIsSessionActive(true);
       setTranscript('');
       setAiResponse('');
       
       // DESBLOQUEAR EL MOTOR DE VOZ (Hack para navegadores estrictos)
-      if (synthRef.current) {
-        synthRef.current.cancel();
-        const unlock = new SpeechSynthesisUtterance('');
-        synthRef.current.speak(unlock);
+      if (audioRef.current) {
+        audioRef.current.play().catch(e => {
+            // Se ignora el error porque src está vacío inicialmente
+        });
       }
       
       setOrbState('listening');
