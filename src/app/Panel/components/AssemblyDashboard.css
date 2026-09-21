@@ -1,30 +1,44 @@
 /* ── Light Mode Overrides ─────────────────────────────── */
 [data-theme="light"] .md-container {
-  background: linear-gradient(135deg, #e8e8e8, #f5f5f7) !important;
+  /* 3D Scene — pure greys: spotlight from top-center + ambient fill + floor vignette */
+  background:
+    radial-gradient(ellipse 60% 55% at 50% -5%, rgba(255,255,255,1) 0%, transparent 70%),
+    radial-gradient(ellipse 100% 80% at 50% 0%, rgba(235,235,235,0.9) 0%, transparent 60%),
+    radial-gradient(ellipse 140% 60% at 50% 110%, rgba(175,175,175,0.45) 0%, transparent 55%),
+    linear-gradient(175deg, #f2f2f2 0%, #e6e6e6 40%, #dadada 100%) !important;
   color: #1a1a1a !important;
 }
 
-/* Grid lines: invert from white-on-dark to dark-on-light */
-[data-theme="light"] #floor-grid path {
-  stroke: rgba(0,0,0,0.07) !important;
+/* Depth gradient overlay on the perspective grid floor — neutral grey */
+[data-theme="light"] .md-bg-grid {
+  background: linear-gradient(to bottom, transparent 0%, rgba(150,150,150,0.15) 100%);
 }
-/* Cell hover highlights — invert to dark */
+
+/* Grid lines: match dark mode visual weight — much stronger on light bg */
+[data-theme="light"] #floor-grid path {
+  stroke: rgba(0,0,0,0.25) !important;
+}
+/* Cell hover highlights — dark and visible on light bg */
 [data-theme="light"] .md-bg-grid rect {
-  fill: rgba(0,0,0,0.05) !important;
+  fill: rgba(0,0,0,0.12) !important;
 }
 
 [data-theme="light"] .md-title { color: #666 !important; }
 
 /* Left panel wrapper */
+/* Left panel — just a visible border like in dark mode */
 [data-theme="light"] .md-left {
-  border-color: rgba(0,0,0,0.12) !important;
-  background: rgba(255,255,255,0.5);
+  border-color: rgba(0,0,0,0.18) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
 }
 
-/* Profile card */
+/* Profile card — just a visible border like in dark mode */
 [data-theme="light"] .md-profile-card {
-  background: rgba(255,255,255,0.85) !important;
-  border-color: rgba(0,0,0,0.15) !important;
+  border-color: rgba(0,0,0,0.25) !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 [data-theme="light"] .md-profile-banner {
   border-bottom-color: rgba(0,0,0,0.1) !important;
@@ -54,16 +68,83 @@
 
 /* Mini card (System Core) */
 [data-theme="light"] .md-mini-card {
-  background: rgba(255,255,255,0.6) !important;
-  border-color: rgba(0,0,0,0.08) !important;
+  border-color: rgba(0,0,0,0.25) !important;
+  background: transparent !important;
 }
-[data-theme="light"] .md-mini-card-row { color: #666 !important; }
-[data-theme="light"] .md-mini-card-row span:last-child { color: #222 !important; }
-[data-theme="light"] .md-mini-card-row.md-highlight { color: #333 !important; }
-[data-theme="light"] .md-highlight { color: #333 !important; }
+[data-theme="light"] .md-mini-card-row { color: #333 !important; }
+[data-theme="light"] .md-mini-card-row span:last-child { color: #000 !important; font-weight: 700; }
+[data-theme="light"] .md-mini-card-row.md-highlight { color: #111 !important; }
+[data-theme="light"] .md-highlight { color: #111 !important; font-weight: 700 !important; }
 [data-theme="light"] .md-mini-card-desc {
-  color: #666 !important;
-  border-top-color: rgba(0,0,0,0.08) !important;
+  color: #555 !important;
+  border-top-color: rgba(0,0,0,0.1) !important;
+}
+
+/* System Core separator lines */
+[data-theme="light"] .md-mini-card [style*="border-bottom"],
+[data-theme="light"] .md-mini-card [style*="borderBottom"] {
+  border-color: rgba(0,0,0,0.12) !important;
+}
+[data-theme="light"] .md-mini-card [style*="border-top"],
+[data-theme="light"] .md-mini-card [style*="borderTop"] {
+  border-color: rgba(0,0,0,0.12) !important;
+}
+
+/* Policies link inside mini card */
+[data-theme="light"] .md-mini-card a { color: #555 !important; }
+[data-theme="light"] .md-mini-card a:hover { color: #000 !important; }
+
+/* Tools section description text */
+[data-theme="light"] .md-section p {
+  color: #444 !important;
+  opacity: 1 !important;
+}
+
+/* ── Container borders: all rgba(255,255,255,0.X) → visible dark grey ── */
+
+/* .md-left outer wrapper (line 297 in base) */
+[data-theme="light"] .md-left {
+  border-color: rgba(0,0,0,0.25) !important;
+}
+
+/* .md-right outer wrapper — add visible border to match left */
+[data-theme="light"] .md-right {
+  border-color: rgba(0,0,0,0.25) !important;
+}
+
+/* .md-info-card (center tool info card) */
+[data-theme="light"] .md-info-card {
+  border-color: rgba(0,0,0,0.25) !important;
+}
+
+/* .md-tool-btn */
+[data-theme="light"] .md-tool-btn {
+  border-color: rgba(0,0,0,0.25) !important;
+}
+
+/* .md-light-btn (Lightning cards) */
+[data-theme="light"] .md-light-btn {
+  border-color: rgba(0,0,0,0.25) !important;
+}
+
+/* .icon-wrapper.black inner icon frame */
+[data-theme="light"] .icon-wrapper.black {
+  border-color: rgba(0,0,0,0.25) !important;
+}
+
+/* Rotation track ring */
+[data-theme="light"] .md-rotation-track {
+  border-color: rgba(0,0,0,0.2) !important;
+}
+
+/* Terminal outer border */
+[data-theme="light"] .md-terminal {
+  border-color: rgba(0,0,0,0.16) !important;
+}
+
+/* Terminal header bottom border */
+[data-theme="light"] .md-term-header {
+  border-bottom-color: rgba(0,0,0,0.12) !important;
 }
 
 /* GLYNNE logo — remove invert so it shows dark on white */
@@ -74,21 +155,18 @@
 
 /* Tool buttons */
 [data-theme="light"] .md-tool-btn {
-  border-color: rgba(0,0,0,0.08) !important;
-  color: #555 !important;
+  border-color: rgba(0,0,0,0.12) !important;
+  color: #222 !important;
+  background: rgba(255,255,255,0.4) !important;
 }
-[data-theme="light"] .md-tool-btn:hover { color: #000 !important; }
+[data-theme="light"] .md-tool-btn:hover { color: #000 !important; background: rgba(255,255,255,0.7) !important; }
 [data-theme="light"] .md-tool-btn.active {
   background: #111 !important;
   color: #fff !important;
 }
 [data-theme="light"] .md-tool-icon { color: inherit !important; }
 
-/* Center info card */
-[data-theme="light"] .md-info-card {
-  background: rgba(255,255,255,0.85) !important;
-  border-color: rgba(0,0,0,0.18) !important;
-}
+/* Center info card (redundant block removed) */
 [data-theme="light"] .md-info-card .info-title { color: #111 !important; }
 [data-theme="light"] .md-info-card .info-desc { color: #666 !important; }
 [data-theme="light"] .md-start-btn {
@@ -127,36 +205,36 @@
 
 /* Right sidebar — Lightning cards */
 [data-theme="light"] .md-light-btn {
-  background: rgba(255,255,255,0.7) !important;
-  border-color: rgba(0,0,0,0.1) !important;
-  color: #1a1a1a !important;
+  background: rgba(255,255,255,0.85) !important;
+  border-color: rgba(0,0,0,0.15) !important;
+  color: #111 !important;
 }
 [data-theme="light"] .md-light-btn:hover,
 [data-theme="light"] .md-light-btn.active {
-  background: rgba(0,0,0,0.07) !important;
-  border-color: rgba(0,0,0,0.2) !important;
+  background: rgba(0,0,0,0.1) !important;
+  border-color: rgba(0,0,0,0.25) !important;
 }
-[data-theme="light"] .light-label { color: #1a1a1a !important; }
-[data-theme="light"] .light-subtext { color: #777 !important; }
+[data-theme="light"] .light-label { color: #111 !important; font-weight: 700 !important; }
+[data-theme="light"] .light-subtext { color: #555 !important; }
 
 /* Icon wrappers inside Lightning cards */
 [data-theme="light"] .icon-wrapper {
-  background: rgba(0,0,0,0.05) !important;
-  border-color: rgba(0,0,0,0.1) !important;
+  background: transparent !important;
+  border-color: transparent !important;
 }
 [data-theme="light"] .icon-wrapper.black {
-  background: rgba(0,0,0,0.06) !important;
-  border-color: rgba(0,0,0,0.12) !important;
+  background: rgba(0,0,0,0.05) !important;
+  border-color: rgba(0,0,0,0.25) !important;
 }
 [data-theme="light"] .icon-wrapper.dotted {
-  background-image: radial-gradient(rgba(0,0,0,0.25) 1px, transparent 1px) !important;
+  background-image: radial-gradient(rgba(0,0,0,0.45) 1.5px, transparent 1.5px) !important;
 }
 [data-theme="light"] .spot-icon {
-  background: #333 !important;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15) !important;
+  background: #111 !important;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2) !important;
 }
-[data-theme="light"] .target-icon { color: #333 !important; }
-[data-theme="light"] .sun-icon { border-color: #333 !important; }
+[data-theme="light"] .target-icon { color: #111 !important; }
+[data-theme="light"] .sun-icon { border-color: #111 !important; }
 
 /* Terminal / System Console */
 [data-theme="light"] .md-terminal {

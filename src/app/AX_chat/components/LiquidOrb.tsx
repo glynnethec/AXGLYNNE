@@ -88,7 +88,7 @@ export default function LiquidOrb({
       ctx.fill();
 
       ctx.lineWidth = 1;
-      ctx.strokeStyle = theme === 'dark' ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.04)';
+      ctx.strokeStyle = theme === 'dark' ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.15)';
       ctx.stroke();
 
       // Smooth spring physics for organic rotation
@@ -251,7 +251,7 @@ export default function LiquidOrb({
         }
         
         ctx.closePath();
-        ctx.fillStyle = theme === 'dark' ? `rgba(255, 255, 255, ${opacity * 1.5})` : `rgba(0, 0, 0, ${opacity * 1.5})`;
+        ctx.fillStyle = theme === 'dark' ? `rgba(255, 255, 255, ${opacity * 1.5})` : `rgba(0, 0, 0, ${opacity * 6})`;
         ctx.fill();
       };
 
@@ -276,7 +276,6 @@ export default function LiquidOrb({
           for (let i = 0; i <= resolution; i++) {
             const theta = (i * Math.PI * 2) / resolution;
             const p2d = project(Math.cos(phi) * Math.cos(theta), Math.sin(phi), Math.cos(phi) * Math.sin(theta));
-            if (p2d.z < -0.15) { first = true; continue; }
             if (first) { ctx.moveTo(p2d.x, p2d.y); first = false; } else { ctx.lineTo(p2d.x, p2d.y); }
           }
         }
@@ -288,12 +287,11 @@ export default function LiquidOrb({
           for (let j = 0; j <= resolution; j++) {
             const phi = (j * Math.PI) / resolution - Math.PI / 2;
             const p2d = project(Math.cos(phi) * Math.cos(theta), Math.sin(phi), Math.cos(phi) * Math.sin(theta));
-            if (p2d.z < -0.15) { first = true; continue; }
             if (first) { ctx.moveTo(p2d.x, p2d.y); first = false; } else { ctx.lineTo(p2d.x, p2d.y); }
           }
         }
         ctx.lineWidth = 1;
-        ctx.strokeStyle = theme === 'dark' ? `rgba(255, 255, 255, ${gridOpacity})` : `rgba(0, 0, 0, ${gridOpacity})`;
+        ctx.strokeStyle = theme === 'dark' ? `rgba(255, 255, 255, ${gridOpacity})` : `rgba(0, 0, 0, 0.85)`;
         ctx.stroke();
       }
       animationFrame = requestAnimationFrame(render);

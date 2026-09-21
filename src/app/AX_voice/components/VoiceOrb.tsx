@@ -9,7 +9,7 @@ type HoverStep = {
   createdAt: number;
 };
 
-export default function VoiceOrb({ orbState = 'idle' }: { orbState?: 'idle' | 'thinking' }) {
+export default function VoiceOrb({ orbState = 'idle', theme = 'dark' }: { orbState?: 'idle' | 'thinking', theme?: 'light' | 'dark' }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const historyRef = useRef<HoverStep[]>([]);
   const stepIdRef = useRef(0);
@@ -209,7 +209,7 @@ export default function VoiceOrb({ orbState = 'idle' }: { orbState?: 'idle' | 't
         }
         
         ctx.closePath();
-        ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+        ctx.fillStyle = theme === 'light' ? `rgba(0, 0, 0, ${opacity * 6})` : `rgba(255, 255, 255, ${opacity})`;
         ctx.fill();
       };
 
@@ -223,7 +223,7 @@ export default function VoiceOrb({ orbState = 'idle' }: { orbState?: 'idle' | 't
         }
       }
 
-      ctx.strokeStyle = `rgba(255, 255, 255, ${gridOpacity})`;
+      ctx.strokeStyle = theme === 'light' ? `rgba(0, 0, 0, 0.85)` : `rgba(255, 255, 255, ${gridOpacity})`;
       ctx.lineWidth = 1; 
 
       for (let i = 0; i < numLonLines; i++) {
@@ -237,10 +237,8 @@ export default function VoiceOrb({ orbState = 'idle' }: { orbState?: 'idle' | 't
           const pz = Math.cos(phi) * Math.sin(theta);
           const p2d = project(px, py, pz);
           
-          if (p2d.z > -0.05) {
-             if (first) { ctx.moveTo(p2d.x, p2d.y); first = false; } 
-             else { ctx.lineTo(p2d.x, p2d.y); }
-          } else { first = true; }
+          if (first) { ctx.moveTo(p2d.x, p2d.y); first = false; } 
+          else { ctx.lineTo(p2d.x, p2d.y); }
         }
         ctx.stroke();
       }
@@ -256,10 +254,8 @@ export default function VoiceOrb({ orbState = 'idle' }: { orbState?: 'idle' | 't
           const pz = Math.cos(phi) * Math.sin(theta);
           const p2d = project(px, py, pz);
           
-          if (p2d.z > -0.05) {
-             if (first) { ctx.moveTo(p2d.x, p2d.y); first = false; } 
-             else { ctx.lineTo(p2d.x, p2d.y); }
-          } else { first = true; }
+          if (first) { ctx.moveTo(p2d.x, p2d.y); first = false; } 
+          else { ctx.lineTo(p2d.x, p2d.y); }
         }
         ctx.stroke();
       }

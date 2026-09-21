@@ -121,7 +121,7 @@ export default function AssemblyDashboard() {
       <div className="md-3d-scene">
         <div className="md-sphere" style={{ overflow: 'visible', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <div style={{ width: '400px', height: '400px', transform: 'scale(1.2)' }}>
-            <LiquidOrb theme="dark" customRotX={rotX} customRotY={rotY} customRotZ={rotZ} />
+            <LiquidOrb theme={theme} wireframe={theme === 'light'} customRotX={rotX} customRotY={rotY} customRotZ={rotZ} />
           </div>
         </div>
         <div className="md-shadow" style={{ opacity: shadowDensity / 100, transform: `translateY(200px) rotateX(75deg) rotateZ(${-rotY}deg)` }}></div>
@@ -186,21 +186,23 @@ export default function AssemblyDashboard() {
           <svg width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0, zIndex: 0 }}>
             <defs>
               <pattern id="floor-grid" width="80" height="80" patternUnits="userSpaceOnUse">
-                <path d="M 80 0 L 0 0 0 80" fill="none" stroke={theme === 'light' ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.03)'} strokeWidth="1" />
+                <path d="M 80 0 L 0 0 0 80" fill="none" stroke={theme === 'light' ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.03)'} strokeWidth="1" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#floor-grid)" />
             {history.map((step, index) => {
               const isCurrent = index === 0;
               const cellColor = theme === 'light' ? '0,0,0' : '255,255,255';
+              // In light mode boost opacity 4x so the hover effect is equally visible
+              const opacityScale = theme === 'light' ? 4 : 1;
               return (
                 <g key={step.id} style={{ animation: 'cellFadeIn 0.8s ease forwards' }}>
                   {step.neighbors.map((n, i) => (
                     <rect key={i} x={(step.cx + n.dx) * 80} y={(step.cy + n.dy) * 80} width="80" height="80" 
-                          fill={`rgba(${cellColor},${isCurrent ? n.opacity : 0})`} style={{ transition: 'fill 1s ease' }} />
+                          fill={`rgba(${cellColor},${isCurrent ? n.opacity * opacityScale : 0})`} style={{ transition: 'fill 1s ease' }} />
                   ))}
                   <rect x={step.cx * 80} y={step.cy * 80} width="80" height="80" 
-                        fill={`rgba(${cellColor},${isCurrent ? 0.08 : 0})`} style={{ transition: 'fill 1s ease' }} />
+                        fill={`rgba(${cellColor},${isCurrent ? 0.08 * opacityScale : 0})`} style={{ transition: 'fill 1s ease' }} />
                 </g>
               );
             })}

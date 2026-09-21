@@ -9,7 +9,7 @@ type HoverStep = {
   createdAt: number;
 };
 
-export default function GravityBackground({ children }: { children: React.ReactNode }) {
+export default function GravityBackground({ children, theme = 'dark' }: { children: React.ReactNode, theme?: 'light' | 'dark' }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   
   const mouseRef = useRef({ x: -1000, y: -1000, active: false });
@@ -20,7 +20,7 @@ export default function GravityBackground({ children }: { children: React.ReactN
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    // We don't need alpha since the background is solid white
+    // We don't need alpha since the background is solid white/black
     const ctx = canvas.getContext('2d', { alpha: false });
     if (!ctx) return;
 
@@ -40,7 +40,7 @@ export default function GravityBackground({ children }: { children: React.ReactN
       const cx = width / 2;
       const cy = height / 2;
 
-      ctx.fillStyle = '#0b0b0d';
+      ctx.fillStyle = theme === 'light' ? '#f5f5f7' : '#0b0b0d';
       ctx.fillRect(0, 0, width, height);
 
       // --- Spacetime Warp Function ---
@@ -159,7 +159,7 @@ export default function GravityBackground({ children }: { children: React.ReactN
         }
         
         ctx.closePath();
-        ctx.fillStyle = `rgba(255,255,255,${opacity})`;
+        ctx.fillStyle = theme === 'light' ? `rgba(0,0,0,${opacity * 4})` : `rgba(255,255,255,${opacity})`;
         ctx.fill();
       };
 
@@ -180,7 +180,7 @@ export default function GravityBackground({ children }: { children: React.ReactN
       const maxGrowDist = Math.hypot(width, height) * easeOutQuart;
 
       // --- Draw Warped Grid Lines ---
-      ctx.strokeStyle = 'rgba(255,255,255,0.04)'; // Lighter grid lines
+      ctx.strokeStyle = theme === 'light' ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.04)'; // Grid lines
       ctx.lineWidth = 1;
 
       // Vertical lines
@@ -228,9 +228,10 @@ export default function GravityBackground({ children }: { children: React.ReactN
       // 2.5 cells is about 240px. We want it fully hidden near the sphere (130px) and fading out.
       const clearRadius = 130 + (2.5 * cellSize); 
       const gradient = ctx.createRadialGradient(cx, cy, 130, cx, cy, clearRadius);
-      gradient.addColorStop(0, 'rgba(11, 11, 13, 1)');
-      gradient.addColorStop(0.3, 'rgba(11, 11, 13, 1)');
-      gradient.addColorStop(1, 'rgba(11, 11, 13, 0)');
+      const bgColor = theme === 'light' ? '245, 245, 247' : '11, 11, 13';
+      gradient.addColorStop(0, `rgba(${bgColor}, 1)`);
+      gradient.addColorStop(0.3, `rgba(${bgColor}, 1)`);
+      gradient.addColorStop(1, `rgba(${bgColor}, 0)`);
       
       ctx.fillStyle = gradient;
       // Use destination-out or just normal blending since background is white
@@ -262,7 +263,7 @@ export default function GravityBackground({ children }: { children: React.ReactN
     <div
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ position: 'relative', width: '100vw', height: '100vh', backgroundColor: '#0b0b0d', overflow: 'hidden' }}
+      style={{ position: 'relative', width: '100vw', height: '100vh', backgroundColor: theme === 'light' ? '#f5f5f7' : '#0b0b0d', overflow: 'hidden' }}
     >
       <canvas
         ref={canvasRef}
