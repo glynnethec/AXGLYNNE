@@ -24,6 +24,7 @@ export default function AXVoicePage() {
   const [messages, setMessages] = useState<{role: string, content: string}[]>([]);
   const [isSessionActive, setIsSessionActive] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
+  const [useMockTTS, setUseMockTTS] = useState(true);
   
   const recognitionRef = useRef<any>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -141,7 +142,7 @@ export default function AXVoicePage() {
       fetch(`${apiUrl}/api/voice_chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: newMessages })
+        body: JSON.stringify({ messages: newMessages, use_mock_tts: useMockTTS })
       })
       .then(res => res.json())
       .then(data => {
@@ -258,6 +259,48 @@ export default function AXVoicePage() {
     }}>
       <div style={{ position: 'absolute', top: '20px', left: '20px', zIndex: 100 }}>
         <BackButton onClick={() => setShowExitModal(true)} />
+      </div>
+
+      {/* TTS Engine Toggle */}
+      <div style={{ 
+        position: 'absolute', 
+        bottom: '20px', 
+        right: '20px', 
+        zIndex: 100,
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        background: 'rgba(0,0,0,0.5)',
+        padding: '8px 12px',
+        borderRadius: '999px',
+        border: '1px solid rgba(255,255,255,0.1)',
+        backdropFilter: 'blur(10px)'
+      }}>
+        <span style={{ fontSize: '11px', color: useMockTTS ? '#fff' : '#666', fontWeight: useMockTTS ? 600 : 400, transition: 'all 0.3s' }}>DEV (FREE)</span>
+        <div 
+          onClick={() => setUseMockTTS(!useMockTTS)}
+          style={{
+            width: '36px',
+            height: '20px',
+            background: useMockTTS ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.8)',
+            borderRadius: '10px',
+            position: 'relative',
+            cursor: 'pointer',
+            transition: 'background 0.3s ease'
+          }}
+        >
+          <div style={{
+            width: '16px',
+            height: '16px',
+            background: useMockTTS ? '#fff' : '#000',
+            borderRadius: '50%',
+            position: 'absolute',
+            top: '2px',
+            left: useMockTTS ? '2px' : '18px',
+            transition: 'left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+          }} />
+        </div>
+        <span style={{ fontSize: '11px', color: !useMockTTS ? '#fff' : '#666', fontWeight: !useMockTTS ? 600 : 400, transition: 'all 0.3s' }}>PREMIUM</span>
       </div>
       
       <div style={{
