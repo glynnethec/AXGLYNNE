@@ -30,12 +30,14 @@ export default function AXVoicePage() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const orbStateRef = useRef(orbState);
   const isSessionActiveRef = useRef(isSessionActive);
+  const useMockTTSRef = useRef(useMockTTS);
 
   // Keep refs in sync
   useEffect(() => {
     orbStateRef.current = orbState;
     isSessionActiveRef.current = isSessionActive;
-  }, [orbState, isSessionActive]);
+    useMockTTSRef.current = useMockTTS;
+  }, [orbState, isSessionActive, useMockTTS]);
 
   // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS
   useEffect(() => {
@@ -142,7 +144,7 @@ export default function AXVoicePage() {
       fetch(`${apiUrl}/api/voice_chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: newMessages, use_mock_tts: useMockTTS })
+        body: JSON.stringify({ messages: newMessages, use_mock_tts: useMockTTSRef.current })
       })
       .then(res => res.json())
       .then(data => {
