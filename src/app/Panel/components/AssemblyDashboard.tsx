@@ -6,6 +6,7 @@ import { supabase, signOut } from '@/lib/supabaseClient';
 import { FaSignOutAlt } from 'react-icons/fa';
 import PanelFooter from './PanelFooter';
 import LiquidOrb from '@/app/AX_chat/components/LiquidOrb';
+import { useTheme } from '@/lib/ThemeContext';
 import './AssemblyDashboard.css';
 
 type HoverStep = {
@@ -31,6 +32,7 @@ export default function AssemblyDashboard() {
   const [userProfile, setUserProfile] = useState<any>(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   const platformTools = [
     { name: 'AX_core', label: 'AX Core', desc: 'Central processing and neural routing.', model: 'SYS-CORE v9.4', details: 'Kernel level execution protocols active.' },
@@ -171,7 +173,7 @@ export default function AssemblyDashboard() {
   };
 
   return (
-    <div style={{ background: '#000', minHeight: '100vh', width: '100%' }}>
+    <div data-theme={theme} style={{ background: theme === 'light' ? '#f5f5f7' : '#000', minHeight: '100vh', width: '100%' }}>
       <div className="md-container" style={{ '--brightness-filter': `brightness(${0.5 + brightness / 100})` } as React.CSSProperties}
            onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
       
@@ -236,8 +238,31 @@ export default function AssemblyDashboard() {
                     <strong>ROOT</strong>
                   </div>
                   <div className="stat">
-                    <span>Status</span>
-                    <strong style={{color: '#ffffff'}}>ONLINE</strong>
+                    <span>Theme</span>
+                    <button
+                      onClick={toggleTheme}
+                      title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        padding: '2px 0',
+                        color: theme === 'dark' ? '#ffffff' : '#1a1a1a',
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        letterSpacing: '0.05em'
+                      }}
+                    >
+                      {theme === 'dark' ? (
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                      ) : (
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+                      )}
+                      {theme === 'dark' ? 'DARK' : 'LIGHT'}
+                    </button>
                   </div>
                   <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
                     <button 

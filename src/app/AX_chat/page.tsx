@@ -8,9 +8,11 @@ import MessageList from './components/MessageList';
 import ChatInput from './components/ChatInput';
 import SettingsPopup from './components/SettingsPopup';
 import ChatSidebar from './components/ChatSidebar';
+import { useTheme } from '@/lib/ThemeContext';
 
 export default function AXChatPage() {
   const [messages, setMessages] = useState<{ role: 'user' | 'ai', content: string }[]>([]);
+  const { theme } = useTheme();
   const [inputValue, setInputValue] = useState('');
   const [hasStarted, setHasStarted] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
@@ -181,6 +183,7 @@ export default function AXChatPage() {
   };
 
   return (
+    <div data-theme={theme}>
     <BackgroundWrapper theme="dark">
       <div style={{ display: 'flex', minHeight: '100vh', width: '100vw' }}>
 
@@ -271,6 +274,28 @@ export default function AXChatPage() {
 
       <style dangerouslySetInnerHTML={{
         __html: `
+        /* ── Light Mode for AX_chat ── */
+        [data-theme="light"] .msg-list-wrapper {
+          /* messages area – no bg change needed, GravityBackground handles it */
+        }
+        [data-theme="light"] .msg-bubble {
+          color: #1a1a1a !important;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+        }
+        [data-theme="light"] .chat-heading {
+          color: #111 !important;
+        }
+        [data-theme="light"] .chat-input-form {
+          background-color: rgba(255,255,255,0.85) !important;
+          border-color: rgba(0,0,0,0.12) !important;
+          box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+        }
+        [data-theme="light"] .chat-textarea {
+          color: #111 !important;
+        }
+        [data-theme="light"] .chat-textarea::placeholder {
+          color: #888 !important;
+        }
         @keyframes typingBounce {
           0%, 60%, 100% { transform: translateY(0); }
           30% { transform: translateY(-4px); }
@@ -401,5 +426,6 @@ export default function AXChatPage() {
         }
       `}} />
     </BackgroundWrapper>
+    </div>
   );
 }

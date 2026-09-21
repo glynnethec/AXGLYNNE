@@ -1,3 +1,25 @@
+/* ── Light Mode Overrides for AX_chat ──────────────────── */
+[data-theme="light"] .ax-sidebar-container {
+  background-color: #f5f5f7 !important;
+  border-right: 1px solid rgba(0,0,0,0.1) !important;
+}
+[data-theme="light"] .ax-new-chat-btn {
+  background-color: rgba(0,0,0,0.05) !important;
+  border-color: rgba(0,0,0,0.1) !important;
+  color: #1a1a1a !important;
+}
+[data-theme="light"] .ax-new-chat-btn:hover { background-color: rgba(0,0,0,0.08) !important; }
+[data-theme="light"] .ax-sidebar-close-btn { color: #555 !important; }
+[data-theme="light"] .ax-sidebar-close-btn:hover { color: #000 !important; background-color: rgba(0,0,0,0.05) !important; }
+[data-theme="light"] .ax-sidebar-section-title { color: #888 !important; }
+[data-theme="light"] .ax-conversation-btn { color: #333 !important; }
+[data-theme="light"] .ax-conversation-btn:hover { background-color: rgba(0,0,0,0.06) !important; }
+[data-theme="light"] .ax-sidebar-footer { border-top-color: rgba(0,0,0,0.1) !important; }
+[data-theme="light"] .ax-sidebar-profile { color: #1a1a1a !important; }
+[data-theme="light"] .ax-sidebar-profile:hover { background-color: rgba(0,0,0,0.05) !important; }
+[data-theme="light"] .ax-sidebar-avatar { background-color: #ddd !important; color: #333 !important; }
+[data-theme="light"] .ax-sidebar-overlay { background: rgba(0,0,0,0.3) !important; }
+
 .ax-sidebar-overlay {
   position: fixed;
   top: 0;
