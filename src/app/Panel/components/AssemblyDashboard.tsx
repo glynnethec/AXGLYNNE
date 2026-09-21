@@ -186,20 +186,21 @@ export default function AssemblyDashboard() {
           <svg width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0, zIndex: 0 }}>
             <defs>
               <pattern id="floor-grid" width="80" height="80" patternUnits="userSpaceOnUse">
-                <path d="M 80 0 L 0 0 0 80" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+                <path d="M 80 0 L 0 0 0 80" fill="none" stroke={theme === 'light' ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.03)'} strokeWidth="1" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#floor-grid)" />
             {history.map((step, index) => {
               const isCurrent = index === 0;
+              const cellColor = theme === 'light' ? '0,0,0' : '255,255,255';
               return (
                 <g key={step.id} style={{ animation: 'cellFadeIn 0.8s ease forwards' }}>
                   {step.neighbors.map((n, i) => (
                     <rect key={i} x={(step.cx + n.dx) * 80} y={(step.cy + n.dy) * 80} width="80" height="80" 
-                          fill={`rgba(255,255,255,${isCurrent ? n.opacity : 0})`} style={{ transition: 'fill 1s ease' }} />
+                          fill={`rgba(${cellColor},${isCurrent ? n.opacity : 0})`} style={{ transition: 'fill 1s ease' }} />
                   ))}
                   <rect x={step.cx * 80} y={step.cy * 80} width="80" height="80" 
-                        fill={`rgba(255,255,255,${isCurrent ? 0.08 : 0})`} style={{ transition: 'fill 1s ease' }} />
+                        fill={`rgba(${cellColor},${isCurrent ? 0.08 : 0})`} style={{ transition: 'fill 1s ease' }} />
                 </g>
               );
             })}
@@ -323,7 +324,7 @@ export default function AssemblyDashboard() {
                   <span className="md-highlight">GLYNNE</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '16px 0' }}>
-                  <img src="/logos/GLYNNE.svg" alt="GLYNNE Logo" style={{ width: '80px', opacity: 0.4, filter: 'invert(1)' }} />
+                  <img src="/logos/GLYNNE.svg" alt="GLYNNE Logo" style={{ width: '80px', opacity: 0.4, filter: theme === 'light' ? 'none' : 'invert(1)' }} />
                 </div>
                 <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '12px', marginTop: '12px', display: 'flex', justifyContent: 'center' }}>
                   <a href="https://axglynne.com/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ color: '#a1a1aa', fontSize: '11px', textDecoration: 'none', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
