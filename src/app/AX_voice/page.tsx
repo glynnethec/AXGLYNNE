@@ -292,23 +292,7 @@ export default function AXVoicePage() {
               </svg>
             </div>
 
-            {/* AI Response Text */}
-            <div style={{
-              position: 'absolute',
-              top: '15%',
-              width: '80%',
-              maxWidth: '600px',
-              textAlign: 'center',
-              color: '#ffffff',
-              fontSize: '18px',
-              fontWeight: 400,
-              opacity: aiResponse ? 1 : 0,
-              transition: 'opacity 0.5s ease',
-              textShadow: '0 2px 10px rgba(0,0,0,0.5)',
-              zIndex: 20
-            }}>
-              {aiResponse}
-            </div>
+            {/* AI Response Text Removed for Immersive Audio Experience */}
 
             {/* ORB */}
             <div 
@@ -326,19 +310,24 @@ export default function AXVoicePage() {
               <VoiceOrb orbState={orbState === 'thinking' ? 'thinking' : 'idle'} />
             </div>
 
-            {/* User Transcript Text */}
+            {/* Minimal Status Indicator */}
             <div style={{
               position: 'absolute',
-              bottom: '20%',
-              width: '80%',
-              maxWidth: '600px',
+              bottom: '15%',
+              width: '100%',
               textAlign: 'center',
-              color: 'rgba(255, 255, 255, 0.7)',
-              fontSize: '16px',
-              minHeight: '24px',
-              zIndex: 20
+              color: 'rgba(255, 255, 255, 0.3)',
+              fontSize: '12px',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              zIndex: 20,
+              transition: 'opacity 0.3s ease',
+              opacity: orbState === 'idle' ? 1 : 0.5
             }}>
-              {transcript || (orbState === 'listening' ? "Listening..." : "Tap the orb to speak")}
+              {orbState === 'listening' ? "Listening..." : 
+               orbState === 'thinking' ? "Processing..." : 
+               orbState === 'speaking' ? "Speaking..." : 
+               "Tap to interact"}
             </div>
             
           </div>
