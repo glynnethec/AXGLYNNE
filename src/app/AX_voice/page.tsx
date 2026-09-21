@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { getCurrentUser } from '@/lib/supabaseClient';
 import GravityBackground from '../AX_chat/components/GravityBackground';
 import VoiceOrb from './components/VoiceOrb';
-import BackButton from '../AX_chat/components/BackButton';
 
 // Type definitions for Web Speech API
 declare global {
@@ -280,7 +279,7 @@ export default function AXVoicePage() {
   };
 
   return (
-    <div style={{ 
+    <div className="ax-voice-root" style={{ 
       width: '100%', 
       height: '100dvh', /* Use dvh for strict mobile viewport without scrolling */
       position: 'relative', 
@@ -288,15 +287,11 @@ export default function AXVoicePage() {
       backgroundColor: '#000000',
       touchAction: 'none' /* Prevents pull-to-refresh and dragging on mobile */
     }}>
-      <div style={{ position: 'absolute', top: '20px', left: '20px', zIndex: 100 }}>
-        <BackButton onClick={() => setShowExitModal(true)} />
-      </div>
-
-      {/* TTS Engine Toggle */}
+      {/* TTS Engine Toggle — top left */}
       <div style={{ 
         position: 'absolute', 
-        bottom: '20px', 
-        right: '20px', 
+        top: '20px', 
+        left: '20px', 
         zIndex: 100,
         display: 'flex',
         alignItems: 'center',
@@ -340,7 +335,7 @@ export default function AXVoicePage() {
       }}>
         <GravityBackground>
           {/* Centered Content */}
-          <div style={{
+          <div className="ax-voice-inner" style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -438,6 +433,20 @@ export default function AXVoicePage() {
       )}
 
       <style dangerouslySetInnerHTML={{__html: `
+        /* ── Mobile: pantallas menores a 700px ── */
+        @media (max-width: 700px) {
+          .ax-voice-root {
+            height: 100vh !important;
+            height: 100dvh !important;
+            min-height: -webkit-fill-available;
+          }
+          .ax-voice-inner {
+            height: 100vh !important;
+            height: 100dvh !important;
+            min-height: -webkit-fill-available;
+          }
+        }
+
         @keyframes bgFadeIn {
           from { opacity: 0; }
           to { opacity: 1; }
