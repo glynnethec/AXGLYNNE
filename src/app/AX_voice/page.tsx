@@ -23,6 +23,7 @@ export default function AXVoicePage() {
   const [aiResponse, setAiResponse] = useState('');
   const [messages, setMessages] = useState<{role: string, content: string}[]>([]);
   const [isSessionActive, setIsSessionActive] = useState(false);
+  const [showExitModal, setShowExitModal] = useState(false);
   
   const recognitionRef = useRef<any>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -45,6 +46,29 @@ export default function AXVoicePage() {
     };
     checkUser();
   }, [router]);
+
+  // 🔒 PROTECCIÓN CONTRA SALIDA ACCIDENTAL
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = ''; // Required for some browsers to show the prompt
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    // Empujar un estado al historial para evitar que el primer "Atrás" abandone la página
+    window.history.pushState(null, '', window.location.href);
+    const handlePopState = () => {
+      // Evitar la navegación empujando de nuevo el estado
+      window.history.pushState(null, '', window.location.href);
+      setShowExitModal(true);
+    };
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
 
   // Inicializar Web Speech API (Solo una vez)
   useEffect(() => {
@@ -113,7 +137,8 @@ export default function AXVoicePage() {
       setMessages(newMessages);
 
       // Fetch al backend
-      fetch('http://localhost:8001/api/voice_chat', {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001';
+      fetch(`${apiUrl}/api/voice_chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: newMessages })
@@ -231,7 +256,9 @@ export default function AXVoicePage() {
       backgroundColor: '#000000',
       touchAction: 'none' /* Prevents pull-to-refresh and dragging on mobile */
     }}>
-      <BackButton />
+      <div style={{ position: 'absolute', top: '20px', left: '20px', zIndex: 100 }}>
+        <BackButton onClick={() => setShowExitModal(true)} />
+      </div>
       
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
@@ -318,6 +345,35 @@ export default function AXVoicePage() {
         </GravityBackground>
       </div>
 
+      {/* MODAL DE CONFIRMACIÓN DE SALIDA */}
+      {showExitModal && (
+        <div className="md-logout-overlay">
+          <div className="md-logout-modal">
+            <h3>End Session?</h3>
+            <p>Your voice session is securely saved. Are you sure you want to leave the immersive interface?</p>
+            <div className="md-logout-actions">
+              <button className="md-btn-cancel" onClick={() => setShowExitModal(false)}>Cancel</button>
+              <button className="md-btn-confirm" onClick={() => {
+                window.onbeforeunload = null;
+                // APAGAR MICROFONO Y AUDIO AL SALIR
+                setIsSessionActive(false);
+                setOrbState('idle');
+                if (recognitionRef.current) {
+                  recognitionRef.current.stop();
+                }
+                if (audioRef.current) {
+                  audioRef.current.pause();
+                }
+                if (window.speechSynthesis) {
+                  window.speechSynthesis.cancel();
+                }
+                router.push('/Panel');
+              }}>Exit Voice</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes bgFadeIn {
           from { opacity: 0; }
@@ -333,6 +389,108 @@ export default function AXVoicePage() {
         }
         @keyframes spinnerFadeOut {
           to { opacity: 0; visibility: hidden; }
+        }
+
+        /* MODAL STYLES (Copied from Dashboard Logout) */
+        .md-logout-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background: rgba(0, 0, 0, 0.85);
+          backdrop-filter: blur(16px);
+          z-index: 10000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          animation: fadeIn 0.3s ease;
+        }
+
+        .md-logout-modal {
+          position: relative;
+          background-image:
+            linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(15, 15, 15, 0.95), rgba(5, 5, 5, 0.98));
+          background-size: 20px 20px, 20px 20px, 100% 100%;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 20px;
+          padding: 40px;
+          max-width: 400px;
+          width: 90%;
+          text-align: center;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 40px rgba(255, 255, 255, 0.02);
+          animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .md-logout-modal h3 {
+          font-family: var(--font-orbitron), sans-serif;
+          font-size: 18px;
+          font-weight: 600;
+          color: #fff;
+          letter-spacing: 0.15em;
+          margin-bottom: 16px;
+          text-transform: uppercase;
+          text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .md-logout-modal p {
+          font-size: 14px;
+          color: #a1a1aa;
+          line-height: 1.5;
+          margin-bottom: 32px;
+        }
+
+        .md-logout-actions {
+          display: flex;
+          gap: 16px;
+          justify-content: center;
+        }
+
+        .md-btn-cancel, .md-btn-confirm {
+          flex: 1;
+          padding: 12px;
+          border-radius: 12px;
+          font-size: 14px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          letter-spacing: 0.05em;
+        }
+
+        .md-btn-cancel {
+          background: rgba(255, 255, 255, 0.05);
+          color: #a1a1aa;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .md-btn-cancel:hover {
+          background: rgba(255, 255, 255, 0.1);
+          color: #fff;
+        }
+
+        .md-btn-confirm {
+          background: #fff;
+          color: #000;
+          border: none;
+          box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .md-btn-confirm:hover {
+          background: #e2e2e5;
+          box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+          transform: translateY(-2px);
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; backdrop-filter: blur(0px); }
+          to { opacity: 1; backdrop-filter: blur(16px); }
+        }
+
+        @keyframes scaleUp {
+          from { opacity: 0; transform: scale(0.9) translateY(10px); }
+          to { opacity: 1; transform: scale(1) translateY(0); }
         }
       `}} />
     </div>
