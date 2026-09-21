@@ -31,6 +31,8 @@ export default function AXVoicePage() {
   const orbStateRef = useRef(orbState);
   const isSessionActiveRef = useRef(isSessionActive);
   const useMockTTSRef = useRef(useMockTTS);
+  const silenceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const fillerAudioRef = useRef<HTMLAudioElement | null>(null);
 
   // Keep refs in sync
   useEffect(() => {
@@ -79,7 +81,7 @@ export default function AXVoicePage() {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (SpeechRecognition) {
         const recognition = new SpeechRecognition();
-        recognition.continuous = false;
+        recognition.continuous = true;
         recognition.interimResults = true;
         recognition.lang = 'es-ES'; // o 'en-US'
         
@@ -89,9 +91,24 @@ export default function AXVoicePage() {
             currentTranscript += event.results[i][0].transcript;
           }
           setTranscript(currentTranscript);
+
+          // Reiniciar el temporizador de silencio cada vez que el usuario hable
+          if (silenceTimerRef.current) {
+            clearTimeout(silenceTimerRef.current);
+          }
+          
+          // Si el usuario deja de hablar por 2.5 segundos, detenemos la grabación
+          silenceTimerRef.current = setTimeout(() => {
+            if (recognitionRef.current) {
+              recognitionRef.current.stop();
+            }
+          }, 2500);
         };
 
         recognition.onend = () => {
+          if (silenceTimerRef.current) {
+            clearTimeout(silenceTimerRef.current);
+          }
           if (!isSessionActiveRef.current) {
             setOrbState('idle');
             return;
@@ -136,11 +153,17 @@ export default function AXVoicePage() {
       
       setOrbState('thinking');
       
+      // Reproducir sonido de relleno aleatorio (muletilla) mientras la IA procesa
+      const fillers = ['/fillers/filler_1.mp3', '/fillers/filler_2.mp3', '/fillers/filler_3.mp3', '/fillers/filler_4.mp3'];
+      const randomFiller = fillers[Math.floor(Math.random() * fillers.length)];
+      fillerAudioRef.current = new Audio(randomFiller);
+      fillerAudioRef.current.play().catch(e => console.log('Autoplay prevented', e));
+      
       const newMessages = [...messages, { role: 'user', content: currentText }];
       setMessages(newMessages);
 
       // Fetch al backend
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://ax-zyxe.onrender.com';
       fetch(`${apiUrl}/api/voice_chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -148,6 +171,12 @@ export default function AXVoicePage() {
       })
       .then(res => res.json())
       .then(data => {
+        // Detener la muletilla en cuanto llega la respuesta real
+        if (fillerAudioRef.current) {
+          fillerAudioRef.current.pause();
+          fillerAudioRef.current.currentTime = 0;
+        }
+
         const reply = data.reply;
         const audioBase64 = data.audio_base64;
         
