@@ -460,7 +460,7 @@ export default function AXVoicePage() {
       <style dangerouslySetInnerHTML={{__html: `
         /* ── Body background para que no haya bleed blanco ── */
         html, body {
-          background-color: ${theme === 'light' ? '#f5f5f7' : '#000000'} !important;
+          background-color: ${theme === 'light' ? '#f5f5f7' : '#0b0b0d'} !important;
         }
 
         /* ── Mobile: pantallas menores a 700px ── */
