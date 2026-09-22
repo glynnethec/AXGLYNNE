@@ -401,7 +401,7 @@ export default function AXVoicePage() {
               }}
               onClick={toggleListening}
             >
-              <VoiceOrb orbState={orbState === 'thinking' ? 'thinking' : 'idle'} />
+              <VoiceOrb orbState={orbState === 'thinking' ? 'thinking' : orbState === 'speaking' ? 'speaking' : 'idle'} />
             </div>
 
             {/* Minimal Status Indicator */}

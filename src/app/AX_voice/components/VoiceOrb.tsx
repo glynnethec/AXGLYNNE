@@ -9,7 +9,7 @@ type HoverStep = {
   createdAt: number;
 };
 
-export default function VoiceOrb({ orbState = 'idle', theme = 'dark' }: { orbState?: 'idle' | 'thinking', theme?: 'light' | 'dark' }) {
+export default function VoiceOrb({ orbState = 'idle', theme = 'dark' }: { orbState?: 'idle' | 'thinking' | 'speaking', theme?: 'light' | 'dark' }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const historyRef = useRef<HoverStep[]>([]);
   const stepIdRef = useRef(0);
@@ -61,6 +61,7 @@ export default function VoiceOrb({ orbState = 'idle', theme = 'dark' }: { orbSta
       const cy = height / 2;
       
       const isThinking = orbState === 'thinking';
+      const isSpeakingNow = orbState === 'speaking';
       const gridOpacity = isThinking ? 0.35 : 0.15;
 
       const now = Date.now();
@@ -75,12 +76,14 @@ export default function VoiceOrb({ orbState = 'idle', theme = 'dark' }: { orbSta
           sum += dataArray[i];
         }
         rawVolume = sum / dataArray.length;
+      } else if (isSpeakingNow) {
+        // IA hablando: volumen simulado activo para que se vean los cuadros
+        rawVolume = 25 + Math.random() * 60;
       } else if (isThinking) {
         rawVolume = 20 + Math.random() * 80; 
       } else {
-        if (Math.random() > 0.95) {
-          rawVolume = 15 + Math.random() * 20;
-        }
+        // idle / listening: sin cuadros
+        rawVolume = 0;
       }
 
       smoothedVolume = smoothedVolume * 0.85 + rawVolume * 0.15;
@@ -123,8 +126,11 @@ export default function VoiceOrb({ orbState = 'idle', theme = 'dark' }: { orbSta
         };
       };
 
+      const isSpeaking = orbState === 'speaking';
+
+      // Cell animation ONLY when AI is speaking — not on mic input
       const threshold = 5;
-      if (smoothedVolume > threshold) {
+      if (isSpeaking && smoothedVolume > threshold) {
         const normalizedVol = Math.min(1, (smoothedVolume - threshold) / 50); 
         
         if (Math.random() < (normalizedVol * 0.4)) {
@@ -172,7 +178,10 @@ export default function VoiceOrb({ orbState = 'idle', theme = 'dark' }: { orbSta
         }
       }
 
-      historyRef.current = historyRef.current.filter(step => now - step.createdAt < 800);
+      // Clear history when not speaking so cells fade out immediately
+      if (!isSpeaking) {
+        historyRef.current = historyRef.current.filter(step => now - step.createdAt < 400);
+      }
 
       const drawFilledCell = (j: number, i: number, opacity: number) => {
         const safeI = (i + numLonLines) % numLonLines;
