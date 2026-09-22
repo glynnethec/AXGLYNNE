@@ -5,15 +5,38 @@ type HoverStep = {
   id: number;
   j: number;
   i: number;
+  mainOpacity: number;
   neighbors: { dj: number; di: number; opacity: number }[];
   createdAt: number;
 };
 
-export default function VoiceOrb({ orbState = 'idle', theme = 'dark' }: { orbState?: 'idle' | 'thinking' | 'speaking', theme?: 'light' | 'dark' }) {
+interface VoiceOrbProps {
+  orbState?: 'idle' | 'listening' | 'thinking' | 'speaking';
+  theme?: 'light' | 'dark';
+  audioRef?: React.RefObject<HTMLAudioElement | null>;
+}
+
+export default function VoiceOrb({ orbState = 'idle', theme = 'dark', audioRef }: VoiceOrbProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const historyRef = useRef<HoverStep[]>([]);
   const stepIdRef = useRef(0);
   
+  const orbStateRef = useRef(orbState);
+  const speakingStartRef = useRef<number>(0);
+  const themeRef = useRef(theme);
+
+  // Mantener actualizados los refs sin reiniciar el render loop
+  useEffect(() => {
+    if (orbState === 'speaking' && orbStateRef.current !== 'speaking') {
+      speakingStartRef.current = Date.now();
+    }
+    orbStateRef.current = orbState;
+  }, [orbState]);
+
+  useEffect(() => {
+    themeRef.current = theme;
+  }, [theme]);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -23,26 +46,28 @@ export default function VoiceOrb({ orbState = 'idle', theme = 'dark' }: { orbSta
     let animationFrame = 0;
     let audioContext: AudioContext | null = null;
     let analyser: AnalyserNode | null = null;
-    let dataArray: Uint8Array | null = null;
+    let audioConnected = false;
     let smoothedVolume = 0;
     const mountTime = Date.now();
 
-    const initAudio = async () => {
+    // Intentar conectar Web Audio API al audio de la IA (solo para salida de la IA)
+    const tryConnectAudio = () => {
+      if (audioConnected || !audioRef?.current) return;
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-        audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-        const source = audioContext.createMediaStreamSource(stream);
+        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+        if (!AudioCtx) return;
+        audioContext = new AudioCtx();
         analyser = audioContext.createAnalyser();
-        analyser.fftSize = 256;
+        analyser.fftSize = 128;
+        analyser.smoothingTimeConstant = 0.3; // Muy reactivo a transitorios de voz
+        const source = audioContext.createMediaElementSource(audioRef.current);
         source.connect(analyser);
-        const bufferLength = analyser.frequencyBinCount;
-        dataArray = new Uint8Array(bufferLength);
+        analyser.connect(audioContext.destination);
+        audioConnected = true;
       } catch (err) {
-        console.error('Audio initialization failed:', err);
+        // Fallback natural con síntesis acústica de voz
       }
     };
-
-    initAudio();
 
     const numLatLines = 8;
     const numLonLines = 16;
@@ -60,44 +85,74 @@ export default function VoiceOrb({ orbState = 'idle', theme = 'dark' }: { orbSta
       const cx = width / 2;
       const cy = height / 2;
       
-      const isThinking = orbState === 'thinking';
-      const isSpeakingNow = orbState === 'speaking';
+      const currentOrbState = orbStateRef.current;
+      const isSpeaking = currentOrbState === 'speaking';
+      const isThinking = currentOrbState === 'thinking';
+      const currentTheme = themeRef.current;
       const gridOpacity = isThinking ? 0.35 : 0.15;
 
       const now = Date.now();
       const time = (now - mountTime) / 1000;
 
+      // Calcular volumen SOLO cuando la IA está hablando
       let rawVolume = 0;
-      if (analyser && dataArray) {
-        // @ts-ignore - Vercel strict TS check bypass for ArrayBufferLike vs ArrayBuffer
-        analyser.getByteFrequencyData(dataArray as any);
-        let sum = 0;
-        for (let i = 0; i < dataArray.length; i++) {
-          sum += dataArray[i];
+      if (isSpeaking) {
+        if (!audioConnected && audioRef?.current) {
+          tryConnectAudio();
         }
-        rawVolume = sum / dataArray.length;
-      } else if (isSpeakingNow) {
-        // IA hablando: volumen simulado activo para que se vean los cuadros
-        rawVolume = 25 + Math.random() * 60;
+
+        let realVol = 0;
+        if (analyser) {
+          try {
+            if (audioContext && audioContext.state === 'suspended') {
+              audioContext.resume();
+            }
+            const dataArray = new Uint8Array(analyser.frequencyBinCount);
+            analyser.getByteFrequencyData(dataArray);
+            let sum = 0;
+            let count = 0;
+            // Rango de frecuencias del habla
+            for (let i = 1; i < Math.min(dataArray.length, 40); i++) {
+              sum += dataArray[i];
+              count++;
+            }
+            realVol = count > 0 ? (sum / count) : 0;
+          } catch (e) {}
+        }
+
+        if (realVol > 8) {
+          // Volumen real amplificado para máxima sensibilidad y energía
+          rawVolume = Math.min(100, realVol * 2.3);
+        } else {
+          // Modulación acústica humana de alta sensibilidad (sílabas a 4-6Hz + acentos dinámicos)
+          const t = (now - (speakingStartRef.current || now)) / 1000;
+          const syllables = Math.abs(Math.sin(t * 12.5) * 0.6 + Math.cos(t * 7.2) * 0.4);
+          const intonation = 0.5 + 0.5 * Math.sin(t * 2.8);
+          const burst = Math.random() > 0.65 ? (Math.random() * 35) : 0;
+          const speechCurve = (syllables * intonation);
+          rawVolume = 30 + (speechCurve * 55) + burst;
+        }
       } else if (isThinking) {
-        rawVolume = 20 + Math.random() * 80; 
+        // En thinking: suave respiración sinusoidal sin cuadros
+        rawVolume = 8 + Math.sin(time * 3) * 6;
       } else {
-        // idle / listening: sin cuadros
+        // En listening o idle: 0 absoluto para que no reaccione al usuario ni ruido
         rawVolume = 0;
       }
 
-      smoothedVolume = smoothedVolume * 0.85 + rawVolume * 0.15;
+      // Suavizado rápido para que responda instantáneamente a los fonemas
+      smoothedVolume = smoothedVolume * 0.72 + rawVolume * 0.28;
       
       const baseRadius = width * 0.28; 
-      const radius = baseRadius + (smoothedVolume * 0.3);
+      const radius = baseRadius + (smoothedVolume * 0.35);
 
       ctx.clearRect(0, 0, width, height);
 
-      // Same rotation as LiquidOrb in the Panel:
-      // X: -20° tilt, Y: continuous spin (0.2 rad/s) + 35° base, Z: PI/2 for horizontal vertices
+      // Rotación idéntica a LiquidOrb en el Panel
+      // X: -20° tilt, Y: giro continuo (0.2 rad/s) + 35° base, Z: PI/2 para vértices horizontales
       const rotationX = -20 * (Math.PI / 180);
-      const rotationY = (35 * (Math.PI / 180)) + ((Date.now() - mountTime) / 1000) * 0.2;
-      const rotationZ = Math.PI / 2; // Horizontal vertices
+      const rotationY = (35 * (Math.PI / 180)) + time * 0.2;
+      const rotationZ = Math.PI / 2;
 
       const project = (x: number, y: number, z: number) => {
         const cosX = Math.cos(rotationX);
@@ -126,61 +181,71 @@ export default function VoiceOrb({ orbState = 'idle', theme = 'dark' }: { orbSta
         };
       };
 
-      const isSpeaking = orbState === 'speaking';
-
-      // Cell animation ONLY when AI is speaking — not on mic input
-      const threshold = 5;
+      // ANIMACIÓN INTENSA Y SENSIBLE DE CUADROS — EXCLUSIVAMENTE CUANDO LA IA HABLA
+      const threshold = 12;
       if (isSpeaking && smoothedVolume > threshold) {
-        const normalizedVol = Math.min(1, (smoothedVolume - threshold) / 50); 
+        const normalizedVol = Math.min(1, (smoothedVolume - threshold) / 45); 
         
-        if (Math.random() < (normalizedVol * 0.4)) {
-          let randomJ = 0;
-          let randomI = 0;
-          let pz = -1;
-          
-          for(let tries = 0; tries < 5; tries++) {
-             randomJ = Math.floor(Math.random() * numLatLines);
-             randomI = Math.floor(Math.random() * numLonLines);
-             const phi_c = ((randomJ + 0.5) * Math.PI) / numLatLines - Math.PI / 2;
-             const theta_c = ((randomI + 0.5) * Math.PI * 2) / numLonLines;
-             pz = Math.cos(phi_c) * Math.sin(theta_c);
-             if (pz > -0.05) break;
-          }
+        // Alta sensibilidad y frecuencia de aparición según el volumen de la IA
+        const spawnChance = 0.35 + (normalizedVol * 0.60);
+        if (Math.random() < spawnChance) {
+          // Genera 1 o 2 clusters simultáneos en momentos de mayor volumen
+          const clusterCount = normalizedVol > 0.55 ? 2 : 1;
 
-          if (pz > -0.05) {
-            const numNeighbors = Math.floor(Math.random() * 3) + 1;
-            const neighbors = [];
-            const possibleOffsets = [
-              [-1, 0], [1, 0], [0, -1], [0, 1],
-              [-1, -1], [1, -1], [-1, 1], [1, 1]
-            ].sort(() => 0.5 - Math.random());
-
-            for (let k = 0; k < numNeighbors; k++) {
-              neighbors.push({
-                dj: possibleOffsets[k][0],
-                di: possibleOffsets[k][1],
-                opacity: (Math.random() * 0.15) + 0.05 + (normalizedVol * 0.2)
-              });
+          for (let b = 0; b < clusterCount; b++) {
+            let randomJ = 0;
+            let randomI = 0;
+            let pz = -1;
+            
+            for (let tries = 0; tries < 6; tries++) {
+              randomJ = Math.floor(Math.random() * numLatLines);
+              randomI = Math.floor(Math.random() * numLonLines);
+              const phi_c = ((randomJ + 0.5) * Math.PI) / numLatLines - Math.PI / 2;
+              const theta_c = ((randomI + 0.5) * Math.PI * 2) / numLonLines;
+              pz = Math.cos(phi_c) * Math.sin(theta_c);
+              if (pz > -0.05) break;
             }
 
-            historyRef.current.unshift({
-              id: stepIdRef.current++,
-              j: randomJ,
-              i: randomI,
-              neighbors,
-              createdAt: now
-            });
+            if (pz > -0.05) {
+              // 2 a 5 vecinos agrupados para darle textura y presencia visible
+              const numNeighbors = Math.floor(Math.random() * 4) + 2;
+              const neighbors = [];
+              const possibleOffsets = [
+                [-1, 0], [1, 0], [0, -1], [0, 1],
+                [-1, -1], [1, -1], [-1, 1], [1, 1]
+              ].sort(() => 0.5 - Math.random());
+
+              for (let k = 0; k < numNeighbors; k++) {
+                neighbors.push({
+                  dj: possibleOffsets[k][0],
+                  di: possibleOffsets[k][1],
+                  opacity: 0.15 + (Math.random() * 0.20) + (normalizedVol * 0.35)
+                });
+              }
+
+              historyRef.current.unshift({
+                id: stepIdRef.current++,
+                j: randomJ,
+                i: randomI,
+                mainOpacity: 0.35 + (normalizedVol * 0.45),
+                neighbors,
+                createdAt: now
+              });
+            }
           }
         }
         
-        if (historyRef.current.length > 40) {
-           historyRef.current = historyRef.current.slice(0, 40);
+        if (historyRef.current.length > 50) {
+          historyRef.current = historyRef.current.slice(0, 50);
         }
       }
 
-      // Clear history when not speaking so cells fade out immediately
+      // Si no está hablando la IA, limpiar rápidamente los cuadros restantes
       if (!isSpeaking) {
-        historyRef.current = historyRef.current.filter(step => now - step.createdAt < 400);
+        historyRef.current = historyRef.current.filter(step => now - step.createdAt < 200);
+      } else {
+        // Desvanecimiento ágil (480ms) para seguir el compás rápido del habla
+        historyRef.current = historyRef.current.filter(step => now - step.createdAt < 480);
       }
 
       const drawFilledCell = (j: number, i: number, opacity: number) => {
@@ -220,21 +285,25 @@ export default function VoiceOrb({ orbState = 'idle', theme = 'dark' }: { orbSta
         }
         
         ctx.closePath();
-        ctx.fillStyle = theme === 'light' ? `rgba(0, 0, 0, ${opacity * 6})` : `rgba(255, 255, 255, ${opacity})`;
+        // Cuadros claros/grises contrastados sobre el fondo oscuro
+        ctx.fillStyle = currentTheme === 'light' 
+          ? `rgba(20, 20, 25, ${Math.min(0.85, opacity * 2.2)})` 
+          : `rgba(240, 240, 248, ${Math.min(0.85, opacity * 1.5)})`;
         ctx.fill();
       };
 
       for (const step of historyRef.current) {
         const age = now - step.createdAt;
-        const fade = 1 - (age / 800);
+        const fade = 1 - (age / 480);
+        if (fade <= 0) continue;
         
-        drawFilledCell(step.j, step.i, 0.4 * fade);
+        drawFilledCell(step.j, step.i, step.mainOpacity * fade);
         for (const n of step.neighbors) {
           drawFilledCell(step.j + n.dj, step.i + n.di, n.opacity * fade);
         }
       }
 
-      ctx.strokeStyle = theme === 'light' ? `rgba(0, 0, 0, 0.85)` : `rgba(255, 255, 255, ${gridOpacity})`;
+      ctx.strokeStyle = currentTheme === 'light' ? `rgba(0, 0, 0, 0.85)` : `rgba(255, 255, 255, ${gridOpacity})`;
       ctx.lineWidth = 1; 
 
       for (let i = 0; i < numLonLines; i++) {
@@ -282,7 +351,7 @@ export default function VoiceOrb({ orbState = 'idle', theme = 'dark' }: { orbSta
         audioContext.close();
       }
     };
-  }, [orbState]);
+  }, []); // Run continuously without interrupting on state updates
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>
