@@ -29,6 +29,8 @@ export default function AXVoicePage() {
   
   const recognitionRef = useRef<any>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const currentSourceNodeRef = useRef<AudioBufferSourceNode | null>(null);
   const orbStateRef = useRef(orbState);
   const isSessionActiveRef = useRef(isSessionActive);
   const useMockTTSRef = useRef(useMockTTS);
@@ -134,7 +136,19 @@ export default function AXVoicePage() {
         console.warn('SpeechRecognition API not supported in this browser.');
       }
       if (typeof window !== 'undefined') {
-        audioRef.current = new Audio();
+        const audio = new Audio();
+        audio.setAttribute('playsinline', 'true');
+        audio.setAttribute('webkit-playsinline', 'true');
+        audioRef.current = audio;
+
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.getVoices();
+          if (window.speechSynthesis.onvoiceschanged !== undefined) {
+            window.speechSynthesis.onvoiceschanged = () => {
+              window.speechSynthesis.getVoices();
+            };
+          }
+        }
       }
     }
   }, []); // Run only on mount
@@ -185,7 +199,7 @@ export default function AXVoicePage() {
         setMessages(prev => [...prev, { role: 'ai', content: reply }]);
         
         if (audioBase64) {
-          playAudioFromBase64(audioBase64);
+          playAudioFromBase64(audioBase64, reply);
         } else {
           // Fallback en caso de error en TTS backend
           speakResponseFallback(reply);
@@ -201,12 +215,67 @@ export default function AXVoicePage() {
     });
   };
 
-  const playAudioFromBase64 = (base64Str: string) => {
+  const playAudioFromBase64 = (base64Str: string, fallbackText: string) => {
+    // 1. Detener reconocimiento para liberar el micrófono en móviles
+    try { recognitionRef.current?.stop(); } catch(e){}
+
+    // Fallback con Web Audio API (AudioContext) para sortear bloqueos de Safari iOS
+    const playWithAudioContext = () => {
+      try {
+        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+        if (!audioCtxRef.current && AudioCtx) {
+          audioCtxRef.current = new AudioCtx();
+        }
+        const ctx = audioCtxRef.current;
+        if (ctx) {
+          if (ctx.state === 'suspended') {
+            ctx.resume();
+          }
+          const binaryString = window.atob(base64Str);
+          const len = binaryString.length;
+          const bytes = new Uint8Array(len);
+          for (let i = 0; i < len; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+          }
+          ctx.decodeAudioData(bytes.buffer.slice(0), (buffer) => {
+            if (currentSourceNodeRef.current) {
+              try { currentSourceNodeRef.current.stop(); } catch(e){}
+            }
+            const source = ctx.createBufferSource();
+            source.buffer = buffer;
+            source.connect(ctx.destination);
+            currentSourceNodeRef.current = source;
+            setOrbState('speaking');
+            
+            source.onended = () => {
+              setAiResponse('');
+              setTranscript('');
+              if (isSessionActiveRef.current) {
+                setOrbState('listening');
+                try { recognitionRef.current?.start(); } catch(e){}
+              } else {
+                setOrbState('idle');
+              }
+            };
+            source.start(0);
+          }, (decodeErr) => {
+            console.error('AudioContext decode error, fallback to speech synthesis:', decodeErr);
+            speakResponseFallback(fallbackText);
+          });
+          return true;
+        }
+      } catch (err) {
+        console.warn('AudioContext playback error:', err);
+      }
+      return false;
+    };
+
     if (audioRef.current) {
-      audioRef.current.pause(); // Stop any previous speech
+      audioRef.current.pause();
       
       const audioUrl = `data:audio/mp3;base64,${base64Str}`;
       audioRef.current.src = audioUrl;
+      audioRef.current.load();
       
       audioRef.current.onplay = () => {
         setOrbState('speaking');
@@ -224,24 +293,56 @@ export default function AXVoicePage() {
       };
       
       audioRef.current.onerror = (e) => {
-        console.error('Audio playback error', e);
-        setIsSessionActive(false);
-        setOrbState('idle');
+        console.warn('HTMLAudio error on mobile, trying AudioContext fallback:', e);
+        const played = playWithAudioContext();
+        if (!played) {
+          speakResponseFallback(fallbackText);
+        }
       };
       
-      audioRef.current.play().catch(e => {
-        console.error('Error playing audio', e);
-        setIsSessionActive(false);
-        setOrbState('idle');
-      });
+      const playPromise = audioRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(e => {
+          console.warn('HTMLAudio play() rejected on mobile, using AudioContext fallback:', e);
+          const played = playWithAudioContext();
+          if (!played) {
+            speakResponseFallback(fallbackText);
+          }
+        });
+      }
+    } else {
+      const played = playWithAudioContext();
+      if (!played) {
+        speakResponseFallback(fallbackText);
+      }
     }
   };
 
   const speakResponseFallback = (text: string) => {
-    if (window.speechSynthesis) {
-      window.speechSynthesis.cancel();
+    if (!text) {
+      if (isSessionActiveRef.current) {
+        setOrbState('listening');
+        try { recognitionRef.current?.start(); } catch(e){}
+      } else {
+        setOrbState('idle');
+      }
+      return;
+    }
+
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      try { window.speechSynthesis.cancel(); } catch(e){}
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'es-ES';
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+
+      // Buscar voz en español si está disponible
+      const voices = window.speechSynthesis.getVoices();
+      const esVoice = voices.find(v => v.lang.startsWith('es'));
+      if (esVoice) {
+        utterance.voice = esVoice;
+      }
+
       utterance.onstart = () => setOrbState('speaking');
       utterance.onend = () => {
         setAiResponse('');
@@ -253,7 +354,23 @@ export default function AXVoicePage() {
           setOrbState('idle');
         }
       };
+      utterance.onerror = (err) => {
+        console.error('SpeechSynthesis error:', err);
+        if (isSessionActiveRef.current) {
+          setOrbState('listening');
+          try { recognitionRef.current?.start(); } catch(e){}
+        } else {
+          setOrbState('idle');
+        }
+      };
       window.speechSynthesis.speak(utterance);
+    } else {
+      if (isSessionActiveRef.current) {
+        setOrbState('listening');
+        try { recognitionRef.current?.start(); } catch(e){}
+      } else {
+        setOrbState('idle');
+      }
     }
   };
 
@@ -263,16 +380,53 @@ export default function AXVoicePage() {
       setOrbState('idle');
       recognitionRef.current?.stop();
       if (audioRef.current) audioRef.current.pause();
+      if (currentSourceNodeRef.current) {
+        try { currentSourceNodeRef.current.stop(); } catch(e){}
+      }
+      if (typeof window !== 'undefined' && window.speechSynthesis) {
+        try { window.speechSynthesis.cancel(); } catch(e){}
+      }
     } else {
       setIsSessionActive(true);
       setTranscript('');
       setAiResponse('');
       
-      // DESBLOQUEAR EL MOTOR DE VOZ (Hack para navegadores estrictos)
+      // DESBLOQUEAR EL MOTOR DE AUDIO PARA MÓVILES (iOS Safari y Android)
+      // 1. Desbloquear HTMLAudio con un buffer silencioso real
+      const SILENT_AUDIO = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA';
       if (audioRef.current) {
-        audioRef.current.play().catch(e => {
-            // Se ignora el error porque src está vacío inicialmente
-        });
+        audioRef.current.src = SILENT_AUDIO;
+        audioRef.current.play().catch(() => {});
+      } else {
+        const audio = new Audio(SILENT_AUDIO);
+        audio.setAttribute('playsinline', 'true');
+        audio.setAttribute('webkit-playsinline', 'true');
+        audio.play().catch(() => {});
+        audioRef.current = audio;
+      }
+
+      // 2. Desbloquear AudioContext en el evento táctil
+      if (typeof window !== 'undefined') {
+        try {
+          const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+          if (AudioCtx) {
+            if (!audioCtxRef.current) {
+              audioCtxRef.current = new AudioCtx();
+            }
+            if (audioCtxRef.current.state === 'suspended') {
+              audioCtxRef.current.resume();
+            }
+          }
+        } catch(e) {}
+      }
+
+      // 3. Desbloquear SpeechSynthesis nativo para iOS Safari
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        try {
+          const silentUtterance = new SpeechSynthesisUtterance('');
+          silentUtterance.volume = 0;
+          window.speechSynthesis.speak(silentUtterance);
+        } catch(e) {}
       }
       
       setOrbState('listening');
@@ -446,6 +600,9 @@ export default function AXVoicePage() {
                 }
                 if (audioRef.current) {
                   audioRef.current.pause();
+                }
+                if (currentSourceNodeRef.current) {
+                  try { currentSourceNodeRef.current.stop(); } catch(e){}
                 }
                 if (window.speechSynthesis) {
                   window.speechSynthesis.cancel();
