@@ -90,8 +90,10 @@ export default function VoiceOrb({ orbState = 'idle', theme = 'dark' }: { orbSta
 
       ctx.clearRect(0, 0, width, height);
 
-      const rotationX = 0.0;
-      const rotationY = 0.0;
+      // Same rotation as LiquidOrb in the Panel:
+      // X: -20° tilt, Y: continuous spin (0.2 rad/s) + 35° base, Z: PI/2 for horizontal vertices
+      const rotationX = -20 * (Math.PI / 180);
+      const rotationY = (35 * (Math.PI / 180)) + ((Date.now() - mountTime) / 1000) * 0.2;
       const rotationZ = Math.PI / 2; // Horizontal vertices
 
       const project = (x: number, y: number, z: number) => {
