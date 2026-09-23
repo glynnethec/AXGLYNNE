@@ -17,7 +17,7 @@ declare global {
 
 export default function AXVoicePage() {
   const router = useRouter();
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
 
   const [orbState, setOrbState] = useState<'idle' | 'listening' | 'thinking' | 'speaking'>('idle');
   const [transcript, setTranscript] = useState('');
@@ -27,6 +27,11 @@ export default function AXVoicePage() {
   const [showExitModal, setShowExitModal] = useState(false);
   const [useMockTTS, setUseMockTTS] = useState(false);
   const [activeEngine, setActiveEngine] = useState<'elevenlabs' | 'edge'>('elevenlabs');
+  const [charsUsed, setCharsUsed] = useState<number>(0);
+  const [maxChars, setMaxChars] = useState<number>(2000);
+  const [hoursUntilReset, setHoursUntilReset] = useState<number>(48);
+  
+  const [userId, setUserId] = useState<string>('default_user');
   
   const recognitionRef = useRef<any>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -45,25 +50,24 @@ export default function AXVoicePage() {
     activeEngineRef.current = activeEngine;
   }, [orbState, isSessionActive, useMockTTS, activeEngine]);
 
-  // Check initial TTS status from backend
-  useEffect(() => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://ax-zyxe.onrender.com';
-    fetch(`${apiUrl}/api/tts_status`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.used_engine) {
-          setActiveEngine(data.used_engine);
-        }
-      })
-      .catch(() => {});
-  }, []);
-
-  // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS
+  // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS & TTS STATUS PER-USER
   useEffect(() => {
     const checkUser = async () => {
       const user = await getCurrentUser();
       if (!user) {
         router.replace('/login'); 
+      } else {
+        setUserId(user.id);
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://ax-zyxe.onrender.com';
+        fetch(`${apiUrl}/api/tts_status?user_id=${user.id}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.used_engine) setActiveEngine(data.used_engine);
+            if (data.chars_used !== undefined) setCharsUsed(data.chars_used);
+            if (data.max_chars !== undefined) setMaxChars(data.max_chars);
+            if (data.hours_until_reset !== undefined) setHoursUntilReset(data.hours_until_reset);
+          })
+          .catch(() => {});
       }
     };
     checkUser();
@@ -170,8 +174,18 @@ export default function AXVoicePage() {
       
       setOrbState('thinking');
       
+      // Detener cualquier muletilla previa si estaba sonando
+      if (fillerAudioRef.current) {
+        try {
+          fillerAudioRef.current.pause();
+          fillerAudioRef.current.currentTime = 0;
+        } catch(e) {}
+        fillerAudioRef.current = null;
+      }
+
       // Reproducir sonido de relleno aleatorio (muletilla) que coincide con el motor de voz activo
-      const engineFolder = activeEngineRef.current === 'edge' ? '/fillers/edge' : '/fillers/elevenlabs';
+      const currentEngine = activeEngineRef.current;
+      const engineFolder = currentEngine === 'edge' ? '/fillers/edge' : '/fillers/elevenlabs';
       const fillers = Array.from({ length: 15 }, (_, i) => `${engineFolder}/filler_${i + 1}.mp3`);
       const randomFiller = fillers[Math.floor(Math.random() * fillers.length)];
       fillerAudioRef.current = new Audio(randomFiller);
@@ -180,24 +194,32 @@ export default function AXVoicePage() {
       const newMessages = [...messages, { role: 'user', content: currentText }];
       setMessages(newMessages);
 
-      // Fetch al backend
+      // Fetch al backend enviando el motor activo garantizando coincidencia
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://ax-zyxe.onrender.com';
       fetch(`${apiUrl}/api/voice_chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: newMessages, use_mock_tts: useMockTTSRef.current })
+        body: JSON.stringify({ 
+          messages: newMessages, 
+          use_mock_tts: currentEngine === 'edge',
+          user_id: userId
+        })
       })
       .then(res => res.json())
       .then(data => {
-        // Detener la muletilla en cuanto llega la respuesta real
+        // Detener la muletilla inmediatamente en cuanto llega la respuesta real
         if (fillerAudioRef.current) {
-          fillerAudioRef.current.pause();
-          fillerAudioRef.current.currentTime = 0;
+          try {
+            fillerAudioRef.current.pause();
+            fillerAudioRef.current.currentTime = 0;
+          } catch(e) {}
+          fillerAudioRef.current = null;
         }
 
-        if (data.used_engine) {
-          setActiveEngine(data.used_engine);
-        }
+        if (data.used_engine) setActiveEngine(data.used_engine);
+        if (data.chars_used !== undefined) setCharsUsed(data.chars_used);
+        if (data.max_chars !== undefined) setMaxChars(data.max_chars);
+        if (data.hours_until_reset !== undefined) setHoursUntilReset(data.hours_until_reset);
 
         const reply = data.reply;
         const audioBase64 = data.audio_base64;
@@ -214,6 +236,13 @@ export default function AXVoicePage() {
       })
       .catch(err => {
         console.error('Error fetching voice_chat:', err);
+        if (fillerAudioRef.current) {
+          try {
+            fillerAudioRef.current.pause();
+            fillerAudioRef.current.currentTime = 0;
+          } catch(e) {}
+          fillerAudioRef.current = null;
+        }
         setIsSessionActive(false);
         setOrbState('idle');
       });
@@ -223,6 +252,14 @@ export default function AXVoicePage() {
   };
 
   const playAudioFromBase64 = (base64Str: string) => {
+    // Garantizar que la muletilla se apaga antes de reproducir la voz de la IA
+    if (fillerAudioRef.current) {
+      try {
+        fillerAudioRef.current.pause();
+        fillerAudioRef.current.currentTime = 0;
+      } catch(e) {}
+      fillerAudioRef.current = null;
+    }
     if (audioRef.current) {
       audioRef.current.pause(); // Stop any previous speech
       
@@ -326,47 +363,36 @@ export default function AXVoicePage() {
         backdropFilter: 'blur(10px)',
         boxShadow: theme === 'light' ? '0 4px 12px rgba(15, 23, 42, 0.05)' : 'none'
       }}>
-        <div style={{
-          width: '6px',
-          height: '6px',
-          borderRadius: '50%',
-          backgroundColor: activeEngine === 'elevenlabs' ? '#10b981' : '#6366f1',
-          boxShadow: activeEngine === 'elevenlabs' ? '0 0 8px #10b981' : '0 0 8px #6366f1',
-          transition: 'all 0.3s ease'
-        }} />
-        <span style={{ 
-          fontSize: '11px', 
-          color: theme === 'light' ? '#0f172a' : '#ffffff', 
-          fontWeight: 600, 
-          letterSpacing: '0.04em',
-          textTransform: 'uppercase',
-          transition: 'all 0.3s ease'
-        }}>
-          {activeEngine === 'elevenlabs' ? 'AX_VOICE • ELEVENLABS HD' : 'AX_VOICE • STANDARD EDGE'}
-        </span>
-        {/* Theme divider */}
-        <div style={{ width: '1px', height: '14px', background: theme === 'light' ? 'rgba(15,23,42,0.15)' : 'rgba(255,255,255,0.15)', margin: '0 2px' }} />
-        {/* Theme toggle */}
-        <button
-          onClick={toggleTheme}
-          title={theme === 'dark' ? 'Switch to Light' : 'Switch to Dark'}
-          style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            padding: 0,
-            display: 'flex',
-            alignItems: 'center',
-            color: theme === 'light' ? '#0f172a' : 'rgba(255,255,255,0.7)',
-            transition: 'color 0.3s'
-          }}
-        >
-          {theme === 'dark' ? (
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          ) : (
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-          )}
-        </button>
+        {(() => {
+          const availableChars = Math.max(0, maxChars - charsUsed);
+          const percentRemaining = Math.max(0, Math.round((availableChars / maxChars) * 100));
+          const isElevenLabs = activeEngine === 'elevenlabs' && availableChars > 0;
+
+          return (
+            <>
+              <div style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                backgroundColor: isElevenLabs ? '#10b981' : '#f59e0b',
+                boxShadow: isElevenLabs ? '0 0 8px #10b981' : '0 0 8px #f59e0b',
+                transition: 'all 0.3s ease'
+              }} />
+              <span style={{ 
+                fontSize: '11px', 
+                color: theme === 'light' ? '#0f172a' : '#ffffff', 
+                fontWeight: 600, 
+                letterSpacing: '0.04em',
+                textTransform: 'uppercase',
+                transition: 'all 0.3s ease'
+              }}>
+                {isElevenLabs 
+                  ? `ELEVENLABS HD • ${percentRemaining}% DISPONIBLE` 
+                  : `MODO FREE • EDGE TTS (REINICIO EN 48H)`}
+              </span>
+            </>
+          );
+        })()}
       </div>
       
       <div style={{

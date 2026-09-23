@@ -144,7 +144,7 @@ export default function VoiceOrb({ orbState = 'idle', theme = 'dark', audioRef }
       smoothedVolume = smoothedVolume * 0.72 + rawVolume * 0.28;
       
       const baseRadius = width * 0.28; 
-      const radius = baseRadius + (smoothedVolume * 0.35);
+      const radius = baseRadius;
 
       ctx.clearRect(0, 0, width, height);
 
@@ -181,71 +181,58 @@ export default function VoiceOrb({ orbState = 'idle', theme = 'dark', audioRef }
         };
       };
 
-      // ANIMACIÓN INTENSA Y SENSIBLE DE CUADROS — EXCLUSIVAMENTE CUANDO LA IA HABLA
-      const threshold = 12;
+      // ANIMACIÓN MINIMALISTA, ELEGANTE Y SUBTIL DE CUADROS — CUANDO LA IA HABLA
+      const threshold = 10;
       if (isSpeaking && smoothedVolume > threshold) {
-        const normalizedVol = Math.min(1, (smoothedVolume - threshold) / 45); 
+        const normalizedVol = Math.min(1, (smoothedVolume - threshold) / 50); 
         
-        // Alta sensibilidad y frecuencia de aparición según el volumen de la IA
-        const spawnChance = 0.35 + (normalizedVol * 0.60);
+        // Ritmo suave y refinado de aparición (sin saturación acelerada)
+        const spawnChance = 0.10 + (normalizedVol * 0.15);
         if (Math.random() < spawnChance) {
-          // Genera 1 o 2 clusters simultáneos en momentos de mayor volumen
-          const clusterCount = normalizedVol > 0.55 ? 2 : 1;
+          // Seleccionar celdas aleatorias verdaderamente distribuidas sobre toda la esfera
+          const randomJ = Math.floor(Math.random() * (numLatLines - 2)) + 1;
+          const randomI = Math.floor(Math.random() * numLonLines);
+          
+          // Verificar la coordenada Z proyectada REAL en 3D (orientada al frente de la cámara)
+          const phi_c = ((randomJ + 0.5) * Math.PI) / numLatLines - Math.PI / 2;
+          const theta_c = ((randomI + 0.5) * Math.PI * 2) / numLonLines;
+          const p2d = project(Math.cos(phi_c) * Math.cos(theta_c), Math.sin(phi_c), Math.cos(phi_c) * Math.sin(theta_c));
 
-          for (let b = 0; b < clusterCount; b++) {
-            let randomJ = 0;
-            let randomI = 0;
-            let pz = -1;
-            
-            for (let tries = 0; tries < 6; tries++) {
-              randomJ = Math.floor(Math.random() * numLatLines);
-              randomI = Math.floor(Math.random() * numLonLines);
-              const phi_c = ((randomJ + 0.5) * Math.PI) / numLatLines - Math.PI / 2;
-              const theta_c = ((randomI + 0.5) * Math.PI * 2) / numLonLines;
-              pz = Math.cos(phi_c) * Math.sin(theta_c);
-              if (pz > -0.05) break;
-            }
-
-            if (pz > -0.05) {
-              // 2 a 5 vecinos agrupados para darle textura y presencia visible
-              const numNeighbors = Math.floor(Math.random() * 4) + 2;
-              const neighbors = [];
-              const possibleOffsets = [
-                [-1, 0], [1, 0], [0, -1], [0, 1],
-                [-1, -1], [1, -1], [-1, 1], [1, 1]
-              ].sort(() => 0.5 - Math.random());
-
-              for (let k = 0; k < numNeighbors; k++) {
-                neighbors.push({
-                  dj: possibleOffsets[k][0],
-                  di: possibleOffsets[k][1],
-                  opacity: 0.15 + (Math.random() * 0.20) + (normalizedVol * 0.35)
-                });
-              }
-
-              historyRef.current.unshift({
-                id: stepIdRef.current++,
-                j: randomJ,
-                i: randomI,
-                mainOpacity: 0.35 + (normalizedVol * 0.45),
-                neighbors,
-                createdAt: now
+          if (p2d.z > -0.15) {
+            // 0 o 1 vecino sutil para un aspecto limpio y geométrico
+            const numNeighbors = Math.random() > 0.7 ? 1 : 0;
+            const neighbors = [];
+            if (numNeighbors > 0) {
+              const possibleOffsets = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+              const chosen = possibleOffsets[Math.floor(Math.random() * possibleOffsets.length)];
+              neighbors.push({
+                dj: chosen[0],
+                di: chosen[1],
+                opacity: 0.12 + (normalizedVol * 0.10)
               });
             }
+
+            historyRef.current.unshift({
+              id: stepIdRef.current++,
+              j: randomJ,
+              i: randomI,
+              mainOpacity: 0.18 + (normalizedVol * 0.18),
+              neighbors,
+              createdAt: now
+            });
           }
         }
         
-        if (historyRef.current.length > 50) {
-          historyRef.current = historyRef.current.slice(0, 50);
+        if (historyRef.current.length > 24) {
+          historyRef.current = historyRef.current.slice(0, 24);
         }
       }
 
-      // Si no está hablando la IA, limpiar rápidamente los cuadros restantes
+      // Desvanecimiento orgánico (850ms)
       if (!isSpeaking) {
-        historyRef.current = historyRef.current.filter(step => now - step.createdAt < 200);
+        historyRef.current = historyRef.current.filter(step => now - step.createdAt < 250);
       } else {
-        // Desvanecimiento ágil (480ms) para seguir el compás rápido del habla
-        historyRef.current = historyRef.current.filter(step => now - step.createdAt < 480);
+        historyRef.current = historyRef.current.filter(step => now - step.createdAt < 850);
       }
 
       const drawFilledCell = (j: number, i: number, opacity: number) => {
@@ -285,17 +272,21 @@ export default function VoiceOrb({ orbState = 'idle', theme = 'dark', audioRef }
         }
         
         ctx.closePath();
-        // Cuadros claros/grises contrastados sobre el fondo oscuro
+        // Opacidad suave y sutil sobre la cuadrícula
         ctx.fillStyle = currentTheme === 'light' 
-          ? `rgba(20, 20, 25, ${Math.min(0.85, opacity * 2.2)})` 
-          : `rgba(240, 240, 248, ${Math.min(0.85, opacity * 1.5)})`;
+          ? `rgba(15, 23, 42, ${Math.min(0.45, opacity * 1.2)})` 
+          : `rgba(240, 240, 255, ${Math.min(0.45, opacity * 1.1)})`;
         ctx.fill();
       };
 
       for (const step of historyRef.current) {
         const age = now - step.createdAt;
-        const fade = 1 - (age / 480);
-        if (fade <= 0) continue;
+        const duration = isSpeaking ? 850 : 250;
+        const progress = age / duration;
+        if (progress >= 1) continue;
+        
+        // Transición suave sinusoidal (Fade In -> Fade Out armónico)
+        const fade = Math.sin(progress * Math.PI);
         
         drawFilledCell(step.j, step.i, step.mainOpacity * fade);
         for (const n of step.neighbors) {
