@@ -11,7 +11,7 @@ type HoverStep = {
 
 export default function GravityBackground({ children, theme = 'dark' }: { children: React.ReactNode, theme?: 'light' | 'dark' }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  
+
   const mouseRef = useRef({ x: -1000, y: -1000, active: false });
   const lastCellRef = useRef({ c: -1, r: -1 });
   const historyRef = useRef<HoverStep[]>([]);
@@ -49,16 +49,16 @@ export default function GravityBackground({ children, theme = 'dark' }: { childr
         const dx = cx - x;
         const dy = cy - y;
         const dist = Math.hypot(dx, dy);
-        
+
         if (dist === 0) return { x, y };
 
         const maxPull = 120; // Maximum displacement in pixels
         const peakDist = 200; // The radius where the pull is strongest (just outside the 130px orb)
-        
+
         // Poisson distribution curve for the pull force ensures it's smooth
         // 0 at the center, peaks at peakDist, then decays to 0 outwards.
         const pull = maxPull * (dist / peakDist) * Math.exp(1 - dist / peakDist);
-        
+
         return {
           x: x + (dx / dist) * pull,
           y: y + (dy / dist) * pull
@@ -66,7 +66,7 @@ export default function GravityBackground({ children, theme = 'dark' }: { childr
       };
 
       // Grid dimensions (add margins so lines don't get pulled in from outside the screen)
-      const cols = Math.ceil(width / cellSize) + 6; 
+      const cols = Math.ceil(width / cellSize) + 6;
       const rows = Math.ceil(height / cellSize) + 6;
       const startX = -3 * cellSize;
       const startY = -3 * cellSize;
@@ -88,7 +88,7 @@ export default function GravityBackground({ children, theme = 'dark' }: { childr
           for (let c = 0; c < cols; c++) {
             const center = warp(startX + (c + 0.5) * cellSize, startY + (r + 0.5) * cellSize);
             const dist = Math.hypot(center.x - mouseRef.current.x, center.y - mouseRef.current.y);
-            
+
             if (dist < minDist) {
               minDist = dist;
               closestC = c;
@@ -131,33 +131,33 @@ export default function GravityBackground({ children, theme = 'dark' }: { childr
       // Draw a filled warped grid cell for the hover effect
       const drawCell = (c: number, r: number, opacity: number) => {
         if (c < 0 || c >= cols || r < 0 || r >= rows) return;
-        
+
         // Because spacetime is curved, the edges of the cell are curves!
         // We segment each edge to draw the curve smoothly.
         const res = 4;
         ctx.beginPath();
-        
+
         // Top edge
-        for(let i = 0; i <= res; i++) {
-          const p = warp(startX + (c + i/res) * cellSize, startY + r * cellSize);
+        for (let i = 0; i <= res; i++) {
+          const p = warp(startX + (c + i / res) * cellSize, startY + r * cellSize);
           if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
         }
         // Right edge
-        for(let i = 0; i <= res; i++) {
-          const p = warp(startX + (c + 1) * cellSize, startY + (r + i/res) * cellSize);
+        for (let i = 0; i <= res; i++) {
+          const p = warp(startX + (c + 1) * cellSize, startY + (r + i / res) * cellSize);
           ctx.lineTo(p.x, p.y);
         }
         // Bottom edge
-        for(let i = 0; i <= res; i++) {
-          const p = warp(startX + (c + 1 - i/res) * cellSize, startY + (r + 1) * cellSize);
+        for (let i = 0; i <= res; i++) {
+          const p = warp(startX + (c + 1 - i / res) * cellSize, startY + (r + 1) * cellSize);
           ctx.lineTo(p.x, p.y);
         }
         // Left edge
-        for(let i = 0; i <= res; i++) {
-          const p = warp(startX + c * cellSize, startY + (r + 1 - i/res) * cellSize);
+        for (let i = 0; i <= res; i++) {
+          const p = warp(startX + c * cellSize, startY + (r + 1 - i / res) * cellSize);
           ctx.lineTo(p.x, p.y);
         }
-        
+
         ctx.closePath();
         ctx.fillStyle = theme === 'light' ? `rgba(0,0,0,${opacity * 4})` : `rgba(255,255,255,${opacity})`;
         ctx.fill();
@@ -193,7 +193,7 @@ export default function GravityBackground({ children, theme = 'dark' }: { childr
           const y = startY + (r / 4) * cellSize;
           const p = warp(startX + c * cellSize, y);
           const distToCenter = Math.hypot(p.x - cx, p.y - cy);
-          
+
           if (distToCenter <= distLimit) {
             if (first) { ctx.moveTo(p.x, p.y); first = false; }
             else { ctx.lineTo(p.x, p.y); }
@@ -213,7 +213,7 @@ export default function GravityBackground({ children, theme = 'dark' }: { childr
           const x = startX + (c / 4) * cellSize;
           const p = warp(x, startY + r * cellSize);
           const distToCenter = Math.hypot(p.x - cx, p.y - cy);
-          
+
           if (distToCenter <= distLimit) {
             if (first) { ctx.moveTo(p.x, p.y); first = false; }
             else { ctx.lineTo(p.x, p.y); }
@@ -226,13 +226,13 @@ export default function GravityBackground({ children, theme = 'dark' }: { childr
 
       // --- Fade out grid near the center sphere ---
       // 2.5 cells is about 240px. We want it fully hidden near the sphere (130px) and fading out.
-      const clearRadius = 130 + (2.5 * cellSize); 
+      const clearRadius = 130 + (2.5 * cellSize);
       const gradient = ctx.createRadialGradient(cx, cy, 130, cx, cy, clearRadius);
       const bgColor = theme === 'light' ? '245, 245, 247' : '11, 11, 13';
       gradient.addColorStop(0, `rgba(${bgColor}, 1)`);
       gradient.addColorStop(0.3, `rgba(${bgColor}, 1)`);
       gradient.addColorStop(1, `rgba(${bgColor}, 0)`);
-      
+
       ctx.fillStyle = gradient;
       // Use destination-out or just normal blending since background is white
       ctx.globalCompositeOperation = 'source-over';

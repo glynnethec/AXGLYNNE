@@ -11,9 +11,6 @@ export default function PanelPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const originalBg = document.body.style.backgroundColor;
-    document.body.style.backgroundColor = '#0b0b0d'; // Match dashboard background
-    
     const checkUser = async () => {
       const user = await getCurrentUser();
       if (!user) {
@@ -23,10 +20,6 @@ export default function PanelPage() {
       }
     };
     checkUser();
-
-    return () => {
-      document.body.style.backgroundColor = originalBg;
-    };
   }, [router]);
 
   if (!isAuthenticated) return null; // Prevent flash of dashboard before redirect

@@ -76,9 +76,9 @@ export default function AssemblyDashboard() {
     };
     getSession();
 
-    // Prevent white background from showing on scroll bounce
+    // Sync body background color with active theme
     const originalBg = document.body.style.backgroundColor;
-    document.body.style.backgroundColor = '#0b0b0d';
+    document.body.style.backgroundColor = theme === 'light' ? '#f8f9fc' : '#0b0b0d';
 
     // Handle resize for mobile layout
     const handleResize = () => setIsMobile(window.innerWidth <= 700);
@@ -106,7 +106,7 @@ export default function AssemblyDashboard() {
       document.body.style.backgroundColor = originalBg;
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [theme]);
 
   const renderCenterCanvas = () => (
     <div className="md-center">
@@ -186,15 +186,15 @@ export default function AssemblyDashboard() {
           <svg width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0, zIndex: 0 }}>
             <defs>
               <pattern id="floor-grid" width="80" height="80" patternUnits="userSpaceOnUse">
-                <path d="M 80 0 L 0 0 0 80" fill="none" stroke={theme === 'light' ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.03)'} strokeWidth="1" />
+                <path d="M 80 0 L 0 0 0 80" fill="none" stroke={theme === 'light' ? 'rgba(15, 23, 42, 0.15)' : 'rgba(255, 255, 255, 0.04)'} strokeWidth="1" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#floor-grid)" />
             {history.map((step, index) => {
               const isCurrent = index === 0;
-              const cellColor = theme === 'light' ? '0,0,0' : '255,255,255';
-              // In light mode boost opacity 4x so the hover effect is equally visible
-              const opacityScale = theme === 'light' ? 4 : 1;
+              const cellColor = theme === 'light' ? '15, 23, 42' : '255, 255, 255';
+              // In light mode boost opacity 5x so the hover cell animation is crisp and visible
+              const opacityScale = theme === 'light' ? 5 : 1;
               return (
                 <g key={step.id} style={{ animation: 'cellFadeIn 0.8s ease forwards' }}>
                   {step.neighbors.map((n, i) => (
@@ -245,19 +245,7 @@ export default function AssemblyDashboard() {
                     <button
                       onClick={toggleTheme}
                       title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        padding: '2px 0',
-                        color: theme === 'dark' ? '#ffffff' : '#1a1a1a',
-                        fontSize: '11px',
-                        fontWeight: 600,
-                        letterSpacing: '0.05em'
-                      }}
+                      className="md-theme-toggle-btn"
                     >
                       {theme === 'dark' ? (
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -270,37 +258,7 @@ export default function AssemblyDashboard() {
                   <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
                     <button 
                       onClick={() => setShowLogoutModal(true)}
-                      style={{
-                        position: 'relative',
-                        zIndex: 50,
-                        background: 'rgba(255, 255, 255, 0.1)',
-                        border: '1px solid rgba(255, 255, 255, 0.3)',
-                        borderRadius: '4px',
-                        color: '#fff',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '6px',
-                        padding: '6px 12px',
-                        fontSize: '11px',
-                        fontWeight: 600,
-                        letterSpacing: '0.05em',
-                        transition: 'all 0.2s ease',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
-                      }}
-                      onMouseOver={(e) => {
-                        e.currentTarget.style.background = 'rgba(220,38,38,0.2)';
-                        e.currentTarget.style.borderColor = 'rgba(220,38,38,0.6)';
-                        e.currentTarget.style.color = '#ef4444';
-                        e.currentTarget.style.transform = 'translateY(-1px)';
-                      }}
-                      onMouseOut={(e) => {
-                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-                        e.currentTarget.style.color = '#fff';
-                        e.currentTarget.style.transform = 'translateY(0)';
-                      }}
+                      className="md-signout-btn"
                       title="Sign out"
                     >
                       <FaSignOutAlt size={12} />
@@ -321,15 +279,15 @@ export default function AssemblyDashboard() {
             <div className="md-section system-core-section">
               <h3 className="md-title">System Core</h3>
               <div className="md-mini-card">
-                <div className="md-mini-card-row" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '12px', marginBottom: '12px' }}>
+                <div className="md-mini-card-row md-mini-card-top-row">
                   <span>PLATFORM</span>
                   <span className="md-highlight">GLYNNE</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '16px 0' }}>
-                  <img src="/logos/GLYNNE.svg" alt="GLYNNE Logo" style={{ width: '80px', opacity: 0.4, filter: theme === 'light' ? 'none' : 'invert(1)' }} />
+                  <img src="/logos/GLYNNE.svg" alt="GLYNNE Logo" className="md-glynne-logo" />
                 </div>
-                <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '12px', marginTop: '12px', display: 'flex', justifyContent: 'center' }}>
-                  <a href="https://axglynne.com/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ color: '#a1a1aa', fontSize: '11px', textDecoration: 'none', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                <div className="md-mini-card-bottom-row">
+                  <a href="https://axglynne.com/privacy-policy" target="_blank" rel="noopener noreferrer" className="md-policies-link">
                     Policies
                   </a>
                 </div>
@@ -341,7 +299,7 @@ export default function AssemblyDashboard() {
 
           <div className="md-section">
             <h3 className="md-title" style={{ marginBottom: '8px' }}>Tools</h3>
-            <p style={{ fontSize: '11px', color: '#a1a1aa', marginBottom: '20px', lineHeight: 1.5, opacity: 0.8 }}>
+            <p className="md-tools-desc">
               Access the AX Artificial Intelligence engine and centralized management tools for your enterprise operations.
             </p>
             <ul className="md-tools-list">

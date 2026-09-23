@@ -281,12 +281,12 @@ export default function AXVoicePage() {
   };
 
   return (
-    <div className="ax-voice-root" style={{ 
+    <div className="ax-voice-root" data-theme={theme} style={{ 
       width: '100%', 
       height: '100dvh',
       position: 'relative', 
       overflow: 'hidden', 
-      backgroundColor: theme === 'light' ? '#f5f5f7' : '#000000',
+      backgroundColor: theme === 'light' ? '#f8f9fc' : '#000000',
       touchAction: 'none'
     }}>
       {/* TTS Engine Toggle — top left */}
@@ -298,19 +298,20 @@ export default function AXVoicePage() {
         display: 'flex',
         alignItems: 'center',
         gap: '8px',
-        background: 'rgba(0,0,0,0.5)',
+        background: theme === 'light' ? 'rgba(255, 255, 255, 0.85)' : 'rgba(0,0,0,0.5)',
         padding: '8px 12px',
         borderRadius: '999px',
-        border: '1px solid rgba(255,255,255,0.1)',
-        backdropFilter: 'blur(10px)'
+        border: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.12)' : '1px solid rgba(255,255,255,0.1)',
+        backdropFilter: 'blur(10px)',
+        boxShadow: theme === 'light' ? '0 4px 12px rgba(15, 23, 42, 0.05)' : 'none'
       }}>
-        <span style={{ fontSize: '11px', color: useMockTTS ? '#fff' : '#666', fontWeight: useMockTTS ? 600 : 400, transition: 'all 0.3s' }}>DEV (FREE)</span>
+        <span style={{ fontSize: '11px', color: useMockTTS ? (theme === 'light' ? '#0f172a' : '#fff') : (theme === 'light' ? '#64748b' : '#666'), fontWeight: useMockTTS ? 600 : 400, transition: 'all 0.3s' }}>DEV (FREE)</span>
         <div 
           onClick={() => setUseMockTTS(!useMockTTS)}
           style={{
             width: '36px',
             height: '20px',
-            background: useMockTTS ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.8)',
+            background: useMockTTS ? (theme === 'light' ? 'rgba(15,23,42,0.12)' : 'rgba(255,255,255,0.2)') : (theme === 'light' ? '#0f172a' : 'rgba(255,255,255,0.8)'),
             borderRadius: '10px',
             position: 'relative',
             cursor: 'pointer',
@@ -320,7 +321,7 @@ export default function AXVoicePage() {
           <div style={{
             width: '16px',
             height: '16px',
-            background: useMockTTS ? '#fff' : '#000',
+            background: useMockTTS ? (theme === 'light' ? '#0f172a' : '#fff') : '#fff',
             borderRadius: '50%',
             position: 'absolute',
             top: '2px',
@@ -328,9 +329,9 @@ export default function AXVoicePage() {
             transition: 'left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
           }} />
         </div>
-        <span style={{ fontSize: '11px', color: !useMockTTS ? '#fff' : '#666', fontWeight: !useMockTTS ? 600 : 400, transition: 'all 0.3s' }}>PREMIUM</span>
+        <span style={{ fontSize: '11px', color: !useMockTTS ? (theme === 'light' ? '#0f172a' : '#fff') : (theme === 'light' ? '#64748b' : '#666'), fontWeight: !useMockTTS ? 600 : 400, transition: 'all 0.3s' }}>PREMIUM</span>
         {/* Theme divider */}
-        <div style={{ width: '1px', height: '16px', background: 'rgba(255,255,255,0.15)', margin: '0 4px' }} />
+        <div style={{ width: '1px', height: '16px', background: theme === 'light' ? 'rgba(15,23,42,0.15)' : 'rgba(255,255,255,0.15)', margin: '0 4px' }} />
         {/* Theme toggle */}
         <button
           onClick={toggleTheme}
@@ -342,7 +343,7 @@ export default function AXVoicePage() {
             padding: 0,
             display: 'flex',
             alignItems: 'center',
-            color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
+            color: theme === 'light' ? '#0f172a' : 'rgba(255,255,255,0.7)',
             transition: 'color 0.3s'
           }}
         >
@@ -358,7 +359,7 @@ export default function AXVoicePage() {
         position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
         zIndex: 10
       }}>
-        <GravityBackground>
+        <GravityBackground theme={theme}>
           {/* Centered Content */}
           <div className="ax-voice-inner" style={{
             display: 'flex',
@@ -381,8 +382,8 @@ export default function AXVoicePage() {
               pointerEvents: 'none'
             }}>
               <svg width="60" height="60" viewBox="0 0 100 100" style={{ animation: 'subtleSpin 1.5s linear infinite' }}>
-                <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="2" />
-                <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeDasharray="80 200" strokeLinecap="round" />
+                <circle cx="50" cy="50" r="48" fill="none" stroke={theme === 'light' ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.05)'} strokeWidth="2" />
+                <circle cx="50" cy="50" r="48" fill="none" stroke={theme === 'light' ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.2)'} strokeWidth="2" strokeDasharray="80 200" strokeLinecap="round" />
               </svg>
             </div>
 
@@ -396,7 +397,7 @@ export default function AXVoicePage() {
                 maxWidth: '400px',
                 aspectRatio: '1/1',
                 cursor: 'pointer',
-                filter: orbState === 'listening' ? 'brightness(1.5) drop-shadow(0 0 30px rgba(255,255,255,0.2))' : 'none',
+                filter: orbState === 'listening' ? (theme === 'light' ? 'brightness(1.1) drop-shadow(0 0 30px rgba(0,0,0,0.15))' : 'brightness(1.5) drop-shadow(0 0 30px rgba(255,255,255,0.2))') : 'none',
                 transition: 'filter 0.3s ease'
               }}
               onClick={toggleListening}
@@ -410,8 +411,9 @@ export default function AXVoicePage() {
               bottom: '15%',
               width: '100%',
               textAlign: 'center',
-              color: 'rgba(255, 255, 255, 0.3)',
+              color: theme === 'light' ? 'rgba(15, 23, 42, 0.6)' : 'rgba(255, 255, 255, 0.3)',
               fontSize: '12px',
+              fontWeight: 600,
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
               zIndex: 20,

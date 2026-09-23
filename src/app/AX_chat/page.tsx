@@ -184,7 +184,7 @@ export default function AXChatPage() {
 
   return (
     <div data-theme={theme}>
-    <BackgroundWrapper theme="dark">
+    <BackgroundWrapper theme={theme}>
       <div style={{ display: 'flex', minHeight: '100vh', width: '100vw' }}>
 
         <ChatSidebar
@@ -211,16 +211,18 @@ export default function AXChatPage() {
               <button
                 onClick={() => setIsSidebarOpen(true)}
                 style={{
-                  background: 'transparent',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  background: theme === 'light' ? 'rgba(255, 255, 255, 0.85)' : 'transparent',
+                  border: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.15)' : '1px solid rgba(255, 255, 255, 0.1)',
                   borderRadius: 6,
-                  color: '#fff',
+                  color: theme === 'light' ? '#0f172a' : '#fff',
                   width: 40,
                   height: 40,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  backdropFilter: 'blur(8px)',
+                  boxShadow: theme === 'light' ? '0 4px 12px rgba(15, 23, 42, 0.05)' : 'none'
                 }}
               >
                 <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
@@ -231,8 +233,6 @@ export default function AXChatPage() {
               </button>
             )}
           </div>
-
-
 
           <MessageList
             messages={messages}
@@ -274,27 +274,37 @@ export default function AXChatPage() {
 
       <style dangerouslySetInnerHTML={{
         __html: `
-        /* ── Light Mode for AX_chat ── */
-        [data-theme="light"] .msg-list-wrapper {
-          /* messages area – no bg change needed, GravityBackground handles it */
-        }
+        /* ── Light Mode Overrides for AX_chat ── */
         [data-theme="light"] .msg-bubble {
-          color: #1a1a1a !important;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+          color: #0f172a !important;
+          box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08) !important;
+        }
+        [data-theme="light"] .msg-bubble h1,
+        [data-theme="light"] .msg-bubble h2,
+        [data-theme="light"] .msg-bubble h3,
+        [data-theme="light"] .msg-bubble strong {
+          color: #0f172a !important;
+        }
+        [data-theme="light"] .msg-bubble code {
+          background-color: rgba(15, 23, 42, 0.08) !important;
+          color: #0f172a !important;
         }
         [data-theme="light"] .chat-heading {
-          color: #111 !important;
+          color: #0f172a !important;
         }
         [data-theme="light"] .chat-input-form {
-          background-color: rgba(255,255,255,0.85) !important;
-          border-color: rgba(0,0,0,0.12) !important;
-          box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+          background-color: rgba(255, 255, 255, 0.88) !important;
+          border-color: rgba(15, 23, 42, 0.12) !important;
+          box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08) !important;
         }
         [data-theme="light"] .chat-textarea {
-          color: #111 !important;
+          color: #0f172a !important;
         }
         [data-theme="light"] .chat-textarea::placeholder {
-          color: #888 !important;
+          color: #64748b !important;
+        }
+        [data-theme="light"] .chat-subtext {
+          color: #64748b !important;
         }
         @keyframes typingBounce {
           0%, 60%, 100% { transform: translateY(0); }

@@ -203,3 +203,60 @@
     justify-content: center;
   }
 }
+
+/* ── Light Mode Overrides for PanelFooter ──────────────── */
+[data-theme="light"] .panel-footer {
+  color: #0f172a !important;
+  border-top-color: rgba(15, 23, 42, 0.1) !important;
+}
+
+[data-theme="light"] .panel-footer-logo {
+  filter: none !important;
+  opacity: 0.8 !important;
+}
+
+[data-theme="light"] .panel-footer-desc,
+[data-theme="light"] .panel-footer-link,
+[data-theme="light"] .panel-footer-newsletter-text,
+[data-theme="light"] .panel-footer-copyright,
+[data-theme="light"] .panel-footer-legal-link {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .panel-footer-title {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .panel-footer-link:hover,
+[data-theme="light"] .panel-footer-legal-link:hover {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .panel-footer-social-btn {
+  background-color: rgba(15, 23, 42, 0.05) !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .panel-footer-social-btn:hover {
+  background-color: rgba(15, 23, 42, 0.12) !important;
+  color: #000000 !important;
+}
+
+[data-theme="light"] .panel-footer-input {
+  border-color: rgba(15, 23, 42, 0.15) !important;
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .panel-footer-input::placeholder {
+  color: #94a3b8 !important;
+}
+
+[data-theme="light"] .panel-footer-submit {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .panel-footer-bottom {
+  border-top-color: rgba(15, 23, 42, 0.1) !important;
+}

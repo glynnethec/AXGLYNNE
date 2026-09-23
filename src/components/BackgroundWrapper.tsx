@@ -29,11 +29,11 @@ export default function BackgroundWrapper({ children, theme = 'light', disableAu
 
     const intervalId = setInterval(() => {
       if (!wrapperRef.current) return;
-      
+
       const rect = wrapperRef.current.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
       const viewportWidth = window.innerWidth;
-      
+
       // Calculate overlapping region between viewport and wrapper
       const visibleTop = Math.max(0, rect.top);
       const visibleBottom = Math.min(viewportHeight, rect.bottom);
