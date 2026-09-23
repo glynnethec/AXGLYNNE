@@ -25,7 +25,7 @@ export default function AXVoicePage() {
   const [messages, setMessages] = useState<{role: string, content: string}[]>([]);
   const [isSessionActive, setIsSessionActive] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
-  const [useMockTTS, setUseMockTTS] = useState(true);
+  const [useMockTTS, setUseMockTTS] = useState(false);
   
   const recognitionRef = useRef<any>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -289,7 +289,7 @@ export default function AXVoicePage() {
       backgroundColor: theme === 'light' ? '#f8f9fc' : '#000000',
       touchAction: 'none'
     }}>
-      {/* TTS Engine Toggle — top left */}
+      {/* Engine Status Badge & Theme Toggle — top left */}
       <div style={{ 
         position: 'absolute', 
         top: '20px', 
@@ -299,39 +299,30 @@ export default function AXVoicePage() {
         alignItems: 'center',
         gap: '8px',
         background: theme === 'light' ? 'rgba(255, 255, 255, 0.85)' : 'rgba(0,0,0,0.5)',
-        padding: '8px 12px',
+        padding: '8px 14px',
         borderRadius: '999px',
         border: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.12)' : '1px solid rgba(255,255,255,0.1)',
         backdropFilter: 'blur(10px)',
         boxShadow: theme === 'light' ? '0 4px 12px rgba(15, 23, 42, 0.05)' : 'none'
       }}>
-        <span style={{ fontSize: '11px', color: useMockTTS ? (theme === 'light' ? '#0f172a' : '#fff') : (theme === 'light' ? '#64748b' : '#666'), fontWeight: useMockTTS ? 600 : 400, transition: 'all 0.3s' }}>DEV (FREE)</span>
-        <div 
-          onClick={() => setUseMockTTS(!useMockTTS)}
-          style={{
-            width: '36px',
-            height: '20px',
-            background: useMockTTS ? (theme === 'light' ? 'rgba(15,23,42,0.12)' : 'rgba(255,255,255,0.2)') : (theme === 'light' ? '#0f172a' : 'rgba(255,255,255,0.8)'),
-            borderRadius: '10px',
-            position: 'relative',
-            cursor: 'pointer',
-            transition: 'background 0.3s ease'
-          }}
-        >
-          <div style={{
-            width: '16px',
-            height: '16px',
-            background: useMockTTS ? (theme === 'light' ? '#0f172a' : '#fff') : '#fff',
-            borderRadius: '50%',
-            position: 'absolute',
-            top: '2px',
-            left: useMockTTS ? '2px' : '18px',
-            transition: 'left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
-          }} />
-        </div>
-        <span style={{ fontSize: '11px', color: !useMockTTS ? (theme === 'light' ? '#0f172a' : '#fff') : (theme === 'light' ? '#64748b' : '#666'), fontWeight: !useMockTTS ? 600 : 400, transition: 'all 0.3s' }}>PREMIUM</span>
+        <div style={{
+          width: '6px',
+          height: '6px',
+          borderRadius: '50%',
+          backgroundColor: '#10b981',
+          boxShadow: '0 0 8px #10b981'
+        }} />
+        <span style={{ 
+          fontSize: '11px', 
+          color: theme === 'light' ? '#0f172a' : '#ffffff', 
+          fontWeight: 600, 
+          letterSpacing: '0.04em',
+          textTransform: 'uppercase'
+        }}>
+          AX_VOICE ENGINE
+        </span>
         {/* Theme divider */}
-        <div style={{ width: '1px', height: '16px', background: theme === 'light' ? 'rgba(15,23,42,0.15)' : 'rgba(255,255,255,0.15)', margin: '0 4px' }} />
+        <div style={{ width: '1px', height: '14px', background: theme === 'light' ? 'rgba(15,23,42,0.15)' : 'rgba(255,255,255,0.15)', margin: '0 2px' }} />
         {/* Theme toggle */}
         <button
           onClick={toggleTheme}
