@@ -33,6 +33,8 @@ export default function AXVoicePage() {
   
   const [userId, setUserId] = useState<string>('default_user');
   
+  const aiResponseRef = useRef(aiResponse);
+  
   const recognitionRef = useRef<any>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const orbStateRef = useRef(orbState);
@@ -48,7 +50,8 @@ export default function AXVoicePage() {
     isSessionActiveRef.current = isSessionActive;
     useMockTTSRef.current = useMockTTS;
     activeEngineRef.current = activeEngine;
-  }, [orbState, isSessionActive, useMockTTS, activeEngine]);
+    aiResponseRef.current = aiResponse;
+  }, [orbState, isSessionActive, useMockTTS, activeEngine, aiResponse]);
 
   // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS & TTS STATUS PER-USER
   useEffect(() => {
@@ -96,7 +99,7 @@ export default function AXVoicePage() {
     };
   }, []);
 
-  // Inicializar Web Speech API (Solo una vez)
+  // Inicializar Web Speech API con soporte de interrupción en tiempo real (Barge-in)
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -104,7 +107,7 @@ export default function AXVoicePage() {
         const recognition = new SpeechRecognition();
         recognition.continuous = true;
         recognition.interimResults = true;
-        recognition.lang = 'es-ES'; // o 'en-US'
+        recognition.lang = 'es-ES';
         
         recognition.onresult = (event: any) => {
           let currentTranscript = '';
@@ -113,17 +116,46 @@ export default function AXVoicePage() {
           }
           setTranscript(currentTranscript);
 
-          // Reiniciar el temporizador de silencio cada vez que el usuario hable
+          const cleanedTranscript = currentTranscript.trim().toLowerCase();
+          const currentAiText = (aiResponseRef.current || '').trim().toLowerCase();
+
+          // ⚡ DETECCIÓN DE INTERRUPCIÓN DEL USUARIO (BARGE-IN)
+          if (orbStateRef.current === 'speaking' && cleanedTranscript.length > 2) {
+            const isEcho = currentAiText.length > 0 && currentAiText.includes(cleanedTranscript);
+            if (!isEcho) {
+              // ¡Interrupción real! Apagar voz de la IA e iniciar escucha activa
+              if (audioRef.current) {
+                try {
+                  audioRef.current.pause();
+                  audioRef.current.currentTime = 0;
+                } catch (e) {}
+              }
+              if (fillerAudioRef.current) {
+                try {
+                  fillerAudioRef.current.pause();
+                  fillerAudioRef.current.currentTime = 0;
+                } catch (e) {}
+                fillerAudioRef.current = null;
+              }
+              if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+              }
+
+              setAiResponse('');
+              setOrbState('listening');
+            }
+          }
+
+          // Reiniciar el temporizador de silencio cada vez que el usuario habla
           if (silenceTimerRef.current) {
             clearTimeout(silenceTimerRef.current);
           }
           
-          // Si el usuario deja de hablar por 2.5 segundos, detenemos la grabación
           silenceTimerRef.current = setTimeout(() => {
             if (recognitionRef.current) {
-              recognitionRef.current.stop();
+              try { recognitionRef.current.stop(); } catch(e){}
             }
-          }, 2500);
+          }, 2000);
         };
 
         recognition.onend = () => {
@@ -136,13 +168,16 @@ export default function AXVoicePage() {
           }
           if (orbStateRef.current === 'listening') {
              handleSendTranscript();
+          } else if (orbStateRef.current === 'speaking') {
+             // Mantener el micrófono preparado por si el usuario interrumpe a la IA
+             try { recognitionRef.current?.start(); } catch(e){}
           }
         };
         
         recognition.onerror = (event: any) => {
           console.error('Speech recognition error', event.error);
           if (event.error === 'no-speech' && isSessionActiveRef.current) {
-            // Ignore no-speech errors, it will trigger onend and we will restart
+            // Ignorar no-speech
           } else {
             setIsSessionActive(false);
             setOrbState('idle');
@@ -268,6 +303,9 @@ export default function AXVoicePage() {
       
       audioRef.current.onplay = () => {
         setOrbState('speaking');
+        if (isSessionActiveRef.current) {
+          try { recognitionRef.current?.start(); } catch(e){}
+        }
       };
       
       audioRef.current.onended = () => {
@@ -300,7 +338,12 @@ export default function AXVoicePage() {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'es-ES';
-      utterance.onstart = () => setOrbState('speaking');
+      utterance.onstart = () => {
+        setOrbState('speaking');
+        if (isSessionActiveRef.current) {
+          try { recognitionRef.current?.start(); } catch(e){}
+        }
+      };
       utterance.onend = () => {
         setAiResponse('');
         setTranscript('');
