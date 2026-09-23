@@ -26,12 +26,14 @@ export default function AXVoicePage() {
   const [isSessionActive, setIsSessionActive] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
   const [useMockTTS, setUseMockTTS] = useState(false);
+  const [activeEngine, setActiveEngine] = useState<'elevenlabs' | 'edge'>('elevenlabs');
   
   const recognitionRef = useRef<any>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const orbStateRef = useRef(orbState);
   const isSessionActiveRef = useRef(isSessionActive);
   const useMockTTSRef = useRef(useMockTTS);
+  const activeEngineRef = useRef(activeEngine);
   const silenceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const fillerAudioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -40,7 +42,21 @@ export default function AXVoicePage() {
     orbStateRef.current = orbState;
     isSessionActiveRef.current = isSessionActive;
     useMockTTSRef.current = useMockTTS;
-  }, [orbState, isSessionActive, useMockTTS]);
+    activeEngineRef.current = activeEngine;
+  }, [orbState, isSessionActive, useMockTTS, activeEngine]);
+
+  // Check initial TTS status from backend
+  useEffect(() => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://ax-zyxe.onrender.com';
+    fetch(`${apiUrl}/api/tts_status`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.used_engine) {
+          setActiveEngine(data.used_engine);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS
   useEffect(() => {
@@ -154,8 +170,9 @@ export default function AXVoicePage() {
       
       setOrbState('thinking');
       
-      // Reproducir sonido de relleno aleatorio (muletilla) mientras la IA procesa
-      const fillers = ['/fillers/filler_1.mp3', '/fillers/filler_2.mp3', '/fillers/filler_3.mp3', '/fillers/filler_4.mp3'];
+      // Reproducir sonido de relleno aleatorio (muletilla) que coincide con el motor de voz activo
+      const engineFolder = activeEngineRef.current === 'edge' ? '/fillers/edge' : '/fillers/elevenlabs';
+      const fillers = Array.from({ length: 15 }, (_, i) => `${engineFolder}/filler_${i + 1}.mp3`);
       const randomFiller = fillers[Math.floor(Math.random() * fillers.length)];
       fillerAudioRef.current = new Audio(randomFiller);
       fillerAudioRef.current.play().catch(e => console.log('Autoplay prevented', e));
@@ -176,6 +193,10 @@ export default function AXVoicePage() {
         if (fillerAudioRef.current) {
           fillerAudioRef.current.pause();
           fillerAudioRef.current.currentTime = 0;
+        }
+
+        if (data.used_engine) {
+          setActiveEngine(data.used_engine);
         }
 
         const reply = data.reply;
@@ -309,17 +330,19 @@ export default function AXVoicePage() {
           width: '6px',
           height: '6px',
           borderRadius: '50%',
-          backgroundColor: '#10b981',
-          boxShadow: '0 0 8px #10b981'
+          backgroundColor: activeEngine === 'elevenlabs' ? '#10b981' : '#6366f1',
+          boxShadow: activeEngine === 'elevenlabs' ? '0 0 8px #10b981' : '0 0 8px #6366f1',
+          transition: 'all 0.3s ease'
         }} />
         <span style={{ 
           fontSize: '11px', 
           color: theme === 'light' ? '#0f172a' : '#ffffff', 
           fontWeight: 600, 
           letterSpacing: '0.04em',
-          textTransform: 'uppercase'
+          textTransform: 'uppercase',
+          transition: 'all 0.3s ease'
         }}>
-          AX_VOICE ENGINE
+          {activeEngine === 'elevenlabs' ? 'AX_VOICE • ELEVENLABS HD' : 'AX_VOICE • STANDARD EDGE'}
         </span>
         {/* Theme divider */}
         <div style={{ width: '1px', height: '14px', background: theme === 'light' ? 'rgba(15,23,42,0.15)' : 'rgba(255,255,255,0.15)', margin: '0 2px' }} />
