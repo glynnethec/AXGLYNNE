@@ -408,6 +408,10 @@ export default function AXVoicePage() {
       });
       const data = await res.json();
 
+      if (!res.ok) {
+        throw new Error(data.detail || `HTTP error! status: ${res.status}`);
+      }
+
       // Cancelar temporizador y apagar la muletilla inmediatamente al llegar la respuesta real
       if (fillerTimerRef.current) {
         clearTimeout(fillerTimerRef.current);
