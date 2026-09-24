@@ -644,7 +644,7 @@ export default function AXVoicePage() {
         audioRef.current.play().catch(() => { });
       }
 
-      setUrlToOpen(null);
+      urlToOpenRef.current = null;
       setOrbState('listening');
       try { recognitionRef.current?.start(); } catch (e) { }
     }
