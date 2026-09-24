@@ -606,6 +606,54 @@ export default function AXVoicePage() {
     }
   };
 
+  // 🚀 Auto-iniciar la sesión al cargar la página
+  useEffect(() => {
+    if (userId && !isSessionActive) {
+      // Iniciar sesión activa
+      setIsSessionActive(true);
+      setOrbState('thinking');
+      isProcessingRef.current = true;
+
+      const initialMessage = [{ role: 'user', content: 'Inicia la conversación saludándome brevemente y presentándote como AX.' }];
+      setMessages(initialMessage);
+      messagesRef.current = initialMessage;
+
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://ax-zyxe.onrender.com';
+      fetch(`${apiUrl}/api/voice_chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: initialMessage,
+          use_mock_tts: activeEngineRef.current === 'edge',
+          user_id: userId
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        isProcessingRef.current = false;
+        if (data.reply) {
+          setAiResponse(data.reply);
+          setMessages(prev => [...prev, { role: 'ai', content: data.reply }]);
+        }
+        if (data.audio_base64) {
+          playAudioFromBase64(data.audio_base64);
+        } else if (data.reply) {
+          speakResponseFallback(data.reply);
+        } else {
+          setOrbState('listening');
+          try { recognitionRef.current?.start(); } catch(e){}
+        }
+      })
+      .catch(err => {
+        console.error("Auto-start error", err);
+        isProcessingRef.current = false;
+        setOrbState('listening');
+        try { recognitionRef.current?.start(); } catch(e){}
+      });
+    }
+  }, [userId]); // Se ejecuta solo cuando se obtiene el userId
+
+
   return (
     <div className="ax-voice-root" data-theme={theme} style={{
       width: '100%',
@@ -753,69 +801,6 @@ export default function AXVoicePage() {
                 </button>
               </div>
             )}
-
-            {/* UNIFIED MIC CONTROL BUTTON — The SINGLE physical interaction point to start / mute / pause */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                if (!isSessionActive) {
-                  toggleListening();
-                } else {
-                  setIsMuted(prev => !prev);
-                }
-              }}
-              title={
-                !isSessionActive
-                  ? "Iniciar conversación con AX Voice"
-                  : (isMuted ? "Desmutear micrófono" : "Mutear / Pausar micrófono")
-              }
-              aria-label={
-                !isSessionActive
-                  ? "Iniciar conversación con AX Voice"
-                  : (isMuted ? "Desmutear micrófono" : "Mutear / Pausar micrófono")
-              }
-              style={{
-                position: 'absolute',
-                bottom: '8%',
-                zIndex: 35,
-                background: 'none',
-                border: 'none',
-                boxShadow: 'none',
-                padding: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                transition: 'all 0.25s ease',
-                color: isMuted
-                  ? (theme === 'light' ? '#000000' : '#ffffff')
-                  : (theme === 'light' ? '#888888' : '#777777'),
-                opacity: 1,
-                outline: 'none',
-                filter: isMuted
-                  ? (theme === 'light' ? 'drop-shadow(0 0 6px rgba(0, 0, 0, 0.4))' : 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.5))')
-                  : 'none'
-              }}
-            >
-              {isMuted ? (
-                /* Muted Mic Icon */
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="1" y1="1" x2="23" y2="23" />
-                  <path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6" />
-                  <path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23" />
-                  <line x1="12" y1="19" x2="12" y2="23" />
-                  <line x1="8" y1="23" x2="16" y2="23" />
-                </svg>
-              ) : (
-                /* Active / Idle Mic Icon */
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z" />
-                  <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                  <line x1="12" y1="19" x2="12" y2="23" />
-                  <line x1="8" y1="23" x2="16" y2="23" />
-                </svg>
-              )}
-            </button>
           </div>
         </GravityBackground>
       </div>
