@@ -505,22 +505,15 @@ export default function AXVoicePage() {
         setAiResponse('');
         setTranscript('');
 
-        // 🚀 Si hay una URL pendiente, redirigir AUTOMÁTICAMENTE ahora que la IA terminó de hablar
+        // 🚀 Si hay una URL pendiente, abrir en NUEVA PESTAÑA automáticamente
         if (urlToOpenRef.current) {
-          setIsSessionActive(false);
-          setOrbState('idle');
           try {
-            const targetUrl = new URL(urlToOpenRef.current);
-            if (targetUrl.hostname.includes('axglynne.com') || targetUrl.hostname.includes('localhost')) {
-              router.push(targetUrl.pathname + targetUrl.search);
-            } else {
-              window.location.href = urlToOpenRef.current;
-            }
+            window.open(urlToOpenRef.current, '_blank');
           } catch(e) {
-            window.location.href = urlToOpenRef.current;
+            console.error('Popup blocked', e);
           }
           urlToOpenRef.current = null;
-          return;
+          // No hacemos return aquí para que el micrófono se vuelva a encender abajo
         }
 
         if (isSessionActiveRef.current) {
@@ -569,22 +562,15 @@ export default function AXVoicePage() {
         setAiResponse('');
         setTranscript('');
 
-        // 🚀 Si hay una URL pendiente, redirigir AUTOMÁTICAMENTE ahora que la IA terminó de hablar
+        // 🚀 Si hay una URL pendiente, abrir en NUEVA PESTAÑA automáticamente
         if (urlToOpenRef.current) {
-          setIsSessionActive(false);
-          setOrbState('idle');
           try {
-            const targetUrl = new URL(urlToOpenRef.current);
-            if (targetUrl.hostname.includes('axglynne.com') || targetUrl.hostname.includes('localhost')) {
-              router.push(targetUrl.pathname + targetUrl.search);
-            } else {
-              window.location.href = urlToOpenRef.current;
-            }
+            window.open(urlToOpenRef.current, '_blank');
           } catch(e) {
-            window.location.href = urlToOpenRef.current;
+            console.error('Popup blocked', e);
           }
           urlToOpenRef.current = null;
-          return;
+          // No hacemos return aquí para que el micrófono se vuelva a encender abajo
         }
 
         if (isSessionActiveRef.current) {

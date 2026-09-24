@@ -398,6 +398,8 @@
   background: transparent;
   border: none;
   cursor: pointer;
+  position: relative;
+  z-index: 50;
   display: flex;
   align-items: center;
   gap: 6px;
