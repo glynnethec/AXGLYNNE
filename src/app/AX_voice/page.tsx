@@ -25,6 +25,7 @@ export default function AXVoicePage() {
   const [messages, setMessages] = useState<{ role: string, content: string }[]>([]);
   const [isSessionActive, setIsSessionActive] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
+  const [language, setLanguage] = useState<'es' | 'en' | null>(null);
   const urlToOpenRef = useRef<string | null>(null);
   const [useMockTTS, setUseMockTTS] = useState(false);
   const [activeEngine, setActiveEngine] = useState<'elevenlabs' | 'edge'>('elevenlabs');
@@ -44,6 +45,7 @@ export default function AXVoicePage() {
   const isSessionActiveRef = useRef(isSessionActive);
   const useMockTTSRef = useRef(useMockTTS);
   const activeEngineRef = useRef(activeEngine);
+  const languageRef = useRef(language);
   const silenceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const fillerAudioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -70,7 +72,8 @@ export default function AXVoicePage() {
     activeEngineRef.current = activeEngine;
     aiResponseRef.current = aiResponse;
     messagesRef.current = messages;
-  }, [orbState, isSessionActive, useMockTTS, activeEngine, aiResponse, messages]);
+    languageRef.current = language;
+  }, [orbState, isSessionActive, useMockTTS, activeEngine, aiResponse, messages, language]);
 
   // Sync mute state across media streams
   useEffect(() => {
@@ -90,6 +93,13 @@ export default function AXVoicePage() {
       }
     }
   }, [isMuted]);
+
+  // Sync language for SpeechRecognition
+  useEffect(() => {
+    if (recognitionRef.current && language) {
+      recognitionRef.current.lang = language === 'en' ? 'en-US' : 'es-CO';
+    }
+  }, [language]);
 
   // Reset mute state when session ends
   useEffect(() => {
@@ -247,7 +257,10 @@ export default function AXVoicePage() {
                 setTranscript('');
                 isProcessingRef.current = false;
                 setOrbState('listening');
-                try { recognitionRef.current?.start(); } catch (e) { }
+                try { 
+                  if (recognitionRef.current) recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
+                  recognitionRef.current?.start(); 
+                } catch (e) { }
               }
             } else {
               consecutiveVoiceHits = Math.max(0, consecutiveVoiceHits - 1);
@@ -356,7 +369,10 @@ export default function AXVoicePage() {
       isProcessingRef.current = false;
       if (isSessionActiveRef.current) {
         setOrbState('listening');
-        try { recognitionRef.current?.start(); } catch (e) { }
+        try { 
+          if (recognitionRef.current) recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
+          recognitionRef.current?.start(); 
+        } catch (e) { }
       } else {
         setOrbState('idle');
       }
@@ -403,7 +419,8 @@ export default function AXVoicePage() {
         body: JSON.stringify({
           messages: newMessages,
           use_mock_tts: currentEngine === 'edge',
-          user_id: userId
+          user_id: userId,
+          language: languageRef.current || 'es'
         })
       });
       const data = await res.json();
@@ -541,7 +558,10 @@ export default function AXVoicePage() {
         // Si el navegador bloquea el audio inicial, al menos abrimos el micrófono
         if (isSessionActiveRef.current) {
           setOrbState('listening');
-          try { recognitionRef.current?.start(); } catch (err) { }
+          try { 
+            if (recognitionRef.current) recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
+            recognitionRef.current?.start(); 
+          } catch (err) { }
         }
       });
     }
@@ -551,7 +571,7 @@ export default function AXVoicePage() {
     if (window.speechSynthesis) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'es-ES';
+      utterance.lang = languageRef.current === 'en' ? 'en-US' : 'es-ES';
       utterance.onstart = () => {
         speechStartTimeRef.current = Date.now();
         setOrbState('speaking');
@@ -612,7 +632,10 @@ export default function AXVoicePage() {
         setTranscript('');
         isProcessingRef.current = false;
         setOrbState('listening');
-        try { recognitionRef.current?.start(); } catch (e) { }
+        try { 
+          if (recognitionRef.current) recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
+          recognitionRef.current?.start(); 
+        } catch (e) { }
       } else {
         isProcessingRef.current = false;
         setIsSessionActive(false);
@@ -638,13 +661,17 @@ export default function AXVoicePage() {
 
   // 🚀 Auto-iniciar la sesión al cargar la página
   useEffect(() => {
-    if (userId && !isSessionActive) {
+    if (userId && !isSessionActive && language !== null) {
       // Iniciar sesión activa
       setIsSessionActive(true);
       setOrbState('thinking');
       isProcessingRef.current = true;
 
-      const initialMessage = [{ role: 'user', content: 'Inicia la conversación saludándome brevemente y presentándote como AX.' }];
+      const greeting = language === 'en' 
+        ? 'Start the conversation by greeting me briefly and introducing yourself as AX.'
+        : 'Inicia la conversación saludándome brevemente y presentándote como AX.';
+      
+      const initialMessage = [{ role: 'user', content: greeting }];
       setMessages(initialMessage);
       messagesRef.current = initialMessage;
 
@@ -655,7 +682,8 @@ export default function AXVoicePage() {
         body: JSON.stringify({
           messages: initialMessage,
           use_mock_tts: activeEngineRef.current === 'edge',
-          user_id: userId
+          user_id: userId,
+          language: language
         })
       })
       .then(async res => {
@@ -693,8 +721,7 @@ export default function AXVoicePage() {
         try { recognitionRef.current?.start(); } catch(e){}
       });
     }
-  }, [userId]); // Se ejecuta solo cuando se obtiene el userId
-
+  }, [userId, isSessionActive, language]);
 
   return (
     <div className="ax-voice-root" data-theme={theme} style={{
@@ -705,6 +732,47 @@ export default function AXVoicePage() {
       backgroundColor: theme === 'light' ? '#f8f9fc' : '#000000',
       touchAction: 'none'
     }}>
+
+      {/* 🌐 LANGUAGE SELECTION MODAL */}
+      {language === null && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(10px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100
+        }}>
+          <div style={{
+            background: theme === 'light' ? '#fff' : '#111',
+            padding: '40px', borderRadius: '24px', textAlign: 'center',
+            maxWidth: '400px', width: '90%',
+            border: theme === 'light' ? '1px solid rgba(0,0,0,0.1)' : '1px solid rgba(255,255,255,0.1)',
+            boxShadow: '0 20px 40px rgba(0,0,0,0.4)'
+          }}>
+            <h2 style={{ color: theme === 'light' ? '#000' : '#fff', marginBottom: '10px', fontSize: '24px', fontWeight: 700 }}>AX Voice</h2>
+            <p style={{ color: theme === 'light' ? '#666' : '#aaa', marginBottom: '30px', fontSize: '15px' }}>Selecciona tu idioma / Select your language</p>
+            <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
+              <button 
+                onClick={() => setLanguage('es')}
+                style={{ flex: 1, padding: '20px 10px', borderRadius: '16px', background: 'transparent', border: theme === 'light' ? '2px solid rgba(0,0,0,0.1)' : '2px solid rgba(255,255,255,0.1)', color: theme === 'light' ? '#000' : '#fff', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}
+                onMouseOver={(e) => { e.currentTarget.style.background = theme === 'light' ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.1)'; e.currentTarget.style.transform = 'scale(1.05)'; }}
+                onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = 'scale(1)'; }}
+              >
+                <span style={{ fontSize: '32px' }}>🇨🇴</span>
+                <span style={{ fontSize: '15px', fontWeight: 600 }}>Español</span>
+              </button>
+              <button 
+                onClick={() => setLanguage('en')}
+                style={{ flex: 1, padding: '20px 10px', borderRadius: '16px', background: 'transparent', border: theme === 'light' ? '2px solid rgba(0,0,0,0.1)' : '2px solid rgba(255,255,255,0.1)', color: theme === 'light' ? '#000' : '#fff', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}
+                onMouseOver={(e) => { e.currentTarget.style.background = theme === 'light' ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.1)'; e.currentTarget.style.transform = 'scale(1.05)'; }}
+                onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = 'scale(1)'; }}
+              >
+                <span style={{ fontSize: '32px' }}>🇺🇸</span>
+                <span style={{ fontSize: '15px', fontWeight: 600 }}>English</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Engine Status Badge & Theme Toggle — top left */}
       <div style={{
         position: 'absolute',
