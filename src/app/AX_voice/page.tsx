@@ -32,8 +32,10 @@ export default function AXVoicePage() {
   const [hoursUntilReset, setHoursUntilReset] = useState<number>(48);
   
   const [userId, setUserId] = useState<string>('default_user');
+  const [isMuted, setIsMuted] = useState(false);
   
   const aiResponseRef = useRef(aiResponse);
+  const isMutedRef = useRef(isMuted);
   
   const recognitionRef = useRef<any>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -53,6 +55,8 @@ export default function AXVoicePage() {
   const vadIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const speechStartTimeRef = useRef<number>(0);
   const noiseFloorRef = useRef<number>(12);
+  const transcriptRef = useRef<string>('');
+  const messagesRef = useRef<{role: string, content: string}[]>([]);
 
   // Keep refs in sync
   useEffect(() => {
@@ -64,7 +68,40 @@ export default function AXVoicePage() {
     useMockTTSRef.current = useMockTTS;
     activeEngineRef.current = activeEngine;
     aiResponseRef.current = aiResponse;
-  }, [orbState, isSessionActive, useMockTTS, activeEngine, aiResponse]);
+    messagesRef.current = messages;
+  }, [orbState, isSessionActive, useMockTTS, activeEngine, aiResponse, messages]);
+
+  // Sync mute state across media streams and pause active audio
+  useEffect(() => {
+    isMutedRef.current = isMuted;
+    if (micStreamRef.current) {
+      micStreamRef.current.getAudioTracks().forEach(track => {
+        track.enabled = !isMuted;
+      });
+    }
+    if (audioRef.current) {
+      audioRef.current.muted = isMuted;
+      if (isMuted) {
+        try { audioRef.current.pause(); } catch(e){}
+      }
+    }
+    if (isMuted) {
+      const activeFiller = fillerAudioRef.current as HTMLAudioElement | null;
+      if (activeFiller) {
+        try { activeFiller.pause(); } catch(e){}
+      }
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+    }
+  }, [isMuted]);
+
+  // Reset mute state when session ends
+  useEffect(() => {
+    if (!isSessionActive) {
+      setIsMuted(false);
+    }
+  }, [isSessionActive]);
 
   // 🎙️ WebRTC MIC VAD: DETECCIÓN INTELIGENTE DE INTERRUPCIÓN POR VOZ CON ADAPTACIÓN AMBIENTAL
   useEffect(() => {
@@ -106,9 +143,10 @@ export default function AXVoicePage() {
         micAnalyserRef.current = analyser;
 
         let consecutiveVoiceHits = 0;
+        let listeningSilenceHits = 0;
 
         vadIntervalRef.current = setInterval(() => {
-          if (!micAnalyserRef.current || !isSessionActiveRef.current) return;
+          if (!micAnalyserRef.current || !isSessionActiveRef.current || isMutedRef.current) return;
           
           const binCount = micAnalyserRef.current.frequencyBinCount;
           const dataArray = new Uint8Array(binCount);
@@ -146,10 +184,31 @@ export default function AXVoicePage() {
             noiseFloorRef.current = noiseFloorRef.current * 0.95 + totalVolume * 0.05;
           }
 
-          // Si la IA está hablando (orbState === 'speaking')
-          if (orbStateRef.current === 'speaking') {
+          // A. Si el usuario está hablando y el sistema está escuchando (orbState === 'listening')
+          if (orbStateRef.current === 'listening') {
+            const hasUserSpoken = (transcriptRef.current || transcript).trim().length > 0;
+            if (hasUserSpoken && !isProcessingRef.current) {
+              // Si el volumen del mic vuelve al nivel de ruido ambiente (silencio tras hablar)
+              if (totalVolume < noiseFloorRef.current + 8) {
+                listeningSilenceHits++;
+                // 14 lecturas seguidas (~700ms de silencio) = Envío ultra-rápido instantáneo
+                if (listeningSilenceHits >= 14) {
+                  listeningSilenceHits = 0;
+                  try { recognitionRef.current?.stop(); } catch(e){}
+                  handleSendTranscript();
+                }
+              } else {
+                listeningSilenceHits = 0; // El usuario aún habla
+              }
+            } else {
+              listeningSilenceHits = 0;
+            }
+            consecutiveVoiceHits = 0;
+          }
+          // B. Si la IA está hablando (orbState === 'speaking')
+          else if (orbStateRef.current === 'speaking') {
+            listeningSilenceHits = 0;
             // Ventana de gracia inicial: ignorar VAD durante los primeros 350ms del inicio del habla de la IA
-            // Evita auto-interrupción por el chasquido inicial de encendido de altavoces o el primer tono del TTS
             const timeSpeaking = Date.now() - speechStartTimeRef.current;
             if (timeSpeaking < 350) {
               consecutiveVoiceHits = 0;
@@ -159,10 +218,7 @@ export default function AXVoicePage() {
             // Umbral dinámico adaptativo: requiere superar el ruido ambiental + 25dB equiv. (mínimo absoluto 42)
             const requiredThreshold = Math.max(42, noiseFloorRef.current + 25);
 
-            // Filtro de espectro vocal humano:
-            // - El volumen general supera el umbral dinámico adaptativo
-            // - La energía en frecuencias formantes de la voz es fuerte (vocalAvg >= 25)
-            // - La energía vocal predomina sobre ruidos de alta frecuencia (evita ventiladores/chasquidos)
+            // Filtro de espectro vocal humano
             const isHumanSpeech = totalVolume >= requiredThreshold && 
                                  vocalAvg >= 25 && 
                                  (highAvg < 5 || vocalAvg > highAvg * 1.15);
@@ -180,10 +236,11 @@ export default function AXVoicePage() {
                     audioRef.current.currentTime = 0;
                   } catch(e) {}
                 }
-                if (fillerAudioRef.current) {
+                const activeFiller = fillerAudioRef.current as HTMLAudioElement | null;
+                if (activeFiller) {
                   try {
-                    fillerAudioRef.current.pause();
-                    fillerAudioRef.current.currentTime = 0;
+                    activeFiller.pause();
+                    activeFiller.currentTime = 0;
                   } catch(e) {}
                   fillerAudioRef.current = null;
                 }
@@ -198,11 +255,11 @@ export default function AXVoicePage() {
                 try { recognitionRef.current?.start(); } catch(e){}
               }
             } else {
-              // Decremento gradual para tolerar micro-pausas naturales en palabras sin reiniciar instantáneamente a 0
               consecutiveVoiceHits = Math.max(0, consecutiveVoiceHits - 1);
             }
           } else {
             consecutiveVoiceHits = 0;
+            listeningSilenceHits = 0;
           }
         }, 50);
       } catch(err) {
@@ -240,18 +297,20 @@ export default function AXVoicePage() {
           for (let i = event.resultIndex; i < event.results.length; ++i) {
             currentTranscript += event.results[i][0].transcript;
           }
+          transcriptRef.current = currentTranscript;
           setTranscript(currentTranscript);
 
-          // Reiniciar el temporizador de silencio cada vez que el usuario habla
+          // Reiniciar el temporizador de silencio cada vez que el usuario habla (reducido a 750ms)
           if (silenceTimerRef.current) {
             clearTimeout(silenceTimerRef.current);
           }
           
           silenceTimerRef.current = setTimeout(() => {
-            if (recognitionRef.current) {
+            if (recognitionRef.current && isSessionActiveRef.current && orbStateRef.current === 'listening') {
               try { recognitionRef.current.stop(); } catch(e){}
+              handleSendTranscript();
             }
-          }, 2000);
+          }, 750);
         };
 
         recognition.onend = () => {
@@ -294,51 +353,56 @@ export default function AXVoicePage() {
     // Detener el micrófono mientras la IA procesa y habla para evitar auto-interrupción
     try { recognitionRef.current?.stop(); } catch(e){}
 
-    setTranscript((currentText) => {
-      if (!currentText.trim()) {
-        isProcessingRef.current = false;
-        if (isSessionActiveRef.current) {
-          setOrbState('listening');
-          try { recognitionRef.current?.start(); } catch(e){}
-        } else {
-          setOrbState('idle');
-        }
-        return '';
-      }
-      
-      setOrbState('thinking');
-      
-      // Detener cualquier temporizador o muletilla previa si estaba activa
-      if (fillerTimerRef.current) {
-        clearTimeout(fillerTimerRef.current);
-        fillerTimerRef.current = null;
-      }
-      if (fillerAudioRef.current) {
-        try {
-          fillerAudioRef.current.pause();
-          fillerAudioRef.current.currentTime = 0;
-        } catch(e) {}
-        fillerAudioRef.current = null;
-      }
+    const currentText = (transcriptRef.current || transcript).trim();
+    transcriptRef.current = '';
+    setTranscript('');
 
-      // Programar la frase de relleno 1 segundo después de iniciar la reflexión (procesamiento)
-      const currentEngine = activeEngineRef.current;
-      fillerTimerRef.current = setTimeout(() => {
-        if (orbStateRef.current === 'thinking') {
-          const engineFolder = activeEngineRef.current === 'edge' ? '/fillers/edge' : '/fillers/elevenlabs';
-          const fillers = Array.from({ length: 15 }, (_, i) => `${engineFolder}/filler_${i + 1}.mp3`);
-          const randomFiller = fillers[Math.floor(Math.random() * fillers.length)];
-          fillerAudioRef.current = new Audio(randomFiller);
-          fillerAudioRef.current.play().catch(e => console.log('Autoplay prevented', e));
-        }
-      }, 1000);
-      
-      const newMessages = [...messages, { role: 'user', content: currentText }];
-      setMessages(newMessages);
+    if (!currentText) {
+      isProcessingRef.current = false;
+      if (isSessionActiveRef.current) {
+        setOrbState('listening');
+        try { recognitionRef.current?.start(); } catch(e){}
+      } else {
+        setOrbState('idle');
+      }
+      return;
+    }
 
-      // Fetch al backend enviando el motor activo garantizando coincidencia
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://ax-zyxe.onrender.com';
-      fetch(`${apiUrl}/api/voice_chat`, {
+    setOrbState('thinking');
+
+    // Detener cualquier temporizador o muletilla previa si estaba activa
+    if (fillerTimerRef.current) {
+      clearTimeout(fillerTimerRef.current);
+      fillerTimerRef.current = null;
+    }
+    if (fillerAudioRef.current) {
+      try {
+        fillerAudioRef.current.pause();
+        fillerAudioRef.current.currentTime = 0;
+      } catch(e) {}
+      fillerAudioRef.current = null;
+    }
+
+    // Programar la frase de relleno 600ms después de iniciar la reflexión (procesamiento)
+    const currentEngine = activeEngineRef.current;
+    fillerTimerRef.current = setTimeout(() => {
+      if (orbStateRef.current === 'thinking' && !isMutedRef.current) {
+        const activeFillerIds = [1, 2, 3, 6, 7, 8, 9, 10, 11, 12, 14, 15];
+        const engineFolder = activeEngineRef.current === 'edge' ? '/fillers/edge' : '/fillers/elevenlabs';
+        const randomId = activeFillerIds[Math.floor(Math.random() * activeFillerIds.length)];
+        const randomFiller = `${engineFolder}/filler_${randomId}.mp3`;
+        fillerAudioRef.current = new Audio(randomFiller);
+        fillerAudioRef.current.play().catch(e => console.log('Autoplay prevented', e));
+      }
+    }, 600);
+    
+    const newMessages = [...messagesRef.current, { role: 'user', content: currentText }];
+    setMessages(newMessages);
+
+    // Fetch al backend enviando el motor activo garantizando coincidencia
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://ax-zyxe.onrender.com';
+    try {
+      const res = await fetch(`${apiUrl}/api/voice_chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -346,60 +410,58 @@ export default function AXVoicePage() {
           use_mock_tts: currentEngine === 'edge',
           user_id: userId
         })
-      })
-      .then(res => res.json())
-      .then(data => {
-        // Cancelar temporizador y apagar la muletilla inmediatamente al llegar la respuesta real
-        if (fillerTimerRef.current) {
-          clearTimeout(fillerTimerRef.current);
-          fillerTimerRef.current = null;
-        }
-        if (fillerAudioRef.current) {
-          try {
-            fillerAudioRef.current.pause();
-            fillerAudioRef.current.currentTime = 0;
-          } catch(e) {}
-          fillerAudioRef.current = null;
-        }
-
-        if (data.used_engine) setActiveEngine(data.used_engine);
-        if (data.chars_used !== undefined) setCharsUsed(data.chars_used);
-        if (data.max_chars !== undefined) setMaxChars(data.max_chars);
-        if (data.hours_until_reset !== undefined) setHoursUntilReset(data.hours_until_reset);
-
-        const reply = data.reply;
-        const audioBase64 = data.audio_base64;
-        
-        setAiResponse(reply);
-        setMessages(prev => [...prev, { role: 'ai', content: reply }]);
-        
-        if (audioBase64) {
-          playAudioFromBase64(audioBase64);
-        } else {
-          // Fallback en caso de error en TTS backend
-          speakResponseFallback(reply);
-        }
-      })
-      .catch(err => {
-        console.error('Error fetching voice_chat:', err);
-        isProcessingRef.current = false;
-        if (fillerTimerRef.current) {
-          clearTimeout(fillerTimerRef.current);
-          fillerTimerRef.current = null;
-        }
-        if (fillerAudioRef.current) {
-          try {
-            fillerAudioRef.current.pause();
-            fillerAudioRef.current.currentTime = 0;
-          } catch(e) {}
-          fillerAudioRef.current = null;
-        }
-        setIsSessionActive(false);
-        setOrbState('idle');
       });
+      const data = await res.json();
 
-      return '';
-    });
+      // Cancelar temporizador y apagar la muletilla inmediatamente al llegar la respuesta real
+      if (fillerTimerRef.current) {
+        clearTimeout(fillerTimerRef.current);
+        fillerTimerRef.current = null;
+      }
+      const activeFiller = fillerAudioRef.current as HTMLAudioElement | null;
+      if (activeFiller) {
+        try {
+          activeFiller.pause();
+          activeFiller.currentTime = 0;
+        } catch(e) {}
+        fillerAudioRef.current = null;
+      }
+
+      if (data.used_engine) setActiveEngine(data.used_engine);
+      if (data.chars_used !== undefined) setCharsUsed(data.chars_used);
+      if (data.max_chars !== undefined) setMaxChars(data.max_chars);
+      if (data.hours_until_reset !== undefined) setHoursUntilReset(data.hours_until_reset);
+
+      const reply = data.reply;
+      const audioBase64 = data.audio_base64;
+      
+      setAiResponse(reply);
+      setMessages(prev => [...prev, { role: 'ai', content: reply }]);
+      
+      if (audioBase64) {
+        playAudioFromBase64(audioBase64);
+      } else {
+        // Fallback en caso de error en TTS backend
+        speakResponseFallback(reply);
+      }
+    } catch (err) {
+      console.error('Error fetching voice_chat:', err);
+      isProcessingRef.current = false;
+      if (fillerTimerRef.current) {
+        clearTimeout(fillerTimerRef.current);
+        fillerTimerRef.current = null;
+      }
+      const errFiller = fillerAudioRef.current as HTMLAudioElement | null;
+      if (errFiller) {
+        try {
+          errFiller.pause();
+          errFiller.currentTime = 0;
+        } catch(e) {}
+        fillerAudioRef.current = null;
+      }
+      setIsSessionActive(false);
+      setOrbState('idle');
+    }
   };
 
   const playAudioFromBase64 = (base64Str: string) => {
@@ -626,36 +688,75 @@ export default function AXVoicePage() {
                 width: '100%',
                 maxWidth: '400px',
                 aspectRatio: '1/1',
-                cursor: 'pointer',
                 filter: orbState === 'listening' ? (theme === 'light' ? 'brightness(1.1) drop-shadow(0 0 30px rgba(0,0,0,0.15))' : 'brightness(1.5) drop-shadow(0 0 30px rgba(255,255,255,0.2))') : 'none',
                 transition: 'filter 0.3s ease'
               }}
-              onClick={toggleListening}
             >
               <VoiceOrb orbState={orbState} audioRef={audioRef} theme={theme} />
             </div>
 
-            {/* Minimal Status Indicator */}
-            <div style={{
-              position: 'absolute',
-              bottom: '15%',
-              width: '100%',
-              textAlign: 'center',
-              color: theme === 'light' ? 'rgba(15, 23, 42, 0.6)' : 'rgba(255, 255, 255, 0.3)',
-              fontSize: '12px',
-              fontWeight: 600,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              zIndex: 20,
-              transition: 'opacity 0.3s ease',
-              opacity: orbState === 'idle' ? 1 : 0.5
-            }}>
-              {orbState === 'listening' ? "Listening..." : 
-               orbState === 'thinking' ? "Processing..." : 
-               orbState === 'speaking' ? "Speaking..." : 
-               "Tap to interact"}
-            </div>
-            
+            {/* UNIFIED MIC CONTROL BUTTON — The SINGLE physical interaction point to start / mute / pause */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!isSessionActive) {
+                  toggleListening();
+                } else {
+                  setIsMuted(prev => !prev);
+                }
+              }}
+              title={
+                !isSessionActive 
+                  ? "Iniciar conversación con AX Voice" 
+                  : (isMuted ? "Desmutear micrófono" : "Mutear / Pausar micrófono")
+              }
+              aria-label={
+                !isSessionActive 
+                  ? "Iniciar conversación con AX Voice" 
+                  : (isMuted ? "Desmutear micrófono" : "Mutear / Pausar micrófono")
+              }
+              style={{
+                position: 'absolute',
+                bottom: '8%',
+                zIndex: 35,
+                background: 'none',
+                border: 'none',
+                boxShadow: 'none',
+                padding: '12px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'all 0.25s ease',
+                color: isMuted 
+                  ? (theme === 'light' ? '#000000' : '#ffffff') 
+                  : (theme === 'light' ? '#888888' : '#777777'),
+                opacity: 1,
+                outline: 'none',
+                filter: isMuted 
+                  ? (theme === 'light' ? 'drop-shadow(0 0 6px rgba(0, 0, 0, 0.4))' : 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.5))')
+                  : 'none'
+              }}
+            >
+              {isMuted ? (
+                /* Muted Mic Icon */
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="1" y1="1" x2="23" y2="23" />
+                  <path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6" />
+                  <path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23" />
+                  <line x1="12" y1="19" x2="12" y2="23" />
+                  <line x1="8" y1="23" x2="16" y2="23" />
+                </svg>
+              ) : (
+                /* Active / Idle Mic Icon */
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z" />
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                  <line x1="12" y1="19" x2="12" y2="23" />
+                  <line x1="8" y1="23" x2="16" y2="23" />
+                </svg>
+              )}
+            </button>
           </div>
         </GravityBackground>
       </div>
