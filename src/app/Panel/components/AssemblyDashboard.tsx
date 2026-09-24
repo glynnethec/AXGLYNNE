@@ -35,9 +35,9 @@ export default function AssemblyDashboard() {
   const { theme, toggleTheme } = useTheme();
 
   const platformTools = [
-    { name: 'AX_core', label: 'AX Core', desc: 'Central processing and neural routing.', model: 'SYS-CORE v9.4', details: 'Kernel level execution protocols active.' },
     { name: 'AX_chat', label: 'Chat with AX', desc: 'Intelligent conversational interfaces.', model: 'GPT OSS 120B OpenAI', details: 'High-parameter natural language processing ready.' },
     { name: 'AX_voice', label: 'AX Voice', desc: 'Real-time vocal synthesis and analysis.', model: 'VOX-SYNTH V2.0', details: 'Acoustic waveform modulation standing by.' },
+    { name: 'AX_core', label: 'AX Core', desc: 'Central processing and neural routing.', model: 'SYS-CORE v9.4', details: 'Kernel level execution protocols active.' },
   ];
 
   const aiPhrases = [
@@ -112,7 +112,6 @@ export default function AssemblyDashboard() {
     <div className="md-center">
       <div className={`md-info-card ${isFading ? 'fading-out' : 'fading-in'}`}>
         <div className="info-title">{platformTools.find(t => t.name === activeTool)?.label}</div>
-        <div className="info-desc">{platformTools.find(t => t.name === activeTool)?.desc}</div>
         <Link href={`/${activeTool}`} className="md-start-btn">
           Start <span>&rarr;</span>
         </Link>
@@ -325,7 +324,10 @@ export default function AssemblyDashboard() {
                     <span className="md-tool-icon">
                       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
                     </span>
-                    {tool.label}
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textAlign: 'left' }}>
+                      <span className="md-tool-label">{tool.label}</span>
+                      <span className="md-tool-desc-text" style={{ fontSize: '10px', opacity: 0.65, fontWeight: 400, marginTop: '2px', lineHeight: 1.3 }}>{tool.desc}</span>
+                    </div>
                   </button>
                 </li>
               ))}

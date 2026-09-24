@@ -84,7 +84,7 @@ export default function OrbCardSection() {
       </div>
       <div className="orb-wrapper-container" style={{ flex: '0.8', display: 'flex', justifyContent: 'center', alignItems: 'center', minWidth: '300px' }}>
         <div style={{ width: '100%', maxWidth: '320px', aspectRatio: '1/1', position: 'relative' }}>
-          <LiquidOrb wireframe={true} />
+          <LiquidOrb wireframe={true} lineOpacity={0.25} cellOpacityMultiplier={1.5} />
         </div>
       </div>
     </div>

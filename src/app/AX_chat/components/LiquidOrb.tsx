@@ -15,14 +15,18 @@ export default function LiquidOrb({
   customRotX = 0,
   customRotY = 0,
   customRotZ = 20,
-  wireframe = false
+  wireframe = false,
+  lineOpacity,
+  cellOpacityMultiplier
 }: { 
   orbState?: 'idle' | 'thinking',
   theme?: 'light' | 'dark',
   customRotX?: number,
   customRotY?: number,
   customRotZ?: number,
-  wireframe?: boolean
+  wireframe?: boolean,
+  lineOpacity?: number,
+  cellOpacityMultiplier?: number
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   
@@ -251,7 +255,8 @@ export default function LiquidOrb({
         }
         
         ctx.closePath();
-        ctx.fillStyle = theme === 'dark' ? `rgba(255, 255, 255, ${opacity * 1.5})` : `rgba(0, 0, 0, ${opacity * 6})`;
+        const effectiveCellMult = cellOpacityMultiplier ?? (theme === 'dark' ? 1.5 : 6);
+        ctx.fillStyle = theme === 'dark' ? `rgba(255, 255, 255, ${opacity * effectiveCellMult})` : `rgba(0, 0, 0, ${opacity * effectiveCellMult})`;
         ctx.fill();
       };
 
@@ -291,7 +296,8 @@ export default function LiquidOrb({
           }
         }
         ctx.lineWidth = 1;
-        ctx.strokeStyle = theme === 'dark' ? `rgba(255, 255, 255, ${gridOpacity})` : `rgba(0, 0, 0, 0.85)`;
+        const effectiveLineOp = lineOpacity ?? (theme === 'dark' ? gridOpacity : 0.85);
+        ctx.strokeStyle = theme === 'dark' ? `rgba(255, 255, 255, ${effectiveLineOp})` : `rgba(0, 0, 0, ${effectiveLineOp})`;
         ctx.stroke();
       }
       animationFrame = requestAnimationFrame(render);
