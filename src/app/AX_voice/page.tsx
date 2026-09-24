@@ -215,18 +215,18 @@ export default function AXVoicePage() {
               return;
             }
 
-            // Umbral dinámico adaptativo: requiere superar el ruido ambiental + 25dB equiv. (mínimo absoluto 42)
-            const requiredThreshold = Math.max(42, noiseFloorRef.current + 25);
+            // Umbral dinámico adaptativo: requiere superar el ruido ambiental + 35dB equiv. (mínimo absoluto 55)
+            const requiredThreshold = Math.max(55, noiseFloorRef.current + 35);
 
-            // Filtro de espectro vocal humano
+            // Filtro de espectro vocal humano más estricto
             const isHumanSpeech = totalVolume >= requiredThreshold && 
-                                 vocalAvg >= 25 && 
-                                 (highAvg < 5 || vocalAvg > highAvg * 1.15);
+                                 vocalAvg >= 35 && 
+                                 (highAvg < 10 || vocalAvg > highAvg * 1.3);
 
             if (isHumanSpeech) {
               consecutiveVoiceHits++;
-              // Requiere 5 lecturas consecutivas (~250ms de voz sostenida) para confirmar interrupción real
-              if (consecutiveVoiceHits >= 5) {
+              // Requiere 10 lecturas consecutivas (~500ms de voz sostenida) para confirmar interrupción real
+              if (consecutiveVoiceHits >= 10) {
                 consecutiveVoiceHits = 0;
                 
                 // ⚡ ¡INTERRUPCIÓN POR VOZ HUMANA CONFIRMADA!
@@ -431,6 +431,10 @@ export default function AXVoicePage() {
       if (data.chars_used !== undefined) setCharsUsed(data.chars_used);
       if (data.max_chars !== undefined) setMaxChars(data.max_chars);
       if (data.hours_until_reset !== undefined) setHoursUntilReset(data.hours_until_reset);
+
+      if (data.url_to_open) {
+        window.open(data.url_to_open, '_blank');
+      }
 
       const reply = data.reply;
       const audioBase64 = data.audio_base64;
