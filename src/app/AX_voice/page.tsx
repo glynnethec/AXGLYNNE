@@ -51,9 +51,14 @@ export default function AXVoicePage() {
   const micAnalyserRef = useRef<AnalyserNode | null>(null);
   const micAudioCtxRef = useRef<AudioContext | null>(null);
   const vadIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const speechStartTimeRef = useRef<number>(0);
+  const noiseFloorRef = useRef<number>(12);
 
   // Keep refs in sync
   useEffect(() => {
+    if (orbState === 'speaking' && orbStateRef.current !== 'speaking') {
+      speechStartTimeRef.current = Date.now();
+    }
     orbStateRef.current = orbState;
     isSessionActiveRef.current = isSessionActive;
     useMockTTSRef.current = useMockTTS;
@@ -61,7 +66,7 @@ export default function AXVoicePage() {
     aiResponseRef.current = aiResponse;
   }, [orbState, isSessionActive, useMockTTS, activeEngine, aiResponse]);
 
-  // 🎙️ WebRTC MIC VAD: DETECCIÓN DE INTERRUPCIÓN POR VOZ CON CANCELACIÓN DE ECO REAL
+  // 🎙️ WebRTC MIC VAD: DETECCIÓN INTELIGENTE DE INTERRUPCIÓN POR VOZ CON ADAPTACIÓN AMBIENTAL
   useEffect(() => {
     if (!isSessionActive) {
       if (vadIntervalRef.current) clearInterval(vadIntervalRef.current);
@@ -95,7 +100,7 @@ export default function AXVoicePage() {
 
         const source = ctx.createMediaStreamSource(stream);
         const analyser = ctx.createAnalyser();
-        analyser.fftSize = 256;
+        analyser.fftSize = 512; // 256 bandas de frecuencia (~93.75 Hz por banda en 48kHz)
         analyser.smoothingTimeConstant = 0.2;
         source.connect(analyser);
         micAnalyserRef.current = analyser;
@@ -105,26 +110,70 @@ export default function AXVoicePage() {
         vadIntervalRef.current = setInterval(() => {
           if (!micAnalyserRef.current || !isSessionActiveRef.current) return;
           
-          const dataArray = new Uint8Array(micAnalyserRef.current.frequencyBinCount);
+          const binCount = micAnalyserRef.current.frequencyBinCount;
+          const dataArray = new Uint8Array(binCount);
           micAnalyserRef.current.getByteFrequencyData(dataArray);
           
-          let sum = 0;
-          let count = 0;
-          // Rango de frecuencia del habla humana (~100Hz a 3000Hz)
-          for (let i = 2; i < Math.min(dataArray.length, 30); i++) {
-            sum += dataArray[i];
-            count++;
+          // 1. Energía en Banda Formante Vocal (~300Hz a 2600Hz, bins 3 a 27)
+          let vocalSum = 0;
+          let vocalCount = 0;
+          for (let i = 3; i <= 27 && i < binCount; i++) {
+            vocalSum += dataArray[i];
+            vocalCount++;
           }
-          const volume = count > 0 ? (sum / count) : 0;
+          const vocalAvg = vocalCount > 0 ? (vocalSum / vocalCount) : 0;
 
-          // Si la IA está respondiendo y el volumen de la voz del usuario supera el umbral eco-cancelado
+          // 2. Energía en Banda Alta (>3500Hz, bins 38 a 80) para detectar chasquidos/ruido blanco
+          let highSum = 0;
+          let highCount = 0;
+          for (let i = 38; i <= 80 && i < binCount; i++) {
+            highSum += dataArray[i];
+            highCount++;
+          }
+          const highAvg = highCount > 0 ? (highSum / highCount) : 0;
+
+          // 3. Volumen total del espectro conversacional (bins 2 a 35)
+          let totalSum = 0;
+          let totalCount = 0;
+          for (let i = 2; i <= 35 && i < binCount; i++) {
+            totalSum += dataArray[i];
+            totalCount++;
+          }
+          const totalVolume = totalCount > 0 ? (totalSum / totalCount) : 0;
+
+          // Actualización adaptativa del nivel de ruido ambiental de fondo
+          if (orbStateRef.current !== 'speaking' || totalVolume < noiseFloorRef.current + 10) {
+            noiseFloorRef.current = noiseFloorRef.current * 0.95 + totalVolume * 0.05;
+          }
+
+          // Si la IA está hablando (orbState === 'speaking')
           if (orbStateRef.current === 'speaking') {
-            if (volume > 20) {
+            // Ventana de gracia inicial: ignorar VAD durante los primeros 350ms del inicio del habla de la IA
+            // Evita auto-interrupción por el chasquido inicial de encendido de altavoces o el primer tono del TTS
+            const timeSpeaking = Date.now() - speechStartTimeRef.current;
+            if (timeSpeaking < 350) {
+              consecutiveVoiceHits = 0;
+              return;
+            }
+
+            // Umbral dinámico adaptativo: requiere superar el ruido ambiental + 25dB equiv. (mínimo absoluto 42)
+            const requiredThreshold = Math.max(42, noiseFloorRef.current + 25);
+
+            // Filtro de espectro vocal humano:
+            // - El volumen general supera el umbral dinámico adaptativo
+            // - La energía en frecuencias formantes de la voz es fuerte (vocalAvg >= 25)
+            // - La energía vocal predomina sobre ruidos de alta frecuencia (evita ventiladores/chasquidos)
+            const isHumanSpeech = totalVolume >= requiredThreshold && 
+                                 vocalAvg >= 25 && 
+                                 (highAvg < 5 || vocalAvg > highAvg * 1.15);
+
+            if (isHumanSpeech) {
               consecutiveVoiceHits++;
-              if (consecutiveVoiceHits >= 2) { // 2 lecturas seguidas (~100ms) para confirmar voz humana
+              // Requiere 5 lecturas consecutivas (~250ms de voz sostenida) para confirmar interrupción real
+              if (consecutiveVoiceHits >= 5) {
                 consecutiveVoiceHits = 0;
                 
-                // ⚡ ¡INTERRUPCIÓN POR VOZ DEL USUARIO DETECTADA!
+                // ⚡ ¡INTERRUPCIÓN POR VOZ HUMANA CONFIRMADA!
                 if (audioRef.current) {
                   try {
                     audioRef.current.pause();
@@ -149,6 +198,7 @@ export default function AXVoicePage() {
                 try { recognitionRef.current?.start(); } catch(e){}
               }
             } else {
+              // Decremento gradual para tolerar micro-pausas naturales en palabras sin reiniciar instantáneamente a 0
               consecutiveVoiceHits = Math.max(0, consecutiveVoiceHits - 1);
             }
           } else {
@@ -372,6 +422,7 @@ export default function AXVoicePage() {
       audioRef.current.src = audioUrl;
       
       audioRef.current.onplay = () => {
+        speechStartTimeRef.current = Date.now();
         setOrbState('speaking');
         // Detener micrófono para evitar que capte el audio de los altavoces (auto-interrupción)
         try { recognitionRef.current?.stop(); } catch(e){}
@@ -411,6 +462,7 @@ export default function AXVoicePage() {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'es-ES';
       utterance.onstart = () => {
+        speechStartTimeRef.current = Date.now();
         setOrbState('speaking');
         try { recognitionRef.current?.stop(); } catch(e){}
       };
