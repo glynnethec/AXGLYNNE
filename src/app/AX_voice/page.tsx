@@ -25,7 +25,7 @@ export default function AXVoicePage() {
   const [messages, setMessages] = useState<{ role: string, content: string }[]>([]);
   const [isSessionActive, setIsSessionActive] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
-  const [urlToOpen, setUrlToOpen] = useState<string | null>(null);
+  const urlToOpenRef = useRef<string | null>(null);
   const [useMockTTS, setUseMockTTS] = useState(false);
   const [activeEngine, setActiveEngine] = useState<'elevenlabs' | 'edge'>('elevenlabs');
   const [charsUsed, setCharsUsed] = useState<number>(0);
@@ -436,11 +436,10 @@ export default function AXVoicePage() {
       if (data.hours_until_reset !== undefined) setHoursUntilReset(data.hours_until_reset);
 
       if (data.url_to_open) {
-        // En lugar de abrirlo directo (que bloquea el navegador), lo guardamos para mostrar un botón
-        setUrlToOpen(data.url_to_open);
-
-        // Auto-limpiar el botón después de 15 segundos si no le da click
-        setTimeout(() => setUrlToOpen(null), 15000);
+        // Guardamos la URL en una referencia para abrirla automáticamente cuando termine de hablar
+        urlToOpenRef.current = data.url_to_open;
+      } else {
+        urlToOpenRef.current = null;
       }
 
       const reply = data.reply;
@@ -505,6 +504,25 @@ export default function AXVoicePage() {
         isProcessingRef.current = false;
         setAiResponse('');
         setTranscript('');
+
+        // 🚀 Si hay una URL pendiente, redirigir AUTOMÁTICAMENTE ahora que la IA terminó de hablar
+        if (urlToOpenRef.current) {
+          setIsSessionActive(false);
+          setOrbState('idle');
+          try {
+            const targetUrl = new URL(urlToOpenRef.current);
+            if (targetUrl.hostname.includes('axglynne.com') || targetUrl.hostname.includes('localhost')) {
+              router.push(targetUrl.pathname + targetUrl.search);
+            } else {
+              window.location.href = urlToOpenRef.current;
+            }
+          } catch(e) {
+            window.location.href = urlToOpenRef.current;
+          }
+          urlToOpenRef.current = null;
+          return;
+        }
+
         if (isSessionActiveRef.current) {
           setTimeout(() => {
             if (isSessionActiveRef.current) {
@@ -550,6 +568,25 @@ export default function AXVoicePage() {
         isProcessingRef.current = false;
         setAiResponse('');
         setTranscript('');
+
+        // 🚀 Si hay una URL pendiente, redirigir AUTOMÁTICAMENTE ahora que la IA terminó de hablar
+        if (urlToOpenRef.current) {
+          setIsSessionActive(false);
+          setOrbState('idle');
+          try {
+            const targetUrl = new URL(urlToOpenRef.current);
+            if (targetUrl.hostname.includes('axglynne.com') || targetUrl.hostname.includes('localhost')) {
+              router.push(targetUrl.pathname + targetUrl.search);
+            } else {
+              window.location.href = urlToOpenRef.current;
+            }
+          } catch(e) {
+            window.location.href = urlToOpenRef.current;
+          }
+          urlToOpenRef.current = null;
+          return;
+        }
+
         if (isSessionActiveRef.current) {
           setTimeout(() => {
             if (isSessionActiveRef.current) {
@@ -777,49 +814,6 @@ export default function AXVoicePage() {
             >
               <VoiceOrb orbState={orbState} audioRef={audioRef} theme={theme} />
             </div>
-
-            {/* ACTION BUTTON OVERLAY PARA ABRIR URLs (Evita Bloqueador de Popups) */}
-            {urlToOpen && (
-              <div style={{
-                position: 'absolute',
-                bottom: '20%',
-                zIndex: 40,
-                animation: 'slideUpFadeIn 0.4s ease-out forwards'
-              }}>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    window.open(urlToOpen, '_blank');
-                    setUrlToOpen(null);
-                  }}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                    padding: '14px 24px',
-                    borderRadius: '999px',
-                    background: theme === 'light' ? 'rgba(0, 0, 0, 0.85)' : 'rgba(255, 255, 255, 0.15)',
-                    color: theme === 'light' ? '#fff' : '#fff',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    backdropFilter: 'blur(12px)',
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
-                    cursor: 'pointer',
-                    fontSize: '15px',
-                    fontWeight: 600,
-                    transition: 'all 0.2s ease',
-                  }}
-                  onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                  onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                    <polyline points="15 3 21 3 21 9"></polyline>
-                    <line x1="10" y1="14" x2="21" y2="3"></line>
-                  </svg>
-                  Abrir enlace sugerido
-                </button>
-              </div>
-            )}
           </div>
         </GravityBackground>
       </div>
