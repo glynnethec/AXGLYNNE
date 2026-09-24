@@ -408,10 +408,6 @@ export default function AXVoicePage() {
       });
       const data = await res.json();
 
-      if (!res.ok) {
-        throw new Error(data.detail || `HTTP error! status: ${res.status}`);
-      }
-
       // Cancelar temporizador y apagar la muletilla inmediatamente al llegar la respuesta real
       if (fillerTimerRef.current) {
         clearTimeout(fillerTimerRef.current);
@@ -424,6 +420,14 @@ export default function AXVoicePage() {
           activeFiller.currentTime = 0;
         } catch (e) { }
         fillerAudioRef.current = null;
+      }
+
+      if (!res.ok) {
+        console.warn("API Error:", data);
+        const fallback = "Disculpa, mis servicios de inteligencia artificial están saturados en este momento. Intenta hablarme de nuevo en un par de minutos.";
+        setAiResponse(fallback);
+        speakResponseFallback(fallback);
+        return;
       }
 
       if (data.used_engine) setActiveEngine(data.used_engine);
@@ -521,10 +525,13 @@ export default function AXVoicePage() {
       };
 
       audioRef.current.play().catch(e => {
-        console.error('Error playing audio', e);
+        console.error('Error playing audio (Autoplay blocked)', e);
         isProcessingRef.current = false;
-        setIsSessionActive(false);
-        setOrbState('idle');
+        // Si el navegador bloquea el audio inicial, al menos abrimos el micrófono
+        if (isSessionActiveRef.current) {
+          setOrbState('listening');
+          try { recognitionRef.current?.start(); } catch (err) { }
+        }
       });
     }
   };
@@ -628,9 +635,21 @@ export default function AXVoicePage() {
           user_id: userId
         })
       })
-      .then(res => res.json())
-      .then(data => {
+      .then(async res => {
+        const data = await res.json();
+        return { ok: res.ok, data };
+      })
+      .then(({ ok, data }) => {
         isProcessingRef.current = false;
+        
+        if (!ok) {
+          console.warn("API Error:", data);
+          const fallback = "Disculpa, mis servicios están temporalmente saturados. Intenta nuevamente en unos minutos.";
+          setAiResponse(fallback);
+          speakResponseFallback(fallback);
+          return;
+        }
+
         if (data.reply) {
           setAiResponse(data.reply);
           setMessages(prev => [...prev, { role: 'ai', content: data.reply }]);
