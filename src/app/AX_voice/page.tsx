@@ -682,7 +682,7 @@ export default function AXVoicePage() {
       {language === null && (
         <div style={{
           position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          background: theme === 'light' ? 'rgba(15, 23, 42, 0.45)' : 'rgba(0, 0, 0, 0.75)',
+          background: theme === 'light' ? 'rgba(245, 245, 247, 0.75)' : 'rgba(0, 0, 0, 0.75)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
           display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
@@ -1063,15 +1063,16 @@ export default function AXVoicePage() {
           to { opacity: 0; visibility: hidden; }
         }
 
-        /* MODAL STYLES (Copied from Dashboard Logout) */
+        /* MODAL STYLES (Theme Aware) */
         .md-logout-overlay {
           position: fixed;
           top: 0;
           left: 0;
           width: 100vw;
           height: 100vh;
-          background: rgba(0, 0, 0, 0.85);
+          background: ${theme === 'light' ? 'rgba(245, 245, 247, 0.75)' : 'rgba(0, 0, 0, 0.85)'};
           backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
           z-index: 10000;
           display: flex;
           align-items: center;
@@ -1081,18 +1082,20 @@ export default function AXVoicePage() {
 
         .md-logout-modal {
           position: relative;
-          background-image:
-            linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(15, 15, 15, 0.95), rgba(5, 5, 5, 0.98));
-          background-size: 20px 20px, 20px 20px, 100% 100%;
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          background-color: ${theme === 'light' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(18, 18, 22, 0.95)'};
+          background-image: ${theme === 'light'
+            ? 'linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px)'
+            : 'linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px)'};
+          background-size: 20px 20px, 20px 20px;
+          border: 1px solid ${theme === 'light' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.1)'};
           border-radius: 20px;
           padding: 40px;
           max-width: 400px;
           width: 90%;
           text-align: center;
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 40px rgba(255, 255, 255, 0.02);
+          box-shadow: ${theme === 'light'
+            ? '0 20px 50px rgba(0, 0, 0, 0.1)'
+            : '0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 40px rgba(255, 255, 255, 0.02)'};
           animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -1100,16 +1103,15 @@ export default function AXVoicePage() {
           font-family: var(--font-orbitron), sans-serif;
           font-size: 18px;
           font-weight: 600;
-          color: #fff;
+          color: ${theme === 'light' ? '#0f172a' : '#fff'};
           letter-spacing: 0.15em;
           margin-bottom: 16px;
           text-transform: uppercase;
-          text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
         .md-logout-modal p {
           font-size: 14px;
-          color: #a1a1aa;
+          color: ${theme === 'light' ? '#64748b' : '#a1a1aa'};
           line-height: 1.5;
           margin-bottom: 32px;
         }
@@ -1132,26 +1134,25 @@ export default function AXVoicePage() {
         }
 
         .md-btn-cancel {
-          background: rgba(255, 255, 255, 0.05);
-          color: #a1a1aa;
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          background: ${theme === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)'};
+          color: ${theme === 'light' ? '#475569' : '#a1a1aa'};
+          border: 1px solid ${theme === 'light' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.1)'};
         }
 
         .md-btn-cancel:hover {
-          background: rgba(255, 255, 255, 0.1);
-          color: #fff;
+          background: ${theme === 'light' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.1)'};
+          color: ${theme === 'light' ? '#0f172a' : '#fff'};
         }
 
         .md-btn-confirm {
-          background: #fff;
-          color: #000;
+          background: ${theme === 'light' ? '#0f172a' : '#fff'};
+          color: ${theme === 'light' ? '#fff' : '#000'};
           border: none;
-          box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+          box-shadow: ${theme === 'light' ? '0 4px 14px rgba(15, 23, 42, 0.2)' : '0 0 20px rgba(255, 255, 255, 0.2)'};
         }
 
         .md-btn-confirm:hover {
-          background: #e2e2e5;
-          box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+          background: ${theme === 'light' ? '#1e293b' : '#e2e2e5'};
           transform: translateY(-2px);
         }
 
