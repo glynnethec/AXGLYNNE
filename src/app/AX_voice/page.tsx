@@ -101,6 +101,27 @@ export default function AXVoicePage() {
     }
   }, [language]);
 
+  // Persistent language selection per tab session (sessionStorage)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const savedLang = sessionStorage.getItem('ax_voice_language');
+        if (savedLang === 'es' || savedLang === 'en') {
+          setLanguage(savedLang);
+        }
+      } catch (e) { }
+    }
+  }, []);
+
+  const handleSelectLanguage = (lang: 'es' | 'en') => {
+    setLanguage(lang);
+    if (typeof window !== 'undefined') {
+      try {
+        sessionStorage.setItem('ax_voice_language', lang);
+      } catch (e) { }
+    }
+  };
+
   // Reset mute state when session ends
   useEffect(() => {
     if (!isSessionActive) {
@@ -760,7 +781,7 @@ export default function AXVoicePage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
               {/* Option 1: Spanish */}
               <button 
-                onClick={() => setLanguage('es')}
+                onClick={() => handleSelectLanguage('es')}
                 style={{
                   width: '100%',
                   padding: '14px 16px',
@@ -825,7 +846,7 @@ export default function AXVoicePage() {
 
               {/* Option 2: English */}
               <button 
-                onClick={() => setLanguage('en')}
+                onClick={() => handleSelectLanguage('en')}
                 style={{
                   width: '100%',
                   padding: '14px 16px',
