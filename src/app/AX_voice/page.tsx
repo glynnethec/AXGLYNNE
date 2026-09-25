@@ -512,15 +512,18 @@ export default function AXVoicePage() {
         setAiResponse('');
         setTranscript('');
 
-        // 🚀 Si hay una URL pendiente, abrir en NUEVA PESTAÑA automáticamente
+        // 🚀 Si hay una URL pendiente, abrir en NUEVA PESTAÑA o redireccionar automáticamente
         if (urlToOpenRef.current) {
           try {
-            window.open(urlToOpenRef.current, '_blank');
+            const win = window.open(urlToOpenRef.current, '_blank');
+            if (!win || win.closed || typeof win.closed === 'undefined') {
+              window.location.href = urlToOpenRef.current;
+            }
           } catch(e) {
-            console.error('Popup blocked', e);
+            console.error('Popup blocked, redirecting in same window:', e);
+            window.location.href = urlToOpenRef.current;
           }
           urlToOpenRef.current = null;
-          // No hacemos return aquí para que el micrófono se vuelva a encender abajo
         }
 
         if (isSessionActiveRef.current) {
@@ -572,15 +575,18 @@ export default function AXVoicePage() {
         setAiResponse('');
         setTranscript('');
 
-        // 🚀 Si hay una URL pendiente, abrir en NUEVA PESTAÑA automáticamente
+        // 🚀 Si hay una URL pendiente, abrir en NUEVA PESTAÑA o redireccionar automáticamente
         if (urlToOpenRef.current) {
           try {
-            window.open(urlToOpenRef.current, '_blank');
+            const win = window.open(urlToOpenRef.current, '_blank');
+            if (!win || win.closed || typeof win.closed === 'undefined') {
+              window.location.href = urlToOpenRef.current;
+            }
           } catch(e) {
-            console.error('Popup blocked', e);
+            console.error('Popup blocked, redirecting in same window:', e);
+            window.location.href = urlToOpenRef.current;
           }
           urlToOpenRef.current = null;
-          // No hacemos return aquí para que el micrófono se vuelva a encender abajo
         }
 
         if (isSessionActiveRef.current) {
