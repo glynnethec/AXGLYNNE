@@ -659,67 +659,16 @@ export default function AXVoicePage() {
     }
   };
 
-  // 🚀 Auto-iniciar la sesión al cargar la página
+  // 🚀 Activar sesión y micrófono inmediatamente al seleccionar el idioma (sin saludo inicial para ahorrar tokens)
   useEffect(() => {
     if (userId && !isSessionActive && language !== null) {
-      // Iniciar sesión activa
       setIsSessionActive(true);
-      setOrbState('thinking');
-      isProcessingRef.current = true;
-
-      const greeting = language === 'en' 
-        ? 'Start the conversation by greeting me briefly and introducing yourself as AX.'
-        : 'Inicia la conversación saludándome brevemente y presentándote como AX.';
-      
-      const initialMessage = [{ role: 'user', content: greeting }];
-      setMessages(initialMessage);
-      messagesRef.current = initialMessage;
-
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://ax-zyxe.onrender.com';
-      fetch(`${apiUrl}/api/voice_chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          messages: initialMessage,
-          use_mock_tts: activeEngineRef.current === 'edge',
-          user_id: userId,
-          language: language
-        })
-      })
-      .then(async res => {
-        const data = await res.json();
-        return { ok: res.ok, data };
-      })
-      .then(({ ok, data }) => {
-        isProcessingRef.current = false;
-        
-        if (!ok) {
-          console.warn("API Error:", data);
-          const fallback = "Disculpa, mis servicios están temporalmente saturados. Intenta nuevamente en unos minutos.";
-          setAiResponse(fallback);
-          speakResponseFallback(fallback);
-          return;
-        }
-
-        if (data.reply) {
-          setAiResponse(data.reply);
-          setMessages(prev => [...prev, { role: 'ai', content: data.reply }]);
-        }
-        if (data.audio_base64) {
-          playAudioFromBase64(data.audio_base64);
-        } else if (data.reply) {
-          speakResponseFallback(data.reply);
-        } else {
-          setOrbState('listening');
-          try { recognitionRef.current?.start(); } catch(e){}
-        }
-      })
-      .catch(err => {
-        console.error("Auto-start error", err);
-        isProcessingRef.current = false;
-        setOrbState('listening');
-        try { recognitionRef.current?.start(); } catch(e){}
-      });
+      setOrbState('listening');
+      isProcessingRef.current = false;
+      try { 
+        if (recognitionRef.current) recognitionRef.current.lang = language === 'en' ? 'en-US' : 'es-CO';
+        recognitionRef.current?.start(); 
+      } catch (e) { }
     }
   }, [userId, isSessionActive, language]);
 
