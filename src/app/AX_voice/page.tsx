@@ -394,18 +394,8 @@ export default function AXVoicePage() {
       fillerAudioRef.current = null;
     }
 
-    // Programar la frase de relleno 600ms después de iniciar la reflexión (procesamiento)
+    // Se removió la reproducción de muletillas/frases de relleno durante la espera del LLM.
     const currentEngine = activeEngineRef.current;
-    fillerTimerRef.current = setTimeout(() => {
-      if (orbStateRef.current === 'thinking' && !isMutedRef.current) {
-        const activeFillerIds = [1, 2, 3, 6, 7, 8, 9, 10, 11, 12, 14, 15];
-        const engineFolder = activeEngineRef.current === 'edge' ? '/fillers/edge' : '/fillers/elevenlabs';
-        const randomId = activeFillerIds[Math.floor(Math.random() * activeFillerIds.length)];
-        const randomFiller = `${engineFolder}/filler_${randomId}.mp3`;
-        fillerAudioRef.current = new Audio(randomFiller);
-        fillerAudioRef.current.play().catch(e => console.log('Autoplay prevented', e));
-      }
-    }, 600);
 
     const newMessages = [...messagesRef.current, { role: 'user', content: currentText }];
     setMessages(newMessages);
