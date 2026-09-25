@@ -311,7 +311,7 @@ export default function AXVoicePage() {
     };
   }, [isSessionActive]);
 
-  // Inicializar Web Speech API
+  // Inicializar Web Speech API y gestionar limpieza automática al salir de AX_voice
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -373,6 +373,98 @@ export default function AXVoicePage() {
         audioRef.current = new Audio();
       }
     }
+
+    const stopAllAudioAndMic = () => {
+      isSessionActiveRef.current = false;
+      if (silenceTimerRef.current) {
+        clearTimeout(silenceTimerRef.current);
+        silenceTimerRef.current = null;
+      }
+      if (fillerTimerRef.current) {
+        clearTimeout(fillerTimerRef.current);
+        fillerTimerRef.current = null;
+      }
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.onresult = null;
+          recognitionRef.current.onend = null;
+          recognitionRef.current.onerror = null;
+          recognitionRef.current.abort();
+          recognitionRef.current.stop();
+        } catch (e) {}
+        recognitionRef.current = null;
+      }
+      if (micStreamRef.current) {
+        try {
+          micStreamRef.current.getTracks().forEach(track => {
+            track.stop();
+            track.enabled = false;
+          });
+        } catch (e) {}
+        micStreamRef.current = null;
+      }
+      if (vadIntervalRef.current) {
+        clearInterval(vadIntervalRef.current);
+        vadIntervalRef.current = null;
+      }
+      if (micAudioCtxRef.current && micAudioCtxRef.current.state !== 'closed') {
+        try { micAudioCtxRef.current.close(); } catch (e) {}
+        micAudioCtxRef.current = null;
+      }
+      if (audioRef.current) {
+        try {
+          audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+        } catch (e) {}
+      }
+      if (fillerAudioRef.current) {
+        try {
+          fillerAudioRef.current.pause();
+          fillerAudioRef.current.currentTime = 0;
+        } catch (e) {}
+        fillerAudioRef.current = null;
+      }
+      if (typeof window !== 'undefined' && window.speechSynthesis) {
+        try { window.speechSynthesis.cancel(); } catch (e) {}
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        if (recognitionRef.current) {
+          try { recognitionRef.current.stop(); } catch (e) {}
+        }
+        if (micStreamRef.current) {
+          try {
+            micStreamRef.current.getAudioTracks().forEach(track => { track.enabled = false; });
+          } catch (e) {}
+        }
+      } else if (document.visibilityState === 'visible') {
+        if (isSessionActiveRef.current && !isMutedRef.current) {
+          if (micStreamRef.current) {
+            try {
+              micStreamRef.current.getAudioTracks().forEach(track => { track.enabled = true; });
+            } catch (e) {}
+          }
+          if (orbStateRef.current === 'listening') {
+            try { recognitionRef.current?.start(); } catch (e) {}
+          }
+        }
+      }
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('visibilitychange', handleVisibilityChange);
+      window.addEventListener('pagehide', stopAllAudioAndMic);
+    }
+
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('visibilitychange', handleVisibilityChange);
+        window.removeEventListener('pagehide', stopAllAudioAndMic);
+      }
+      stopAllAudioAndMic();
+    };
   }, []); // Run only on mount
 
   const handleSendTranscript = async () => {
