@@ -701,12 +701,10 @@ export default function AXVoicePage() {
               : '0 24px 60px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05) inset',
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
-            gap: '24px',
             position: 'relative',
             overflow: 'hidden'
           }}>
-            {/* Ambient accent glow */}
+            {/* Ambient subtle glow (Monochrome) */}
             <div style={{
               position: 'absolute',
               top: '-60px',
@@ -714,27 +712,27 @@ export default function AXVoicePage() {
               transform: 'translateX(-50%)',
               width: '180px',
               height: '180px',
-              background: 'radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(0,0,0,0) 70%)',
+              background: theme === 'light' 
+                ? 'radial-gradient(circle, rgba(0, 0, 0, 0.03) 0%, rgba(0,0,0,0) 70%)' 
+                : 'radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, rgba(0,0,0,0) 70%)',
               pointerEvents: 'none',
               borderRadius: '50%'
             }} />
 
-            {/* Header Icon / Badge */}
+            {/* Header Icon / Badge - GLYNNE SVG Icon */}
             <div style={{
-              width: '44px',
-              height: '44px',
+              width: '46px',
+              height: '46px',
               borderRadius: '14px',
-              background: theme === 'light' ? 'rgba(0, 102, 204, 0.08)' : 'rgba(99, 102, 241, 0.12)',
-              border: theme === 'light' ? '1px solid rgba(0, 102, 204, 0.15)' : '1px solid rgba(99, 102, 241, 0.25)',
+              background: theme === 'light' ? 'rgba(0, 0, 0, 0.04)' : 'rgba(255, 255, 255, 0.06)',
+              border: theme === 'light' ? '1px solid rgba(0, 0, 0, 0.08)' : '1px solid rgba(255, 255, 255, 0.1)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: theme === 'light' ? '#0066cc' : '#818cf8'
+              color: theme === 'light' ? '#0f172a' : '#ffffff'
             }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="2" y1="12" x2="22" y2="12" />
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+              <svg width="22" height="22" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 50 248.252 L 50 456.751 192.750 457.379 C 271.263 457.725, 361.262 458.287, 392.750 458.628 L 450 459.248 L 450 250.748 L 450 42.249 307.250 41.621 C 228.737 41.275, 138.738 40.713, 107.250 40.372 L 50 39.752 50 248.252 M 67 248.291 L 67 440.765 108.250 441.368 C 130.938 441.700, 213.287 442.244, 291.250 442.577 L 433 443.184 433 250.709 L 433 58.235 391.750 57.632 C 369.063 57.300, 286.712 56.756, 208.750 56.423 L 67 55.816 67 248.291 M 128.116 83.980 C 107.992 89.424, 91.038 105.784, 83.655 126.882 C 81.077 134.249, 80.576 137.340, 80.204 148.180 C 79.673 163.622, 81.383 172.548, 87.025 183.787 C 93.772 197.229, 104.680 208.233, 117.500 214.531 C 127.055 219.225, 134.751 221, 145.550 221 C 174.345 221, 198.757 203.773, 206.388 178.068 C 207.554 174.140, 208 168.537, 208 157.818 L 208 143 176.500 143 L 145 143 145 155 L 145 167 160.500 167 C 177.973 167, 177.379 166.666, 174.859 175.078 C 173.124 180.868, 168.620 185.570, 161.405 189.122 C 148.447 195.501, 134.730 192.833, 124.556 181.956 C 108.755 165.064, 109.516 135.415, 126.170 119.022 C 133.040 112.260, 140.029 109.650, 149.673 110.246 C 159.182 110.834, 166.448 114.382, 172.726 121.503 L 177.445 126.854 184.577 119.177 C 188.499 114.955, 192.964 110.008, 194.498 108.185 L 197.288 104.869 192.894 100.309 C 186.535 93.709, 177.818 88.354, 168.578 85.369 C 157.254 81.711, 138.840 81.079, 128.116 83.980 M 221 151.500 L 221 219 260 219 L 299 219 299 205.500 L 299 192 L 275.500 192 L 252 192 252 138 L 252 84 236.500 84 L 221 84 221 151.500 M 299 84.506 C 299 84.785, 310.025 101.546, 323.500 121.754 L 348 158.496 348 188.748 L 348 219 L 363.500 219 L 379 219 L 379.001 189.250 L 379.001 159.500 404 122 L 429 84.500 410.809 84.227 C 397.075 84.020, 392.328 84.265, 391.434 85.227 C 390.782 85.927, 384.737 95.050, 378 105.500 C 371.263 115.950, 365.244 125.032, 364.625 125.682 C 363.777 126.573, 360.071 121.580, 349.595 105.432 L 335.691 84 317.345 84 C 307.255 84, 299 84.228, 299 84.506 M 85 313 L 85 377 99.989 377 L 114.977 377 115.239 337.600 L 115.500 298.201 140.825 337.600 L 166.150 377 L 181.075 377 L 196 377 196 313 L 196 249 L 181.012 249 L 166.023 249 165.762 288.132 L 165.500 327.264 L 140.500 288.179 L 115.500 249.094 L 100.250 249.047 L 85 249 85 313 M 214 313 L 214 377 L 228.988 377 L 243.977 377 L 244.238 337.996 L 244.500 298.993 269.500 337.975 L 294.500 376.956 L 309.250 376.978 L 324 377 L 324 313 L 324 249 L 309.511 249 L 295.023 249 L 294.761 288.502 L 294.500 328.005 L 269.115 288.502 L 243.730 249 L 228.865 249 L 214 249 214 313 M 343 313 L 343 377 L 380.030 377 L 417.060 377 L 416.780 364.250 L 416.500 351.500 394.250 351.231 L 372 350.962 L 372 338.481 L 372 326 L 393.500 326 L 415 326 L 415 313 L 415 300 L 393.500 300 L 372 300 L 372 287.519 L 372 275.038 L 394.250 274.769 L 416.500 274.500 L 416.780 261.750 L 417.060 249 L 380.030 249 L 343 249 L 343 313" stroke="none" fill="currentColor" fillRule="evenodd" />
               </svg>
             </div>
 
@@ -782,10 +780,10 @@ export default function AXVoicePage() {
                   outline: 'none'
                 }}
                 onMouseOver={(e) => {
-                  e.currentTarget.style.background = theme === 'light' ? 'rgba(0, 102, 204, 0.06)' : 'rgba(99, 102, 241, 0.1)';
-                  e.currentTarget.style.borderColor = theme === 'light' ? 'rgba(0, 102, 204, 0.3)' : 'rgba(99, 102, 241, 0.4)';
+                  e.currentTarget.style.background = theme === 'light' ? 'rgba(0, 0, 0, 0.04)' : 'rgba(255, 255, 255, 0.08)';
+                  e.currentTarget.style.borderColor = theme === 'light' ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.25)';
                   e.currentTarget.style.transform = 'translateY(-1px)';
-                  e.currentTarget.style.boxShadow = theme === 'light' ? '0 4px 12px rgba(0, 102, 204, 0.08)' : '0 4px 16px rgba(0, 0, 0, 0.4)';
+                  e.currentTarget.style.boxShadow = theme === 'light' ? '0 4px 12px rgba(0, 0, 0, 0.05)' : '0 4px 16px rgba(0, 0, 0, 0.4)';
                 }}
                 onMouseOut={(e) => {
                   e.currentTarget.style.background = theme === 'light' ? 'rgba(248, 250, 252, 0.8)' : 'rgba(255, 255, 255, 0.03)';
@@ -847,10 +845,10 @@ export default function AXVoicePage() {
                   outline: 'none'
                 }}
                 onMouseOver={(e) => {
-                  e.currentTarget.style.background = theme === 'light' ? 'rgba(0, 102, 204, 0.06)' : 'rgba(99, 102, 241, 0.1)';
-                  e.currentTarget.style.borderColor = theme === 'light' ? 'rgba(0, 102, 204, 0.3)' : 'rgba(99, 102, 241, 0.4)';
+                  e.currentTarget.style.background = theme === 'light' ? 'rgba(0, 0, 0, 0.04)' : 'rgba(255, 255, 255, 0.08)';
+                  e.currentTarget.style.borderColor = theme === 'light' ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.25)';
                   e.currentTarget.style.transform = 'translateY(-1px)';
-                  e.currentTarget.style.boxShadow = theme === 'light' ? '0 4px 12px rgba(0, 102, 204, 0.08)' : '0 4px 16px rgba(0, 0, 0, 0.4)';
+                  e.currentTarget.style.boxShadow = theme === 'light' ? '0 4px 12px rgba(0, 0, 0, 0.05)' : '0 4px 16px rgba(0, 0, 0, 0.4)';
                 }}
                 onMouseOut={(e) => {
                   e.currentTarget.style.background = theme === 'light' ? 'rgba(248, 250, 252, 0.8)' : 'rgba(255, 255, 255, 0.03)';
