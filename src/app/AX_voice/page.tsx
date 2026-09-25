@@ -678,40 +678,227 @@ export default function AXVoicePage() {
       touchAction: 'none'
     }}>
 
-      {/* 🌐 LANGUAGE SELECTION MODAL */}
+      {/* 🌐 ULTRA-STYLIZED LANGUAGE SELECTION MODAL */}
       {language === null && (
         <div style={{
           position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(10px)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100
+          background: theme === 'light' ? 'rgba(15, 23, 42, 0.45)' : 'rgba(0, 0, 0, 0.75)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
+          padding: '20px'
         }}>
           <div style={{
-            background: theme === 'light' ? '#fff' : '#111',
-            padding: '40px', borderRadius: '24px', textAlign: 'center',
-            maxWidth: '400px', width: '90%',
-            border: theme === 'light' ? '1px solid rgba(0,0,0,0.1)' : '1px solid rgba(255,255,255,0.1)',
-            boxShadow: '0 20px 40px rgba(0,0,0,0.4)'
+            background: theme === 'light' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(18, 18, 22, 0.95)',
+            padding: '36px 32px',
+            borderRadius: '28px',
+            textAlign: 'center',
+            maxWidth: '380px',
+            width: '100%',
+            border: theme === 'light' ? '1px solid rgba(0, 0, 0, 0.08)' : '1px solid rgba(255, 255, 255, 0.08)',
+            boxShadow: theme === 'light' 
+              ? '0 24px 48px -12px rgba(15, 23, 42, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.8) inset' 
+              : '0 24px 60px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05) inset',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '24px',
+            position: 'relative',
+            overflow: 'hidden'
           }}>
-            <h2 style={{ color: theme === 'light' ? '#000' : '#fff', marginBottom: '10px', fontSize: '24px', fontWeight: 700 }}>AX Voice</h2>
-            <p style={{ color: theme === 'light' ? '#666' : '#aaa', marginBottom: '30px', fontSize: '15px' }}>Selecciona tu idioma / Select your language</p>
-            <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
+            {/* Ambient accent glow */}
+            <div style={{
+              position: 'absolute',
+              top: '-60px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '180px',
+              height: '180px',
+              background: 'radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(0,0,0,0) 70%)',
+              pointerEvents: 'none',
+              borderRadius: '50%'
+            }} />
+
+            {/* Header Icon / Badge */}
+            <div style={{
+              width: '44px',
+              height: '44px',
+              borderRadius: '14px',
+              background: theme === 'light' ? 'rgba(0, 102, 204, 0.08)' : 'rgba(99, 102, 241, 0.12)',
+              border: theme === 'light' ? '1px solid rgba(0, 102, 204, 0.15)' : '1px solid rgba(99, 102, 241, 0.25)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: theme === 'light' ? '#0066cc' : '#818cf8'
+            }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="2" y1="12" x2="22" y2="12" />
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+              </svg>
+            </div>
+
+            {/* Title & Subtitle */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <h2 style={{
+                color: theme === 'light' ? '#0f172a' : '#ffffff',
+                fontSize: '20px',
+                fontWeight: 800,
+                letterSpacing: '-0.02em',
+                fontFamily: "'Outfit', sans-serif",
+                margin: 0
+              }}>
+                AX Voice
+              </h2>
+              <p style={{
+                color: theme === 'light' ? '#64748b' : '#94a3b8',
+                fontSize: '13px',
+                fontWeight: 400,
+                margin: 0,
+                lineHeight: '1.4'
+              }}>
+                Selecciona tu idioma / Select your language
+              </p>
+            </div>
+
+            {/* Language Selection Options */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
+              {/* Option 1: Spanish */}
               <button 
                 onClick={() => setLanguage('es')}
-                style={{ flex: 1, padding: '20px 10px', borderRadius: '16px', background: 'transparent', border: theme === 'light' ? '2px solid rgba(0,0,0,0.1)' : '2px solid rgba(255,255,255,0.1)', color: theme === 'light' ? '#000' : '#fff', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}
-                onMouseOver={(e) => { e.currentTarget.style.background = theme === 'light' ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.1)'; e.currentTarget.style.transform = 'scale(1.05)'; }}
-                onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = 'scale(1)'; }}
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  borderRadius: '16px',
+                  background: theme === 'light' ? 'rgba(248, 250, 252, 0.8)' : 'rgba(255, 255, 255, 0.03)',
+                  border: theme === 'light' ? '1px solid rgba(226, 232, 240, 0.8)' : '1px solid rgba(255, 255, 255, 0.07)',
+                  color: theme === 'light' ? '#0f172a' : '#ffffff',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '12px',
+                  outline: 'none'
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.background = theme === 'light' ? 'rgba(0, 102, 204, 0.06)' : 'rgba(99, 102, 241, 0.1)';
+                  e.currentTarget.style.borderColor = theme === 'light' ? 'rgba(0, 102, 204, 0.3)' : 'rgba(99, 102, 241, 0.4)';
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                  e.currentTarget.style.boxShadow = theme === 'light' ? '0 4px 12px rgba(0, 102, 204, 0.08)' : '0 4px 16px rgba(0, 0, 0, 0.4)';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.background = theme === 'light' ? 'rgba(248, 250, 252, 0.8)' : 'rgba(255, 255, 255, 0.03)';
+                  e.currentTarget.style.borderColor = theme === 'light' ? 'rgba(226, 232, 240, 0.8)' : 'rgba(255, 255, 255, 0.07)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
               >
-                <span style={{ fontSize: '32px' }}>🇨🇴</span>
-                <span style={{ fontSize: '15px', fontWeight: 600 }}>Español</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  {/* Colombia SVG Flag */}
+                  <div style={{
+                    width: '24px',
+                    height: '18px',
+                    borderRadius: '4px',
+                    overflow: 'hidden',
+                    display: 'flex',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    flexShrink: 0
+                  }}>
+                    <svg width="24" height="18" viewBox="0 0 24 18" fill="none">
+                      <rect width="24" height="9" fill="#FCD116" />
+                      <rect y="9" width="24" height="4.5" fill="#003893" />
+                      <rect y="13.5" width="24" height="4.5" fill="#CE1126" />
+                    </svg>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '1px' }}>
+                    <span style={{ fontSize: '14px', fontWeight: 600, letterSpacing: '-0.01em' }}>Español</span>
+                    <span style={{ fontSize: '11px', color: theme === 'light' ? '#64748b' : '#94a3b8' }}>Spanish</span>
+                  </div>
+                </div>
+                <span style={{
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  padding: '4px 10px',
+                  borderRadius: '99px',
+                  background: theme === 'light' ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.08)',
+                  color: theme === 'light' ? '#475569' : '#cbd5e1',
+                  letterSpacing: '0.05em'
+                }}>ES</span>
               </button>
+
+              {/* Option 2: English */}
               <button 
                 onClick={() => setLanguage('en')}
-                style={{ flex: 1, padding: '20px 10px', borderRadius: '16px', background: 'transparent', border: theme === 'light' ? '2px solid rgba(0,0,0,0.1)' : '2px solid rgba(255,255,255,0.1)', color: theme === 'light' ? '#000' : '#fff', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}
-                onMouseOver={(e) => { e.currentTarget.style.background = theme === 'light' ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.1)'; e.currentTarget.style.transform = 'scale(1.05)'; }}
-                onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = 'scale(1)'; }}
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  borderRadius: '16px',
+                  background: theme === 'light' ? 'rgba(248, 250, 252, 0.8)' : 'rgba(255, 255, 255, 0.03)',
+                  border: theme === 'light' ? '1px solid rgba(226, 232, 240, 0.8)' : '1px solid rgba(255, 255, 255, 0.07)',
+                  color: theme === 'light' ? '#0f172a' : '#ffffff',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '12px',
+                  outline: 'none'
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.background = theme === 'light' ? 'rgba(0, 102, 204, 0.06)' : 'rgba(99, 102, 241, 0.1)';
+                  e.currentTarget.style.borderColor = theme === 'light' ? 'rgba(0, 102, 204, 0.3)' : 'rgba(99, 102, 241, 0.4)';
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                  e.currentTarget.style.boxShadow = theme === 'light' ? '0 4px 12px rgba(0, 102, 204, 0.08)' : '0 4px 16px rgba(0, 0, 0, 0.4)';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.background = theme === 'light' ? 'rgba(248, 250, 252, 0.8)' : 'rgba(255, 255, 255, 0.03)';
+                  e.currentTarget.style.borderColor = theme === 'light' ? 'rgba(226, 232, 240, 0.8)' : 'rgba(255, 255, 255, 0.07)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
               >
-                <span style={{ fontSize: '32px' }}>🇺🇸</span>
-                <span style={{ fontSize: '15px', fontWeight: 600 }}>English</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  {/* USA SVG Flag */}
+                  <div style={{
+                    width: '24px',
+                    height: '18px',
+                    borderRadius: '4px',
+                    overflow: 'hidden',
+                    display: 'flex',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    flexShrink: 0
+                  }}>
+                    <svg width="24" height="18" viewBox="0 0 24 18" fill="none">
+                      <rect width="24" height="18" fill="#B22234" />
+                      <path d="M0 2.77h24M0 5.54h24M0 8.3h24M0 11.07h24M0 13.84h24M0 16.6h24" stroke="#FFFFFF" strokeWidth="1.38" />
+                      <rect width="9.6" height="9.7" fill="#3C3B6E" />
+                      <circle cx="2.4" cy="2.4" r="0.7" fill="#FFF" />
+                      <circle cx="4.8" cy="2.4" r="0.7" fill="#FFF" />
+                      <circle cx="7.2" cy="2.4" r="0.7" fill="#FFF" />
+                      <circle cx="3.6" cy="4.8" r="0.7" fill="#FFF" />
+                      <circle cx="6.0" cy="4.8" r="0.7" fill="#FFF" />
+                      <circle cx="2.4" cy="7.2" r="0.7" fill="#FFF" />
+                      <circle cx="4.8" cy="7.2" r="0.7" fill="#FFF" />
+                      <circle cx="7.2" cy="7.2" r="0.7" fill="#FFF" />
+                    </svg>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '1px' }}>
+                    <span style={{ fontSize: '14px', fontWeight: 600, letterSpacing: '-0.01em' }}>English</span>
+                    <span style={{ fontSize: '11px', color: theme === 'light' ? '#64748b' : '#94a3b8' }}>Inglés</span>
+                  </div>
+                </div>
+                <span style={{
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  padding: '4px 10px',
+                  borderRadius: '99px',
+                  background: theme === 'light' ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.08)',
+                  color: theme === 'light' ? '#475569' : '#cbd5e1',
+                  letterSpacing: '0.05em'
+                }}>EN</span>
               </button>
             </div>
           </div>
