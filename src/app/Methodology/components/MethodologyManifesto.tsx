@@ -5,20 +5,21 @@ import Link from 'next/link';
 import {
   FiFileText, FiTarget, FiLayers, FiCpu,
   FiShield, FiBriefcase, FiUsers, FiActivity,
-  FiTrendingUp, FiCheckCircle
+  FiTrendingUp, FiCheckCircle, FiZap
 } from 'react-icons/fi';
 
 const SECTIONS = [
   { id: 'intro', title: 'Introducción', icon: <FiFileText /> },
   { id: 'audit', title: '1. Fundamentos y Auditoría', icon: <FiTarget /> },
   { id: 'architecture', title: '2. Arquitectura y Ecosistema', icon: <FiLayers /> },
-  { id: 'rules', title: '3. Reglas e Inteligencia Artificial', icon: <FiCpu /> },
-  { id: 'infrastructure', title: '4. Operación y Control', icon: <FiShield /> },
-  { id: 'industries', title: '5. Industrias Específicas', icon: <FiBriefcase /> },
-  { id: 'agents', title: '6. Agentes y Orquestación', icon: <FiUsers /> },
-  { id: 'metrics', title: '7. Observabilidad y Escalabilidad', icon: <FiActivity /> },
-  { id: 'control', title: '8. Evolución y Migración', icon: <FiTrendingUp /> },
-  { id: 'conclusion', title: '9. Del Proceso Humano al Inteligente', icon: <FiCheckCircle /> }
+  { id: 'finetuning', title: '3. Fine-Tuning y QLoRA', icon: <FiZap /> },
+  { id: 'rules', title: '4. Reglas e Inteligencia Artificial', icon: <FiCpu /> },
+  { id: 'infrastructure', title: '5. Operación y Control', icon: <FiShield /> },
+  { id: 'industries', title: '6. Industrias Específicas', icon: <FiBriefcase /> },
+  { id: 'agents', title: '7. Agentes y Orquestación', icon: <FiUsers /> },
+  { id: 'metrics', title: '8. Observabilidad y Escalabilidad', icon: <FiActivity /> },
+  { id: 'control', title: '9. Evolución y Migración', icon: <FiTrendingUp /> },
+  { id: 'conclusion', title: '10. Del Proceso Humano al Inteligente', icon: <FiCheckCircle /> }
 ];
 
 export default function MethodologyManifesto() {
@@ -326,6 +327,50 @@ export default function MethodologyManifesto() {
                 <p>La información deja de estar distribuida arbitrariamente entre archivos, correos y sistemas desconectados. Se convierte en información estructurada y accesible mediante software.</p>
               </section>
 
+              <section id="finetuning">
+                <h2>Especialización de Modelos: Fine-Tuning, QLoRA y Modelos Propietarios</h2>
+                <p>Las APIs de IA genéricas ofrecen un excelente punto de partida, pero las empresas con ventaja competitiva no dependen exclusivamente de modelos estándar que sus competidores también pueden consultar.</p>
+                <p>En GLYNNE llevamos la inteligencia artificial al siguiente nivel técnico mediante <strong>ajuste fino (Fine-Tuning), cuantización QLoRA, aceleración con Unsloth y despliegue privado in-house</strong>.</p>
+
+                <h3>01. Modelos genéricos vs. Modelos expertos de dominio</h3>
+                <p>Un modelo público no conoce la jerga específica de tu compañía, los códigos de tus productos, tus esquemas JSON complejos ni las reglas regulatorias de tu sector. Además, las APIs externas representan un riesgo continuo de privacidad, costos crecientes por token y alucinaciones en respuestas técnicas.</p>
+                <p>GLYNNE entrena y adapta modelos de lenguaje Open-Weights (como Llama 3, Qwen 2.5, DeepSeek y Mistral) directamente sobre la memoria operativa de tu empresa.</p>
+
+                <h3>02. Fine-Tuning eficiente con QLoRA (Quantized Low-Rank Adaptation)</h3>
+                <p>El entrenamiento tradicional de modelos con miles de millones de parámetros requería clústeres de supercómputo inalcanzables. Mediante <strong>QLoRA (Quantized Low-Rank Adaptation)</strong>, GLYNNE revoluciona este proceso:</p>
+                <ul>
+                  <li><strong>Cuantización a 4-bit / 8-bit (NF4/FP4):</strong> Congelamos los pesos base del modelo en precisión reducida de alta fidelidad, reduciendo el consumo de memoria VRAM hasta en un 80%.</li>
+                  <li><strong>Adaptadores LoRA de Bajo Rango:</strong> Inyectamos pequeñas matrices entrenables en las capas de atención y feed-forward para enseñar al modelo patrones, comportamiento y terminología específica.</li>
+                  <li><strong>Rendimiento intacto:</strong> Conservamos más del 99% de la capacidad de razonamiento del modelo base a una fracción del costo computacional.</li>
+                </ul>
+
+                <h3>03. Aceleración de entrenamiento con Unsloth</h3>
+                <p>Para acelerar el ciclo de desarrollo y refinamiento de modelos, GLYNNE integra <strong>Unsloth</strong> en sus pipelines de entrenamiento:</p>
+                <ul>
+                  <li><strong>2x a 5x más rápido:</strong> Reescribimos kernels de Triton CUDA y optimizamos autograd manualmente para reducir exponencialmente el tiempo de cómputo.</li>
+                  <li><strong>Máxima eficiencia de memoria VRAM:</strong> Permite entrenar modelos de 8B, 14B, 32B o 70B de parámetros en hardware optimizado sin desbordamientos de memoria (OOM).</li>
+                  <li><strong>Iteración continua:</strong> Posibilita re-entrenar y actualizar los modelos empresariales semanalmente a medida que la compañía genera nuevos datos.</li>
+                </ul>
+
+                <h3>04. Curaduría, preparación y alineación de Data Sets</h3>
+                <p>El Fine-Tuning es tan bueno como los datos con los que se alimenta. GLYNNE construye la canalización de datos previa:</p>
+                <span className="workflow-step">Datos crudos → Extracción ETL → Limpieza y PII Sanitization → Formato Instructivo (Alpaca/ShareGPT) → Tokenización → Alineación DPO / RLHF</span>
+                <ul>
+                  <li><strong>Sanitización de PII:</strong> Eliminación automática de datos personales y credenciales sensibles antes de la fase de entrenamiento.</li>
+                  <li><strong>Formateo de instrucciones exactas:</strong> Especialización del modelo para responder en formatos JSON estrictos, ejecutar llamadas a herramientas (Tool-Calling) y seguir flujos de trabajo sin desviación.</li>
+                  <li><strong>Alineación DPO (Direct Preference Optimization):</strong> Calibración del comportamiento del modelo para alinearse rigurosamente con los valores, políticas y tono de la marca.</li>
+                </ul>
+
+                <h3>05. Soberanía tecnológica, privacidad y despliegue privado (vLLM / Ollama)</h3>
+                <p>Una vez completado el entrenamiento, GLYNNE despliega los modelos en la infraestructura privada de la empresa (VPC o servidores físicos On-Premise):</p>
+                <ul>
+                  <li><strong>Privacidad y Cumplimiento Total:</strong> Tus datos nunca salen de tu infraestructura. Cero envío de información a servidores de terceros.</li>
+                  <li><strong>Motores de Inferencia de Alta Velocidad:</strong> Despliegue sobre <strong>vLLM</strong> (con PagedAttention) y <strong>Ollama / TensorRT-LLM</strong> para baja latencia y alta concurrencia.</li>
+                  <li><strong>Previsibilidad de Costos:</strong> Inferencia ilimitada sin cobros recurrentes por token procesado.</li>
+                  <li><strong>Inmunidad Tecnológica:</strong> El modelo se convierte en un activo de software 100% propiedad de la empresa.</li>
+                </ul>
+              </section>
+
               <section id="rules">
                 <h2>06. Crear reglas determinísticas</h2>
                 <p>No todo necesita inteligencia artificial. Esta es una parte fundamental de la arquitectura de GLYNNE.</p>
@@ -441,9 +486,9 @@ export default function MethodologyManifesto() {
                   <li><strong>Infrastructure Layer:</strong> Cloud, servidores, redes, almacenamiento y observabilidad.</li>
                 </ul>
 
-                <h2>19. Integrar diferentes modelos de IA</h2>
-                <p>GLYNNE no necesita depender de un único modelo. Dependiendo del proceso, pueden utilizarse diferentes modelos y proveedores: modelos de lenguaje, multimodales, especializados, open source, privados o ejecutados en infraestructura propia.</p>
-                <p>La arquitectura puede determinar qué modelo utilizar según costo, velocidad, capacidad, privacidad, contexto, complejidad y requisitos del proceso. De esta manera, la IA se convierte en un componente intercambiable de la infraestructura.</p>
+                <h2>19. Integrar diferentes modelos de IA y modelos Fine-Tuneados</h2>
+                <p>GLYNNE no necesita depender de un único modelo o proveedor. Dependiendo del proceso, pueden utilizarse diferentes arquitecturas: modelos de lenguaje frontier, modelos multimodales, agentes especializados, o <strong>modelos propietarios ajustados con QLoRA y Unsloth ejecutados en servidores privados</strong>.</p>
+                <p>La arquitectura determina dinámicamente qué modelo utilizar según costo por token, latencia de respuesta, requisitos de privacidad, complejidad del razonamiento y especificaciones del proceso. De esta manera, la inteligencia artificial se convierte en una capacidad flexible e intercambiable de la infraestructura.</p>
 
                 <h2>20. Diseñar una arquitectura preparada para evolucionar</h2>
                 <p>La tecnología cambia constantemente. Un sistema empresarial no debería quedar atado permanentemente a un modelo específico. GLYNNE diseña las integraciones de manera que el ecosistema pueda evolucionar.</p>
