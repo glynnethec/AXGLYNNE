@@ -23,47 +23,47 @@ interface NavCategory {
 const NAV_CATEGORIES: NavCategory[] = [
   {
     id: 'platform',
-    label: 'Plataforma & Soluciones',
+    label: 'Platform & Solutions',
     icon: <FaCubes size={13} />,
     items: [
-      { href: '/', label: 'Hub Principal', desc: 'Centro de control de la plataforma GLYNNE' },
-      { href: '/Methodology', label: 'Metodología de Gobierno', desc: 'Cómo transformamos empresas en sistemas digitales' },
-      { href: '/Solutions', label: 'Caso Servex (XML BPO)', desc: 'Caso de éxito en conversión de esquemas y matrices' },
-      { href: '/Industries', label: 'Automatización B2B', desc: 'Soluciones de procesos por sectores industriales' },
-      { href: '/ia_vailable', label: 'Modelos de IA Disponibles', desc: 'Catálogo de LLMs frontier y modelos privados' },
-      { href: '/Segurity', label: 'Seguridad & Contención', desc: 'Capa determinística de reglas y permisos' }
+      { href: '/', label: 'Main Hub', desc: 'Central control center for the GLYNNE platform' },
+      { href: '/Methodology', label: 'Governance Methodology', desc: 'How we transform enterprises into digital systems' },
+      { href: '/Solutions', label: 'Servex Case Study (XML BPO)', desc: 'Radical project in schema conversion and data matrices' },
+      { href: '/Industries', label: 'B2B Process Automation', desc: 'Industry-tailored workflow and operational automation' },
+      { href: '/ia_vailable', label: 'Available AI Models', desc: 'Catalog of frontier LLMs and fine-tuned private models' },
+      { href: '/Segurity', label: 'Security & Control', desc: 'Deterministic guardrails and permission layers' }
     ]
   },
   {
     id: 'ai-systems',
-    label: 'Sistemas de IA',
+    label: 'AI Systems',
     icon: <FaRobot size={13} />,
     items: [
-      { href: '/AX_chat', label: 'Chat con Asistente AX', desc: 'Interacción autónoma con el motor conversacional' },
-      { href: '/AX_voice', label: 'Llamada de Voz AX', desc: 'Comunicación en tiempo real por voz con IA' }
+      { href: '/AX_chat', label: 'Chat with AX Assistant', desc: 'Autonomous interaction with reasoning engine' },
+      { href: '/AX_voice', label: 'Initiate AX Voice Call', desc: 'Real-time interactive voice communication' }
     ]
   },
   {
     id: 'company',
-    label: 'Compañía & Recurso',
+    label: 'Company & Vision',
     icon: <FaBuilding size={13} />,
     items: [
-      { href: '/About', label: 'Visión & Arquitectura', desc: 'Conoce la visión y la infraestructura de GLYNNE' },
-      { href: '/Blog', label: 'Insights & Blog', desc: 'Publicaciones sobre IA empresarial y desarrollo' },
-      { href: '/faq', label: 'Preguntas Frecuentes', desc: 'Respuestas sobre integración, control y privacidad' },
-      { href: '/contact', label: 'Contacto Directo', desc: 'Inicia el diseño arquitectónico con nuestro equipo' },
-      { href: '/Support', label: 'Centro de Soporte', desc: 'Asistencia técnica y soporte operacional' }
+      { href: '/About', label: 'Vision & Architecture', desc: 'Discover GLYNNE infrastructure principles' },
+      { href: '/Blog', label: 'Insights & Blog', desc: 'Engineering articles on enterprise AI' },
+      { href: '/faq', label: 'Frequently Asked Questions', desc: 'Clear answers on integration, control, and privacy' },
+      { href: '/contact', label: 'Direct Contact', desc: 'Initiate architectural design with our team' },
+      { href: '/Support', label: 'Support Center', desc: 'Technical assistance and operational support' }
     ]
   },
   {
     id: 'access-legal',
-    label: 'Acceso & Legal',
+    label: 'Access & Legal',
     icon: <FaShieldAlt size={13} />,
     items: [
-      { href: '/login', label: 'Acceso al Dashboard', desc: 'Gestión de nodos y credenciales empresariales' },
-      { href: '/terms-of-service', label: 'Términos de Servicio', desc: 'Condiciones de uso de la infraestructura' },
-      { href: '/privacy-policy', label: 'Política de Privacidad', desc: 'Soberanía y protección de datos corporativos' },
-      { href: '/security-data-protection', label: 'Protección de Datos', desc: 'Estándares de cifrado y cumplimiento' }
+      { href: '/login', label: 'Dashboard Access', desc: 'Manage enterprise nodes and access credentials' },
+      { href: '/terms-of-service', label: 'Terms of Service', desc: 'Infrastructure usage terms and conditions' },
+      { href: '/privacy-policy', label: 'Privacy Policy', desc: 'Corporate data sovereignty and protection' },
+      { href: '/security-data-protection', label: 'Data Security', desc: 'Encryption and regulatory compliance standards' }
     ]
   }
 ];
