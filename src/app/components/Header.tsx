@@ -418,10 +418,6 @@ export default function Header() {
 
         <nav className="nav-links">
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-            <Link href="/contact" className="nav-btn desktop-only" style={{ textDecoration: 'none', fontSize: '13px', fontWeight: 500, color: '#333' }}>Contacto</Link>
-            
-            <div className="desktop-only" style={{ width: '1px', height: '16px', backgroundColor: 'rgba(0,0,0,0.1)', margin: '0 4px' }}></div>
-
             <Link 
               href={isLoggedIn ? "/Panel" : "/login"} 
               style={{
