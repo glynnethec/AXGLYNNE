@@ -384,7 +384,8 @@ export default function Header() {
         style={{ zIndex: 9999 }}
         onMouseLeave={handleMouseLeaveHeader}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+        {/* 1. Left: Logo */}
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <Link href="/" style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
             <img 
               src="/logos/GLYNNE.svg" 
@@ -392,28 +393,28 @@ export default function Header() {
               className="header-logo" 
             />
           </Link>
+        </div>
 
-          {/* Desktop Category Trigger Buttons inside top navbar */}
-          <div className="desktop-nav-categories" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            {NAV_CATEGORIES.map(cat => (
-              <button
-                key={cat.id}
-                className={`category-tab-btn ${isOpen && activeTab === cat.id ? 'active' : ''}`}
-                onMouseEnter={() => handleMouseEnterCategory(cat.id)}
-                onClick={() => {
-                  if (isOpen && activeTab === cat.id) {
-                    setIsOpen(false);
-                  } else {
-                    setActiveTab(cat.id);
-                    setIsOpen(true);
-                  }
-                }}
-              >
-                <span>{cat.label}</span>
-                <FaChevronDown size={10} style={{ transform: isOpen && activeTab === cat.id ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease', opacity: 0.6 }} />
-              </button>
-            ))}
-          </div>
+        {/* 2. Center: Desktop Category Buttons */}
+        <div className="desktop-nav-categories" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
+          {NAV_CATEGORIES.map(cat => (
+            <button
+              key={cat.id}
+              className={`category-tab-btn ${isOpen && activeTab === cat.id ? 'active' : ''}`}
+              onMouseEnter={() => handleMouseEnterCategory(cat.id)}
+              onClick={() => {
+                if (isOpen && activeTab === cat.id) {
+                  setIsOpen(false);
+                } else {
+                  setActiveTab(cat.id);
+                  setIsOpen(true);
+                }
+              }}
+            >
+              <span>{cat.label}</span>
+              <FaChevronDown size={10} style={{ transform: isOpen && activeTab === cat.id ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease', opacity: 0.6 }} />
+            </button>
+          ))}
         </div>
 
         <nav className="nav-links">
