@@ -49,9 +49,9 @@ export default function PcCardSolutions() {
       `}</style>
       <div className="responsive-solutions-width mobile-stack" style={{ position: 'relative', zIndex: 10, width: '60vw', boxSizing: 'border-box', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '40px', padding: '0', backgroundColor: 'transparent', minHeight: '50vh' }}>
         <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
-          <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
+          <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
             Meet SERVEXcopilot. Our most radical project.
-          </h1>
+          </h2>
           <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
             A glimpse into the operational future. This organization has redefined its core processes, evolving into an intelligent ecosystem where AI takes control of workflows, autonomously solving its greatest challenges.
           </p>
@@ -145,9 +145,9 @@ export default function PcCardSolutions() {
           <img src="/SERVEX/mockup.png" alt="Servex Mockup" style={{ width: '85%', maxWidth: '480px', objectFit: 'contain', filter: 'grayscale(100%) drop-shadow(0 24px 48px rgba(0,0,0,0.12))' }} />
         </div>
         <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
-          <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
+          <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
             Visit the project's landing page
-          </h1>
+          </h2>
           <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
             There you will find the most detailed information on how SERVEX wants to evolve into a technological ecosystem.
           </p>

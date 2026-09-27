@@ -56,6 +56,17 @@ export const metadata: Metadata = {
       'x-default': 'https://axglynne.com',
     },
   },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   openGraph: {
     title: 'AXGLYNNE | LLM Fine-Tuning, Secure AI Platforms & Enterprise Infrastructure',
     description: 'Entrenamiento de modelos propietarios, plataformas de software interactivas a medida, control de acceso por roles (RBAC), alta seguridad y privacidad de datos.',

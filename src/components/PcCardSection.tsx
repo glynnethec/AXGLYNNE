@@ -34,9 +34,9 @@ export default function PcCardSection() {
       `}</style>
       <div className="mobile-pccard-container" style={{ position: 'relative', zIndex: 10, width: '70vw', boxSizing: 'border-box', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '40px', padding: '80px 60px', border: '1px solid rgba(0,0,0,0.05)', borderRadius: '32px', backgroundColor: 'transparent', backdropFilter: 'blur(10px)' }}>
         <div className="mobile-pccard-text" style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
-          <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
+          <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
             The Origins of Glynne.
-          </h1>
+          </h2>
           <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
             Discover the foundations of our architecture and how we integrate artificial intelligence into enterprise operations.
           </p>

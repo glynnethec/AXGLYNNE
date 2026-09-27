@@ -24,7 +24,7 @@ export default function HeroSection() {
         </div>
 
         {/* Big Headline */}
-        <h2 style={{
+        <h1 style={{
           margin: 0,
           textAlign: 'center',
           fontSize: 'clamp(40px, 6.5vw, 64px)',
@@ -34,7 +34,7 @@ export default function HeroSection() {
           letterSpacing: '-0.02em'
         }}>
           Enterprise AI Control & Infrastructure Layer
-        </h2>
+        </h1>
 
         {/* Paragraph */}
         <p style={{

@@ -49,9 +49,9 @@ export default function OrbCardSection() {
         }
       `}</style>
       <div className="orb-text-container" style={{ flex: '1.2', position: 'relative', zIndex: 11, minWidth: '300px' }}>
-        <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
+        <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
           Not everything is Chat!
-        </h1>
+        </h2>
         <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
           Grab a coffee. Your first step toward innovation begins by talking with AX, the AXGLYNNE artificial intelligence. Together, you will brainstorm your bottlenecks, and AX will map out how our infrastructure and team can transform those blockers into automated systems.
         </p>

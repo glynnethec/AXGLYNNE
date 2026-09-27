@@ -401,9 +401,9 @@ export default function AboutManifesto() {
         <div className="glynne-arrow" style={{ margin: '0 0 120px 0' }}>↓</div>
 
         <div className="glynne-label" style={{ fontSize: '16px', letterSpacing: '0.2em' }}>GLYNNE</div>
-        <h1 style={{ fontSize: 'clamp(40px, 6vw, 72px)', fontWeight: 400, color: '#111111', letterSpacing: '-0.02em', lineHeight: 1.1, margin: '24px 0 0 0' }}>
+        <h2 style={{ fontSize: 'clamp(40px, 6vw, 72px)', fontWeight: 400, color: '#111111', letterSpacing: '-0.02em', lineHeight: 1.1, margin: '24px 0 0 0' }}>
           Engineers. Researchers.<br />Builders.
-        </h1>
+        </h2>
       </section>
 
     </div>

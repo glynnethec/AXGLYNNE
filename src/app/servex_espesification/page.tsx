@@ -227,9 +227,9 @@ export default function ServexSpecification() {
               {/* --- EXTENDED DOCUMENTATION --- */}
               <section>
                 <div style={{ width: '100%', height: '1px', backgroundColor: 'rgba(0,0,0,0.1)', margin: '64px 0' }}></div>
-                <h1 style={{ fontSize: '32px', fontWeight: 500, color: '#111', marginBottom: '24px', letterSpacing: '-0.01em' }}>
+                <h2 style={{ fontSize: '32px', fontWeight: 500, color: '#111', marginBottom: '24px', letterSpacing: '-0.01em' }}>
                   Technical Documentation & Operational Architecture
-                </h1>
+                </h2>
 
                 <div style={{ backgroundColor: 'rgba(0,0,0,0.03)', padding: '24px', borderRadius: '16px', marginBottom: '40px' }}>
                   <h3 style={{ fontSize: '18px', fontWeight: 600, color: '#111', marginBottom: '12px' }}>Executive Summary</h3>

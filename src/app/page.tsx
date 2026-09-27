@@ -209,7 +209,7 @@ export default function Home() {
           }}>
             <img
               src="/logos/GLYNNE.svg"
-              alt=""
+              alt="AXGLYNNE Enterprise AI Emblem"
               style={{ height: '100%', objectFit: 'contain', maxWidth: '100vw' }}
             />
           </div>
