@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Sobre AXGLYNNE | Firma de Ingeniería de IA, Fine-Tuning & Plataformas Corporativas',
-  description: 'Conoce la visión y la infraestructura de AXGLYNNE: Especialistas en entrenamiento de modelos de lenguaje propietarios (QLoRA, Unsloth), arquitectura MCP, RAG de alta precisión y plataformas de software con control de roles (RBAC) y privacidad absoluta para EE.UU. y Latinoamérica.',
+  title: 'Visión & Arquitectura de IA',
+  description: 'Visión e infraestructura de AXGLYNNE: Fine-Tuning de modelos (QLoRA, Unsloth), arquitectura MCP, RAG enterprise y plataformas seguras con control RBAC.',
   keywords: [
     'Sobre AXGLYNNE',
     'AXGLYNNE AI Engineering',

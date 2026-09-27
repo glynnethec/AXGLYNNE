@@ -3,10 +3,10 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   metadataBase: new URL('https://axglynne.com'),
   title: {
-    template: '%s | AXGLYNNE Industry AI Solutions',
-    default: 'Industrias & Automatización de Procesos Complejos | AXGLYNNE Enterprise',
+    template: '%s | AXGLYNNE Custom AI Labs',
+    default: 'Automatización B2B por Sectores',
   },
-  description: 'Aplicación de Inteligencia Artificial e Ingeniería de Software a sectores clave: Automatización de operaciones B2B, procesamiento de matrices de datos, integración de modelos de lenguaje privados e infraestructura segura en EE.UU. y Latinoamérica.',
+  description: 'Soluciones de IA y software para sectores clave: Automatización de procesos B2B, matrices de datos complejas e integración de modelos privados seguros.',
   keywords: [
     'IA para Industrias',
     'Automatización de Procesos B2B',

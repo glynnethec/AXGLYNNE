@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://axglynne.com'),
-  title: 'Alexander Quiroga | CEO, Software Architect & AI Engineering Researcher',
-  description: 'Alexander Quiroga es CEO, Arquitecto de Software e Investigador Principal en AXGLYNNE. Especialista en entrenamiento y fine-tuning de modelos de lenguaje (QLoRA, Unsloth), arquitectura MCP, RAG enterprise y sistemas deterministas.',
+  title: 'Alexander Quiroga | CEO & Arquitecto de IA',
+  description: 'Alexander Quiroga es CEO y Arquitecto de Software en AXGLYNNE. Especialista en Fine-Tuning de LLMs (QLoRA, Unsloth), arquitectura MCP y sistemas de IA.',
   keywords: [
     'Alexander Quiroga',
     'CEO AXGLYNNE',

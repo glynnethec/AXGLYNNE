@@ -3,10 +3,10 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   metadataBase: new URL('https://axglynne.com'),
   title: {
-    template: '%s | AXGLYNNE Contact & AI Engineering Consultation (US & LATAM)',
-    default: 'Contacto & Asesoría de Ingeniería de IA | AXGLYNNE Enterprise Labs',
+    template: '%s | AXGLYNNE Custom AI Labs',
+    default: 'Contacto & Asesoría Técnica',
   },
-  description: 'Contacta con el equipo de ingeniería de AXGLYNNE: Agenda una consulta técnica sobre Fine-Tuning de LLMs (QLoRA, Unsloth), arquitectura de software a medida, integración MCP, RAG corporativo y despliegue privado de modelos para empresas en EE.UU., LatAm y Global.',
+  description: 'Contacta al equipo de ingeniería de AXGLYNNE: Consulta sobre Fine-Tuning de LLMs, arquitectura de software, integración MCP y despliegue de modelos privados.',
   keywords: [
     // Contact Specific Terms (Spanish)
     'Contacto AXGLYNNE',

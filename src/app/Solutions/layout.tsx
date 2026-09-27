@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Soluciones de IA & Automatización de Catálogos XML (Caso SERVEX)',
-  description: 'Caso de éxito e infraestructura de IA para SERVEX: Conversión automatizada de esquemas complejos XML (CET Designer), reprocesamiento de matrices de datos y ejecución autónoma de análisis mediante modelos de IA para EE.UU. y Latinoamérica.',
+  title: 'Soluciones de IA & Caso Servex',
+  description: 'Infraestructura de IA para SERVEX: Conversión automática de esquemas XML (CET Designer), matrices de datos y ejecución autónoma de procesos BPO.',
   keywords: [
     // Solution Specific (XML, Catalog Automation, SERVEX, CET Designer)
     'Automatización de Catálogos XML',

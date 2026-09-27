@@ -18,10 +18,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://axglynne.com'),
   title: {
-    template: '%s | AXGLYNNE Custom AI Labs (US & LATAM)',
-    default: 'AXGLYNNE | LLM Fine-Tuning, Secure AI Platforms & Private Infrastructure',
+    template: '%s | AXGLYNNE Custom AI Labs',
+    default: 'AXGLYNNE | Plataformas de IA Seguras y Modelos Privados',
   },
-  description: 'Ingeniería de IA & Plataformas de Software a Medida: Fine-Tuning de LLMs (QLoRA, Unsloth), integración MCP, RAG avanzado y desarrollo de infraestructura segura con control de roles (RBAC), máxima privacidad e interfaces interactivas corporativas para EE.UU., LatAm y Global.',
+  description: 'Ingeniería de IA empresarial: Fine-Tuning de LLMs (QLoRA, Unsloth), integración MCP, RAG avanzado y desarrollo de plataformas seguras con control RBAC.',
   keywords: [
     // English Search Intent (US & Global)
     'LLM Fine-Tuning',
@@ -68,8 +68,8 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'AXGLYNNE | LLM Fine-Tuning, Secure AI Platforms & Enterprise Infrastructure',
-    description: 'Entrenamiento de modelos propietarios, plataformas de software interactivas a medida, control de acceso por roles (RBAC), alta seguridad y privacidad de datos.',
+    title: 'AXGLYNNE | Plataformas de IA Seguras y Modelos Privados',
+    description: 'Ingeniería de IA empresarial: Fine-Tuning de LLMs (QLoRA, Unsloth), integración MCP, RAG avanzado y desarrollo de plataformas seguras con control RBAC.',
     url: 'https://axglynne.com',
     siteName: 'AXGLYNNE Custom AI Labs',
     locale: 'es_US',
@@ -78,8 +78,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AXGLYNNE | LLM Fine-Tuning, Secure AI Platforms & Enterprise Infrastructure',
-    description: 'Custom LLM fine-tuning (QLoRA, Unsloth), interactive enterprise web portals, RBAC access control, data privacy, and private AI deployment in US & LatAm.',
+    title: 'AXGLYNNE | Plataformas de IA Seguras y Modelos Privados',
+    description: 'Custom LLM fine-tuning (QLoRA, Unsloth), MCP integration, enterprise RAG, and RBAC security for organizations in US & LatAm.',
   },
 };
 

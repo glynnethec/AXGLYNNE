@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://axglynne.com'),
-  title: 'Especificación Técnica SERVEX | Conversor de Matrices XML & IA',
-  description: 'Especificación técnica detallada del caso de éxito SERVEX: Infraestructura de IA para procesamiento de esquemas complejos XML (CET Designer), conversión de matrices de datos y automatización de flujos BPO corporativos.',
+  title: 'Especificación Técnica SERVEX | AXGLYNNE',
+  description: 'Especificación técnica del proyecto SERVEX: Conversión automatizada de esquemas XML (CET Designer), matrices de datos y ejecución autónoma de procesos.',
   keywords: [
     'Especificación Técnica SERVEX',
     'CET Designer XML Matrix',

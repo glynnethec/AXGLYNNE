@@ -3,10 +3,10 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   metadataBase: new URL('https://axglynne.com'),
   title: {
-    template: '%s | AXGLYNNE Architecture & AI Methodology (US & LATAM)',
-    default: 'AXGLYNNE | Arquitectura de Software, Creación de Ecosistemas & IA Determinista',
+    template: '%s | AXGLYNNE Custom AI Labs',
+    default: 'Metodología de Gobierno de IA',
   },
-  description: 'Metodología de Arquitectura e Ingeniería de IA: Cómo construimos ecosistemas tecnológicos completos, diseñamos arquitecturas de software modulares, ejecutamos Fine-Tuning de LLMs (QLoRA, Unsloth), integramos MCP y desplegamos infraestructura con control de roles (RBAC) para EE.UU., LatAm y Global.',
+  description: 'Metodología de ingeniería de IA: Transformación de procesos, Fine-Tuning especializado (QLoRA/Unsloth), protocolo MCP y plataformas corporativas seguras.',
   keywords: [
     // Architecture & Ecosystem Creation Terms
     'Creación de Ecosistemas Tecnológicos',
