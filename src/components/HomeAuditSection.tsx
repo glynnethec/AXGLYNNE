@@ -99,7 +99,7 @@ export default function HomeAuditSection() {
           50% { opacity: 0; }
         }
       `}</style>
-      <div className="responsive-solutions-width" style={{ width: '60vw', maxWidth: 'none', margin: '0 auto', display: 'flex', flexDirection: 'column' }}>
+      <div className="responsive-solutions-width" style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column' }}>
 
         {/* MOVED TEXT BLOCK */}
         <div style={{
@@ -119,7 +119,7 @@ export default function HomeAuditSection() {
           <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 8px 0', letterSpacing: '-0.02em' }}>
             Deterministic Guardrails for Enterprise AI
           </h2>
-          <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, lineHeight: 1.6, margin: 0, maxWidth: '800px' }}>
+          <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, lineHeight: 1.6, margin: 0, maxWidth: '950px' }}>
             Unconstrained AI introduces operational risk. GLYNNE wraps foundation models inside a deterministic control layer that evaluates context, verifies permissions, and enforces strict business rules before any tool or API payload is executed.
           </p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'flex-start', marginTop: '24px', flexWrap: 'wrap' }}>

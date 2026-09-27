@@ -15,7 +15,8 @@ export default function HeroSection() {
           alignItems: 'center',
           textAlign: 'center',
           gap: '24px',
-          maxWidth: '800px'
+          maxWidth: '1200px',
+          width: '100%'
         }}
       >
         {/* Small Tag */}
@@ -31,7 +32,8 @@ export default function HeroSection() {
           fontWeight: 400,
           color: '#111111',
           lineHeight: 1.1,
-          letterSpacing: '-0.02em'
+          letterSpacing: '-0.02em',
+          maxWidth: '1100px'
         }}>
           Enterprise AI Control & Infrastructure Layer
         </h1>
@@ -45,7 +47,7 @@ export default function HeroSection() {
           color: '#86868b',
           fontWeight: 300,
           letterSpacing: '0.01em',
-          maxWidth: '650px'
+          maxWidth: '900px'
         }}>
           GLYNNE is the governance runtime that integrates artificial intelligence into enterprise systems safely. We provide the architecture of control, permissions, and traceability that filters every action—enabling autonomous reasoning while maintaining absolute security.
         </p>

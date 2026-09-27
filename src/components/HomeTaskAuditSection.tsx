@@ -162,7 +162,7 @@ export default function HomeTaskAuditSection() {
           }
         }
       `}</style>
-      <div className="responsive-solutions-width" style={{ width: '60vw', maxWidth: 'none', margin: '0 auto', display: 'flex', flexDirection: 'column' }}>
+      <div className="responsive-solutions-width" style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column' }}>
         {/* Console Section (Floating without Card) */}
         <div className="mobile-stack" style={{ position: 'relative', zIndex: 10, width: '100%', boxSizing: 'border-box', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'space-between', gap: '60px', padding: '0', backgroundColor: 'transparent' }}>
 
