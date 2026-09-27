@@ -2,10 +2,10 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { 
-  FiFileText, FiTarget, FiLayers, FiCpu, 
-  FiShield, FiBriefcase, FiUsers, FiActivity, 
-  FiTrendingUp, FiCheckCircle 
+import {
+  FiFileText, FiTarget, FiLayers, FiCpu,
+  FiShield, FiBriefcase, FiUsers, FiActivity,
+  FiTrendingUp, FiCheckCircle
 } from 'react-icons/fi';
 
 const SECTIONS = [
@@ -81,7 +81,7 @@ export default function MethodologyManifesto() {
           font-size: 14px;
         }
       `}</style>
-      
+
       <div style={{
         minHeight: '100vh',
         padding: '160px 40px 80px 40px',
@@ -98,12 +98,12 @@ export default function MethodologyManifesto() {
           gap: '20px',
           position: 'relative'
         }}>
-          
+
           {/* Left Spacer - Reserves space for the fixed sidebar */}
           <div className="desktop-only-sidebar" style={{ flex: '0 0 64px' }}></div>
-          
+
           {/* Fixed Island Sidebar - Expands on hover */}
-          <aside 
+          <aside
             className="desktop-only-sidebar"
             onMouseEnter={() => setIsSidebarOpen(true)}
             onMouseLeave={() => setIsSidebarOpen(false)}
@@ -132,62 +132,62 @@ export default function MethodologyManifesto() {
               zIndex: 100 // Ensure it overlaps the content
             }}
           >
-                {SECTIONS.map((section) => (
-                  <button
-                    key={section.id}
-                    onClick={() => scrollToSection(section.id)}
-                    title={!isSidebarOpen ? section.title : ''}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: isSidebarOpen ? 'flex-start' : 'center',
-                      width: isSidebarOpen ? '100%' : '40px',
-                      minHeight: '40px',
-                      background: 'transparent',
-                      border: 'none',
-                      padding: isSidebarOpen ? '8px 12px' : '0',
-                      borderRadius: '12px',
-                      fontSize: '13px',
-                      fontWeight: activeSection === section.id ? 500 : 300,
-                      color: activeSection === section.id ? '#111' : '#86868b',
-                      backgroundColor: activeSection === section.id ? 'rgba(0,0,0,0.04)' : 'transparent',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s ease',
-                      whiteSpace: 'nowrap'
-                    }}
-                    onMouseOver={(e) => {
-                      if (activeSection !== section.id) e.currentTarget.style.color = '#111';
-                      if (activeSection !== section.id) e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.02)';
-                    }}
-                    onMouseOut={(e) => {
-                      if (activeSection !== section.id) e.currentTarget.style.color = '#86868b';
-                      if (activeSection !== section.id) e.currentTarget.style.backgroundColor = 'transparent';
-                    }}
-                  >
-                    <span style={{ 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      justifyContent: 'center', 
-                      fontSize: '16px',
-                      marginRight: isSidebarOpen ? '12px' : '0',
-                      transition: 'margin 0.3s ease'
-                    }}>
-                      {section.icon}
-                    </span>
-                    
-                    <span style={{ 
-                      opacity: isSidebarOpen ? 1 : 0, 
-                      width: isSidebarOpen ? 'auto' : 0, 
-                      overflow: 'hidden', 
-                      transition: 'opacity 0.2s ease, width 0.3s ease',
-                      textAlign: 'left',
-                      lineHeight: 1.4
-                    }}>
-                      {section.title}
-                    </span>
-                  </button>
-                ))}
-              </aside>
+            {SECTIONS.map((section) => (
+              <button
+                key={section.id}
+                onClick={() => scrollToSection(section.id)}
+                title={!isSidebarOpen ? section.title : ''}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: isSidebarOpen ? 'flex-start' : 'center',
+                  width: isSidebarOpen ? '100%' : '40px',
+                  minHeight: '40px',
+                  background: 'transparent',
+                  border: 'none',
+                  padding: isSidebarOpen ? '8px 12px' : '0',
+                  borderRadius: '12px',
+                  fontSize: '13px',
+                  fontWeight: activeSection === section.id ? 500 : 300,
+                  color: activeSection === section.id ? '#111' : '#86868b',
+                  backgroundColor: activeSection === section.id ? 'rgba(0,0,0,0.04)' : 'transparent',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  whiteSpace: 'nowrap'
+                }}
+                onMouseOver={(e) => {
+                  if (activeSection !== section.id) e.currentTarget.style.color = '#111';
+                  if (activeSection !== section.id) e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.02)';
+                }}
+                onMouseOut={(e) => {
+                  if (activeSection !== section.id) e.currentTarget.style.color = '#86868b';
+                  if (activeSection !== section.id) e.currentTarget.style.backgroundColor = 'transparent';
+                }}
+              >
+                <span style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '16px',
+                  marginRight: isSidebarOpen ? '12px' : '0',
+                  transition: 'margin 0.3s ease'
+                }}>
+                  {section.icon}
+                </span>
+
+                <span style={{
+                  opacity: isSidebarOpen ? 1 : 0,
+                  width: isSidebarOpen ? 'auto' : 0,
+                  overflow: 'hidden',
+                  transition: 'opacity 0.2s ease, width 0.3s ease',
+                  textAlign: 'left',
+                  lineHeight: 1.4
+                }}>
+                  {section.title}
+                </span>
+              </button>
+            ))}
+          </aside>
 
           {/* Content Container (Perfectly Centered) */}
           <div style={{
@@ -196,27 +196,27 @@ export default function MethodologyManifesto() {
             margin: '0 auto',
             padding: '0 0 80px 0',
           }}>
-            
+
             {/* Hero Section */}
             <div style={{ textAlign: 'left', marginBottom: '80px', marginTop: '120px' }}>
               <div style={{ fontSize: '11px', letterSpacing: '0.2em', fontWeight: 600, color: '#86868b', textTransform: 'uppercase', marginBottom: '24px' }}>
                 Our Methodology
               </div>
-              <h1 style={{ 
-                fontSize: 'clamp(32px, 5vw, 48px)', 
-                fontWeight: 400, 
-                color: '#111111', 
-                letterSpacing: '-0.02em', 
-                lineHeight: 1.1, 
+              <h1 style={{
+                fontSize: 'clamp(32px, 5vw, 48px)',
+                fontWeight: 400,
+                color: '#111111',
+                letterSpacing: '-0.02em',
+                lineHeight: 1.1,
                 maxWidth: '800px',
-                margin: '0 0 32px 0' 
+                margin: '0 0 32px 0'
               }}>
                 Cómo GLYNNE transforma procesos empresariales en ecosistemas tecnológicos inteligentes
               </h1>
             </div>
 
             <article className="methodology-article" style={{ fontSize: '18px', fontWeight: 300, color: '#333', lineHeight: 1.6 }}>
-              
+
               <section id="intro">
                 <p>Las empresas no necesitan simplemente incorporar inteligencia artificial.</p>
                 <p>Necesitan <strong>transformar la forma en que sus procesos funcionan</strong>.</p>
@@ -225,9 +225,9 @@ export default function MethodologyManifesto() {
                 <p>En muchos casos, el problema está en que la tecnología existente no fue diseñada para trabajar como un ecosistema.</p>
                 <p>GLYNNE parte de una premisa diferente:</p>
                 <p>
-                  <strong>antes de automatizar, entendemos cómo funciona la empresa.<br/>
-                  antes de incorporar IA, diseñamos la infraestructura que debe gobernarla.<br/>
-                  antes de permitir que un modelo tome una decisión, definimos exactamente qué puede conocer, qué puede hacer y bajo qué condiciones puede hacerlo.</strong>
+                  <strong>antes de automatizar, entendemos cómo funciona la empresa.<br />
+                    antes de incorporar IA, diseñamos la infraestructura que debe gobernarla.<br />
+                    antes de permitir que un modelo tome una decisión, definimos exactamente qué puede conocer, qué puede hacer y bajo qué condiciones puede hacerlo.</strong>
                 </p>
                 <p>De esta manera, GLYNNE no se limita a agregar inteligencia artificial sobre un proceso existente.</p>
                 <p><strong>Construye la infraestructura tecnológica necesaria para convertir ese proceso en un sistema digital capaz de operar, analizar, decidir, ejecutar y evolucionar.</strong></p>
@@ -313,16 +313,16 @@ export default function MethodologyManifesto() {
                 <p>La automatización no puede ser precisa si los datos están desorganizados.</p>
                 <p>Por eso una parte fundamental de la arquitectura consiste en determinar cómo se obtiene, transforma, almacena y utiliza la información.</p>
                 <p>GLYNNE puede establecer estructuras de datos específicas para cada proceso.</p>
-                
+
                 <h3>Datos de clientes</h3>
                 <span className="workflow-step">identificación → historial → productos → transacciones → solicitudes → comportamiento</span>
-                
+
                 <h3>Datos operativos</h3>
                 <span className="workflow-step">órdenes → estados → responsables → fechas → recursos → incidencias</span>
-                
+
                 <h3>Datos financieros</h3>
                 <span className="workflow-step">facturas → pagos → costos → presupuestos → movimientos → conciliaciones</span>
-                
+
                 <p>La información deja de estar distribuida arbitrariamente entre archivos, correos y sistemas desconectados. Se convierte en información estructurada y accesible mediante software.</p>
               </section>
 
@@ -370,13 +370,13 @@ export default function MethodologyManifesto() {
 
                 <h2>11. Transformar tareas manuales en operaciones digitales</h2>
                 <p>Una vez construida la infraestructura, GLYNNE identifica qué tareas pueden convertirse en operaciones automatizadas.</p>
-                
+
                 <h3>Antes (Manual)</h3>
                 <span className="workflow-step">Recibe correo → Descarga archivo → Lee información → Busca datos → Copia información → Valida reglas → Actualiza registro → Envía respuesta</span>
-                
+
                 <h3>Con GLYNNE (Automatizado)</h3>
                 <span className="workflow-step">Sistema identifica evento → Extrae información → Consulta sistema → Motor valida reglas → IA interpreta → Software ejecuta → Actualiza sistema → Registra ejecución → Genera respuesta</span>
-                
+
                 <p>La transformación no consiste únicamente en “poner IA”. Consiste en convertir una secuencia manual en <strong>un proceso digital orquestado</strong>.</p>
               </section>
 
@@ -509,27 +509,27 @@ export default function MethodologyManifesto() {
           </div>
         </div>
       </div>
-      
+
       {/* Footer CTA */}
-      <section style={{ 
-        width: '100%', 
-        paddingTop: '40px', 
-        paddingBottom: '160px', 
-        textAlign: 'center', 
-        display: 'flex', 
-        flexDirection: 'column', 
+      <section style={{
+        width: '100%',
+        paddingTop: '40px',
+        paddingBottom: '160px',
+        textAlign: 'center',
+        display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
         backgroundColor: '#f5f5f7'
       }}>
-        <h2 style={{ 
-          fontSize: 'clamp(28px, 4vw, 40px)', 
-          fontWeight: 300, 
-          color: '#111111', 
-          lineHeight: 1.4, 
-          maxWidth: '900px', 
-          margin: '0 auto 60px auto', 
-          padding: '0 24px', 
-          letterSpacing: '-0.01em' 
+        <h2 style={{
+          fontSize: 'clamp(28px, 4vw, 40px)',
+          fontWeight: 300,
+          color: '#111111',
+          lineHeight: 1.4,
+          maxWidth: '900px',
+          margin: '0 auto 60px auto',
+          padding: '0 24px',
+          letterSpacing: '-0.01em'
         }}>
           Transforma tu empresa en un ecosistema inteligente
         </h2>
@@ -544,12 +544,12 @@ export default function MethodologyManifesto() {
           textDecoration: 'none',
           transition: 'transform 0.2s ease, opacity 0.2s ease',
         }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.opacity = '0.8';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.opacity = '1';
-        }}>
+          onMouseEnter={(e) => {
+            e.currentTarget.style.opacity = '0.8';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.opacity = '1';
+          }}>
           Inicia el Diseño Arquitectónico
         </Link>
       </section>

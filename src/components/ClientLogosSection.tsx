@@ -64,7 +64,7 @@ export default function ClientLogosSection() {
       `}</style>
 
       <div className="client-logos-title">
-        Deployed At
+        Proven in Production Environments
       </div>
 
       {/* Desktop Layout */}

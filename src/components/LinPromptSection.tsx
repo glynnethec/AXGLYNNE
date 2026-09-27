@@ -86,7 +86,7 @@ export default function LinPromptSection({
             margin: '0 0 12px 0',
             textAlign: 'center'
           }}>
-            Meet AX.
+            Experience Governed AI Reasoning
           </h2>
           <p style={{
             fontSize: '13px',
@@ -95,10 +95,10 @@ export default function LinPromptSection({
             letterSpacing: '0.02em',
             margin: '0 0 40px 0',
             textAlign: 'center',
-            maxWidth: '480px',
+            maxWidth: '540px',
             lineHeight: 1.6
           }}>
-            The GLYNNE AI engine operating under our strict infrastructure layer to show you how safe autonomy works.
+            Interact with AX, the autonomous reasoning engine operating under GLYNNE's control layer, to explore how safe enterprise autonomy works.
           </p>
 
           {/* Groq-style AI Prompt Box */}
@@ -123,7 +123,7 @@ export default function LinPromptSection({
                   handleSend();
                 }
               }}
-              placeholder="Ask Lin about us..."
+              placeholder="Ask AX about enterprise AI governance, permissions, or system integration..."
               rows={3}
               style={{
                 border: 'none',

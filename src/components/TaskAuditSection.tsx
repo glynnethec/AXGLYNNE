@@ -21,7 +21,7 @@ function AuditTaskCards() {
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
-    
+
     if (visibleCount < AUDIT_TASKS.length) {
       timeoutId = setTimeout(() => {
         setVisibleCount(prev => prev + 1);
@@ -41,7 +41,7 @@ function AuditTaskCards() {
         const hasBeenAdded = index < visibleCount;
         const isScrolledOut = index < visibleCount - 4;
         const isCurrentlyVisible = hasBeenAdded && !isScrolledOut;
-        
+
         return (
           <div key={task.id} style={{
             display: 'grid',
@@ -68,10 +68,10 @@ function AuditTaskCards() {
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontSize: '11px', color: '#86868b' }}>{task.time}</span>
-                  <span style={{ 
-                    fontSize: '10px', 
-                    fontWeight: 600, 
-                    padding: '4px 8px', 
+                  <span style={{
+                    fontSize: '10px',
+                    fontWeight: 600,
+                    padding: '4px 8px',
                     borderRadius: '999px',
                     backgroundColor: 'transparent',
                     border: task.status === 'COMPLETED' || task.status === 'AUTHORIZED' || task.status === 'RESOLVED' ? '1px solid #2e7d32' : '1px solid #86868b',
@@ -80,11 +80,11 @@ function AuditTaskCards() {
                     {task.status}
                   </span>
                 </div>
-                
+
                 <div style={{ fontSize: '13px', color: '#111111', fontWeight: 500, lineHeight: 1.4 }}>
                   {task.action}
                 </div>
-                
+
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
                   <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: task.risk === 'Critical' ? '#ff3b30' : task.risk === 'Medium' ? '#ffcc00' : '#34c759' }} />
                   <span style={{ fontSize: '11px', color: '#86868b' }}>Risk: {task.risk}</span>
@@ -101,7 +101,7 @@ function AuditTaskCards() {
 function DocsMenu() {
   return (
     <div style={{ position: 'relative', width: '100%', maxWidth: '360px', marginTop: '32px' }}>
-      <div 
+      <div
         style={{
           width: '100%',
           display: 'flex',
@@ -133,7 +133,7 @@ function DocsMenu() {
         zIndex: 20
       }}>
         <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          
+
           <a href="https://app.devin.ai/org/aiservex-us/wiki/aiservex-us/SERVEX_AI?branch=main" target="_blank" rel="noreferrer" style={{
             display: 'block',
             padding: '16px',
@@ -174,7 +174,7 @@ function DocsMenu() {
 
 export default function TaskAuditSection() {
   const router = useRouter();
-  
+
   return (
     <section className="mobile-audit-section" style={{ width: '100%', minHeight: '80vh', height: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem 1.5rem', position: 'relative', zIndex: 10 }}>
       <style>{`
@@ -219,15 +219,15 @@ export default function TaskAuditSection() {
             <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
               We want you to see exactly how we achieved this. Dive into our comprehensive documentation and discover the step-by-step technology behind this solution that completely redefined Servex's operational ecosystem.
             </p>
-            
+
             <div className="docs-menu-container">
               <DocsMenu />
             </div>
           </div>
-          
+
           <div className="mobile-console-wrapper" style={{ flex: '1.5 1 400px', display: 'flex', justifyContent: 'flex-end' }}>
             <div style={{
-              backgroundColor: 'transparent', 
+              backgroundColor: 'transparent',
               borderRadius: '16px',
               padding: '24px',
               width: '100%',

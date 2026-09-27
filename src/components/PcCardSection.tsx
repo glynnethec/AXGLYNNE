@@ -40,7 +40,7 @@ export default function PcCardSection() {
           <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
             Discover the foundations of our architecture and how we integrate artificial intelligence into enterprise operations.
           </p>
-          
+
           <div className="mobile-pccard-btn-container" style={{
             display: 'flex',
             gap: '16px',
@@ -48,7 +48,7 @@ export default function PcCardSection() {
             flexWrap: 'wrap',
             justifyContent: 'flex-start'
           }}>
-            <button 
+            <button
               className="mobile-pccard-btn"
               onClick={() => router.push('/Solutions')}
               style={{
@@ -67,8 +67,8 @@ export default function PcCardSection() {
             >
               Discover our current projects
             </button>
-            
-            <button 
+
+            <button
               className="mobile-pccard-btn"
               onClick={() => router.push('/AX_chat')}
               style={{

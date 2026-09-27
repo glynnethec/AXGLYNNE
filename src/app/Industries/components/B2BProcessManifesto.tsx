@@ -2,10 +2,10 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { 
-  FiFileText, FiTarget, FiLayers, FiCpu, 
-  FiShield, FiBriefcase, FiUsers, FiActivity, 
-  FiTrendingUp, FiCheckCircle 
+import {
+  FiFileText, FiTarget, FiLayers, FiCpu,
+  FiShield, FiBriefcase, FiUsers, FiActivity,
+  FiTrendingUp, FiCheckCircle
 } from 'react-icons/fi';
 
 const CATEGORIES = ['La Premisa', 'Sectores', 'Filosofía GLYNNE'];
@@ -13,7 +13,7 @@ const CATEGORIES = ['La Premisa', 'Sectores', 'Filosofía GLYNNE'];
 const SECTIONS = [
   // La Premisa
   { id: 'intro', title: 'La Premisa', category: 'La Premisa', icon: <FiTarget /> },
-  
+
   // Sectores
   { id: 'finanzas', title: '01. Finanzas', category: 'Sectores', icon: <FiBriefcase /> },
   { id: 'legal', title: '02. Abogacía y Jurídico', category: 'Sectores', icon: <FiBriefcase /> },
@@ -39,7 +39,7 @@ const SECTIONS = [
   { id: 'farma', title: '22. Farmacéutica', category: 'Sectores', icon: <FiBriefcase /> },
   { id: 'outsourcing', title: '23. Outsourcing', category: 'Sectores', icon: <FiBriefcase /> },
   { id: 'support', title: '24. Customer Service', category: 'Sectores', icon: <FiBriefcase /> },
-  
+
   // Filosofía
   { id: 'filosofia-1', title: '25. La Aplicación Real', category: 'Filosofía GLYNNE', icon: <FiCpu /> },
   { id: 'filosofia-2', title: '26. ¿Qué automatizar?', category: 'Filosofía GLYNNE', icon: <FiCpu /> },
@@ -123,7 +123,7 @@ export default function B2BProcessManifesto() {
           border: 1px solid rgba(0,0,0,0.05);
         }
       `}</style>
-      
+
       <div style={{
         minHeight: '100vh',
         padding: '160px 40px 80px 40px',
@@ -140,12 +140,12 @@ export default function B2BProcessManifesto() {
           gap: '20px',
           position: 'relative'
         }}>
-          
+
           {/* Left Spacer - Reserves space for the fixed sidebar */}
           <div className="desktop-only-sidebar" style={{ flex: '0 0 64px' }}></div>
-          
+
           {/* Fixed Island Sidebar - Expands on hover */}
-          <aside 
+          <aside
             className="desktop-only-sidebar"
             onMouseEnter={() => setIsSidebarOpen(true)}
             onMouseLeave={() => setIsSidebarOpen(false)}
@@ -174,94 +174,94 @@ export default function B2BProcessManifesto() {
               zIndex: 100 // Ensure it overlaps the content
             }}
           >
-                {CATEGORIES.map(category => (
-                  <div key={category} style={{ width: '100%', marginBottom: isSidebarOpen ? '16px' : '0' }}>
-                    {isSidebarOpen && (
-                      <div style={{ 
-                        fontSize: '11px', 
-                        fontWeight: 600, 
-                        color: '#86868b', 
-                        textTransform: 'uppercase', 
-                        letterSpacing: '0.1em',
-                        padding: '0 12px 8px 12px',
-                        borderBottom: '1px solid rgba(0,0,0,0.05)',
-                        marginBottom: '8px'
-                      }}>
-                        {category}
-                      </div>
-                    )}
-                    {SECTIONS.filter(s => s.category === category).map((section) => (
-                      <button
-                        key={section.id}
-                        onClick={() => scrollToSection(section.id)}
-                        title={!isSidebarOpen ? section.title : ''}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: isSidebarOpen ? 'flex-start' : 'center',
-                          width: isSidebarOpen ? '100%' : '40px',
-                          minHeight: '40px',
-                          background: 'transparent',
-                          border: 'none',
-                          padding: isSidebarOpen ? '8px 12px' : '0',
-                          borderRadius: '12px',
-                          fontSize: '13px',
-                          color: activeSection === section.id ? '#111' : '#86868b',
-                          fontWeight: activeSection === section.id ? 600 : 400,
-                          cursor: 'pointer',
-                          transition: 'all 0.2s ease',
-                          textAlign: 'left',
-                          marginBottom: !isSidebarOpen ? '8px' : '2px',
-                          position: 'relative'
-                        }}
-                        onMouseOver={(e) => {
-                          e.currentTarget.style.color = '#111';
-                          if (!isSidebarOpen) {
-                            e.currentTarget.style.background = 'rgba(0,0,0,0.04)';
-                          }
-                        }}
-                        onMouseOut={(e) => {
-                          e.currentTarget.style.color = activeSection === section.id ? '#111' : '#86868b';
-                          if (!isSidebarOpen) {
-                            e.currentTarget.style.background = 'transparent';
-                          }
-                        }}
-                      >
-                        {/* Dot indicator for collapsed state */}
-                        {!isSidebarOpen && activeSection === section.id && (
-                          <div style={{
-                            position: 'absolute',
-                            left: '4px',
-                            width: '4px',
-                            height: '4px',
-                            borderRadius: '50%',
-                            backgroundColor: '#111'
-                          }} />
-                        )}
-                        <span style={{ 
-                          display: 'flex', 
-                          alignItems: 'center', 
-                          justifyContent: 'center',
-                          fontSize: '16px',
-                          width: '24px',
-                          color: activeSection === section.id ? '#111' : '#86868b' 
-                        }}>
-                          {section.icon}
-                        </span>
-                        <span style={{ 
-                          opacity: isSidebarOpen ? 1 : 0, 
-                          width: isSidebarOpen ? 'auto' : 0,
-                          overflow: 'hidden',
-                          marginLeft: isSidebarOpen ? '12px' : '0',
-                          whiteSpace: 'nowrap',
-                          transition: 'all 0.3s ease'
-                        }}>
-                          {section.title}
-                        </span>
-                      </button>
-                    ))}
+            {CATEGORIES.map(category => (
+              <div key={category} style={{ width: '100%', marginBottom: isSidebarOpen ? '16px' : '0' }}>
+                {isSidebarOpen && (
+                  <div style={{
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    color: '#86868b',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                    padding: '0 12px 8px 12px',
+                    borderBottom: '1px solid rgba(0,0,0,0.05)',
+                    marginBottom: '8px'
+                  }}>
+                    {category}
                   </div>
+                )}
+                {SECTIONS.filter(s => s.category === category).map((section) => (
+                  <button
+                    key={section.id}
+                    onClick={() => scrollToSection(section.id)}
+                    title={!isSidebarOpen ? section.title : ''}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: isSidebarOpen ? 'flex-start' : 'center',
+                      width: isSidebarOpen ? '100%' : '40px',
+                      minHeight: '40px',
+                      background: 'transparent',
+                      border: 'none',
+                      padding: isSidebarOpen ? '8px 12px' : '0',
+                      borderRadius: '12px',
+                      fontSize: '13px',
+                      color: activeSection === section.id ? '#111' : '#86868b',
+                      fontWeight: activeSection === section.id ? 600 : 400,
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
+                      textAlign: 'left',
+                      marginBottom: !isSidebarOpen ? '8px' : '2px',
+                      position: 'relative'
+                    }}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.color = '#111';
+                      if (!isSidebarOpen) {
+                        e.currentTarget.style.background = 'rgba(0,0,0,0.04)';
+                      }
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.color = activeSection === section.id ? '#111' : '#86868b';
+                      if (!isSidebarOpen) {
+                        e.currentTarget.style.background = 'transparent';
+                      }
+                    }}
+                  >
+                    {/* Dot indicator for collapsed state */}
+                    {!isSidebarOpen && activeSection === section.id && (
+                      <div style={{
+                        position: 'absolute',
+                        left: '4px',
+                        width: '4px',
+                        height: '4px',
+                        borderRadius: '50%',
+                        backgroundColor: '#111'
+                      }} />
+                    )}
+                    <span style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '16px',
+                      width: '24px',
+                      color: activeSection === section.id ? '#111' : '#86868b'
+                    }}>
+                      {section.icon}
+                    </span>
+                    <span style={{
+                      opacity: isSidebarOpen ? 1 : 0,
+                      width: isSidebarOpen ? 'auto' : 0,
+                      overflow: 'hidden',
+                      marginLeft: isSidebarOpen ? '12px' : '0',
+                      whiteSpace: 'nowrap',
+                      transition: 'all 0.3s ease'
+                    }}>
+                      {section.title}
+                    </span>
+                  </button>
                 ))}
+              </div>
+            ))}
           </aside>
 
           {/* Right Content Area */}
@@ -277,42 +277,42 @@ export default function B2BProcessManifesto() {
             border: '1px solid rgba(0,0,0,0.04)'
           }}>
             <article className="methodology-article" style={{ fontSize: '17px', lineHeight: 1.7, color: '#1d1d1f', fontWeight: 300 }}>
-              
+
               <div id="intro">
                 <h1>Inteligencia artificial aplicada a industrias reales</h1>
-                
+
                 <p>La inteligencia artificial no tiene el mismo propósito en todas las industrias.</p>
                 <p>Una empresa financiera no enfrenta los mismos problemas que un despacho jurídico. Una compañía logística no funciona como una organización de salud. Una fábrica no necesita la misma arquitectura que una empresa de servicios profesionales.</p>
                 <p>Por eso GLYNNE no comienza con una tecnología.</p>
                 <p><strong>Comienza con una industria, un proceso y un problema concreto.</strong></p>
                 <p>El objetivo es identificar dónde existe una operación que consume tiempo, requiere grandes cantidades de información, depende de decisiones repetitivas o necesita conectar múltiples sistemas y, a partir de ahí, construir una infraestructura tecnológica capaz de automatizarla.</p>
-                
+
                 <span className="workflow-step">
-                  La IA puede interpretar información.<br/>
-                  El software puede ejecutar reglas.<br/>
-                  Los sistemas pueden almacenar y consultar datos.<br/>
+                  La IA puede interpretar información.<br />
+                  El software puede ejecutar reglas.<br />
+                  Los sistemas pueden almacenar y consultar datos.<br />
                   Los agentes pueden utilizar herramientas.
                 </span>
-                
+
                 <p>Y GLYNNE puede conectar todos estos componentes dentro de una arquitectura diseñada específicamente para cada organización.</p>
               </div>
 
               <div id="finanzas">
                 <h2>01. Finanzas</h2>
-                
+
                 <h3>El problema</h3>
                 <p>Las organizaciones financieras trabajan con enormes cantidades de información estructurada y no estructurada. Facturas, extractos, comprobantes, contratos, transacciones, solicitudes, reportes, correos electrónicos y documentos deben ser procesados constantemente.</p>
                 <p>Una parte importante de estas operaciones todavía depende de personas que revisan información, comparan datos, clasifican documentos, verifican condiciones y posteriormente introducen resultados en diferentes sistemas. Esto genera operaciones repetitivas y múltiples puntos donde pueden producirse errores.</p>
-                
+
                 <h3>¿Dónde puede intervenir GLYNNE?</h3>
                 <p>GLYNNE puede construir una infraestructura que conecte:</p>
-                
+
                 <span className="workflow-step">
                   Documentos → sistemas financieros → reglas → IA → automatización → auditoría
                 </span>
-                
+
                 <p>Por ejemplo, una factura puede ingresar automáticamente al ecosistema. El sistema identifica el documento, extrae la información, la estructura, la compara con los registros existentes, verifica reglas, consulta el ERP y detecta inconsistencias.</p>
-                
+
                 <p>Y, dependiendo de las condiciones establecidas, puede:</p>
                 <ul>
                   <li>registrar la información;</li>
@@ -326,10 +326,10 @@ export default function B2BProcessManifesto() {
                 <h3>¿Dónde aporta la IA?</h3>
                 <p>La IA puede utilizarse para comprender información que tradicionalmente requeriría lectura humana. Puede ayudar a interpretar documentos, clasificar transacciones, extraer información, detectar patrones, resumir reportes, analizar solicitudes, identificar anomalías para revisión y generar explicaciones o reportes.</p>
                 <p>Pero las reglas financieras críticas permanecen en software.</p>
-                
+
                 <span className="workflow-step">
-                  La IA interpreta.<br/>
-                  El sistema valida.<br/>
+                  La IA interpreta.<br />
+                  El sistema valida.<br />
                   La infraestructura controla.
                 </span>
 
@@ -341,18 +341,18 @@ export default function B2BProcessManifesto() {
 
               <div id="legal">
                 <h2>02. Abogacía y servicios jurídicos</h2>
-                
+
                 <h3>El problema</h3>
                 <p>Los despachos jurídicos trabajan principalmente con información. Contratos, demandas, expedientes, jurisprudencia, comunicaciones, documentos corporativos, normativas y diferentes versiones de archivos pueden convertirse en grandes volúmenes de información difíciles de gestionar manualmente.</p>
                 <p>El problema no es únicamente encontrar documentos. Es comprenderlos dentro de un contexto.</p>
 
                 <h3>¿Cómo lo haría GLYNNE?</h3>
                 <p>GLYNNE puede construir un ecosistema jurídico donde los documentos sean procesados y estructurados. Por ejemplo:</p>
-                
+
                 <span className="workflow-step">
                   Documento → Extracción → Clasificación → Indexación → Búsqueda contextual → Análisis → Revisión profesional
                 </span>
-                
+
                 <p>El sistema puede identificar: partes, fechas, obligaciones, cláusulas, referencias, riesgos potenciales para revisión, inconsistencias, relaciones entre documentos y elementos relevantes según el proceso configurado.</p>
 
                 <h3>¿Dónde interviene la IA?</h3>
@@ -367,13 +367,13 @@ export default function B2BProcessManifesto() {
 
               <div id="salud">
                 <h2>03. Salud</h2>
-                
+
                 <h3>El problema</h3>
                 <p>La salud genera cantidades enormes de información. Historias, documentos administrativos, órdenes, resultados, comunicaciones, citas y diferentes sistemas pueden formar ecosistemas complejos. La dificultad está en integrar información sin comprometer la privacidad, la seguridad ni la responsabilidad profesional.</p>
 
                 <h3>¿Cómo puede intervenir GLYNNE?</h3>
                 <p>GLYNNE puede diseñar capas específicas para gestión administrativa, clasificación documental, programación, procesamiento de solicitudes, organización de información, automatización de comunicaciones, gestión de procesos internos y análisis operativo.</p>
-                
+
                 <span className="workflow-step">
                   Solicitud de paciente → Clasificación → Identificación del proceso → Consulta de información autorizada → Automatización → Respuesta o escalamiento
                 </span>
@@ -381,12 +381,12 @@ export default function B2BProcessManifesto() {
                 <h3>¿Dónde aporta la IA?</h3>
                 <p>Puede ayudar a interpretar lenguaje, clasificar documentos, organizar información y asistir determinados procesos administrativos.</p>
                 <p>En escenarios clínicos, cualquier uso de IA debe incorporar controles específicos, validación profesional, privacidad, seguridad y cumplimiento de las normas aplicables. GLYNNE puede diseñar la arquitectura para separar claramente:</p>
-                
+
                 <span className="workflow-step">
-                  información clínica<br/>
-                  (de)<br/>
-                  procesos administrativos<br/>
-                  (y)<br/>
+                  información clínica<br />
+                  (de)<br />
+                  procesos administrativos<br />
+                  (y)<br />
                   capacidades de IA
                 </span>
 
@@ -396,17 +396,17 @@ export default function B2BProcessManifesto() {
 
               <div id="manufactura">
                 <h2>04. Manufactura</h2>
-                
+
                 <h3>El problema</h3>
                 <p>Una fábrica puede contener múltiples sistemas funcionando simultáneamente: ERP, inventario, producción, mantenimiento, calidad, proveedores y logística. Cuando estos sistemas no están correctamente conectados, gran parte de la información debe ser revisada y transferida manualmente.</p>
 
                 <h3>¿Cómo lo haría GLYNNE?</h3>
                 <p>GLYNNE puede construir una arquitectura que conecte:</p>
-                
+
                 <span className="workflow-step">
                   Producción ↔ Inventario ↔ Mantenimiento ↔ Calidad ↔ ERP ↔ Logística
                 </span>
-                
+
                 <p>Los eventos de un sistema pueden generar automáticamente acciones en otro. Por ejemplo: una orden de producción cambia de estado → el sistema actualiza inventario → se detecta una necesidad de material → se consulta disponibilidad → se genera una alerta o solicitud → el proceso continúa automáticamente según las reglas configuradas.</p>
 
                 <h3>¿Dónde aporta la IA?</h3>
@@ -423,11 +423,11 @@ export default function B2BProcessManifesto() {
 
                 <h3>¿Cómo lo haría GLYNNE?</h3>
                 <p>GLYNNE puede crear un sistema que conecte todas las etapas:</p>
-                
+
                 <span className="workflow-step">
                   Pedido recibido → Validación → Inventario → Asignación → Transporte → Seguimiento → Entrega → Confirmación
                 </span>
-                
+
                 <p>Cada evento puede actualizar automáticamente el siguiente componente.</p>
 
                 <h3>¿Dónde interviene la IA?</h3>
@@ -445,7 +445,7 @@ export default function B2BProcessManifesto() {
 
                 <h3>¿Cómo lo haría GLYNNE?</h3>
                 <p>GLYNNE puede conectar:</p>
-                
+
                 <span className="workflow-step">
                   Cliente → E-commerce → Inventario → Pedidos → Logística → Facturación → Soporte
                 </span>
@@ -453,7 +453,7 @@ export default function B2BProcessManifesto() {
 
                 <h3>IA aplicada</h3>
                 <p>La IA puede ayudar con clasificación de solicitudes, atención automatizada, análisis de comportamiento, recomendaciones, procesamiento de comentarios, análisis de productos, clasificación de incidencias, generación de contenido y asistencia interna.</p>
-                
+
                 <h3>¿Por qué?</h3>
                 <p>Porque el comercio genera enormes cantidades de interacciones y operaciones repetitivas. La IA puede encargarse de interpretar gran parte de esa información mientras el software controla las transacciones.</p>
               </div>
@@ -469,7 +469,7 @@ export default function B2BProcessManifesto() {
                   Solicitud → Documentos → Extracción → Validación → Reglas → Análisis → Escalamiento o automatización
                 </span>
                 <p>La IA puede interpretar documentación y detectar información relevante. El motor de software puede aplicar las reglas correspondientes.</p>
-                
+
                 <h3>¿Por qué?</h3>
                 <p>Porque el sector combina grandes volúmenes de información con procesos altamente estructurados. Es un escenario donde la separación entre IA y reglas de negocio resulta especialmente importante.</p>
               </div>
@@ -478,7 +478,7 @@ export default function B2BProcessManifesto() {
                 <h2>08. Inmobiliario y construcción</h2>
                 <h3>El problema</h3>
                 <p>Construcción e inmobiliario combinan contratos, planos, presupuestos, proveedores, materiales, clientes, cronogramas y documentación. La información suele distribuirse entre múltiples actores.</p>
-                
+
                 <h3>¿Cómo lo haría GLYNNE?</h3>
                 <p>GLYNNE puede crear una plataforma que conecte:</p>
                 <span className="workflow-step">
@@ -607,7 +607,7 @@ export default function B2BProcessManifesto() {
                 <h2>24. Centros de atención y customer service</h2>
                 <h3>El problema</h3>
                 <p>Los equipos de soporte reciben constantemente preguntas repetitivas. Pero no todas las solicitudes son iguales. Algunas necesitan información, otras necesitan una operación, otras requieren un humano.</p>
-                
+
                 <h3>GLYNNE puede diferenciar cada escenario</h3>
                 <ul>
                   <li><strong>informativa</strong> → responder.</li>
@@ -644,11 +644,11 @@ export default function B2BProcessManifesto() {
               <div id="filosofia-3">
                 <h2>27. ¿Por qué GLYNNE puede adaptarse a diferentes industrias?</h2>
                 <p>Porque GLYNNE no vende una única automatización. Construye infraestructura. La misma filosofía puede aplicarse a diferentes organizaciones:</p>
-                
+
                 <span className="workflow-step">
                   Auditar → Comprender → Diseñar → Construir → Integrar → Automatizar → Incorporar IA → Controlar → Medir → Evolucionar
                 </span>
-                
+
                 <p>Lo que cambia es la arquitectura específica. En finanzas serán diferentes los datos. En derecho los documentos. En logística los eventos. Pero el principio arquitectónico permanece.</p>
               </div>
 
@@ -688,17 +688,17 @@ export default function B2BProcessManifesto() {
               <div id="filosofia-6">
                 <h2>30. De industria tradicional a ecosistema inteligente</h2>
                 <p>La transformación puede representarse de manera sencilla:</p>
-                
+
                 <h3>Empresa tradicional</h3>
                 <span className="workflow-step">
                   Personas → Herramientas aisladas → Procesos manuales → Información dispersa → Decisiones → Acciones
                 </span>
-                
+
                 <h3>Empresa evolucionada con GLYNNE</h3>
                 <span className="workflow-step">
                   Personas → Ecosistema tecnológico → Datos estructurados → Software → Automatización → IA → Agentes → Herramientas → Reglas → Supervisión → Trazabilidad → Evolución
                 </span>
-                
+
                 <p>La diferencia no está únicamente en utilizar inteligencia artificial. Está en construir una infraestructura donde esa inteligencia pueda operar de manera controlada.</p>
               </div>
 
@@ -707,7 +707,7 @@ export default function B2BProcessManifesto() {
                 <p>Cada organización tiene procesos que pueden evolucionar. Algunos son administrativos. Otros financieros. Otros operativos. GLYNNE estudia cada uno de ellos y determina cómo convertirlos en sistemas.</p>
                 <p>Porque la automatización real no consiste en agregar un botón que diga: <strong>“Usar IA”.</strong></p>
                 <p>Consiste en rediseñar la manera en que la información entra, se procesa, se valida, se transforma y finalmente produce una acción. Ese es el punto donde la inteligencia artificial deja de ser una herramienta aislada. Y empieza a convertirse en infraestructura.</p>
-                
+
                 <div style={{
                   marginTop: '80px',
                   padding: '40px',
@@ -717,20 +717,20 @@ export default function B2BProcessManifesto() {
                 }}>
                   <h2 style={{ margin: '0 0 24px 0', border: 'none', padding: 0 }}>AXGLYNNE</h2>
                   <p style={{ fontWeight: 500, fontSize: '18px' }}>
-                    Entendemos la industria.<br/>
-                    Auditamos el proceso.<br/>
-                    Diseñamos la arquitectura.<br/>
-                    Construimos la infraestructura.<br/>
-                    Integramos los sistemas.<br/>
-                    Automatizamos las operaciones.<br/>
-                    Incorporamos inteligencia.<br/>
-                    Controlamos cada interacción.<br/>
+                    Entendemos la industria.<br />
+                    Auditamos el proceso.<br />
+                    Diseñamos la arquitectura.<br />
+                    Construimos la infraestructura.<br />
+                    Integramos los sistemas.<br />
+                    Automatizamos las operaciones.<br />
+                    Incorporamos inteligencia.<br />
+                    Controlamos cada interacción.<br />
                     Y construimos el ecosistema que la empresa necesita para evolucionar.
                   </p>
                   <p>Porque cada industria tiene problemas diferentes. Pero todas tienen algo en común: <strong>procesos que pueden funcionar mejor.</strong></p>
                   <p>GLYNNE convierte esos procesos en sistemas tecnológicos capaces de comprender información, ejecutar operaciones, conectar infraestructura y utilizar inteligencia artificial de manera controlada.</p>
                   <p style={{ fontSize: '20px', fontWeight: 500, color: '#111', marginTop: '32px' }}>
-                    No construimos una IA para tu empresa.<br/>
+                    No construimos una IA para tu empresa.<br />
                     Construimos la infraestructura donde la IA puede trabajar para tu empresa.
                   </p>
                 </div>
@@ -738,7 +738,7 @@ export default function B2BProcessManifesto() {
 
             </article>
           </div>
-          
+
         </div>
       </div>
     </>

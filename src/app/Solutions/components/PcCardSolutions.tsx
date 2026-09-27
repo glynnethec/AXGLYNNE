@@ -73,7 +73,7 @@ export default function PcCardSolutions() {
           Meet Servex
         </h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem' }}>
-          
+
           <div className="responsive-card-borderless glass-card-hover" style={{ border: '1px solid rgba(0,0,0,0.05)', borderRadius: '24px', padding: '32px', backgroundColor: 'rgba(255, 255, 255, 0.6)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', display: 'flex', flexDirection: 'column', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.02)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
               <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#111' }}></div>
@@ -83,7 +83,7 @@ export default function PcCardSolutions() {
               Servex US is a technology firm specialized in digitalization, 3D modeling, and electronic catalog management for the contract furniture industry. Its primary function is to transform the complex specifications of leading manufacturers—such as WB Manufacturing, LESRO, and EB—into highly optimized digital assets. As an official Development Partner of Configura, Servex builds and maintains advanced extensions for the CET Commercial Interiors platform, creating product libraries, parametric BIM models (Revit), and interactive configurators. This allows architects, designers, and distributors to specify projects and generate quotes with millimeter precision within the highest industry standard.
             </p>
             <div style={{ marginTop: 'auto', paddingTop: '32px' }}>
-              <button 
+              <button
                 className="responsive-btn"
                 onClick={() => window.open('https://servex-us.com/', '_blank')}
                 style={{
@@ -114,7 +114,7 @@ export default function PcCardSolutions() {
               Servex was not looking for a cosmetic update, but rather a total reengineering of its operational core. To sustain their position as a technological bridge to platforms like CET, they required a flawless infrastructure. They delegated the full technical responsibility to us due to our capacity to operate with the vision of a centralized engineering team, specialized in AI automation. The objective was clear: to conceive and execute a custom-built platform that would transform their data chaos into an autonomous, secure, and scalable ecosystem.
             </p>
             <div style={{ marginTop: 'auto', paddingTop: '32px' }}>
-              <button 
+              <button
                 className="responsive-btn"
                 onClick={() => router.push('/AX_chat')}
                 style={{
@@ -151,9 +151,9 @@ export default function PcCardSolutions() {
           <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
             There you will find the most detailed information on how SERVEX wants to evolve into a technological ecosystem.
           </p>
-          
+
           <div style={{ display: 'flex', gap: '16px', marginTop: '32px', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <button 
+            <button
               className="responsive-btn"
               onClick={() => window.open('https://www.servexcopilot.com/', '_blank')}
               style={{

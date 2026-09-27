@@ -11,33 +11,33 @@ const columns = [
 
 const nodes = [
   // Col 1
-  { id: 1, col: 1, y: 250, title: 'Contextualize', tag: 'Phase 1', status: 'Complete', size: 'Context', desc: 'Define AI boundaries.' },
-  { id: 2, col: 1, y: 750, title: 'Permissions', tag: 'Phase 1', status: 'Complete', size: 'Processes', desc: 'Restrict system access.' },
+  { id: 1, col: 1, y: 250, title: 'Contextualize', tag: 'Phase 1', status: 'Active', size: 'Context', desc: 'Define operational scope.' },
+  { id: 2, col: 1, y: 750, title: 'Permissions', tag: 'Phase 1', status: 'Active', size: 'Access Control', desc: 'Restrict tool execution.' },
   
   // Col 2
-  { id: 3, col: 2, y: 350, title: 'Design Filter', tag: 'Phase 2', status: 'Active', size: 'Opportunities', desc: 'Build the control layer.' },
-  { id: 4, col: 2, y: 650, title: 'Security', tag: 'Phase 2', status: 'Active', size: 'System Design', desc: 'Architect safe pipelines.' },
+  { id: 3, col: 2, y: 350, title: 'Design Filter', tag: 'Phase 2', status: 'Active', size: 'Control Layer', desc: 'Inspect prompt & payload.' },
+  { id: 4, col: 2, y: 650, title: 'Security Protocol', tag: 'Phase 2', status: 'Active', size: 'Zero-Trust', desc: 'Verify identity & policy.' },
 
   // Col 3
-  { id: 5, col: 3, y: 200, title: 'Rules', tag: 'Phase 3', status: 'Pending', size: 'Roadmap', desc: 'Establish AI conditions.' },
-  { id: 6, col: 3, y: 500, title: 'Integration', tag: 'Phase 3', status: 'Pending', size: 'Development', desc: 'Connect enterprise APIs.' },
-  { id: 7, col: 3, y: 800, title: 'Traceability', tag: 'Phase 3', status: 'Pending', size: 'Integration', desc: 'Log every AI action.' },
+  { id: 5, col: 3, y: 200, title: 'Rules Engine', tag: 'Phase 3', status: 'Active', size: 'Guardrails', desc: 'Enforce deterministic rules.' },
+  { id: 6, col: 3, y: 500, title: 'Integration', tag: 'Phase 3', status: 'Active', size: 'API Gateways', desc: 'Connect enterprise tools.' },
+  { id: 7, col: 3, y: 800, title: 'Traceability', tag: 'Phase 3', status: 'Active', size: 'Audit Logs', desc: 'Log decision telemetry.' },
 
   // Col 4
-  { id: 8, col: 4, y: 500, title: 'Governed Autonomy', tag: 'Outcome', status: 'Continuous', size: 'Growth', desc: 'Safe, autonomous AI.', isChart: true }
+  { id: 8, col: 4, y: 500, title: 'Governed Autonomy', tag: 'Outcome', status: 'Continuous', size: 'Production', desc: 'Safe, auditable execution.', isChart: true }
 ];
 
 const connections = [
-  { from: 1, to: 3, label: 'Insights' },
-  { from: 2, to: 3, label: 'Data' },
-  { from: 2, to: 4, label: 'Structure' },
-  { from: 3, to: 5, label: 'Vision' },
-  { from: 3, to: 6, label: 'Specs' },
-  { from: 4, to: 6, label: 'Blueprint' },
-  { from: 4, to: 7, label: 'Infra' },
-  { from: 5, to: 8, label: 'Strategy' },
-  { from: 6, to: 8, label: 'Product' },
-  { from: 7, to: 8, label: 'Live' }
+  { from: 1, to: 3, label: 'Context' },
+  { from: 2, to: 3, label: 'Access' },
+  { from: 2, to: 4, label: 'Policy' },
+  { from: 3, to: 5, label: 'Payload' },
+  { from: 3, to: 6, label: 'Intent' },
+  { from: 4, to: 6, label: 'Token' },
+  { from: 4, to: 7, label: 'Identity' },
+  { from: 5, to: 8, label: 'Rule OK' },
+  { from: 6, to: 8, label: 'Executed' },
+  { from: 7, to: 8, label: 'Audited' }
 ];
 
 const getPath = (fromCol: number, fromY: number, toCol: number, toY: number) => {
@@ -69,7 +69,7 @@ export default function WorkflowDiagram() {
         marginBottom: '1rem'
       }}>
         <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#111111', marginRight: '8px' }}></div>
-        <span style={{ fontSize: '11px', fontWeight: 600, color: '#1d1d1f', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Integration Architecture</span>
+        <span style={{ fontSize: '11px', fontWeight: 600, color: '#1d1d1f', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Control Architecture</span>
       </div>
 
       <h2 style={{
@@ -81,7 +81,7 @@ export default function WorkflowDiagram() {
         textAlign: 'center',
         maxWidth: '700px'
       }}>
-        How GLYNNE filters and controls AI integration
+        How GLYNNE Filters & Controls AI Actions
       </h2>
 
       <div className="flow-container" style={{

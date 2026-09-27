@@ -4,12 +4,12 @@ import React, { useState } from 'react';
 import Header from '@/app/components/Header';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
 import LinPromptSection from '@/components/LinPromptSection';
-import { 
-  FiFileText, FiUser, FiTarget, FiDatabase, FiBriefcase, 
-  FiSettings, FiMinimize2, FiCpu, FiBookOpen, FiCloud, 
-  FiGlobe, FiShield, FiLock, FiClock, FiUsers, 
-  FiHelpCircle, FiAlertTriangle, FiLayout, FiMessageCircle, 
-  FiExternalLink, FiAlertOctagon, FiEdit3, FiMail 
+import {
+  FiFileText, FiUser, FiTarget, FiDatabase, FiBriefcase,
+  FiSettings, FiMinimize2, FiCpu, FiBookOpen, FiCloud,
+  FiGlobe, FiShield, FiLock, FiClock, FiUsers,
+  FiHelpCircle, FiAlertTriangle, FiLayout, FiMessageCircle,
+  FiExternalLink, FiAlertOctagon, FiEdit3, FiMail
 } from 'react-icons/fi';
 
 const SECTIONS = [
@@ -79,13 +79,13 @@ export default function PrivacyPolicy() {
             gap: '20px',
             position: 'relative'
           }}>
-            
+
             {/* Left Spacer - Reserves space for collapsed sidebar */}
             <div className="desktop-only-sidebar" style={{ flex: '0 0 64px', position: 'relative' }}>
               <div style={{ position: 'sticky', top: '120px' }}>
-                
+
                 {/* Floating Island Sidebar - Expands on hover */}
-                <aside 
+                <aside
                   onMouseEnter={() => setIsSidebarOpen(true)}
                   onMouseLeave={() => setIsSidebarOpen(false)}
                   style={{
@@ -112,7 +112,7 @@ export default function PrivacyPolicy() {
                     zIndex: 100 // Ensure it overlaps the content
                   }}
                 >
-                  
+
                   {SECTIONS.map((section) => (
                     <button
                       key={section.id}
@@ -145,21 +145,21 @@ export default function PrivacyPolicy() {
                         if (activeSection !== section.id) e.currentTarget.style.backgroundColor = 'transparent';
                       }}
                     >
-                      <span style={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center', 
+                      <span style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                         fontSize: '16px',
                         marginRight: isSidebarOpen ? '12px' : '0',
                         transition: 'margin 0.3s ease'
                       }}>
                         {section.icon}
                       </span>
-                      
-                      <span style={{ 
-                        opacity: isSidebarOpen ? 1 : 0, 
-                        width: isSidebarOpen ? 'auto' : 0, 
-                        overflow: 'hidden', 
+
+                      <span style={{
+                        opacity: isSidebarOpen ? 1 : 0,
+                        width: isSidebarOpen ? 'auto' : 0,
+                        overflow: 'hidden',
                         transition: 'opacity 0.2s ease, width 0.3s ease',
                         textAlign: 'left',
                         lineHeight: 1.4
@@ -180,7 +180,7 @@ export default function PrivacyPolicy() {
               padding: '0 0 80px 0',
             }}>
               <LinPromptSection hideCard={true} hideOrbCard={true} />
-              
+
               <h1 style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 400, color: '#111', margin: '120px 0 16px 0', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
                 Privacy Policy
               </h1>
@@ -189,7 +189,7 @@ export default function PrivacyPolicy() {
               </p>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', color: '#1d1d1f', fontSize: '15px', lineHeight: 1.7, fontWeight: 300, letterSpacing: '0.01em' }}>
-                
+
                 <section id="intro">
                   <p>At GLYNNE S.A.S. we recognize that information is one of the most important assets of an organization.</p>
                   <p>For this reason, we design our solutions under principles of security, access control, data minimization, and responsible data processing.</p>
@@ -229,7 +229,7 @@ export default function PrivacyPolicy() {
                 <section id="info-recopilada">
                   <h2 style={{ fontSize: '20px', fontWeight: 400, color: '#111', marginBottom: '16px', letterSpacing: '-0.01em' }}>3. Information we may collect</h2>
                   <p>Depending on the relationship with GLYNNE, we may collect:</p>
-                  
+
                   <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#111', marginTop: '24px', marginBottom: '8px' }}>Identifying Information</h3>
                   <ul style={{ paddingLeft: '20px', marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                     <li>Name.</li>
@@ -340,7 +340,7 @@ export default function PrivacyPolicy() {
                   <h2 style={{ fontSize: '20px', fontWeight: 400, color: '#111', marginBottom: '16px', letterSpacing: '-0.01em' }}>8. Data Used for Training</h2>
                   <p>GLYNNE shall not interpret technical access to Client information as automatic authorization to use such information to train general-purpose artificial intelligence models.</p>
                   <p>When processing of this nature is necessary, there must be a legal basis, authorization, or contractual provision that allows it.</p>
-                  
+
                   <div style={{ marginTop: '16px', padding: '16px', backgroundColor: 'rgba(255, 59, 48, 0.05)', borderLeft: '4px solid #ff3b30', borderRadius: '4px' }}>
                     <p style={{ margin: 0, fontWeight: 500, color: '#ff3b30', fontSize: '13px' }}>[VALIDATE THIS SECTION WITH THE LAWYER AND ADAPT IT TO GLYNNE'S ACTUAL TECHNICAL POLICY.]</p>
                   </div>

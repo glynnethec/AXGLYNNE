@@ -117,9 +117,9 @@ export default function IaAvailablePage() {
           }
         }
       `}</style>
-      
+
       <div style={{ width: '100%', minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'transparent' }}>
-        
+
         {/* Header Section */}
         <section style={{ paddingTop: '160px', paddingBottom: '60px', width: '100%', maxWidth: '1000px', margin: '0 auto', paddingLeft: '20px', paddingRight: '20px' }}>
           <div style={{
@@ -132,7 +132,7 @@ export default function IaAvailablePage() {
           }}>
             Integration Capabilities
           </div>
-          
+
           <h1 style={{
             fontSize: 'clamp(40px, 6vw, 72px)',
             fontWeight: 400,
@@ -143,7 +143,7 @@ export default function IaAvailablePage() {
           }}>
             Available Models
           </h1>
-          
+
           <p style={{
             fontSize: 'clamp(14px, 1.5vw, 16px)',
             color: '#86868b',
@@ -159,13 +159,13 @@ export default function IaAvailablePage() {
         <div style={{ padding: '0 20px', maxWidth: '1000px', margin: '0 auto', width: '100%' }}>
           <LinPromptSection hideCard={true} hideOrbCard={true} />
         </div>
-        
+
         <div style={{ height: '30vh', width: '100%' }}></div>
 
         {/* Tables Section */}
         <section style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 20px 80px 20px' }}>
-          
-          {[ 
+
+          {[
             { title: "Elite Foundation Models", desc: "The absolute best-in-class frontier models available via API on the market today. Ideal for complex reasoning, autonomous agent architectures, and high-impact tasks.", data: eliteModels },
             { title: "Production Models (Groq Cloud)", desc: "Production models are intended for use in your production environments. They meet or exceed high standards for speed, quality, and reliability.", data: productionModels },
             { title: "Production Systems", desc: "Systems are a collection of models and tools that work together to answer a user query.", data: productionSystems },
@@ -191,7 +191,7 @@ export default function IaAvailablePage() {
                   </thead>
                   <tbody>
                     {section.data.map((item, index) => (
-                      <tr key={item.id} style={{ borderBottom: index === section.data.length - 1 ? 'none' : '1px solid rgba(0,0,0,0.03)', transition: 'background-color 0.2s', cursor: 'default' }} onMouseOver={(e) => {if(window.innerWidth > 700) e.currentTarget.style.backgroundColor = '#fafafa'}} onMouseOut={(e) => {if(window.innerWidth > 700) e.currentTarget.style.backgroundColor = 'transparent'}}>
+                      <tr key={item.id} style={{ borderBottom: index === section.data.length - 1 ? 'none' : '1px solid rgba(0,0,0,0.03)', transition: 'background-color 0.2s', cursor: 'default' }} onMouseOver={(e) => { if (window.innerWidth > 700) e.currentTarget.style.backgroundColor = '#fafafa' }} onMouseOut={(e) => { if (window.innerWidth > 700) e.currentTarget.style.backgroundColor = 'transparent' }}>
                         <td data-label="Model ID" style={{ padding: '16px 24px' }}>
                           <div style={{ fontSize: '14px', fontWeight: 500, color: '#111111' }}>{item.name}</div>
                           <div style={{ fontSize: '12px', color: '#86868b', fontFamily: 'monospace', marginTop: '4px' }}>{item.id}</div>

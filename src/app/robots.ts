@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/api/'], // Evitar que indexen las rutas de la API directamente
+      disallow: ['/Panel', '/login', '/AX_chat', '/AX_voice', '/api/'],
     },
     sitemap: 'https://axglynne.com/sitemap.xml',
   };

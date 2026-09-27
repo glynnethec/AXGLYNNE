@@ -5,37 +5,36 @@ import { useRouter } from 'next/navigation';
 
 const CODE_TOKENS = [
   { t: "import ", c: "#999999" },
-  { t: "{ GoogleGenAI } ", c: "#333333" },
+  { t: "{ GlynneControlLayer } ", c: "#333333" },
   { t: "from ", c: "#999999" },
-  { t: '"@google/genai";\n\n', c: "#bbbbbb" },
+  { t: '"@glynne/core";\n\n', c: "#bbbbbb" },
   { t: "const ", c: "#999999" },
-  { t: "client = ", c: "#333333" },
+  { t: "agent = ", c: "#333333" },
   { t: "new ", c: "#999999" },
-  { t: "GoogleGenAI", c: "#666666" },
-  { t: "({ });\n\n", c: "#333333" },
+  { t: "GlynneControlLayer", c: "#666666" },
+  { t: "({\n", c: "#333333" },
+  { t: "  policy: ", c: "#333333" },
+  { t: '"zero-trust-strict"', c: "#bbbbbb" },
+  { t: ",\n  permissions: [", c: "#333333" },
+  { t: '"erp:read", "catalog:sync"', c: "#bbbbbb" },
+  { t: "]\n});\n\n", c: "#333333" },
   { t: "async function ", c: "#999999" },
-  { t: "main", c: "#666666" },
+  { t: "executeWorkflow", c: "#666666" },
   { t: "() {\n", c: "#333333" },
   { t: "  ", c: "#333333" },
   { t: "const ", c: "#999999" },
-  { t: "interaction = ", c: "#333333" },
+  { t: "result = ", c: "#333333" },
   { t: "await ", c: "#999999" },
-  { t: "client.interactions.", c: "#333333" },
-  { t: "create", c: "#666666" },
+  { t: "agent.runTraceable", c: "#333333" },
   { t: "({\n", c: "#333333" },
-  { t: "    model: ", c: "#333333" },
-  { t: '"gemini-3.1-pro-preview"', c: "#bbbbbb" },
-  { t: ",\n", c: "#333333" },
-  { t: "    input: ", c: "#333333" },
-  { t: '"List and describe the high-impact and lightweight AI models available in the AX GLYNNE cluster."', c: "#bbbbbb" },
-  { t: ",\n", c: "#333333" },
-  { t: '    // generationConfig: { thinking_level: "low" }\n', c: "#cccccc" },
-  { t: "  });\n\n", c: "#333333" },
+  { t: "    task: ", c: "#333333" },
+  { t: '"Validate catalog & dispatch ERP updates"', c: "#bbbbbb" },
+  { t: "\n  });\n\n", c: "#333333" },
   { t: "  console.", c: "#333333" },
   { t: "log", c: "#666666" },
-  { t: "(interaction.output_text);\n", c: "#333333" },
+  { t: "(result.audit_trail);\n", c: "#333333" },
   { t: "}\n\n", c: "#333333" },
-  { t: "main", c: "#666666" },
+  { t: "executeWorkflow", c: "#666666" },
   { t: "().", c: "#333333" },
   { t: "catch", c: "#666666" },
   { t: "(console.error);", c: "#333333" }
@@ -69,18 +68,18 @@ function TypewriterCode() {
         if (charsLeft <= 0) return null;
         const textToShow = token.t.slice(0, charsLeft);
         charsLeft -= token.t.length;
-        
+
         return (
           <span key={index} style={{ color: token.c }}>
             {textToShow}
           </span>
         );
       })}
-      <span style={{ 
-        display: 'inline-block', 
-        width: '6px', 
-        height: '13px', 
-        backgroundColor: '#666', 
+      <span style={{
+        display: 'inline-block',
+        width: '6px',
+        height: '13px',
+        backgroundColor: '#666',
         animation: 'console-blink 1s step-end infinite',
         verticalAlign: 'baseline',
         marginLeft: '2px'
@@ -91,7 +90,7 @@ function TypewriterCode() {
 
 export default function HomeAuditSection() {
   const router = useRouter();
-  
+
   return (
     <section style={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '2rem 1.5rem', position: 'relative', zIndex: 10 }}>
       <style>{`
@@ -101,15 +100,15 @@ export default function HomeAuditSection() {
         }
       `}</style>
       <div className="responsive-solutions-width" style={{ width: '60vw', maxWidth: 'none', margin: '0 auto', display: 'flex', flexDirection: 'column' }}>
-        
+
         {/* MOVED TEXT BLOCK */}
-        <div style={{ 
-          width: '100%', 
-          display: 'flex', 
-          flexDirection: 'column', 
-          gap: '16px', 
-          marginTop: '0px', 
-          marginBottom: '40px', 
+        <div style={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px',
+          marginTop: '0px',
+          marginBottom: '40px',
           padding: '40px 0',
           border: 'none',
           borderRadius: '24px',
@@ -118,13 +117,13 @@ export default function HomeAuditSection() {
           boxShadow: 'none'
         }}>
           <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 8px 0', letterSpacing: '-0.02em' }}>
-            Govern AI across your enterprise
+            Deterministic Guardrails for Enterprise AI
           </h1>
           <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, lineHeight: 1.6, margin: 0, maxWidth: '800px' }}>
-            GLYNNE is the infrastructure layer that integrates artificial intelligence into enterprise systems safely and with total governance. AI shouldn't have unrestricted access. We provide the architecture of control, permissions, and traceability that filters every action—allowing AI to provide autonomous reasoning while you retain absolute security.
+            Unconstrained AI introduces operational risk. GLYNNE wraps foundation models inside a deterministic control layer that evaluates context, verifies permissions, and enforces strict business rules before any tool or API payload is executed.
           </p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'flex-start', marginTop: '24px', flexWrap: 'wrap' }}>
-            <button 
+            <button
               className="responsive-btn"
               onClick={() => router.push('/Methodology')}
               style={{
@@ -141,10 +140,10 @@ export default function HomeAuditSection() {
               onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#333333'; e.currentTarget.style.transform = 'scale(1.02)' }}
               onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#111111'; e.currentTarget.style.transform = 'scale(1)' }}
             >
-              Discover our architecture
+              Explore the methodology
             </button>
-            
-            <button 
+
+            <button
               className="responsive-btn"
               onClick={() => router.push('/AX_chat')}
               style={{
@@ -170,14 +169,14 @@ export default function HomeAuditSection() {
         <div style={{ position: 'relative', zIndex: 10, width: '100%', minHeight: '80vh', boxSizing: 'border-box', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '60px', padding: '0', backgroundColor: 'transparent' }}>
           <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
             <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
-              Controlled AI Execution at GLYNNE
+              Controlled Execution Pipeline
             </h1>
             <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
-              We don't just connect you to the most powerful AI models on the market; we wrap them in a secure integration layer. From lightweight models for instant tasks to complex reasoning architectures, GLYNNE dictates what each agent can see, which tools it can use, and how it executes actions.
+              From lightweight routing agents to deep reasoning models, GLYNNE dictates what data agents can read, which enterprise tools they can invoke, and how every decision is logged for total traceability.
             </p>
-            
+
             <div style={{ display: 'flex', gap: '16px', marginTop: '32px', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
-              <button 
+              <button
                 className="responsive-btn"
                 onClick={() => router.push('/ia_vailable')}
                 style={{
@@ -194,14 +193,14 @@ export default function HomeAuditSection() {
                 onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#333333'; e.currentTarget.style.transform = 'scale(1.02)' }}
                 onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#111111'; e.currentTarget.style.transform = 'scale(1)' }}
               >
-                AI Available
+                Explore AI Models
               </button>
             </div>
           </div>
-          
+
           <div style={{ flex: '1.5 1 400px', display: 'flex', justifyContent: 'flex-end' }}>
             <div style={{
-              backgroundColor: 'transparent', 
+              backgroundColor: 'transparent',
               borderRadius: '16px',
               padding: '24px',
               width: '100%',

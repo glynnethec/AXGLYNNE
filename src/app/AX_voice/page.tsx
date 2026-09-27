@@ -83,7 +83,7 @@ export default function AXVoicePage() {
         track.enabled = !isMuted;
       });
     }
-    
+
     // Apagar o encender el Web Speech API para que no escuche mientras está muteado
     if (isMuted) {
       try { recognitionRef.current?.stop(); } catch (e) { }
@@ -278,9 +278,9 @@ export default function AXVoicePage() {
                 setTranscript('');
                 isProcessingRef.current = false;
                 setOrbState('listening');
-                try { 
+                try {
                   if (recognitionRef.current) recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
-                  recognitionRef.current?.start(); 
+                  recognitionRef.current?.start();
                 } catch (e) { }
               }
             } else {
@@ -391,7 +391,7 @@ export default function AXVoicePage() {
           recognitionRef.current.onerror = null;
           recognitionRef.current.abort();
           recognitionRef.current.stop();
-        } catch (e) {}
+        } catch (e) { }
         recognitionRef.current = null;
       }
       if (micStreamRef.current) {
@@ -400,7 +400,7 @@ export default function AXVoicePage() {
             track.stop();
             track.enabled = false;
           });
-        } catch (e) {}
+        } catch (e) { }
         micStreamRef.current = null;
       }
       if (vadIntervalRef.current) {
@@ -408,46 +408,46 @@ export default function AXVoicePage() {
         vadIntervalRef.current = null;
       }
       if (micAudioCtxRef.current && micAudioCtxRef.current.state !== 'closed') {
-        try { micAudioCtxRef.current.close(); } catch (e) {}
+        try { micAudioCtxRef.current.close(); } catch (e) { }
         micAudioCtxRef.current = null;
       }
       if (audioRef.current) {
         try {
           audioRef.current.pause();
           audioRef.current.currentTime = 0;
-        } catch (e) {}
+        } catch (e) { }
       }
       if (fillerAudioRef.current) {
         try {
           fillerAudioRef.current.pause();
           fillerAudioRef.current.currentTime = 0;
-        } catch (e) {}
+        } catch (e) { }
         fillerAudioRef.current = null;
       }
       if (typeof window !== 'undefined' && window.speechSynthesis) {
-        try { window.speechSynthesis.cancel(); } catch (e) {}
+        try { window.speechSynthesis.cancel(); } catch (e) { }
       }
     };
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
         if (recognitionRef.current) {
-          try { recognitionRef.current.stop(); } catch (e) {}
+          try { recognitionRef.current.stop(); } catch (e) { }
         }
         if (micStreamRef.current) {
           try {
             micStreamRef.current.getAudioTracks().forEach(track => { track.enabled = false; });
-          } catch (e) {}
+          } catch (e) { }
         }
       } else if (document.visibilityState === 'visible') {
         if (isSessionActiveRef.current && !isMutedRef.current) {
           if (micStreamRef.current) {
             try {
               micStreamRef.current.getAudioTracks().forEach(track => { track.enabled = true; });
-            } catch (e) {}
+            } catch (e) { }
           }
           if (orbStateRef.current === 'listening') {
-            try { recognitionRef.current?.start(); } catch (e) {}
+            try { recognitionRef.current?.start(); } catch (e) { }
           }
         }
       }
@@ -482,9 +482,9 @@ export default function AXVoicePage() {
       isProcessingRef.current = false;
       if (isSessionActiveRef.current) {
         setOrbState('listening');
-        try { 
+        try {
           if (recognitionRef.current) recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
-          recognitionRef.current?.start(); 
+          recognitionRef.current?.start();
         } catch (e) { }
       } else {
         setOrbState('idle');
@@ -632,7 +632,7 @@ export default function AXVoicePage() {
             if (!win || win.closed || typeof win.closed === 'undefined') {
               window.location.href = urlToOpenRef.current;
             }
-          } catch(e) {
+          } catch (e) {
             console.error('Popup blocked, redirecting in same window:', e);
             window.location.href = urlToOpenRef.current;
           }
@@ -664,9 +664,9 @@ export default function AXVoicePage() {
         // Si el navegador bloquea el audio inicial, al menos abrimos el micrófono
         if (isSessionActiveRef.current) {
           setOrbState('listening');
-          try { 
+          try {
             if (recognitionRef.current) recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
-            recognitionRef.current?.start(); 
+            recognitionRef.current?.start();
           } catch (err) { }
         }
       });
@@ -695,7 +695,7 @@ export default function AXVoicePage() {
             if (!win || win.closed || typeof win.closed === 'undefined') {
               window.location.href = urlToOpenRef.current;
             }
-          } catch(e) {
+          } catch (e) {
             console.error('Popup blocked, redirecting in same window:', e);
             window.location.href = urlToOpenRef.current;
           }
@@ -741,9 +741,9 @@ export default function AXVoicePage() {
         setTranscript('');
         isProcessingRef.current = false;
         setOrbState('listening');
-        try { 
+        try {
           if (recognitionRef.current) recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
-          recognitionRef.current?.start(); 
+          recognitionRef.current?.start();
         } catch (e) { }
       } else {
         isProcessingRef.current = false;
@@ -774,9 +774,9 @@ export default function AXVoicePage() {
       setIsSessionActive(true);
       setOrbState('listening');
       isProcessingRef.current = false;
-      try { 
+      try {
         if (recognitionRef.current) recognitionRef.current.lang = language === 'en' ? 'en-US' : 'es-CO';
-        recognitionRef.current?.start(); 
+        recognitionRef.current?.start();
       } catch (e) { }
     }
   }, [userId, isSessionActive, language]);
@@ -809,8 +809,8 @@ export default function AXVoicePage() {
             maxWidth: '380px',
             width: '100%',
             border: theme === 'light' ? '1px solid rgba(0, 0, 0, 0.08)' : '1px solid rgba(255, 255, 255, 0.08)',
-            boxShadow: theme === 'light' 
-              ? '0 24px 48px -12px rgba(15, 23, 42, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.8) inset' 
+            boxShadow: theme === 'light'
+              ? '0 24px 48px -12px rgba(15, 23, 42, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.8) inset'
               : '0 24px 60px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05) inset',
             display: 'flex',
             flexDirection: 'column',
@@ -825,19 +825,19 @@ export default function AXVoicePage() {
               transform: 'translateX(-50%)',
               width: '180px',
               height: '180px',
-              background: theme === 'light' 
-                ? 'radial-gradient(circle, rgba(0, 0, 0, 0.03) 0%, rgba(0,0,0,0) 70%)' 
+              background: theme === 'light'
+                ? 'radial-gradient(circle, rgba(0, 0, 0, 0.03) 0%, rgba(0,0,0,0) 70%)'
                 : 'radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, rgba(0,0,0,0) 70%)',
               pointerEvents: 'none',
               borderRadius: '50%'
             }} />
 
-                  {/* Centered GLYNNE SVG Logo without container */}
-            <svg 
-              width="36" 
-              height="36" 
-              viewBox="0 0 500 500" 
-              fill="none" 
+            {/* Centered GLYNNE SVG Logo without container */}
+            <svg
+              width="36"
+              height="36"
+              viewBox="0 0 500 500"
+              fill="none"
               xmlns="http://www.w3.org/2000/svg"
               style={{ color: theme === 'light' ? '#1d1d1f' : '#f5f5f7' }}
             >
@@ -872,7 +872,7 @@ export default function AXVoicePage() {
             {/* Language Selection Options */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
               {/* Option 1: Spanish */}
-              <button 
+              <button
                 onClick={() => handleSelectLanguage('es')}
                 style={{
                   width: '100%',
@@ -937,7 +937,7 @@ export default function AXVoicePage() {
               </button>
 
               {/* Option 2: English */}
-              <button 
+              <button
                 onClick={() => handleSelectLanguage('en')}
                 style={{
                   width: '100%',

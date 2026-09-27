@@ -4,29 +4,29 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 
 const STATIC_CARDS = [
-  { 
-    id: 1, 
-    title: "Terms of Service", 
-    description: "Review the comprehensive legal framework governing the use of our autonomous infrastructure.",
-    path: "https://axglynne.com/terms-of-service"
+  {
+    id: 1,
+    title: "Terms of Service",
+    description: "Review the comprehensive legal framework governing autonomous AI infrastructure.",
+    path: "/terms-of-service"
   },
-  { 
-    id: 2, 
-    title: "Privacy Policy", 
-    description: "Understand how we securely process, store, and govern data within the GLYNNE ecosystem.",
-    path: "https://axglynne.com/privacy-policy"
+  {
+    id: 2,
+    title: "Privacy Policy",
+    description: "Understand how enterprise data is securely processed, isolated, and audited.",
+    path: "/privacy-policy"
   },
-  { 
-    id: 3, 
-    title: "Access Your Secure Dashboard", 
-    description: "Log in to monitor and control your dedicated enterprise AI nodes and configurations.",
-    path: "https://axglynne.com/login"
+  {
+    id: 3,
+    title: "Access Control Dashboard",
+    description: "Log in to monitor and configure your dedicated enterprise AI nodes and policies.",
+    path: "/login"
   },
   {
     id: 4,
-    title: "Discover Our Company Vision",
-    description: "Learn about the mission, values, and the team driving our autonomous architecture forward.",
-    path: "https://axglynne.com/About"
+    title: "Architectural Vision",
+    description: "Discover the core principles, engineering team, and vision driving GLYNNE forward.",
+    path: "/About"
   }
 ];
 
@@ -35,14 +35,14 @@ function SecondAuditTaskCards() {
 
   return (
     <div className="cards-grid-container-two" style={{
-      display: 'grid', 
-      gridTemplateColumns: 'repeat(2, 1fr)', 
+      display: 'grid',
+      gridTemplateColumns: 'repeat(2, 1fr)',
       width: '100%',
       gap: '16px'
     }}>
       {STATIC_CARDS.map((task) => (
-        <button 
-          key={task.id} 
+        <button
+          key={task.id}
           className="second-audit-card"
           onClick={() => window.location.href = task.path}
           style={{
@@ -146,16 +146,16 @@ export default function HomeSecondAuditSection() {
       `}</style>
       <div className="responsive-solutions-width-two" style={{ width: '60vw', maxWidth: 'none', margin: '0 auto', display: 'flex', flexDirection: 'column' }}>
         <div className="mobile-stack-two" style={{ position: 'relative', zIndex: 10, width: '100%', boxSizing: 'border-box', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '60px', padding: '0', backgroundColor: 'transparent' }}>
-          
+
           <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
             <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
-              Absolute Governance & Transparency
+              Enterprise Governance & Control Access
             </h1>
             <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
-              We operate on a foundation of zero-trust security and complete transparency. Explore the strict legal frameworks, data privacy protocols, and the core vision that drive our autonomous infrastructure. Manage your enterprise AI nodes securely and independently.
+              We operate on a foundation of zero-trust security and complete auditability. Review our legal frameworks, data privacy protocols, and architectural documentation, or log in to manage your dedicated enterprise AI nodes.
             </p>
           </div>
-          
+
           <div className="mobile-console-wrapper-two" style={{ flex: '1.5 1 250px', display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
             <SecondAuditTaskCards />
           </div>

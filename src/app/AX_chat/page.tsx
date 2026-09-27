@@ -20,11 +20,11 @@ export default function AXChatPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [showExitModal, setShowExitModal] = useState(false);
-  
+
   // Multi-Chat States
   const [chatList, setChatList] = useState<{ id: number, role: string, created_at: string }[]>([]);
   const [currentChatId, setCurrentChatId] = useState<number | null>(null);
-  
+
   const router = useRouter();
 
   // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS
@@ -49,7 +49,7 @@ export default function AXChatPage() {
     // 1. Advertencia nativa al recargar/cerrar pestaña
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       e.preventDefault();
-      e.returnValue = ''; 
+      e.returnValue = '';
     };
     window.addEventListener('beforeunload', handleBeforeUnload);
 
@@ -134,7 +134,7 @@ export default function AXChatPage() {
 
     // 💾 Manejar base de datos
     let activeChatId = currentChatId;
-    
+
     if (userProfile?.id) {
       if (!activeChatId) {
         // Esperamos la creación solo para tener el ID a la hora de guardar la respuesta de la IA
@@ -155,7 +155,7 @@ export default function AXChatPage() {
       // ⏳ Esperar la respuesta de la IA que ya se estaba procesando
       const response = await aiRequest;
       const data = await response.json();
-      
+
       if (data.status === 'success') {
         const aiResponse = data.reply;
         setMessages(prev => {
@@ -184,96 +184,96 @@ export default function AXChatPage() {
 
   return (
     <div data-theme={theme}>
-    <BackgroundWrapper theme={theme}>
-      <div style={{ display: 'flex', minHeight: '100vh', width: '100vw' }}>
+      <BackgroundWrapper theme={theme}>
+        <div style={{ display: 'flex', minHeight: '100vh', width: '100vw' }}>
 
-        <ChatSidebar
-          isOpen={isSidebarOpen}
-          setIsOpen={setIsSidebarOpen}
-          userProfile={userProfile}
-          chatList={chatList}
-          onNewChat={handleNewChat}
-          onSelectChat={handleSelectChat}
-          currentChatId={currentChatId}
-          onExit={() => setShowExitModal(true)}
+          <ChatSidebar
+            isOpen={isSidebarOpen}
+            setIsOpen={setIsSidebarOpen}
+            userProfile={userProfile}
+            chatList={chatList}
+            onNewChat={handleNewChat}
+            onSelectChat={handleSelectChat}
+            currentChatId={currentChatId}
+            onExit={() => setShowExitModal(true)}
+          />
+
+          <div style={{
+            flex: 1,
+            position: 'relative',
+            overflow: 'hidden',
+            display: 'flex',
+            flexDirection: 'column'
+          }}>
+
+            <div style={{ position: 'absolute', top: 20, left: 20, zIndex: 60, display: 'flex', gap: 12 }}>
+              {!isSidebarOpen && (
+                <button
+                  onClick={() => setIsSidebarOpen(true)}
+                  style={{
+                    background: theme === 'light' ? 'rgba(255, 255, 255, 0.85)' : 'transparent',
+                    border: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.15)' : '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: 6,
+                    color: theme === 'light' ? '#0f172a' : '#fff',
+                    width: 40,
+                    height: 40,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    backdropFilter: 'blur(8px)',
+                    boxShadow: theme === 'light' ? '0 4px 12px rgba(15, 23, 42, 0.05)' : 'none'
+                  }}
+                >
+                  <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                  </svg>
+                </button>
+              )}
+            </div>
+
+            <MessageList
+              messages={messages}
+              isTyping={isTyping}
+              hasStarted={hasStarted}
+            />
+
+            <ChatInput
+              inputValue={inputValue}
+              setInputValue={setInputValue}
+              handleSend={handleSend}
+              hasStarted={hasStarted}
+              setIsPopupOpen={setIsPopupOpen}
+            />
+          </div>
+        </div>
+
+        <SettingsPopup
+          isPopupOpen={isPopupOpen}
+          setIsPopupOpen={setIsPopupOpen}
         />
 
-        <div style={{
-          flex: 1,
-          position: 'relative',
-          overflow: 'hidden',
-          display: 'flex',
-          flexDirection: 'column'
-        }}>
-
-          <div style={{ position: 'absolute', top: 20, left: 20, zIndex: 60, display: 'flex', gap: 12 }}>
-            {!isSidebarOpen && (
-              <button
-                onClick={() => setIsSidebarOpen(true)}
-                style={{
-                  background: theme === 'light' ? 'rgba(255, 255, 255, 0.85)' : 'transparent',
-                  border: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.15)' : '1px solid rgba(255, 255, 255, 0.1)',
-                  borderRadius: 6,
-                  color: theme === 'light' ? '#0f172a' : '#fff',
-                  width: 40,
-                  height: 40,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  backdropFilter: 'blur(8px)',
-                  boxShadow: theme === 'light' ? '0 4px 12px rgba(15, 23, 42, 0.05)' : 'none'
-                }}
-              >
-                <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
-                  <line x1="3" y1="12" x2="21" y2="12"></line>
-                  <line x1="3" y1="6" x2="21" y2="6"></line>
-                  <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
-              </button>
-            )}
-          </div>
-
-          <MessageList
-            messages={messages}
-            isTyping={isTyping}
-            hasStarted={hasStarted}
-          />
-
-          <ChatInput
-            inputValue={inputValue}
-            setInputValue={setInputValue}
-            handleSend={handleSend}
-            hasStarted={hasStarted}
-            setIsPopupOpen={setIsPopupOpen}
-          />
-        </div>
-      </div>
-
-      <SettingsPopup
-        isPopupOpen={isPopupOpen}
-        setIsPopupOpen={setIsPopupOpen}
-      />
-
-      {/* MODAL DE CONFIRMACIÓN DE SALIDA */}
-      {showExitModal && (
-        <div className="md-logout-overlay">
-          <div className="md-logout-modal">
-            <h3>End Session?</h3>
-            <p>Your chat history is securely saved. Are you sure you want to leave the immersive interface?</p>
-            <div className="md-logout-actions">
-              <button className="md-btn-cancel" onClick={() => setShowExitModal(false)}>Cancel</button>
-              <button className="md-btn-confirm" onClick={() => {
-                window.onbeforeunload = null;
-                router.push('/Panel');
-              }}>Exit Chat</button>
+        {/* MODAL DE CONFIRMACIÓN DE SALIDA */}
+        {showExitModal && (
+          <div className="md-logout-overlay">
+            <div className="md-logout-modal">
+              <h3>End Session?</h3>
+              <p>Your chat history is securely saved. Are you sure you want to leave the immersive interface?</p>
+              <div className="md-logout-actions">
+                <button className="md-btn-cancel" onClick={() => setShowExitModal(false)}>Cancel</button>
+                <button className="md-btn-confirm" onClick={() => {
+                  window.onbeforeunload = null;
+                  router.push('/Panel');
+                }}>Exit Chat</button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      <style dangerouslySetInnerHTML={{
-        __html: `
+        <style dangerouslySetInnerHTML={{
+          __html: `
         /* ── Light Mode Overrides for AX_chat ── */
         [data-theme="light"] .msg-bubble {
           color: #0f172a !important;
@@ -435,7 +435,7 @@ export default function AXChatPage() {
           transform: translateY(-1px);
         }
       `}} />
-    </BackgroundWrapper>
+      </BackgroundWrapper>
     </div>
   );
 }

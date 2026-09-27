@@ -4,33 +4,25 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 const AUDIT_TASKS = [
-  { id: 1, action: "Ingestion: Catalog WB Manufacturing" },
-  { id: 2, action: "Validation: Price discrepancies detected" },
-  { id: 3, action: "Policy: GLYNNE Access control verified" },
-  { id: 4, action: "Sync: ERP Database Update" },
-  { id: 5, action: "Transform: Standardizing geometry for CET" },
-  { id: 6, action: "Engine: Cognitive match for missing materials" },
-  { id: 7, action: "Audit: Structural integrity check on 3D assets" },
-  { id: 8, action: "Ingestion: LESRO 2026 Price List Update" },
-  { id: 9, action: "Validation: Detecting duplicate SKUs" },
-  { id: 10, action: "Sync: Publishing to live Servex ecosystem" },
-  { id: 11, action: "Routing: Cognitive routing of incoming request" },
-  { id: 12, action: "Vector Search: Finding semantic matches in index" },
-  { id: 13, action: "Execution: Dispatching tool call to ERP" },
-  { id: 14, action: "Validation: Verifying payload integrity" },
-  { id: 15, action: "Generation: Synthesizing response via LLM" },
-  { id: 16, action: "Orchestration: Coordinating multi-agent swarm" },
-  { id: 17, action: "Memory: Storing context in episodic memory" },
-  { id: 18, action: "Auth: Zero-trust token validation" },
-  { id: 19, action: "Network: Scaling nodes for traffic spike" },
-  { id: 20, action: "Audit: End-to-end trace completed" }
+  { id: 1, action: "Problem: Ingesting high-volume manufacturing catalog" },
+  { id: 2, action: "Constraint: Zero margin for pricing discrepancy in ERP" },
+  { id: 3, action: "Policy: GLYNNE zero-trust token & permission check" },
+  { id: 4, action: "Architecture: Bounding agent to catalog:write scope" },
+  { id: 5, action: "AI Reasoning: Semantic matching for missing 3D geometry" },
+  { id: 6, action: "Execution: Transactional commit to Servex ERP" },
+  { id: 7, action: "Traceability: Immutable event append to audit log" },
+  { id: 8, action: "Problem: LESRO 2026 Price List schema migration" },
+  { id: 9, action: "Constraint: Detecting duplicate SKUs before write" },
+  { id: 10, action: "AI Filter: Inspecting payload against security rules" },
+  { id: 11, action: "Execution: Real-time matrix transformation for CET" },
+  { id: 12, action: "Result: 100% auditable workflow execution completed" }
 ];
 
 function AuditTaskCards() {
   return (
     <div style={{
-      display: 'flex', 
-      flexDirection: 'column', 
+      display: 'flex',
+      flexDirection: 'column',
       width: '100%',
       height: '320px', // Fixed height prevents layout jumps
       overflow: 'hidden', // Only visual animation
@@ -75,10 +67,10 @@ function AuditTaskCards() {
 
 function DocsMenu() {
   const router = useRouter();
-  
+
   return (
     <div style={{ position: 'relative', width: '100%', maxWidth: '360px', marginTop: '32px' }}>
-      <div 
+      <div
         style={{
           width: '100%',
           display: 'flex',
@@ -110,7 +102,7 @@ function DocsMenu() {
         zIndex: 20
       }}>
         <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          
+
           <button onClick={() => router.push('/Solutions')} style={{
             display: 'block',
             width: '100%',
@@ -127,7 +119,7 @@ function DocsMenu() {
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#111111" strokeWidth="2"><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path></svg>
             </div>
             <div style={{ fontSize: '13px', color: '#86868b', lineHeight: 1.5 }}>
-              Dive into our most radical project yet. Discover how we built a fully autonomous AI ecosystem capable of executing complex workflows in real-time.
+              Read how GLYNNE's control layer orchestrated autonomous catalog ingestion and ERP sync with zero margin for error.
             </div>
           </button>
 
@@ -138,7 +130,7 @@ function DocsMenu() {
 }
 
 export default function HomeTaskAuditSection() {
-  
+
   return (
     <section className="mobile-audit-section" style={{ width: '100%', minHeight: 'auto', height: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4rem 1.5rem', position: 'relative', zIndex: 10 }}>
       <style>{`
@@ -173,23 +165,23 @@ export default function HomeTaskAuditSection() {
       <div className="responsive-solutions-width" style={{ width: '60vw', maxWidth: 'none', margin: '0 auto', display: 'flex', flexDirection: 'column' }}>
         {/* Console Section (Floating without Card) */}
         <div className="mobile-stack" style={{ position: 'relative', zIndex: 10, width: '100%', boxSizing: 'border-box', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'space-between', gap: '60px', padding: '0', backgroundColor: 'transparent' }}>
-          
+
           <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
             <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
-              Inside Our Most Radical Project
+              Case Study: The Servex Autonomous Ecosystem
             </h1>
             <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
-              Witness the autonomous architecture that redefined an entire operational ecosystem. We engineered a fully independent AI system for Servex—capable of processing infinite data, making real-time cognitive decisions, and executing workflows without human intervention. 
+              Evidence of governed autonomy in production: We engineered an independent AI orchestration system for Servex—capable of processing high-volume product catalogs, resolving schema anomalies, and executing real-time ERP updates with 100% auditability.
             </p>
-            
+
             <div className="docs-menu-container">
               <DocsMenu />
             </div>
           </div>
-          
+
           <div className="mobile-console-wrapper" style={{ flex: '1.5 1 400px', display: 'flex', justifyContent: 'flex-end' }}>
             <div style={{
-              backgroundColor: 'transparent', 
+              backgroundColor: 'transparent',
               borderRadius: '16px',
               padding: '24px',
               width: '100%',

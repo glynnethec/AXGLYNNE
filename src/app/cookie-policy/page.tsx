@@ -5,9 +5,9 @@ import Link from 'next/link';
 import Header from '@/app/components/Header';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
 import LinPromptSection from '@/components/LinPromptSection';
-import { 
-  FiFileText, FiHelpCircle, FiLayers, FiSettings, 
-  FiCloud, FiSliders, FiRefreshCw, FiMail 
+import {
+  FiFileText, FiHelpCircle, FiLayers, FiSettings,
+  FiCloud, FiSliders, FiRefreshCw, FiMail
 } from 'react-icons/fi';
 
 const SECTIONS = [
@@ -63,13 +63,13 @@ export default function CookiePolicy() {
             gap: '20px',
             position: 'relative'
           }}>
-            
+
             {/* Left Spacer - Reserves space for collapsed sidebar */}
             <div className="desktop-only-sidebar" style={{ flex: '0 0 64px', position: 'relative' }}>
               <div style={{ position: 'sticky', top: '120px' }}>
-                
+
                 {/* Floating Island Sidebar - Expands on hover */}
-                <aside 
+                <aside
                   onMouseEnter={() => setIsSidebarOpen(true)}
                   onMouseLeave={() => setIsSidebarOpen(false)}
                   style={{
@@ -96,7 +96,7 @@ export default function CookiePolicy() {
                     zIndex: 100 // Ensure it overlaps the content
                   }}
                 >
-                  
+
                   {SECTIONS.map((section) => (
                     <button
                       key={section.id}
@@ -129,21 +129,21 @@ export default function CookiePolicy() {
                         if (activeSection !== section.id) e.currentTarget.style.backgroundColor = 'transparent';
                       }}
                     >
-                      <span style={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center', 
+                      <span style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                         fontSize: '16px',
                         marginRight: isSidebarOpen ? '12px' : '0',
                         transition: 'margin 0.3s ease'
                       }}>
                         {section.icon}
                       </span>
-                      
-                      <span style={{ 
-                        opacity: isSidebarOpen ? 1 : 0, 
-                        width: isSidebarOpen ? 'auto' : 0, 
-                        overflow: 'hidden', 
+
+                      <span style={{
+                        opacity: isSidebarOpen ? 1 : 0,
+                        width: isSidebarOpen ? 'auto' : 0,
+                        overflow: 'hidden',
                         transition: 'opacity 0.2s ease, width 0.3s ease',
                         textAlign: 'left',
                         lineHeight: 1.4
@@ -164,7 +164,7 @@ export default function CookiePolicy() {
               padding: '0 0 80px 0',
             }}>
               <LinPromptSection hideCard={true} hideOrbCard={true} />
-              
+
               <h1 style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 400, color: '#111', margin: '120px 0 16px 0', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
                 Cookie Policy
               </h1>
@@ -173,7 +173,7 @@ export default function CookiePolicy() {
               </p>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', color: '#1d1d1f', fontSize: '15px', lineHeight: 1.7, fontWeight: 300, letterSpacing: '0.01em' }}>
-                
+
                 <section id="intro">
                   <p>This Policy explains how GLYNNE S.A.S. uses cookies and similar technologies on its websites and platforms.</p>
                 </section>
@@ -270,7 +270,7 @@ export default function CookiePolicy() {
               Accept cookies?
             </p>
             <div style={{ display: 'flex', gap: '8px' }}>
-              <button 
+              <button
                 onClick={() => setCookiesAccepted(true)}
                 style={{
                   backgroundColor: '#111',
@@ -300,8 +300,8 @@ export default function CookiePolicy() {
                   cursor: 'pointer',
                   transition: 'background-color 0.2s ease',
                 }}
-                onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.03)'}
-                onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                  onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.03)'}
+                  onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                 >
                   Return to Home
                 </button>

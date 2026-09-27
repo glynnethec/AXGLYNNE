@@ -155,7 +155,7 @@ export default function SecurityHero() {
         }}>
           We don't give your data to AI. We give it context.
         </h2>
-        
+
         <p style={{
           fontSize: 'clamp(14px, 1.5vw, 16px)',
           color: '#86868b',

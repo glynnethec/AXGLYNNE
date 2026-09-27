@@ -31,10 +31,10 @@ export default function ServexSpecification() {
             textAlign: 'left',
             color: '#1d1d1f'
           }}>
-            
-            <LinPromptSection 
-              hideCard={true} 
-              hideOrbCard={true} 
+
+            <LinPromptSection
+              hideCard={true}
+              hideOrbCard={true}
               customTitle="Govern AI across your enterprise"
               customDescription="Servex Copilot is the infrastructure layer that integrates artificial intelligence into enterprise systems safely and with total governance. AI shouldn't have unrestricted access. We provide the architecture of control, permissions, and traceability that filters every action—allowing AI to provide autonomous reasoning while you retain absolute security."
               primaryButtonText="Learn more about Servex Copilot"
@@ -64,11 +64,11 @@ export default function ServexSpecification() {
                     Autonomous Audit
                   </span>
                 </div>
-                
+
                 <h2 style={{ fontSize: '28px', fontWeight: 400, letterSpacing: '-0.01em', margin: 0, color: '#111' }}>
                   Explore Technical Specs
                 </h2>
-                
+
                 <p style={{ fontSize: '15px', color: '#86868b', lineHeight: 1.6, maxWidth: '600px', margin: 0, fontWeight: 300 }}>
                   We want you to see exactly how we achieved this. Dive into our comprehensive documentation and discover the step-by-step technology behind this solution that completely redefined Servex's operational ecosystem.
                 </p>
@@ -89,17 +89,17 @@ export default function ServexSpecification() {
                   gap: '8px',
                   boxShadow: '0 4px 12px rgba(0,0,0,0.02)'
                 }}
-                onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#ffffff'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.06)'; }}
-                onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.8)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.02)'; }}>
+                  onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#ffffff'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.06)'; }}
+                  onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.8)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.02)'; }}>
                   <h3 style={{ fontSize: '16px', fontWeight: 500, margin: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     Project Architecture
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                   </h3>
                   <p style={{ fontSize: '13px', color: '#86868b', margin: 0, lineHeight: 1.5 }}>
                     Where the AI lives. The complete structural design of the Servex project and environmental setups.
                   </p>
                 </a>
-                
+
                 <a href="https://app.devin.ai/org/aiservex-us/wiki/aiservex-us/SERVEX_AI_BACK?branch=main" target="_blank" rel="noreferrer" style={{
                   padding: '20px',
                   backgroundColor: 'rgba(255,255,255,0.8)',
@@ -113,11 +113,11 @@ export default function ServexSpecification() {
                   gap: '8px',
                   boxShadow: '0 4px 12px rgba(0,0,0,0.02)'
                 }}
-                onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#ffffff'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.06)'; }}
-                onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.8)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.02)'; }}>
+                  onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#ffffff'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.06)'; }}
+                  onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.8)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.02)'; }}>
                   <h3 style={{ fontSize: '16px', fontWeight: 500, margin: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     AI System Logic
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                   </h3>
                   <p style={{ fontSize: '13px', color: '#86868b', margin: 0, lineHeight: 1.5 }}>
                     Ultra-detailed documentation of the underlying intelligence backend, logic flows, and processing rules.
@@ -126,19 +126,19 @@ export default function ServexSpecification() {
               </div>
             </div>
 
-            <h1 style={{ 
-              fontSize: 'clamp(40px, 6vw, 64px)', 
-              fontWeight: 400, 
-              color: '#111', 
-              margin: '0 0 16px 0', 
-              letterSpacing: '-0.02em', 
-              lineHeight: 1.1 
+            <h1 style={{
+              fontSize: 'clamp(40px, 6vw, 64px)',
+              fontWeight: 400,
+              color: '#111',
+              margin: '0 0 16px 0',
+              letterSpacing: '-0.02em',
+              lineHeight: 1.1
             }}>
               About Servex Copilot
             </h1>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '40px', fontSize: '16px', lineHeight: 1.8, fontWeight: 300 }}>
-              
+
               <section>
                 <h2 style={{ fontSize: '24px', fontWeight: 500, color: '#111', marginBottom: '16px', letterSpacing: '-0.01em' }}>
                   Our Mission
@@ -230,7 +230,7 @@ export default function ServexSpecification() {
                 <h1 style={{ fontSize: '32px', fontWeight: 500, color: '#111', marginBottom: '24px', letterSpacing: '-0.01em' }}>
                   Technical Documentation & Operational Architecture
                 </h1>
-                
+
                 <div style={{ backgroundColor: 'rgba(0,0,0,0.03)', padding: '24px', borderRadius: '16px', marginBottom: '40px' }}>
                   <h3 style={{ fontSize: '18px', fontWeight: 600, color: '#111', marginBottom: '12px' }}>Executive Summary</h3>
                   <p>
@@ -295,7 +295,7 @@ export default function ServexSpecification() {
                 <p>
                   The complete lifecycle of a catalog update in Servex Copilot consists of three monolithic phases, orchestrated by the AI agents.
                 </p>
-                
+
                 <div style={{ marginTop: '32px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
                   <div>
                     <h3 style={{ fontSize: '20px', fontWeight: 500, color: '#111', marginBottom: '12px' }}>PHASE 1: Destructuring and Ingestion (Reverse Engineering)</h3>
@@ -369,7 +369,7 @@ export default function ServexSpecification() {
                   <li><strong>Total AI Governance:</strong> The Artificial Intelligence in Servex Copilot lacks unrestricted access. Every action the AI takes passes through pre-established permission filters, ensuring its autonomous reasoning executes within an absolute security perimeter.</li>
                   <li><strong>Immutable Traceability (Audit Logging):</strong> The platform operates as a "black box" for auditing. Every critical action is permanently recorded in the database: who logged in, who uploaded a base catalog, what CSV file was uploaded (at what exact time and by which user), and when the final file was reassembled. These records provide an immutable Audit Trail.</li>
                 </ul>
-                
+
                 <div style={{ marginTop: '32px', padding: '32px', backgroundColor: '#111', color: '#fff', borderRadius: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}>
                   <h3 style={{ fontSize: '22px', fontWeight: 500, marginBottom: '16px' }}>Conclusion</h3>
                   <p style={{ fontWeight: 300, lineHeight: 1.6, color: '#a1a1a6' }}>

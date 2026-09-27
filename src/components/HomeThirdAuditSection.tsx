@@ -5,18 +5,18 @@ import { useRouter } from 'next/navigation';
 
 const THIRD_CODE_TOKENS = [
   { t: "---\n", c: "#999999" },
-  { t: 'target: ', c: "#666666" },
-  { t: '"Industry Adaptation"\n', c: "#bbbbbb" },
-  { t: 'action: ', c: "#666666" },
-  { t: '"Initialize dynamic reconfiguration"\n', c: "#bbbbbb" },
+  { t: 'system: ', c: "#666666" },
+  { t: '"GLYNNE Governance Engine"\n', c: "#bbbbbb" },
+  { t: 'mode: ', c: "#666666" },
+  { t: '"Deterministic Enforcement"\n', c: "#bbbbbb" },
   { t: "---\n\n", c: "#999999" },
-  { t: "# AX INSTRUCTION\n\n", c: "#111111" },
-  { t: "> Analyzing current visitor's telemetry...\n", c: "#888888" },
-  { t: "> Adapting all operational workflows...\n", c: "#888888" },
-  { t: "> Aligning AI behaviors to match industry standards.\n\n", c: "#888888" },
+  { t: "# SECURITY TELEMETRY\n\n", c: "#111111" },
+  { t: "> Verifying zero-trust identity keys...\n", c: "#888888" },
+  { t: "> Evaluating agent operational permissions...\n", c: "#888888" },
+  { t: "> Enforcing immutable audit trail logging...\n\n", c: "#888888" },
   { t: "[STATUS]: ", c: "#111111" },
-  { t: "Industry transformation protocol ", c: "#666666" },
-  { t: "ACTIVE", c: "#228b22" },
+  { t: "System Guardrails ", c: "#666666" },
+  { t: "ACTIVE & PROTECTED", c: "#228b22" },
   { t: ".", c: "#111111" }
 ];
 
@@ -94,16 +94,16 @@ export default function HomeThirdAuditSection() {
 
           <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
             <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
-              The Vision Behind GLYNNE
+              Architectural Rigor & Engineering Vision
             </h1>
             <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
-              We aren't just building infrastructure; we are redefining what enterprise autonomy means. Discover the engineers, architects, and visionaries behind GLYNNE, and learn why we believe absolute security is the only way forward.
+              GLYNNE is engineered by systems architects who believe AI cannot enter enterprise operations without strict deterministic control. We design the infrastructure that makes AI predictable, secure, and fully auditable.
             </p>
-            
+
             <div style={{ display: 'flex', gap: '16px', marginTop: '32px', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
-              <button 
+              <button
                 className="responsive-btn"
-                onClick={() => window.location.href = 'https://axglynne.com/About'}
+                onClick={() => window.location.href = '/About'}
                 style={{
                   padding: '14px 28px',
                   borderRadius: '999px',
@@ -118,7 +118,7 @@ export default function HomeThirdAuditSection() {
                 onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#333333'; e.currentTarget.style.transform = 'scale(1.02)' }}
                 onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#111111'; e.currentTarget.style.transform = 'scale(1)' }}
               >
-                Get to know us
+                Discover our vision & team
               </button>
             </div>
           </div>

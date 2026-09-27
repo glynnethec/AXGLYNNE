@@ -20,7 +20,7 @@ export default function HeroSection() {
       >
         {/* Small Tag */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', fontWeight: 500, color: '#8f8f96', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-          <span style={{ fontSize: '16px' }}>⬡</span> AXGLYNNE
+          <span style={{ fontSize: '16px' }}>⬡</span> GLYNNE CONTROL LAYER
         </div>
 
         {/* Big Headline */}
@@ -47,7 +47,7 @@ export default function HeroSection() {
           letterSpacing: '0.01em',
           maxWidth: '650px'
         }}>
-          Design deterministic agents that reliably handle complex B2B workflows with AXGLYNNE, an advanced architectural framework and autonomous orchestration runtime.
+          GLYNNE is the governance runtime that integrates artificial intelligence into enterprise systems safely. We provide the architecture of control, permissions, and traceability that filters every action—enabling autonomous reasoning while maintaining absolute security.
         </p>
 
         {/* Buttons */}
@@ -63,9 +63,9 @@ export default function HeroSection() {
             border: '1px solid #111111',
             transition: 'all 0.2s ease'
           }}>
-            Methodology
+            Explore Methodology
           </Link>
-          <Link href="/Industries" style={{
+          <Link href="/About" style={{
             padding: '14px 28px',
             backgroundColor: 'transparent',
             color: '#111111',
@@ -76,7 +76,7 @@ export default function HeroSection() {
             border: '1px solid rgba(0,0,0,0.1)',
             transition: 'all 0.2s ease'
           }}>
-            Explore Industries
+            Explore Architecture
           </Link>
         </div>
       </div>

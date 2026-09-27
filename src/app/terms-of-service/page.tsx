@@ -4,12 +4,12 @@ import React, { useState } from 'react';
 import Header from '@/app/components/Header';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
 import LinPromptSection from '@/components/LinPromptSection';
-import { 
-  FiFileText, FiInfo, FiBriefcase, FiSettings, FiCpu, FiLayers, 
-  FiDatabase, FiAlertCircle, FiCloud, FiActivity, FiShield, FiKey, 
-  FiLock, FiCode, FiBox, FiCheckSquare, FiRefreshCw, FiTool, 
-  FiXOctagon, FiEyeOff, FiPauseCircle, FiTrash2, 
-  FiUserCheck, FiEdit3, FiGlobe, FiMail 
+import {
+  FiFileText, FiInfo, FiBriefcase, FiSettings, FiCpu, FiLayers,
+  FiDatabase, FiAlertCircle, FiCloud, FiActivity, FiShield, FiKey,
+  FiLock, FiCode, FiBox, FiCheckSquare, FiRefreshCw, FiTool,
+  FiXOctagon, FiEyeOff, FiPauseCircle, FiTrash2,
+  FiUserCheck, FiEdit3, FiGlobe, FiMail
 } from 'react-icons/fi';
 
 const SECTIONS = [
@@ -83,13 +83,13 @@ export default function TermsOfService() {
             gap: '20px',
             position: 'relative'
           }}>
-            
+
             {/* Left Spacer - Reserves space for collapsed sidebar */}
             <div className="desktop-only-sidebar" style={{ flex: '0 0 64px', position: 'relative' }}>
               <div style={{ position: 'sticky', top: '120px' }}>
-                
+
                 {/* Floating Island Sidebar - Expands on hover */}
-                <aside 
+                <aside
                   onMouseEnter={() => setIsSidebarOpen(true)}
                   onMouseLeave={() => setIsSidebarOpen(false)}
                   style={{
@@ -116,7 +116,7 @@ export default function TermsOfService() {
                     zIndex: 100 // Ensure it overlaps the content
                   }}
                 >
-                  
+
                   {SECTIONS.map((section) => (
                     <button
                       key={section.id}
@@ -149,21 +149,21 @@ export default function TermsOfService() {
                         if (activeSection !== section.id) e.currentTarget.style.backgroundColor = 'transparent';
                       }}
                     >
-                      <span style={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center', 
+                      <span style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                         fontSize: '16px',
                         marginRight: isSidebarOpen ? '12px' : '0',
                         transition: 'margin 0.3s ease'
                       }}>
                         {section.icon}
                       </span>
-                      
-                      <span style={{ 
-                        opacity: isSidebarOpen ? 1 : 0, 
-                        width: isSidebarOpen ? 'auto' : 0, 
-                        overflow: 'hidden', 
+
+                      <span style={{
+                        opacity: isSidebarOpen ? 1 : 0,
+                        width: isSidebarOpen ? 'auto' : 0,
+                        overflow: 'hidden',
                         transition: 'opacity 0.2s ease, width 0.3s ease',
                         textAlign: 'left',
                         lineHeight: 1.4
@@ -184,7 +184,7 @@ export default function TermsOfService() {
               padding: '0 0 80px 0',
             }}>
               <LinPromptSection hideCard={true} hideOrbCard={true} />
-              
+
               <h1 style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 400, color: '#111', margin: '120px 0 16px 0', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
                 Terms of Service
               </h1>
@@ -193,12 +193,12 @@ export default function TermsOfService() {
               </p>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', color: '#1d1d1f', fontSize: '15px', lineHeight: 1.7, fontWeight: 300, letterSpacing: '0.01em' }}>
-                
+
                 <section id="intro">
                   <p>These Terms of Service govern the access, contracting, and use of services, platforms, software solutions, automation systems, technological integrations, and related services provided by GLYNNE S.A.S. ("GLYNNE", "we", "us", or "the company").</p>
-                  <br/>
+                  <br />
                   <p>By contracting, accessing, or using any of GLYNNE's services, the client ("Client", "you", or "your") accepts these Terms of Service and any specific conditions that may be established through commercial proposals, service orders, contracts, technical annexes, service level agreements, or equivalent documents.</p>
-                  <br/>
+                  <br />
                   <p>When a specific contract exists between GLYNNE and the Client, the conditions of said contract shall prevail over these Terms in case of contradiction.</p>
                 </section>
 

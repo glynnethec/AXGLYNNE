@@ -157,7 +157,7 @@ export default function AboutManifesto() {
         <h1 className="glynne-title" style={{ maxWidth: '800px', fontSize: 'clamp(40px, 6vw, 72px)' }}>
           Engineering intelligence<br />from Bogotá to the world.
         </h1>
-        
+
         <div className="glynne-arrow">↓</div>
       </section>
 
@@ -166,7 +166,7 @@ export default function AboutManifesto() {
 
       <section className="glynne-section" style={{ paddingTop: '40px' }}>
         <div className="glynne-label">Who We Are</div>
-        
+
         <p className="glynne-text">
           <strong style={{ color: '#111111', fontWeight: 400 }}>GLYNNE S.A.S.</strong> is a technology company founded in Bogotá, Colombia, dedicated to software architecture, artificial intelligence, and systems automation.
         </p>
@@ -186,7 +186,7 @@ export default function AboutManifesto() {
         <h2 className="glynne-title">
           Technology is not a layer.<br />It is an architecture.
         </h2>
-        
+
         <p className="glynne-text">
           At Glynne, we believe that a good technological solution doesn't depend solely on an AI model, a framework, or a specific tool.
         </p>
@@ -207,13 +207,13 @@ export default function AboutManifesto() {
       <section className="glynne-section" style={{ paddingTop: '40px' }}>
         <div className="glynne-label">Technology</div>
         <h2 className="glynne-title" style={{ fontSize: 'clamp(28px, 4vw, 40px)' }}>
-          Built with the technologies<br/>shaping modern software.
+          Built with the technologies<br />shaping modern software.
         </h2>
-        
+
         <p className="glynne-text">
           We work with a modern and constantly evolving technological ecosystem. Our stack combines frontend and backend development technologies, cloud infrastructure, databases, machine learning, language models, intelligent agents, automation, and distributed architectures.
         </p>
-        
+
         <div className="tech-monospace">
           Next.js · React · Python · FastAPI · Node.js · AWS · GCP · Vercel · Render · Supabase · PostgreSQL · SQL · LangChain · LangGraph · OpenAI · Gemini · Groq · Scikit-learn · APIs · Microservices · AI Agents
         </div>
@@ -221,7 +221,7 @@ export default function AboutManifesto() {
         <p className="glynne-text" style={{ marginTop: '24px' }}>
           More than accumulating technologies, we seek to understand them deeply and use them when they truly add value to the system.
         </p>
-        
+
         <p className="glynne-text" style={{ color: '#111111', fontWeight: 400, fontSize: '20px', marginTop: '32px' }}>
           Tools change. Engineering remains.
         </p>
@@ -232,7 +232,7 @@ export default function AboutManifesto() {
       {/* 4. Nuestra forma de trabajar */}
       <section className="glynne-section" style={{ paddingTop: '40px' }}>
         <div className="glynne-label">How We Work</div>
-        
+
         <div className="work-process">
           <div className="work-process-item">
             <span>Understand</span>
@@ -287,9 +287,9 @@ export default function AboutManifesto() {
       {/* 5. Tecnología que evoluciona */}
       <section className="glynne-section" style={{ paddingTop: '40px' }}>
         <h2 className="glynne-title" style={{ fontSize: 'clamp(28px, 4vw, 40px)' }}>
-          We believe the best systems<br/>are never finished.
+          We believe the best systems<br />are never finished.
         </h2>
-        
+
         <p className="glynne-text">
           Technology changes constantly. New models, frameworks, architectures, and processing methods appear every day. That's why at Glynne, we maintain a culture of continuous research and learning.
         </p>
@@ -297,7 +297,7 @@ export default function AboutManifesto() {
           We experiment with new technologies, evaluate their behavior, and seek to understand how they can be responsibly incorporated into real systems. Our goal is not always to use the newest thing.
         </p>
         <p className="glynne-text" style={{ color: '#111111', fontWeight: 400, fontSize: '20px', marginTop: '32px' }}>
-          It's about building with what works best today<br/>and designing for what will be needed tomorrow.
+          It's about building with what works best today<br />and designing for what will be needed tomorrow.
         </p>
       </section>
 
@@ -310,9 +310,9 @@ export default function AboutManifesto() {
       <section className="glynne-section" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
         <div className="glynne-label">From Bogotá</div>
         <h2 className="glynne-title" style={{ fontSize: 'clamp(28px, 4vw, 40px)' }}>
-          Born in Colombia.<br/>Built for anywhere.
+          Born in Colombia.<br />Built for anywhere.
         </h2>
-        
+
         <p className="glynne-text">
           Glynne was born in Bogotá, Colombia, within a technological ecosystem that has allowed us to build, research, and work with projects of various scales.
         </p>
@@ -331,11 +331,11 @@ export default function AboutManifesto() {
 
       {/* 7. El Fundador Container */}
       <div className="mobile-founder-container" style={{ position: 'relative', zIndex: 10, width: '70vw', boxSizing: 'border-box', margin: '0 auto 80px auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '40px', padding: '80px 60px', border: '1px solid rgba(0,0,0,0.05)', borderRadius: '32px', backgroundColor: 'transparent', backdropFilter: 'blur(10px)' }}>
-        
+
         {/* Left: Bio Text */}
         <div className="mobile-founder-text" style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
           <div className="glynne-label mobile-founder-text" style={{ marginBottom: '24px', textAlign: 'left', color: '#111111' }}>The Founder</div>
-          
+
           <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, marginBottom: '24px' }}>
             <strong style={{ color: '#111111', fontWeight: 400 }}>Software architect, researcher, and developer</strong> specialized in artificial intelligence and automation systems.
           </p>
@@ -355,11 +355,11 @@ export default function AboutManifesto() {
           <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
             {/* Subtle Logo Background */}
             <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '110%', height: '110%', backgroundImage: 'url(/logos/GLYNNE.svg)', backgroundSize: 'contain', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', opacity: 0.04, zIndex: 0 }} />
-            
-            <img 
-              src="/AlexanderCEO.png" 
-              alt="Alexander Quiroga - Founder & CEO" 
-              style={{ width: '100%', display: 'block', filter: 'grayscale(100%) brightness(1.15) contrast(0.95)', position: 'relative', zIndex: 1 }} 
+
+            <img
+              src="/AlexanderCEO.png"
+              alt="Alexander Quiroga - Founder & CEO"
+              style={{ width: '100%', display: 'block', filter: 'grayscale(100%) brightness(1.15) contrast(0.95)', position: 'relative', zIndex: 1 }}
             />
 
             {/* Name Overlay acting as a masking frame */}
@@ -378,8 +378,8 @@ export default function AboutManifesto() {
                   fontWeight: 500,
                   transition: 'color 0.2s ease'
                 }}
-                onMouseOver={(e) => e.currentTarget.style.color = '#111'}
-                onMouseOut={(e) => e.currentTarget.style.color = '#86868b'}
+                  onMouseOver={(e) => e.currentTarget.style.color = '#111'}
+                  onMouseOut={(e) => e.currentTarget.style.color = '#86868b'}
                 >
                   View Full Profile →
                 </a>
@@ -395,14 +395,14 @@ export default function AboutManifesto() {
       {/* 8. Cierre & Quote */}
       <section className="glynne-section" style={{ paddingTop: '40px', paddingBottom: '160px' }}>
         <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 300, color: '#111111', fontStyle: 'italic', lineHeight: 1.4, maxWidth: '800px', margin: '0 auto 120px auto' }}>
-          “Technology shouldn't limit what a company can do.<br/>It should expand what it is capable of imagining.”
+          “Technology shouldn't limit what a company can do.<br />It should expand what it is capable of imagining.”
         </h2>
 
         <div className="glynne-arrow" style={{ margin: '0 0 120px 0' }}>↓</div>
 
         <div className="glynne-label" style={{ fontSize: '16px', letterSpacing: '0.2em' }}>GLYNNE</div>
         <h1 style={{ fontSize: 'clamp(40px, 6vw, 72px)', fontWeight: 400, color: '#111111', letterSpacing: '-0.02em', lineHeight: 1.1, margin: '24px 0 0 0' }}>
-          Engineers. Researchers.<br/>Builders.
+          Engineers. Researchers.<br />Builders.
         </h1>
       </section>
 

@@ -41,7 +41,7 @@ export default function VideoEcosystemSection() {
           padding: '6px 16px',
           marginBottom: '32px'
         }}>
-          <span style={{ fontSize: '11px', fontWeight: 500, color: '#1d1d1f', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Infrastructure Layer</span>
+          <span style={{ fontSize: '11px', fontWeight: 500, color: '#1d1d1f', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Infrastructure Ecosystem</span>
         </div>
 
         <h2 style={{
@@ -52,7 +52,7 @@ export default function VideoEcosystemSection() {
           margin: '0 0 12px 0',
           textAlign: 'center'
         }}>
-          The Control Ecosystem
+          The GLYNNE Integration Stack
         </h2>
         <p style={{
           fontSize: '13px',
@@ -64,7 +64,7 @@ export default function VideoEcosystemSection() {
           maxWidth: '600px',
           lineHeight: 1.6
         }}>
-          From secure API gateways to deterministic AI agents and traceable data architectures, we leverage enterprise-grade technologies to build the infrastructure that stands between your sensitive business systems and autonomous reasoning engines.
+          From secure API gateways to deterministic orchestration runtimes and traceable vector stores, GLYNNE integrates enterprise-grade technologies to sit reliably between legacy corporate software and autonomous reasoning engines.
         </p>
 
         </div>

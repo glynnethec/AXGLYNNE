@@ -18,8 +18,10 @@ export default function Home() {
     <>
       <SplashScreen />
       <BackgroundWrapper>
+        {/* 1. WHAT IS GLYNNE? */}
         <HeroSection />
-        {/* Top half of the container (Border removed) */}
+
+        {/* 2. WHY DOES IT MATTER? */}
         <div style={{
           width: '80vw',
           maxWidth: '80vw',
@@ -30,11 +32,62 @@ export default function Home() {
           <LinPromptSection hideCard={true} />
         </div>
 
+        {/* 3. HOW DOES IT WORK? */}
+        <div style={{
+          width: '80vw',
+          maxWidth: '80vw',
+          margin: '4rem auto 0',
+          backgroundColor: 'transparent',
+          padding: '0'
+        }}>
+          <HomeAuditSection />
+        </div>
+
+        {/* 4. HOW IS AI CONTROLLED? */}
+        <WorkflowDiagram />
+
+        {/* 5. HOW IS THE SYSTEM BUILT? */}
+        <VideoEcosystemSection />
+
+        {/* 6. DOES IT WORK IN PRACTICE? */}
+        <div style={{
+          width: '80vw',
+          maxWidth: '80vw',
+          margin: '0 auto',
+          backgroundColor: 'transparent',
+          padding: '0'
+        }}>
+          <HomeTaskAuditSection />
+        </div>
+
+        {/* 7. WHO BUILDS IT? & PROVEN AT */}
+        <div style={{
+          width: '80vw',
+          maxWidth: '80vw',
+          margin: '0 auto',
+          backgroundColor: 'transparent',
+          padding: '0'
+        }}>
+          <HomeThirdAuditSection />
+        </div>
+        <ClientLogosSection />
+
+        {/* 8. WHAT CAN I DO NEXT? */}
+        <div style={{
+          width: '80vw',
+          maxWidth: '80vw',
+          margin: '4rem auto 4rem',
+          backgroundColor: 'transparent',
+          padding: '0'
+        }}>
+          <HomeSecondAuditSection />
+        </div>
+
         {/* Massive Impact Banner (Groq-style layout) */}
         <div className="banner-main-container" style={{
           width: '100vw',
           height: '100vh',
-          backgroundColor: 'transparent', // Let the global grid show through
+          backgroundColor: 'transparent',
           margin: '0',
           display: 'flex',
           alignItems: 'center',
@@ -82,7 +135,7 @@ export default function Home() {
             left: '-10%',
             width: '60vw',
             height: '120vh',
-            background: 'radial-gradient(ellipse at center, rgba(245, 245, 248, 0.7) 0%, rgba(255, 255, 255, 0) 70%)', // Very faint cool white/gray
+            background: 'radial-gradient(ellipse at center, rgba(245, 245, 248, 0.7) 0%, rgba(255, 255, 255, 0) 70%)',
             filter: 'blur(80px)',
             animation: 'smokeFloat1 20s infinite ease-in-out',
             zIndex: 0,
@@ -96,7 +149,7 @@ export default function Home() {
             right: '-10%',
             width: '70vw',
             height: '130vh',
-            background: 'radial-gradient(ellipse at center, rgba(248, 248, 250, 0.6) 0%, rgba(255, 255, 255, 0) 70%)', // Very faint cool white/gray
+            background: 'radial-gradient(ellipse at center, rgba(248, 248, 250, 0.6) 0%, rgba(255, 255, 255, 0) 70%)',
             filter: 'blur(90px)',
             animation: 'smokeFloat2 25s infinite ease-in-out reverse',
             zIndex: 0,
@@ -114,18 +167,18 @@ export default function Home() {
               letterSpacing: '-0.03em',
               maxWidth: '70vw'
             }}>
-              Adapt to the<br />era of technology.
+              Deploy governed AI<br />in your enterprise.
             </h2>
 
             {/* Outline Button */}
-            <div className="banner-button-container" style={{ display: 'flex' }}>
+            <div className="banner-button-container" style={{ display: 'flex', gap: '16px' }}>
               <button
-                onClick={() => window.location.href = '/Panel'}
+                onClick={() => window.location.href = '/contact'}
                 style={{
                   padding: '16px 32px',
                   borderRadius: '999px',
-                  backgroundColor: 'transparent',
-                  color: '#111111',
+                  backgroundColor: '#111111',
+                  color: '#ffffff',
                   border: '1px solid #111111',
                   fontSize: '13px',
                   fontWeight: 600,
@@ -134,10 +187,10 @@ export default function Home() {
                   cursor: 'pointer',
                   transition: 'all 0.3s ease'
                 }}
-                onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#111111'; e.currentTarget.style.color = '#ffffff'; }}
-                onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#111111'; }}
+                onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#333333'; }}
+                onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#111111'; }}
               >
-                Start Building
+                Discuss Your System
               </button>
             </div>
           </div>
@@ -154,30 +207,14 @@ export default function Home() {
             display: 'flex',
             alignItems: 'center'
           }}>
-            <img 
-              src="/logos/GLYNNE.svg" 
-              alt="" 
-              style={{ height: '100%', objectFit: 'contain', maxWidth: '100vw' }} 
+            <img
+              src="/logos/GLYNNE.svg"
+              alt=""
+              style={{ height: '100%', objectFit: 'contain', maxWidth: '100vw' }}
             />
           </div>
         </div>
 
-        {/* Bottom half of the container (Border removed) */}
-        <div style={{
-          width: '80vw',
-          maxWidth: '80vw',
-          margin: '4rem auto 6rem',
-          backgroundColor: 'transparent',
-          padding: '0'
-        }}>
-          <HomeAuditSection />
-          <HomeTaskAuditSection />
-          <HomeSecondAuditSection />
-          <HomeThirdAuditSection />
-        </div>
-        <ClientLogosSection />
-        <WorkflowDiagram />
-        <VideoEcosystemSection />
         <Footer />
       </BackgroundWrapper>
     </>
