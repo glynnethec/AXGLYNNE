@@ -79,19 +79,11 @@ h1, h2, h3 {
   line-height: 1;
   letter-spacing: -0.02em;
   margin: 0;
-  background: linear-gradient(
-    160deg,
-    #d4d4d8 0%,
-    #e4e4e7 35%,
-    #ffffff 48%, /* Soft bright reflection */
-    #a1a1aa 50%, /* Sharp horizon cutoff (dark silver) */
-    #d4d4d8 75%,
-    #b8b8c0 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0px 15px 30px rgba(0, 0, 0, 0.08)); /* Physical presence */
+  color: #111111;
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: #111111;
+  background-clip: unset;
 }
 
 .hero-subtitle {
@@ -265,12 +257,12 @@ h1, h2, h3 {
 .title {
   font-size: clamp(2.5rem, 6vw, 5rem);
   font-weight: 900;
-  background: linear-gradient(135deg, #000000 0%, #434345 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #111111;
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: #111111;
   margin-bottom: 1rem;
   line-height: 1.1;
-  /* Removed shadow for a cleaner, flat minimalist look */
 }
 
 .subtitle {
