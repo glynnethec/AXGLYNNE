@@ -327,8 +327,8 @@ h1, h2, h3 {
   position: fixed;
   top: 24px;
   left: 50%;
-  width: 90%;
-  max-width: 800px;
+  width: 92%;
+  max-width: 1180px;
   height: 60px;
   display: flex;
   align-items: center;
