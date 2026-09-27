@@ -296,7 +296,7 @@ export default function Header() {
           <Link href="/" style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
             <img 
               src="/logos/GLYNNE.svg" 
-              alt="GLYNNE Logo" 
+              alt="AXGLYNNE Enterprise AI Platform Logo" 
               className="header-logo" 
             />
           </Link>

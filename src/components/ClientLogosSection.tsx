@@ -6,11 +6,11 @@ export default function ClientLogosSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const logos = [
-    { src: '/LogosClientes/logo.png', alt: 'SERVEX', height: 60 },
-    { src: '/LogosClientes/CUN.svg', alt: 'CUN', height: 75 },
-    { src: '/LogosClientes/Logo_el_sol.webp', alt: 'El Sol', height: 85 },
-    { src: '/LogosClientes/nido.svg', alt: 'Nido Automation', height: 80 },
-    { src: '/logos/GLYNNE.png', alt: 'GLYNNE', height: 60 },
+    { src: '/LogosClientes/logo.png', alt: 'SERVEX US - Enterprise AI & Catalog Automation Client', height: 60 },
+    { src: '/LogosClientes/CUN.svg', alt: 'Corporación Unificada Nacional CUN - Educational Institution', height: 75 },
+    { src: '/LogosClientes/Logo_el_sol.webp', alt: 'El Sol - Enterprise Business Client', height: 85 },
+    { src: '/LogosClientes/nido.svg', alt: 'Nido Automation - Industrial Automation Client', height: 80 },
+    { src: '/logos/GLYNNE.png', alt: 'AXGLYNNE Enterprise AI Infrastructure Emblem', height: 60 },
   ];
 
   const next = () => setCurrentIndex((prev) => (prev + 1) % logos.length);
