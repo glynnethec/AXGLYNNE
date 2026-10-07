@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { getCurrentUser } from '@/lib/supabaseClient';
 import { useTheme } from '@/lib/ThemeContext';
 import '@/app/Panel/components/AssemblyDashboard.css';
 
@@ -64,8 +66,22 @@ const DEFAULT_DATASET = [
 ];
 
 export default function CreateYourGlynneModelPage() {
+  const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { theme, toggleTheme } = useTheme();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const user = await getCurrentUser();
+      if (!user) {
+        router.replace('/login');
+      } else {
+        setIsAuthenticated(true);
+      }
+    };
+    checkAuth();
+  }, [router]);
 
   const [selectedModel, setSelectedModel] = useState('unsloth/Qwen2.5-0.5B-Instruct');
   const [modelIndex, setModelIndex] = useState(0);
@@ -395,7 +411,7 @@ export default function CreateYourGlynneModelPage() {
     }
   };
 
-  if (!mounted) return null;
+  if (!mounted || !isAuthenticated) return null;
 
   return (
     <div suppressHydrationWarning data-theme={theme} style={{ background: theme === 'light' ? '#f5f5f7' : '#000', height: '100vh', width: '100vw', overflow: 'hidden', position: 'relative' }}>
