@@ -1,9 +1,12 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useTheme } from '@/lib/ThemeContext';
 
 export default function EvolveCard() {
   const router = useRouter();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   return (
     <section style={{
@@ -21,10 +24,13 @@ export default function EvolveCard() {
       <div className="responsive-solutions-width responsive-card-borderless" style={{
         width: '70vw',
         maxWidth: '70vw',
-        border: '1px solid rgba(0, 0, 0, 0.1)',
+        border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
         borderRadius: '40px',
         padding: '6rem 2rem',
-        backgroundColor: 'transparent',
+        backgroundColor: isDark ? 'rgba(18, 18, 22, 0.85)' : 'transparent',
+        backdropFilter: isDark ? 'blur(30px)' : 'none',
+        WebkitBackdropFilter: isDark ? 'blur(30px)' : 'none',
+        boxShadow: isDark ? '0 12px 40px rgba(0,0,0,0.5)' : 'none',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
@@ -33,18 +39,18 @@ export default function EvolveCard() {
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            backgroundColor: '#f5f5f7',
+            backgroundColor: isDark ? 'rgba(255, 255, 255, 0.08)' : '#f5f5f7',
             borderRadius: '999px',
             padding: '6px 16px',
             marginBottom: '2rem'
           }}>
-            <span style={{ fontSize: '11px', fontWeight: 500, color: '#1d1d1f', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Continuous Evolution</span>
+            <span style={{ fontSize: '11px', fontWeight: 500, color: isDark ? '#ffffff' : '#1d1d1f', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Continuous Evolution</span>
           </div>
           
           <h2 style={{
             fontSize: 'clamp(28px, 4vw, 40px)',
             fontWeight: 400,
-            color: '#111111',
+            color: isDark ? '#ffffff' : '#111111',
             letterSpacing: '-0.02em',
             margin: '0 0 1.5rem 0',
             lineHeight: 1.1
@@ -53,7 +59,7 @@ export default function EvolveCard() {
           </h2>
           <p style={{
             fontSize: 'clamp(14px, 1.5vw, 16px)',
-            color: '#86868b',
+            color: isDark ? '#a1a1aa' : '#86868b',
             fontWeight: 300,
             letterSpacing: '0.01em',
             lineHeight: 1.6,
@@ -75,16 +81,16 @@ export default function EvolveCard() {
               style={{
                 padding: '14px 28px',
                 borderRadius: '999px',
-                backgroundColor: '#111111',
-                color: '#ffffff',
-                border: '1px solid #111111',
+                backgroundColor: isDark ? '#ffffff' : '#111111',
+                color: isDark ? '#111111' : '#ffffff',
+                border: isDark ? '1px solid #ffffff' : '1px solid #111111',
                 fontSize: '14px',
                 fontWeight: 500,
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
               }}
-              onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#333333'; e.currentTarget.style.transform = 'scale(1.02)' }}
-              onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#111111'; e.currentTarget.style.transform = 'scale(1)' }}
+              onMouseOver={(e) => { e.currentTarget.style.backgroundColor = isDark ? '#e4e4e7' : '#333333'; e.currentTarget.style.transform = 'scale(1.02)' }}
+              onMouseOut={(e) => { e.currentTarget.style.backgroundColor = isDark ? '#ffffff' : '#111111'; e.currentTarget.style.transform = 'scale(1)' }}
             >
               Discover our current projects
             </button>
@@ -93,18 +99,18 @@ export default function EvolveCard() {
               className="responsive-btn"
               onClick={() => router.push('/AX_chat')}
               style={{
-              padding: '14px 28px',
-              borderRadius: '999px',
-              backgroundColor: 'transparent',
-              color: '#111111',
-              border: '1px solid rgba(0,0,0,0.2)',
-              fontSize: '14px',
-              fontWeight: 500,
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-            }}
-            onMouseOver={(e) => { e.currentTarget.style.borderColor = '#111111'; e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.03)' }}
-            onMouseOut={(e) => { e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)'; e.currentTarget.style.backgroundColor = 'transparent' }}
+                padding: '14px 28px',
+                borderRadius: '999px',
+                backgroundColor: 'transparent',
+                color: isDark ? '#ffffff' : '#111111',
+                border: isDark ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid rgba(0,0,0,0.2)',
+                fontSize: '14px',
+                fontWeight: 500,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseOver={(e) => { e.currentTarget.style.borderColor = isDark ? '#ffffff' : '#111111'; e.currentTarget.style.backgroundColor = isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0,0,0,0.03)' }}
+              onMouseOut={(e) => { e.currentTarget.style.borderColor = isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0,0,0,0.2)'; e.currentTarget.style.backgroundColor = 'transparent' }}
             >
               Chat with AX, our AI
             </button>

@@ -24,41 +24,41 @@ interface NavCategory {
 const NAV_CATEGORIES: NavCategory[] = [
   {
     id: 'platform',
-    label: 'Platform & Solutions',
+    label: 'Plataforma & Soluciones',
     icon: <FaCubes size={13} />,
     items: [
-      { href: '/', label: 'Main Hub', desc: 'Central control center for the GLYNNE platform' },
-      { href: '/Servex_solution', label: 'Soluciones Enterprise', desc: 'Casos de estudio y conversión de matrices' },
-      { href: '/Industries', label: 'Automatización B2B', desc: 'Soluciones por sector industrial' },
-      { href: '/ia_vailable', label: 'Modelos de IA', desc: 'Catálogo de modelos LLM y adaptadores QLoRA' }
+      { href: '/', label: 'Inicio / Visión General', desc: 'Descubre cómo transformamos y automatizamos tu empresa con IA' },
+      { href: '/Servex_solution', label: 'Soluciones para Empresas', desc: 'Mira ejemplos reales y casos de éxito donde aplicamos nuestra tecnología' },
+      { href: '/Industries', label: 'IA por Sector Industrial', desc: 'Explora cómo adaptamos la automatización a tu industria (Salud, Finanzas, Legal y más)' },
+      { href: '/ia_vailable', label: 'Catálogo de Modelos de IA', desc: 'Conoce la lista de inteligencia artificial lista para conectar en tu negocio' }
     ]
   },
   {
     id: 'ai-systems',
-    label: 'AI Systems',
+    label: 'Sistemas de IA',
     icon: <FaRobot size={13} />,
     items: [
-      { href: '/AX_chat', label: 'Chat con AX Assistant', desc: 'Interacción autónoma con motor de razonamiento' },
-      { href: '/AX_voice', label: 'Llamada de Voz AX Voice', desc: 'Comunicación por voz interactiva en tiempo real' }
+      { href: '/AX_chat', label: 'Asistente de Chat (AX)', desc: 'Prueba nuestro chat inteligente capaz de responder y analizar información al instante' },
+      { href: '/AX_voice', label: 'Asistente de Voz Interactivo', desc: 'Experimenta conversaciones de voz fluidas directamente con nuestra IA' }
     ]
   },
   {
     id: 'company',
-    label: 'Company & Vision',
+    label: 'Empresa & Visión',
     icon: <FaBuilding size={13} />,
     items: [
-      { href: '/About', label: 'Visión & Arquitectura', desc: 'Principios de infraestructura GLYNNE' },
-      { href: '/contact', label: 'Contacto Directo', desc: 'Diseño arquitectónico con nuestro equipo' }
+      { href: '/About', label: 'Acerca de GLYNNE', desc: 'Conoce nuestra historia, filosofía y cómo construimos software inteligente' },
+      { href: '/contact', label: 'Hablar con un Especialista', desc: 'Ponte en contacto con nuestro equipo para diseñar la solución ideal para tu empresa' }
     ]
   },
   {
     id: 'access-legal',
-    label: 'Access & Legal',
+    label: 'Acceso & Legal',
     icon: <FaShieldAlt size={13} />,
     items: [
-      { href: '/login', label: 'Acceso al Dashboard', desc: 'Gestión de nodos enterprise y credenciales' },
-      { href: '/terms-of-service', label: 'Términos de Servicio', desc: 'Condiciones de uso de infraestructura' },
-      { href: '/privacy-policy', label: 'Política de Privacidad', desc: 'Protección y soberanía de datos corporativos' }
+      { href: '/login', label: 'Iniciar Sesión / Panel de Cliente', desc: 'Ingresa a tu cuenta para gestionar tus servicios y proyectos de IA' },
+      { href: '/terms-of-service', label: 'Términos del Servicio', desc: 'Consulta las condiciones de uso y licencias de nuestra plataforma' },
+      { href: '/privacy-policy', label: 'Política de Privacidad y Datos', desc: 'Infórmate sobre cómo protegemos y cuidamos la información de tu empresa' }
     ]
   }
 ];
@@ -105,7 +105,7 @@ export default function Header() {
         setIsScrolled(false);
       }
     };
-    
+
     handleScroll();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -310,7 +310,7 @@ export default function Header() {
       `}</style>
 
       {/* The Mega Dropdown Container */}
-      <div 
+      <div
         className={`glynne-mega-dropdown ${isOpen ? 'open' : ''}`}
         onMouseEnter={() => {
           if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -320,7 +320,7 @@ export default function Header() {
       >
         <BackgroundWrapper>
           <div className="mega-dropdown-content" style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '100px 24px 40px 24px', width: '100%' }}>
-            
+
             {/* Sub-items View - Desktop */}
             <div className="desktop-nav-categories" style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
               <div className="subnav-grid">
@@ -398,18 +398,18 @@ export default function Header() {
       </div>
 
       {/* Dynamic Floating Navbar Header */}
-      <header 
-        className={`fixed-header ${isScrolled ? "header-visible" : "header-hidden"}`} 
+      <header
+        className={`fixed-header ${isScrolled ? "header-visible" : "header-hidden"}`}
         style={{ zIndex: 9999 }}
         onMouseLeave={handleMouseLeaveHeader}
       >
         {/* 1. Left: Logo */}
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Link href="/" style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-            <img 
-              src="/logos/GLYNNE.svg" 
-              alt="AXGLYNNE Enterprise AI Platform Logo" 
-              className="header-logo" 
+            <img
+              src="/logos/GLYNNE.svg"
+              alt="AXGLYNNE Enterprise AI Platform Logo"
+              className="header-logo"
             />
           </Link>
         </div>
@@ -438,30 +438,9 @@ export default function Header() {
 
         <nav className="nav-links">
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-            <button
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-              style={{
-                background: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
-                border: theme === 'dark' ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(0, 0, 0, 0.08)',
-                borderRadius: '50%',
-                width: '34px',
-                height: '34px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                color: theme === 'dark' ? '#f5f5f7' : '#1d1d1f',
-                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                boxShadow: '0 2px 10px rgba(0,0,0,0.02)'
-              }}
-              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-            >
-              {theme === 'dark' ? <FaSun size={13} color="#ffd700" /> : <FaMoon size={13} color="#555" />}
-            </button>
 
-            <Link 
-              href={isLoggedIn ? "/Panel" : "/login"} 
+            <Link
+              href={isLoggedIn ? "/Panel" : "/login"}
               style={{
                 padding: isLoggedIn ? '0' : '0.4rem 1.2rem',
                 borderRadius: '999px',
@@ -485,7 +464,7 @@ export default function Header() {
             >
               {isLoggedIn ? <FaUser size={13} color={theme === 'dark' ? '#ffffff' : '#333333'} /> : <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><FaUser size={10} color={theme === 'dark' ? '#aaa' : '#888'} /> Log In</span>}
             </Link>
-            
+
             <button className="mobile-menu-btn" onClick={toggleMobileMenu} aria-label="Toggle menu">
               {isOpen ? (
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
