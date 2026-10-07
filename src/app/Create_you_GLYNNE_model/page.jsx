@@ -884,12 +884,12 @@ export default function CreateYourGlynneModelPage() {
                     }}
                   >
                     {isGeneratingDataset ? (
-                      <>
+                      <span key="groq-btn-loading" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                         <span style={{ display: 'inline-block', width: '10px', height: '10px', border: '2px solid currentColor', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
                         AGENTES GROQ ANALIZANDO & SINTETIZANDO DATASET...
-                      </>
+                      </span>
                     ) : (
-                      'GENERAR DATASET INTELIGENTE CON GROQ'
+                      <span key="groq-btn-idle">GENERAR DATASET INTELIGENTE CON GROQ</span>
                     )}
                   </button>
                 </div>
@@ -944,12 +944,12 @@ export default function CreateYourGlynneModelPage() {
                 }}
               >
                 {trainingState.status === 'running' ? (
-                  <>
+                  <span key="train-btn-running" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ display: 'inline-block', width: '12px', height: '12px', border: '2px solid #fff', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
                     ENTRENANDO...
-                  </>
+                  </span>
                 ) : (
-                  'INICIAR ENTRENAMIENTO GLYNNE'
+                  <span key="train-btn-idle">INICIAR ENTRENAMIENTO GLYNNE</span>
                 )}
               </button>
             </div>
@@ -1003,11 +1003,11 @@ export default function CreateYourGlynneModelPage() {
 
               {/* Accesos rápidos con preguntas del dataset */}
               {dataset && dataset.length > 0 && (
-                <div style={{ display: 'flex', gap: '6px', marginBottom: '8px', overflowX: 'auto', paddingBottom: '4px' }}>
+                <div key="dataset-suggestions-container" style={{ display: 'flex', gap: '6px', marginBottom: '8px', overflowX: 'auto', paddingBottom: '4px' }}>
                   <span style={{ fontSize: '10px', opacity: 0.6, alignSelf: 'center', whiteSpace: 'nowrap' }}>Sugerencia:</span>
                   {dataset.map((item, idx) => (
                     <button
-                      key={idx}
+                      key={`dataset-sug-${idx}-${(item.input || '').slice(0, 15)}`}
                       onClick={() => handleSendChatMessage(item.input)}
                       style={{
                         fontSize: '10px',
@@ -1081,7 +1081,7 @@ export default function CreateYourGlynneModelPage() {
                   >
                     {chatMessages.map((msg, idx) => (
                       <div
-                        key={idx}
+                        key={`chat-msg-${idx}-${msg.sender}`}
                         style={{
                           alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start',
                           maxWidth: '85%',
@@ -1705,7 +1705,7 @@ export default function CreateYourGlynneModelPage() {
                 paddingRight: '6px'
               }}>
                 {dataset.map((item, idx) => (
-                  <div key={`qa-preview-item-${idx}`} style={{
+                  <div key={`qa-preview-item-${idx}-${(item.input || '').slice(0, 15)}`} style={{
                     padding: '12px 14px',
                     borderRadius: '8px',
                     backgroundColor: theme === 'light' ? 'rgba(15, 23, 42, 0.04)' : 'rgba(255, 255, 255, 0.04)',
