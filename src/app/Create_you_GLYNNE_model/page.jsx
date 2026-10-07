@@ -125,7 +125,7 @@ export default function CreateYourGlynneModelPage() {
 
     setIsGeneratingDataset(true);
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8001';
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://ax-zyxe.onrender.com';
       const formData = new FormData();
       formData.append('personality_text', personalityText);
       formData.append('business_text', businessText);
@@ -171,7 +171,7 @@ export default function CreateYourGlynneModelPage() {
     let interval;
     const fetchStatus = async () => {
       try {
-        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8001';
+        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://ax-zyxe.onrender.com';
         const res = await fetch(`${backendUrl}/api/train/status`).catch(() => null);
         if (res && res.ok) {
           const data = await res.json();
@@ -254,10 +254,10 @@ export default function CreateYourGlynneModelPage() {
         ...prev,
         status: 'running',
         progress: 5,
-        logs: ['[CLIENTE] Enviando orden de entrenamiento a GLYNNE CORE (http://localhost:8001)...']
+        logs: ['[CLIENTE] Enviando orden de entrenamiento a GLYNNE CORE (https://ax-zyxe.onrender.com)...']
       }));
 
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8001';
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://ax-zyxe.onrender.com';
       const res = await fetch(`${backendUrl}/api/train`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -277,7 +277,7 @@ export default function CreateYourGlynneModelPage() {
       setTrainingState(prev => ({
         ...prev,
         status: 'error',
-        error_message: 'No se pudo conectar con el servidor GLYNNE_LOGIC_2026 en el puerto 8001.'
+        error_message: 'No se pudo conectar con el servidor GLYNNE_LOGIC_2026 en Render (https://ax-zyxe.onrender.com).'
       }));
     }
   };
@@ -296,7 +296,7 @@ export default function CreateYourGlynneModelPage() {
     setIsInferring(true);
 
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8001';
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://ax-zyxe.onrender.com';
       const res = await fetch(`${backendUrl}/api/train/test_chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -360,14 +360,14 @@ export default function CreateYourGlynneModelPage() {
   };
 
   const handleDirectDownload = () => {
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8001';
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://ax-zyxe.onrender.com';
     window.open(`${backendUrl}/api/train/download`, '_blank');
   };
 
   const handleResetAll = async () => {
     if (window.confirm('¿Estás seguro de que deseas limpiar todo? Esto eliminará la configuración actual, los registros de la terminal y restablecerá el estado para un nuevo proceso.')) {
       try {
-        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8001';
+        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://ax-zyxe.onrender.com';
         await fetch(`${backendUrl}/api/train/reset`, { method: 'POST' }).catch(() => null);
       } catch (err) {
         // Silencioso
