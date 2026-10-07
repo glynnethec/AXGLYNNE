@@ -7,6 +7,7 @@ import {
   FiShield, FiBriefcase, FiUsers, FiActivity,
   FiTrendingUp, FiCheckCircle
 } from 'react-icons/fi';
+import { useTheme } from '@/lib/ThemeContext';
 
 const CATEGORIES = ['La Premisa', 'Sectores', 'Filosofía GLYNNE'];
 
@@ -53,6 +54,8 @@ const SECTIONS = [
 export default function B2BProcessManifesto() {
   const [activeSection, setActiveSection] = useState('intro');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   const scrollToSection = (id: string) => {
     setActiveSection(id);
@@ -74,30 +77,31 @@ export default function B2BProcessManifesto() {
         .methodology-article h1 {
           font-size: 36px;
           font-weight: 500;
-          color: #111;
+          color: ${isDark ? '#ffffff' : '#111111'};
           letter-spacing: -0.02em;
           margin: 0 0 40px 0;
           padding-bottom: 20px;
-          border-bottom: 2px solid rgba(0,0,0,0.1);
+          border-bottom: ${isDark ? '2px solid rgba(255,255,255,0.1)' : '2px solid rgba(0,0,0,0.1)'};
         }
         .methodology-article h2 {
           font-size: 28px;
           font-weight: 500;
-          color: #111;
+          color: ${isDark ? '#ffffff' : '#111111'};
           letter-spacing: -0.01em;
           margin: 60px 0 20px 0;
           padding-bottom: 20px;
-          border-bottom: 1px solid rgba(0,0,0,0.1);
+          border-bottom: ${isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)'};
         }
         .methodology-article h3 {
           font-size: 22px;
           font-weight: 500;
-          color: #111;
+          color: ${isDark ? '#ffffff' : '#111111'};
           margin: 40px 0 16px 0;
         }
         .methodology-article p {
           margin-bottom: 24px;
           line-height: 1.7;
+          color: ${isDark ? '#a1a1aa' : '#1d1d1f'};
         }
         .methodology-article ul {
           margin-bottom: 24px;
@@ -106,21 +110,22 @@ export default function B2BProcessManifesto() {
         .methodology-article li {
           margin-bottom: 8px;
           line-height: 1.6;
+          color: ${isDark ? '#a1a1aa' : '#1d1d1f'};
         }
         .methodology-article strong {
           font-weight: 600;
-          color: #111;
+          color: ${isDark ? '#ffffff' : '#111111'};
         }
         .methodology-article .workflow-step {
           display: block;
           margin: 16px 0;
           font-family: 'SF Mono', monospace;
-          background: rgba(0,0,0,0.03);
+          background: ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)'};
           padding: 12px 20px;
           border-radius: 8px;
           font-size: 14px;
-          color: #333;
-          border: 1px solid rgba(0,0,0,0.05);
+          color: ${isDark ? '#ffffff' : '#333333'};
+          border: ${isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.05)'};
         }
       `}</style>
 
@@ -159,13 +164,13 @@ export default function B2BProcessManifesto() {
               maxHeight: 'calc(100vh - 160px)',
               overflowY: 'auto',
               overflowX: 'hidden',
-              backgroundColor: 'rgba(255, 255, 255, 0.85)',
+              backgroundColor: isDark ? 'rgba(18, 18, 22, 0.85)' : 'rgba(255, 255, 255, 0.85)',
               backdropFilter: 'blur(30px)',
               WebkitBackdropFilter: 'blur(30px)',
               borderRadius: '24px',
               padding: isSidebarOpen ? '24px 16px' : '24px 0',
-              border: '1px solid rgba(0,0,0,0.06)',
-              boxShadow: isSidebarOpen ? '0 24px 80px rgba(0,0,0,0.1)' : '0 12px 40px rgba(0,0,0,0.04)',
+              border: isDark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(0,0,0,0.06)',
+              boxShadow: isSidebarOpen ? (isDark ? '0 24px 80px rgba(0,0,0,0.6)' : '0 24px 80px rgba(0,0,0,0.1)') : (isDark ? '0 12px 40px rgba(0,0,0,0.4)' : '0 12px 40px rgba(0,0,0,0.04)'),
               display: 'flex',
               flexDirection: 'column',
               alignItems: isSidebarOpen ? 'flex-start' : 'center',
@@ -180,11 +185,11 @@ export default function B2BProcessManifesto() {
                   <div style={{
                     fontSize: '11px',
                     fontWeight: 600,
-                    color: '#86868b',
+                    color: isDark ? '#a1a1aa' : '#86868b',
                     textTransform: 'uppercase',
                     letterSpacing: '0.1em',
                     padding: '0 12px 8px 12px',
-                    borderBottom: '1px solid rgba(0,0,0,0.05)',
+                    borderBottom: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.05)',
                     marginBottom: '8px'
                   }}>
                     {category}
@@ -206,7 +211,7 @@ export default function B2BProcessManifesto() {
                       padding: isSidebarOpen ? '8px 12px' : '0',
                       borderRadius: '12px',
                       fontSize: '13px',
-                      color: activeSection === section.id ? '#111' : '#86868b',
+                      color: activeSection === section.id ? (isDark ? '#ffffff' : '#111111') : (isDark ? '#a1a1aa' : '#86868b'),
                       fontWeight: activeSection === section.id ? 600 : 400,
                       cursor: 'pointer',
                       transition: 'all 0.2s ease',
@@ -215,13 +220,13 @@ export default function B2BProcessManifesto() {
                       position: 'relative'
                     }}
                     onMouseOver={(e) => {
-                      e.currentTarget.style.color = '#111';
+                      e.currentTarget.style.color = isDark ? '#ffffff' : '#111111';
                       if (!isSidebarOpen) {
-                        e.currentTarget.style.background = 'rgba(0,0,0,0.04)';
+                        e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)';
                       }
                     }}
                     onMouseOut={(e) => {
-                      e.currentTarget.style.color = activeSection === section.id ? '#111' : '#86868b';
+                      e.currentTarget.style.color = activeSection === section.id ? (isDark ? '#ffffff' : '#111111') : (isDark ? '#a1a1aa' : '#86868b');
                       if (!isSidebarOpen) {
                         e.currentTarget.style.background = 'transparent';
                       }
@@ -235,7 +240,7 @@ export default function B2BProcessManifesto() {
                         width: '4px',
                         height: '4px',
                         borderRadius: '50%',
-                        backgroundColor: '#111'
+                        backgroundColor: isDark ? '#ffffff' : '#111111'
                       }} />
                     )}
                     <span style={{
@@ -244,7 +249,7 @@ export default function B2BProcessManifesto() {
                       justifyContent: 'center',
                       fontSize: '16px',
                       width: '24px',
-                      color: activeSection === section.id ? '#111' : '#86868b'
+                      color: activeSection === section.id ? (isDark ? '#ffffff' : '#111111') : (isDark ? '#a1a1aa' : '#86868b')
                     }}>
                       {section.icon}
                     </span>
@@ -270,13 +275,15 @@ export default function B2BProcessManifesto() {
             maxWidth: '800px',
             margin: '0 auto',
             width: '100%',
-            backgroundColor: '#ffffff',
+            backgroundColor: isDark ? 'rgba(18, 18, 22, 0.85)' : '#ffffff',
+            backdropFilter: 'blur(30px)',
+            WebkitBackdropFilter: 'blur(30px)',
             borderRadius: '24px',
             padding: '60px',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.03)',
-            border: '1px solid rgba(0,0,0,0.04)'
+            boxShadow: isDark ? '0 12px 40px rgba(0,0,0,0.5)' : '0 4px 20px rgba(0,0,0,0.03)',
+            border: isDark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(0,0,0,0.04)'
           }}>
-            <article className="methodology-article" style={{ fontSize: '17px', lineHeight: 1.7, color: '#1d1d1f', fontWeight: 300 }}>
+            <article className="methodology-article" style={{ fontSize: '17px', lineHeight: 1.7, color: isDark ? '#a1a1aa' : '#1d1d1f', fontWeight: 300 }}>
 
               <div id="intro">
                 <h1>Inteligencia artificial aplicada a industrias reales</h1>
@@ -711,12 +718,12 @@ export default function B2BProcessManifesto() {
                 <div style={{
                   marginTop: '80px',
                   padding: '40px',
-                  backgroundColor: '#f5f5f7',
+                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.04)' : '#f5f5f7',
                   borderRadius: '16px',
-                  border: '1px solid rgba(0,0,0,0.05)'
+                  border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0,0,0,0.05)'
                 }}>
-                  <h2 style={{ margin: '0 0 24px 0', border: 'none', padding: 0 }}>AXGLYNNE</h2>
-                  <p style={{ fontWeight: 500, fontSize: '18px' }}>
+                  <h2 style={{ margin: '0 0 24px 0', border: 'none', padding: 0, color: isDark ? '#ffffff' : '#111111' }}>AXGLYNNE</h2>
+                  <p style={{ fontWeight: 500, fontSize: '18px', color: isDark ? '#ffffff' : '#111111' }}>
                     Entendemos la industria.<br />
                     Auditamos el proceso.<br />
                     Diseñamos la arquitectura.<br />
@@ -727,9 +734,9 @@ export default function B2BProcessManifesto() {
                     Controlamos cada interacción.<br />
                     Y construimos el ecosistema que la empresa necesita para evolucionar.
                   </p>
-                  <p>Porque cada industria tiene problemas diferentes. Pero todas tienen algo en común: <strong>procesos que pueden funcionar mejor.</strong></p>
-                  <p>GLYNNE convierte esos procesos en sistemas tecnológicos capaces de comprender información, ejecutar operaciones, conectar infraestructura y utilizar inteligencia artificial de manera controlada.</p>
-                  <p style={{ fontSize: '20px', fontWeight: 500, color: '#111', marginTop: '32px' }}>
+                  <p style={{ color: isDark ? '#a1a1aa' : '#1d1d1f' }}>Porque cada industria tiene problemas diferentes. Pero todas tienen algo en común: <strong>procesos que pueden funcionar mejor.</strong></p>
+                  <p style={{ color: isDark ? '#a1a1aa' : '#1d1d1f' }}>GLYNNE convierte esos procesos en sistemas tecnológicos capaces de comprender información, ejecutar operaciones, conectar infraestructura y utilizar inteligencia artificial de manera controlada.</p>
+                  <p style={{ fontSize: '20px', fontWeight: 500, color: isDark ? '#ffffff' : '#111111', marginTop: '32px' }}>
                     No construimos una IA para tu empresa.<br />
                     Construimos la infraestructura donde la IA puede trabajar para tu empresa.
                   </p>

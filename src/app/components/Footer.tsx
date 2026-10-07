@@ -78,7 +78,6 @@ export default function Footer() {
           <Link href="/ia_vailable" className="footer-link">AI Available</Link>
           <Link href="/AX_voice" className="footer-link">AX Voice</Link>
           <Link href="/AX_chat" className="footer-link">AX Chat</Link>
-          <Link href="/security-data-protection" className="footer-link">Security & Data</Link>
         </div>
 
         <div className="footer-links-col">

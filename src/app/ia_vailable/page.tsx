@@ -4,6 +4,7 @@ import BackgroundWrapper from '@/components/BackgroundWrapper';
 import Footer from '@/app/components/Footer';
 import LinPromptSection from '@/components/LinPromptSection';
 import OrbCardSection from '@/components/OrbCardSection';
+import { useTheme } from '@/lib/ThemeContext';
 
 const eliteModels = [
   { name: 'GPT-4o', id: 'gpt-4o', speed: 'High', price: '$5.00 in / $15.00 out', limit: 'Tier dependent', context: '128,000', completion: '4,096' },
@@ -40,16 +41,21 @@ const previewModels = [
 ];
 
 export default function IaAvailablePage() {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
   return (
     <BackgroundWrapper>
       <style>{`
         .table-wrapper {
           width: 100%;
           overflow-x: auto;
-          background-color: #ffffff;
+          background-color: ${isDark ? 'rgba(18, 18, 22, 0.85)' : '#ffffff'};
+          backdrop-filter: blur(30px);
+          -webkit-backdrop-filter: blur(30px);
           border-radius: 16px;
-          border: 1px solid rgba(0,0,0,0.05);
-          box-shadow: 0 4px 24px rgba(0,0,0,0.02);
+          border: ${isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0,0,0,0.05)'};
+          box-shadow: ${isDark ? '0 12px 40px rgba(0,0,0,0.5)' : '0 4px 24px rgba(0,0,0,0.02)'};
           -webkit-overflow-scrolling: touch;
         }
         
@@ -64,11 +70,11 @@ export default function IaAvailablePage() {
           padding: 16px 24px;
           font-size: 11px;
           font-weight: 600;
-          color: #86868b;
+          color: ${isDark ? '#a1a1aa' : '#86868b'};
           text-transform: uppercase;
           letter-spacing: 0.05em;
-          border-bottom: 1px solid rgba(0,0,0,0.05);
-          background-color: #fcfcfd;
+          border-bottom: ${isDark ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0,0,0,0.05)'};
+          background-color: ${isDark ? 'rgba(255, 255, 255, 0.03)' : '#fcfcfd'};
         }
 
         @media (max-width: 700px) {
@@ -86,16 +92,16 @@ export default function IaAvailablePage() {
             display: flex;
             flex-direction: column;
             margin-bottom: 16px;
-            border: 1px solid rgba(0,0,0,0.05) !important;
+            border: ${isDark ? '1px solid rgba(255, 255, 255, 0.1) !important' : '1px solid rgba(0,0,0,0.05) !important'};
             border-radius: 12px;
-            background-color: #ffffff;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+            background-color: ${isDark ? 'rgba(18, 18, 22, 0.85)' : '#ffffff'};
+            box-shadow: ${isDark ? '0 4px 20px rgba(0,0,0,0.4)' : '0 2px 12px rgba(0,0,0,0.03)'};
           }
           .premium-table td {
             display: flex;
             flex-direction: column;
             padding: 12px 16px !important;
-            border-bottom: 1px solid rgba(0,0,0,0.03);
+            border-bottom: ${isDark ? '1px solid rgba(255, 255, 255, 0.05)' : '1px solid rgba(0,0,0,0.03)'};
           }
           .premium-table td:last-child {
             border-bottom: none;
@@ -104,7 +110,7 @@ export default function IaAvailablePage() {
             content: attr(data-label);
             font-size: 10px;
             font-weight: 600;
-            color: #86868b;
+            color: ${isDark ? '#a1a1aa' : '#86868b'};
             text-transform: uppercase;
             letter-spacing: 0.05em;
             margin-bottom: 6px;
@@ -127,7 +133,7 @@ export default function IaAvailablePage() {
             fontWeight: 500,
             letterSpacing: '0.1em',
             textTransform: 'uppercase',
-            color: '#1d1d1f',
+            color: isDark ? '#ffffff' : '#1d1d1f',
             marginBottom: '24px'
           }}>
             Integration Capabilities
@@ -137,7 +143,7 @@ export default function IaAvailablePage() {
             fontSize: 'clamp(40px, 6vw, 72px)',
             fontWeight: 400,
             letterSpacing: '-0.02em',
-            color: '#111111',
+            color: isDark ? '#ffffff' : '#111111',
             lineHeight: 1.1,
             margin: '0 0 24px 0',
           }}>
@@ -146,7 +152,7 @@ export default function IaAvailablePage() {
 
           <p style={{
             fontSize: 'clamp(14px, 1.5vw, 16px)',
-            color: '#86868b',
+            color: isDark ? '#a1a1aa' : '#86868b',
             fontWeight: 300,
             lineHeight: 1.6,
             maxWidth: '600px',
@@ -173,8 +179,8 @@ export default function IaAvailablePage() {
           ].map((section, idx) => (
             <div key={idx} style={{ marginBottom: '80px', width: '100%' }}>
               <div style={{ marginBottom: '24px' }}>
-                <h2 style={{ fontSize: '24px', fontWeight: 500, color: '#111111', marginBottom: '8px' }}>{section.title}</h2>
-                <p style={{ fontSize: '14px', color: '#86868b', lineHeight: 1.5, margin: 0 }}>{section.desc}</p>
+                <h2 style={{ fontSize: '24px', fontWeight: 500, color: isDark ? '#ffffff' : '#111111', marginBottom: '8px' }}>{section.title}</h2>
+                <p style={{ fontSize: '14px', color: isDark ? '#a1a1aa' : '#86868b', lineHeight: 1.5, margin: 0 }}>{section.desc}</p>
               </div>
 
               <div className="table-wrapper">
@@ -191,16 +197,16 @@ export default function IaAvailablePage() {
                   </thead>
                   <tbody>
                     {section.data.map((item, index) => (
-                      <tr key={item.id} style={{ borderBottom: index === section.data.length - 1 ? 'none' : '1px solid rgba(0,0,0,0.03)', transition: 'background-color 0.2s', cursor: 'default' }} onMouseOver={(e) => { if (window.innerWidth > 700) e.currentTarget.style.backgroundColor = '#fafafa' }} onMouseOut={(e) => { if (window.innerWidth > 700) e.currentTarget.style.backgroundColor = 'transparent' }}>
+                      <tr key={item.id} style={{ borderBottom: index === section.data.length - 1 ? 'none' : (isDark ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(0,0,0,0.03)'), transition: 'background-color 0.2s', cursor: 'default' }} onMouseOver={(e) => { if (window.innerWidth > 700) e.currentTarget.style.backgroundColor = isDark ? 'rgba(255,255,255,0.05)' : '#fafafa' }} onMouseOut={(e) => { if (window.innerWidth > 700) e.currentTarget.style.backgroundColor = 'transparent' }}>
                         <td data-label="Model ID" style={{ padding: '16px 24px' }}>
-                          <div style={{ fontSize: '14px', fontWeight: 500, color: '#111111' }}>{item.name}</div>
-                          <div style={{ fontSize: '12px', color: '#86868b', fontFamily: 'monospace', marginTop: '4px' }}>{item.id}</div>
+                          <div style={{ fontSize: '14px', fontWeight: 500, color: isDark ? '#ffffff' : '#111111' }}>{item.name}</div>
+                          <div style={{ fontSize: '12px', color: isDark ? '#a1a1aa' : '#86868b', fontFamily: 'monospace', marginTop: '4px' }}>{item.id}</div>
                         </td>
-                        <td data-label="Speed (T/s)" style={{ padding: '16px 24px', fontSize: '14px', color: '#333333', fontFamily: 'monospace' }}>{item.speed}</td>
-                        <td data-label="Price" style={{ padding: '16px 24px', fontSize: '13px', color: '#555555' }}>{item.price}</td>
-                        <td data-label="Rate Limits" style={{ padding: '16px 24px', fontSize: '13px', color: '#555555' }}>{item.limit}</td>
-                        <td data-label="Context" style={{ padding: '16px 24px', fontSize: '13px', color: '#333333', fontFamily: 'monospace' }}>{item.context}</td>
-                        <td data-label="Max Comp." style={{ padding: '16px 24px', fontSize: '13px', color: '#333333', fontFamily: 'monospace' }}>{item.completion}</td>
+                        <td data-label="Speed (T/s)" style={{ padding: '16px 24px', fontSize: '14px', color: isDark ? '#ffffff' : '#333333', fontFamily: 'monospace' }}>{item.speed}</td>
+                        <td data-label="Price" style={{ padding: '16px 24px', fontSize: '13px', color: isDark ? '#a1a1aa' : '#555555' }}>{item.price}</td>
+                        <td data-label="Rate Limits" style={{ padding: '16px 24px', fontSize: '13px', color: isDark ? '#a1a1aa' : '#555555' }}>{item.limit}</td>
+                        <td data-label="Context" style={{ padding: '16px 24px', fontSize: '13px', color: isDark ? '#ffffff' : '#333333', fontFamily: 'monospace' }}>{item.context}</td>
+                        <td data-label="Max Comp." style={{ padding: '16px 24px', fontSize: '13px', color: isDark ? '#ffffff' : '#333333', fontFamily: 'monospace' }}>{item.completion}</td>
                       </tr>
                     ))}
                   </tbody>

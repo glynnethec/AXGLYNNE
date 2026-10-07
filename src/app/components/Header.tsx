@@ -28,9 +28,6 @@ const NAV_CATEGORIES: NavCategory[] = [
     icon: <FaCubes size={13} />,
     items: [
       { href: '/', label: 'Main Hub', desc: 'Central control center for the GLYNNE platform' },
-      { href: '/precios', label: 'Planes & Precios', desc: 'Suscripciones y precios para empresas' },
-      { href: '/integraciones', label: 'Integraciones', desc: 'Conectores con WhatsApp, Supabase, Twilio y CRMs' },
-      { href: '/caracteristicas', label: 'Características', desc: 'Capacidades de inferencia, voz y fine-tuning' },
       { href: '/Servex_solution', label: 'Soluciones Enterprise', desc: 'Casos de estudio y conversión de matrices' },
       { href: '/Industries', label: 'Automatización B2B', desc: 'Soluciones por sector industrial' },
       { href: '/ia_vailable', label: 'Modelos de IA', desc: 'Catálogo de modelos LLM y adaptadores QLoRA' }
@@ -42,8 +39,7 @@ const NAV_CATEGORIES: NavCategory[] = [
     icon: <FaRobot size={13} />,
     items: [
       { href: '/AX_chat', label: 'Chat con AX Assistant', desc: 'Interacción autónoma con motor de razonamiento' },
-      { href: '/AX_voice', label: 'Llamada de Voz AX Voice', desc: 'Comunicación por voz interactiva en tiempo real' },
-      { href: '/docs', label: 'Documentación & API', desc: 'Guías de inicio rápido, SDKs y endpoints' }
+      { href: '/AX_voice', label: 'Llamada de Voz AX Voice', desc: 'Comunicación por voz interactiva en tiempo real' }
     ]
   },
   {
@@ -52,11 +48,6 @@ const NAV_CATEGORIES: NavCategory[] = [
     icon: <FaBuilding size={13} />,
     items: [
       { href: '/About', label: 'Visión & Arquitectura', desc: 'Principios de infraestructura GLYNNE' },
-      { href: '/comparar', label: 'AX GLYNNE vs Alternativas', desc: 'Comparación transparente con otras plataformas' },
-      { href: '/novedades', label: 'Changelog & Novedades', desc: 'Historial de versiones y actualizaciones' },
-      { href: '/status', label: 'Estado del Sistema', desc: 'Disponibilidad y latencias en tiempo real' },
-      { href: '/Blog', label: 'Blog & Artículos', desc: 'Publicaciones sobre IA e ingeniería' },
-      { href: '/faq', label: 'Preguntas Frecuentes', desc: 'Respuestas sobre integración y privacidad' },
       { href: '/contact', label: 'Contacto Directo', desc: 'Diseño arquitectónico con nuestro equipo' }
     ]
   },
@@ -67,8 +58,7 @@ const NAV_CATEGORIES: NavCategory[] = [
     items: [
       { href: '/login', label: 'Acceso al Dashboard', desc: 'Gestión de nodos enterprise y credenciales' },
       { href: '/terms-of-service', label: 'Términos de Servicio', desc: 'Condiciones de uso de infraestructura' },
-      { href: '/privacy-policy', label: 'Política de Privacidad', desc: 'Protección y soberanía de datos corporativos' },
-      { href: '/security-data-protection', label: 'Seguridad de Datos', desc: 'Estándares de cifrado y cumplimiento' }
+      { href: '/privacy-policy', label: 'Política de Privacidad', desc: 'Protección y soberanía de datos corporativos' }
     ]
   }
 ];
@@ -331,21 +321,6 @@ export default function Header() {
         <BackgroundWrapper>
           <div className="mega-dropdown-content" style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '100px 24px 40px 24px', width: '100%' }}>
             
-            {/* Desktop Tabs Header inside Mega Dropdown */}
-            <div className="desktop-nav-categories" style={{ display: 'flex', gap: '8px', marginBottom: '28px', borderBottom: '1px solid rgba(0,0,0,0.06)', paddingBottom: '14px', width: '100%', maxWidth: '1100px', justifyContent: 'center' }}>
-              {NAV_CATEGORIES.map(cat => (
-                <button
-                  key={cat.id}
-                  className={`category-tab-btn ${activeTab === cat.id ? 'active' : ''}`}
-                  onClick={() => setActiveTab(cat.id)}
-                  onMouseEnter={() => setActiveTab(cat.id)}
-                >
-                  {cat.icon}
-                  <span>{cat.label}</span>
-                </button>
-              ))}
-            </div>
-
             {/* Sub-items View - Desktop */}
             <div className="desktop-nav-categories" style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
               <div className="subnav-grid">
