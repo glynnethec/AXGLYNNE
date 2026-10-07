@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTheme } from '@/lib/ThemeContext';
+import UncommonlyGoodResultsSection from './UncommonlyGoodResultsSection';
 
 const CODE_TOKENS = [
   { t: "import ", c: "#999999" },
@@ -167,6 +168,9 @@ export default function HomeAuditSection() {
             </button>
           </div>
         </div>
+
+        {/* Uncommonly Good Results Section */}
+        <UncommonlyGoodResultsSection />
 
         {/* Console Section (Floating without Card) */}
         <div style={{ position: 'relative', zIndex: 10, width: '100%', minHeight: '80vh', boxSizing: 'border-box', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '60px', padding: '0', backgroundColor: 'transparent' }}>

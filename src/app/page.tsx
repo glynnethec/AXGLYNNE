@@ -131,34 +131,6 @@ export default function Home() {
             }
           `}</style>
 
-          {/* Smoke/Fog Layer 1 */}
-          <div style={{
-            position: 'absolute',
-            top: '-20%',
-            left: '-10%',
-            width: '60vw',
-            height: '120vh',
-            background: 'radial-gradient(ellipse at center, rgba(245, 245, 248, 0.7) 0%, rgba(255, 255, 255, 0) 70%)',
-            filter: 'blur(80px)',
-            animation: 'smokeFloat1 20s infinite ease-in-out',
-            zIndex: 0,
-            pointerEvents: 'none'
-          }} />
-
-          {/* Smoke/Fog Layer 2 */}
-          <div style={{
-            position: 'absolute',
-            bottom: '-20%',
-            right: '-10%',
-            width: '70vw',
-            height: '130vh',
-            background: 'radial-gradient(ellipse at center, rgba(248, 248, 250, 0.6) 0%, rgba(255, 255, 255, 0) 70%)',
-            filter: 'blur(90px)',
-            animation: 'smokeFloat2 25s infinite ease-in-out reverse',
-            zIndex: 0,
-            pointerEvents: 'none'
-          }} />
-
           {/* Text and Button on the left */}
           <div className="banner-text-container" style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'center' }}>
             <h2 className="banner-title" style={{
