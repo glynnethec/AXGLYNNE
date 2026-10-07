@@ -1,10 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700;900&display=swap');
 
 :root {
-  --bg-color: #ffffff;
-  --text-primary: #1d1d1f;
+  --bg-color: #000000;
+  --text-primary: #f5f5f7;
   --text-secondary: #86868b;
   --accent-color: #0066cc;
+}
+
+[data-theme="light"] {
+  --bg-color: #f8f9fc;
+  --text-primary: #1d1d1f;
+  --text-secondary: #86868b;
+}
+
+[data-theme="dark"] {
+  --bg-color: #000000;
+  --text-primary: #f5f5f7;
+  --text-secondary: #86868b;
 }
 
 * {
@@ -22,8 +34,8 @@
   background: transparent;
 }
 
-body {
-  background-color: var(--bg-color);
+html, body {
+  background-color: var(--bg-color) !important;
   color: var(--text-primary);
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;

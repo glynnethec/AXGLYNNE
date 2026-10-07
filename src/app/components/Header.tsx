@@ -27,11 +27,12 @@ const NAV_CATEGORIES: NavCategory[] = [
     icon: <FaCubes size={13} />,
     items: [
       { href: '/', label: 'Main Hub', desc: 'Central control center for the GLYNNE platform' },
-      { href: '/Methodology', label: 'Governance Methodology', desc: 'How we transform enterprises into digital systems' },
-      { href: '/Solutions', label: 'Servex Case Study (XML BPO)', desc: 'Radical project in schema conversion and data matrices' },
-      { href: '/Industries', label: 'B2B Process Automation', desc: 'Industry-tailored workflow and operational automation' },
-      { href: '/ia_vailable', label: 'Available AI Models', desc: 'Catalog of frontier LLMs and fine-tuned private models' },
-      { href: '/Segurity', label: 'Security & Control', desc: 'Deterministic guardrails and permission layers' }
+      { href: '/precios', label: 'Planes & Precios', desc: 'Suscripciones y precios para empresas' },
+      { href: '/integraciones', label: 'Integraciones', desc: 'Conectores con WhatsApp, Supabase, Twilio y CRMs' },
+      { href: '/caracteristicas', label: 'Características', desc: 'Capacidades de inferencia, voz y fine-tuning' },
+      { href: '/Solutions', label: 'Soluciones Enterprise', desc: 'Casos de estudio y conversión de matrices' },
+      { href: '/Industries', label: 'Automatización B2B', desc: 'Soluciones por sector industrial' },
+      { href: '/ia_vailable', label: 'Modelos de IA', desc: 'Catálogo de modelos LLM y adaptadores QLoRA' }
     ]
   },
   {
@@ -39,8 +40,9 @@ const NAV_CATEGORIES: NavCategory[] = [
     label: 'AI Systems',
     icon: <FaRobot size={13} />,
     items: [
-      { href: '/AX_chat', label: 'Chat with AX Assistant', desc: 'Autonomous interaction with reasoning engine' },
-      { href: '/AX_voice', label: 'Initiate AX Voice Call', desc: 'Real-time interactive voice communication' }
+      { href: '/AX_chat', label: 'Chat con AX Assistant', desc: 'Interacción autónoma con motor de razonamiento' },
+      { href: '/AX_voice', label: 'Llamada de Voz AX Voice', desc: 'Comunicación por voz interactiva en tiempo real' },
+      { href: '/docs', label: 'Documentación & API', desc: 'Guías de inicio rápido, SDKs y endpoints' }
     ]
   },
   {
@@ -48,11 +50,13 @@ const NAV_CATEGORIES: NavCategory[] = [
     label: 'Company & Vision',
     icon: <FaBuilding size={13} />,
     items: [
-      { href: '/About', label: 'Vision & Architecture', desc: 'Discover GLYNNE infrastructure principles' },
-      { href: '/Blog', label: 'Insights & Blog', desc: 'Engineering articles on enterprise AI' },
-      { href: '/faq', label: 'Frequently Asked Questions', desc: 'Clear answers on integration, control, and privacy' },
-      { href: '/contact', label: 'Direct Contact', desc: 'Initiate architectural design with our team' },
-      { href: '/Support', label: 'Support Center', desc: 'Technical assistance and operational support' }
+      { href: '/About', label: 'Visión & Arquitectura', desc: 'Principios de infraestructura GLYNNE' },
+      { href: '/comparar', label: 'AX GLYNNE vs Alternativas', desc: 'Comparación transparente con otras plataformas' },
+      { href: '/novedades', label: 'Changelog & Novedades', desc: 'Historial de versiones y actualizaciones' },
+      { href: '/status', label: 'Estado del Sistema', desc: 'Disponibilidad y latencias en tiempo real' },
+      { href: '/Blog', label: 'Blog & Artículos', desc: 'Publicaciones sobre IA e ingeniería' },
+      { href: '/faq', label: 'Preguntas Frecuentes', desc: 'Respuestas sobre integración y privacidad' },
+      { href: '/contact', label: 'Contacto Directo', desc: 'Diseño arquitectónico con nuestro equipo' }
     ]
   },
   {
@@ -60,10 +64,10 @@ const NAV_CATEGORIES: NavCategory[] = [
     label: 'Access & Legal',
     icon: <FaShieldAlt size={13} />,
     items: [
-      { href: '/login', label: 'Dashboard Access', desc: 'Manage enterprise nodes and access credentials' },
-      { href: '/terms-of-service', label: 'Terms of Service', desc: 'Infrastructure usage terms and conditions' },
-      { href: '/privacy-policy', label: 'Privacy Policy', desc: 'Corporate data sovereignty and protection' },
-      { href: '/security-data-protection', label: 'Data Security', desc: 'Encryption and regulatory compliance standards' }
+      { href: '/login', label: 'Acceso al Dashboard', desc: 'Gestión de nodos enterprise y credenciales' },
+      { href: '/terms-of-service', label: 'Términos de Servicio', desc: 'Condiciones de uso de infraestructura' },
+      { href: '/privacy-policy', label: 'Política de Privacidad', desc: 'Protección y soberanía de datos corporativos' },
+      { href: '/security-data-protection', label: 'Seguridad de Datos', desc: 'Estándares de cifrado y cumplimiento' }
     ]
   }
 ];

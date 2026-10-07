@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
+import { useTheme } from '@/lib/ThemeContext';
 
 type HoverStep = {
   id: number;
@@ -9,7 +10,10 @@ type HoverStep = {
   neighbors: { dx: number; dy: number; opacity: number }[];
 };
 
-export default function BackgroundWrapper({ children, theme = 'light', disableAutoAnimate = false }: { children: React.ReactNode, theme?: 'light' | 'dark', disableAutoAnimate?: boolean }) {
+export default function BackgroundWrapper({ children, theme: explicitTheme, disableAutoAnimate = false }: { children: React.ReactNode, theme?: 'light' | 'dark', disableAutoAnimate?: boolean }) {
+  const { theme: contextTheme } = useTheme();
+  const activeTheme = explicitTheme || contextTheme || 'dark';
+
   const [history, setHistory] = useState<HoverStep[]>([]);
   const stepIdRef = useRef(0);
   const lastCellRef = useRef({ x: -1, y: -1 });
@@ -17,12 +21,10 @@ export default function BackgroundWrapper({ children, theme = 'light', disableAu
 
   React.useEffect(() => {
     if (typeof window === 'undefined') return;
-    const originalBg = document.body.style.backgroundColor;
-    document.body.style.backgroundColor = theme === 'dark' ? '#0b0b0d' : '#ffffff';
-    return () => {
-      document.body.style.backgroundColor = originalBg;
-    };
-  }, [theme]);
+    const bg = activeTheme === 'dark' ? '#000000' : '#f8f9fc';
+    document.body.style.backgroundColor = bg;
+    document.documentElement.style.backgroundColor = bg;
+  }, [activeTheme]);
 
   React.useEffect(() => {
     if (typeof window === 'undefined' || window.innerWidth > 700 || disableAutoAnimate) return;
@@ -136,7 +138,7 @@ export default function BackgroundWrapper({ children, theme = 'light', disableAu
   return (
     <div
       ref={wrapperRef}
-      style={{ position: 'relative', width: '100%', backgroundColor: theme === 'dark' ? '#0b0b0d' : '#ffffff' }}
+      style={{ position: 'relative', width: '100%', backgroundColor: activeTheme === 'dark' ? '#000000' : '#f8f9fc' }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
@@ -154,7 +156,7 @@ export default function BackgroundWrapper({ children, theme = 'light', disableAu
       >
         <defs>
           <pattern id="blackbox-grid" width="96" height="96" patternUnits="userSpaceOnUse">
-            <path d="M 96 0 L 0 0 0 96" fill="none" stroke={theme === 'dark' ? "#333333" : "rgba(0,0,0,0.07)"} strokeWidth="1" />
+            <path d="M 96 0 L 0 0 0 96" fill="none" stroke={activeTheme === 'dark' ? "#333333" : "rgba(0,0,0,0.07)"} strokeWidth="1" />
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#blackbox-grid)" />
@@ -171,7 +173,7 @@ export default function BackgroundWrapper({ children, theme = 'light', disableAu
                   y={(step.cy + n.dy) * 96}
                   width="96"
                   height="96"
-                  fill={theme === 'dark' ? `rgba(255,255,255,${isCurrent ? n.opacity : 0})` : `rgba(0,0,0,${isCurrent ? n.opacity : 0})`}
+                  fill={activeTheme === 'dark' ? `rgba(255,255,255,${isCurrent ? n.opacity : 0})` : `rgba(0,0,0,${isCurrent ? n.opacity : 0})`}
                   style={{ transition: 'fill 1s ease' }}
                 />
               ))}
@@ -181,7 +183,7 @@ export default function BackgroundWrapper({ children, theme = 'light', disableAu
                 y={step.cy * 96}
                 width="96"
                 height="96"
-                fill={theme === 'dark' ? `rgba(255,255,255,${isCurrent ? 0.08 : 0})` : `rgba(0,0,0,${isCurrent ? 0.12 : 0})`}
+                fill={activeTheme === 'dark' ? `rgba(255,255,255,${isCurrent ? 0.08 : 0})` : `rgba(0,0,0,${isCurrent ? 0.12 : 0})`}
                 style={{ transition: 'fill 1s ease' }}
               />
             </g>

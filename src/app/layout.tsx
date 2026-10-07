@@ -123,6 +123,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <head>
         <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var t = localStorage.getItem('ax_theme') || 'dark';
+                  document.documentElement.setAttribute('data-theme', t);
+                  var bg = t === 'light' ? '#f8f9fc' : '#000000';
+                  document.documentElement.style.backgroundColor = bg;
+                  if (document.body) document.body.style.backgroundColor = bg;
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
