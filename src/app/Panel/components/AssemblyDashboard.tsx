@@ -37,7 +37,7 @@ export default function AssemblyDashboard() {
   const platformTools = [
     { name: 'AX_chat', label: 'Chat with AX', desc: 'Intelligent conversational interfaces.', model: 'GPT OSS 120B OpenAI', details: 'High-parameter natural language processing ready.' },
     { name: 'AX_voice', label: 'AX Voice', desc: 'Real-time vocal synthesis and analysis.', model: 'VOX-SYNTH V2.0', details: 'Acoustic waveform modulation standing by.' },
-    { name: 'AX_core', label: 'AX Core', desc: 'Central processing and neural routing.', model: 'SYS-CORE v9.4', details: 'Kernel level execution protocols active.' },
+    { name: 'Create_you_GLYNNE_model', label: 'Create AI Model', desc: 'Custom QLoRA fine-tuning and synthetic dataset studio.', model: 'QLoRA / Unsloth Core', details: 'Private model training protocols active.' },
   ];
 
   const aiPhrases = [
