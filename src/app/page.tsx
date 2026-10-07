@@ -12,8 +12,11 @@ import HomeThirdAuditSection from '@/components/HomeThirdAuditSection';
 import WorkflowDiagram from '@/components/WorkflowDiagram';
 import VideoEcosystemSection from '@/components/VideoEcosystemSection';
 import Footer from '@/app/components/Footer';
+import { useTheme } from '@/lib/ThemeContext';
 
 export default function Home() {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   return (
     <>
       <SplashScreen />
@@ -161,7 +164,7 @@ export default function Home() {
             <h2 className="banner-title" style={{
               fontSize: 'clamp(50px, 8vw, 120px)',
               fontWeight: 600,
-              color: '#111111',
+              color: isDark ? '#ffffff' : '#111111',
               lineHeight: 1.0,
               margin: '0 0 60px 0',
               letterSpacing: '-0.03em',
@@ -177,9 +180,9 @@ export default function Home() {
                 style={{
                   padding: '16px 32px',
                   borderRadius: '999px',
-                  backgroundColor: '#111111',
-                  color: '#ffffff',
-                  border: '1px solid #111111',
+                  backgroundColor: isDark ? '#ffffff' : '#111111',
+                  color: isDark ? '#000000' : '#ffffff',
+                  border: isDark ? '1px solid #ffffff' : '1px solid #111111',
                   fontSize: '13px',
                   fontWeight: 600,
                   letterSpacing: '0.1em',
@@ -187,8 +190,8 @@ export default function Home() {
                   cursor: 'pointer',
                   transition: 'all 0.3s ease'
                 }}
-                onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#333333'; }}
-                onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#111111'; }}
+                onMouseOver={(e) => { e.currentTarget.style.opacity = '0.85'; }}
+                onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
               >
                 Discuss Your System
               </button>
@@ -201,7 +204,7 @@ export default function Home() {
             right: '5px',
             top: '5px',
             height: 'calc(100% - 10px)',
-            opacity: 0.02,
+            opacity: isDark ? 0.12 : 0.08,
             zIndex: 1,
             pointerEvents: 'none',
             display: 'flex',
@@ -210,7 +213,12 @@ export default function Home() {
             <img
               src="/logos/GLYNNE.svg"
               alt="AXGLYNNE Enterprise AI Emblem"
-              style={{ height: '100%', objectFit: 'contain', maxWidth: '100vw' }}
+              style={{
+                height: '100%',
+                objectFit: 'contain',
+                maxWidth: '100vw',
+                filter: isDark ? 'brightness(0) invert(1)' : 'brightness(0)'
+              }}
             />
           </div>
         </div>

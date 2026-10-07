@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useTheme } from '@/lib/ThemeContext';
 import { useRouter } from 'next/navigation';
 
 const THIRD_CODE_TOKENS = [
@@ -35,6 +36,9 @@ function ThirdTypewriterCode() {
 
 
 export default function HomeThirdAuditSection() {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
   return (
     <section className="mobile-audit-section-three" style={{ width: '100%', minHeight: '70vh', height: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4rem 1.5rem', position: 'relative', zIndex: 10 }}>
       <style>{`
@@ -93,10 +97,10 @@ export default function HomeThirdAuditSection() {
         <div className="mobile-stack-three" style={{ position: 'relative', zIndex: 10, width: '100%', boxSizing: 'border-box', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '60px', padding: '0', backgroundColor: 'transparent' }}>
 
           <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
-            <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
+            <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: isDark ? '#ffffff' : '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
               Architectural Rigor & Engineering Vision
             </h2>
-            <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
+            <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: isDark ? '#a1a1aa' : '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
               GLYNNE is engineered by systems architects who believe AI cannot enter enterprise operations without strict deterministic control. We design the infrastructure that makes AI predictable, secure, and fully auditable.
             </p>
 
@@ -107,16 +111,16 @@ export default function HomeThirdAuditSection() {
                 style={{
                   padding: '14px 28px',
                   borderRadius: '999px',
-                  backgroundColor: '#111111',
-                  color: '#ffffff',
-                  border: '1px solid #111111',
+                  backgroundColor: isDark ? '#ffffff' : '#111111',
+                  color: isDark ? '#000000' : '#ffffff',
+                  border: isDark ? '1px solid #ffffff' : '1px solid #111111',
                   fontSize: '14px',
                   fontWeight: 600,
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
                 }}
-                onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#333333'; e.currentTarget.style.transform = 'scale(1.02)' }}
-                onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#111111'; e.currentTarget.style.transform = 'scale(1)' }}
+                onMouseOver={(e) => { e.currentTarget.style.opacity = '0.85'; e.currentTarget.style.transform = 'scale(1.02)' }}
+                onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1)' }}
               >
                 Discover our vision & team
               </button>

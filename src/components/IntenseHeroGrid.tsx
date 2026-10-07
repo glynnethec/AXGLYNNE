@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { useTheme } from '@/lib/ThemeContext';
 
 type AnimatedStep = {
   id: number;
@@ -9,7 +10,11 @@ type AnimatedStep = {
   neighbors: { dx: number; dy: number; opacity: number }[];
 };
 
-export default function IntenseHeroGrid({ theme = 'light' }: { theme?: 'light' | 'dark' }) {
+export default function IntenseHeroGrid({ theme: propTheme }: { theme?: 'light' | 'dark' }) {
+  const { theme: contextTheme } = useTheme();
+  const activeTheme = propTheme || contextTheme || 'dark';
+  const isDark = activeTheme === 'dark';
+
   const [history, setHistory] = useState<AnimatedStep[]>([]);
   const stepIdRef = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -47,7 +52,7 @@ export default function IntenseHeroGrid({ theme = 'light' }: { theme?: 'light' |
         neighbors.push({
           dx: shuffled[i][0],
           dy: shuffled[i][1],
-          opacity: (Math.random() * 0.03) + 0.01 // Extremely soft opacity so multiple don't clutter
+          opacity: isDark ? (Math.random() * 0.08) + 0.03 : (Math.random() * 0.03) + 0.01
         });
       }
 
@@ -63,10 +68,10 @@ export default function IntenseHeroGrid({ theme = 'light' }: { theme?: 'light' |
     }, 400); // Trigger a new independent one every 400ms
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [isDark]);
 
-  const getGridColor = () => theme === 'dark' ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.03)';
-  const getHighlightColor = () => theme === 'dark' ? '255, 255, 255' : '0, 0, 0';
+  const getGridColor = () => isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)';
+  const getHighlightColor = () => isDark ? '255, 255, 255' : '0, 0, 0';
 
   return (
     <div 
@@ -107,7 +112,7 @@ export default function IntenseHeroGrid({ theme = 'light' }: { theme?: 'light' |
               left: step.cx * 96,
               width: '96px',
               height: '96px',
-              backgroundColor: `rgba(${getHighlightColor()}, 0.05)`,
+              backgroundColor: `rgba(${getHighlightColor()}, ${isDark ? 0.12 : 0.05})`,
               animation: 'fade-out-gentle 4s ease-out forwards'
             }}
           />

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import { useTheme } from '@/lib/ThemeContext';
 
 const STATIC_CARDS = [
   {
@@ -32,6 +33,8 @@ const STATIC_CARDS = [
 
 function SecondAuditTaskCards() {
   const router = useRouter();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   return (
     <div className="cards-grid-container-two" style={{
@@ -46,11 +49,11 @@ function SecondAuditTaskCards() {
           className="second-audit-card"
           onClick={() => window.location.href = task.path}
           style={{
-            backgroundColor: 'rgba(255,255,255,0.4)',
-            border: '1px solid rgba(0,0,0,0.06)',
+            backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.4)',
+            border: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.06)',
             borderRadius: '16px',
             padding: '24px',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.02)',
+            boxShadow: isDark ? '0 4px 20px rgba(0,0,0,0.4)' : '0 4px 20px rgba(0,0,0,0.02)',
             fontFamily: 'monospace, ui-monospace, Menlo, Monaco',
             width: '100%',
             boxSizing: 'border-box',
@@ -62,23 +65,23 @@ function SecondAuditTaskCards() {
             gap: '8px'
           }}
           onMouseOver={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.8)';
-            e.currentTarget.style.borderColor = 'rgba(0,0,0,0.1)';
+            e.currentTarget.style.backgroundColor = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.8)';
+            e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.1)';
             e.currentTarget.style.transform = 'translateY(-2px)';
-            e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.05)';
+            e.currentTarget.style.boxShadow = isDark ? '0 8px 24px rgba(0,0,0,0.6)' : '0 8px 24px rgba(0,0,0,0.05)';
           }}
           onMouseOut={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.4)';
-            e.currentTarget.style.borderColor = 'rgba(0,0,0,0.06)';
+            e.currentTarget.style.backgroundColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.4)';
+            e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.06)';
             e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.02)';
+            e.currentTarget.style.boxShadow = isDark ? '0 4px 20px rgba(0,0,0,0.4)' : '0 4px 20px rgba(0,0,0,0.02)';
           }}
         >
-          <div className="second-audit-card-title" style={{ fontSize: '15px', color: '#111111', fontWeight: 600, display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+          <div className="second-audit-card-title" style={{ fontSize: '15px', color: isDark ? '#ffffff' : '#111111', fontWeight: 600, display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
             {task.title}
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111111" strokeWidth="2"><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={isDark ? "#ffffff" : "#111111"} strokeWidth="2"><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path></svg>
           </div>
-          <div className="second-audit-card-desc" style={{ fontSize: '13px', color: '#666666', fontWeight: 400, lineHeight: 1.5 }}>
+          <div className="second-audit-card-desc" style={{ fontSize: '13px', color: isDark ? '#a1a1aa' : '#666666', fontWeight: 400, lineHeight: 1.5 }}>
             {task.description}
           </div>
         </button>
@@ -90,6 +93,9 @@ function SecondAuditTaskCards() {
 
 
 export default function HomeSecondAuditSection() {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
   return (
     <section className="mobile-audit-section-two" style={{ width: '100%', minHeight: '70vh', height: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4rem 1.5rem', position: 'relative', zIndex: 10 }}>
       <style>{`
@@ -148,10 +154,10 @@ export default function HomeSecondAuditSection() {
         <div className="mobile-stack-two" style={{ position: 'relative', zIndex: 10, width: '100%', boxSizing: 'border-box', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '60px', padding: '0', backgroundColor: 'transparent' }}>
 
           <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
-            <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
+            <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: isDark ? '#ffffff' : '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
               Enterprise Governance & Control Access
             </h2>
-            <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
+            <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: isDark ? '#a1a1aa' : '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
               We operate on a foundation of zero-trust security and complete auditability. Review our legal frameworks, data privacy protocols, and architectural documentation, or log in to manage your dedicated enterprise AI nodes.
             </p>
           </div>

@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useRef } from 'react';
+import { useTheme } from '@/lib/ThemeContext';
 
 type HoverStep = {
   id: number;
@@ -11,7 +12,7 @@ type HoverStep = {
 
 export default function LiquidOrb({ 
   orbState = 'idle',
-  theme = 'light',
+  theme: propTheme,
   customRotX = 0,
   customRotY = 0,
   customRotZ = 20,
@@ -28,6 +29,8 @@ export default function LiquidOrb({
   lineOpacity?: number,
   cellOpacityMultiplier?: number
 }) {
+  const { theme: contextTheme } = useTheme();
+  const activeTheme = propTheme || contextTheme || 'dark';
   const canvasRef = useRef<HTMLCanvasElement>(null);
   
   const historyRef = useRef<HoverStep[]>([]);
@@ -88,11 +91,11 @@ export default function LiquidOrb({
       // Base sphere background
       ctx.beginPath();
       ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-      ctx.fillStyle = theme === 'dark' ? '#000000' : '#ffffff';
+      ctx.fillStyle = activeTheme === 'dark' ? '#000000' : '#ffffff';
       ctx.fill();
 
       ctx.lineWidth = 1;
-      ctx.strokeStyle = theme === 'dark' ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.15)';
+      ctx.strokeStyle = activeTheme === 'dark' ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.15)';
       ctx.stroke();
 
       // Smooth spring physics for organic rotation
@@ -255,8 +258,8 @@ export default function LiquidOrb({
         }
         
         ctx.closePath();
-        const effectiveCellMult = cellOpacityMultiplier ?? (theme === 'dark' ? 1.5 : 6);
-        ctx.fillStyle = theme === 'dark' ? `rgba(255, 255, 255, ${opacity * effectiveCellMult})` : `rgba(0, 0, 0, ${opacity * effectiveCellMult})`;
+        const effectiveCellMult = cellOpacityMultiplier ?? (activeTheme === 'dark' ? 1.5 : 6);
+        ctx.fillStyle = activeTheme === 'dark' ? `rgba(255, 255, 255, ${opacity * effectiveCellMult})` : `rgba(0, 0, 0, ${opacity * effectiveCellMult})`;
         ctx.fill();
       };
 
@@ -296,8 +299,8 @@ export default function LiquidOrb({
           }
         }
         ctx.lineWidth = 1;
-        const effectiveLineOp = lineOpacity ?? (theme === 'dark' ? gridOpacity : 0.85);
-        ctx.strokeStyle = theme === 'dark' ? `rgba(255, 255, 255, ${effectiveLineOp})` : `rgba(0, 0, 0, ${effectiveLineOp})`;
+        const effectiveLineOp = lineOpacity ?? (activeTheme === 'dark' ? gridOpacity : 0.85);
+        ctx.strokeStyle = activeTheme === 'dark' ? `rgba(255, 255, 255, ${effectiveLineOp})` : `rgba(0, 0, 0, ${effectiveLineOp})`;
         ctx.stroke();
       }
       animationFrame = requestAnimationFrame(render);
@@ -305,7 +308,7 @@ export default function LiquidOrb({
 
     animationFrame = requestAnimationFrame(render);
     return () => cancelAnimationFrame(animationFrame);
-  }, [orbState, theme]);
+  }, [orbState, activeTheme, lineOpacity, cellOpacityMultiplier]);
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>

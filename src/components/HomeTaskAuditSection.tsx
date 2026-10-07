@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTheme } from '@/lib/ThemeContext';
 
 const AUDIT_TASKS = [
   { id: 1, action: "Problem: Ingesting high-volume manufacturing catalog" },
@@ -19,6 +20,9 @@ const AUDIT_TASKS = [
 ];
 
 function AuditTaskCards() {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
   return (
     <div style={{
       display: 'flex',
@@ -46,16 +50,16 @@ function AuditTaskCards() {
         {/* Render twice for infinite seamless scroll */}
         {[...AUDIT_TASKS, ...AUDIT_TASKS].map((task, index) => (
           <div key={`${task.id}-${index}`} style={{
-            backgroundColor: 'rgba(255,255,255,0.4)',
-            border: '1px solid rgba(0,0,0,0.06)',
+            backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.4)',
+            border: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.06)',
             borderRadius: '12px',
             padding: '16px 20px',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.02)',
+            boxShadow: isDark ? '0 4px 20px rgba(0,0,0,0.4)' : '0 4px 20px rgba(0,0,0,0.02)',
             fontFamily: 'monospace, ui-monospace, Menlo, Monaco',
             width: '100%',
             boxSizing: 'border-box'
           }}>
-            <div style={{ fontSize: '13px', color: '#111111', fontWeight: 500, lineHeight: 1.4 }}>
+            <div style={{ fontSize: '13px', color: isDark ? '#ffffff' : '#111111', fontWeight: 500, lineHeight: 1.4 }}>
               {task.action}
             </div>
           </div>
@@ -67,6 +71,8 @@ function AuditTaskCards() {
 
 function DocsMenu() {
   const router = useRouter();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   return (
     <div style={{ position: 'relative', width: '100%', maxWidth: '360px', marginTop: '32px' }}>
@@ -78,9 +84,9 @@ function DocsMenu() {
           alignItems: 'center',
           padding: '18px 24px',
           borderRadius: '12px 12px 0 0',
-          backgroundColor: '#111111',
-          color: '#ffffff',
-          border: '1px solid #111111',
+          backgroundColor: isDark ? '#ffffff' : '#111111',
+          color: isDark ? '#000000' : '#ffffff',
+          border: isDark ? '1px solid #ffffff' : '1px solid #111111',
           fontSize: '14px',
           fontWeight: 500,
         }}
@@ -94,11 +100,11 @@ function DocsMenu() {
       <div style={{
         width: '100%',
         backgroundColor: 'transparent',
-        border: '1px solid rgba(0,0,0,0.1)',
+        border: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)',
         borderTop: 'none',
         borderRadius: '0 0 12px 12px',
         overflow: 'hidden',
-        boxShadow: '0 12px 24px rgba(0,0,0,0.05)',
+        boxShadow: isDark ? '0 12px 24px rgba(0,0,0,0.4)' : '0 12px 24px rgba(0,0,0,0.05)',
         zIndex: 20
       }}>
         <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -113,12 +119,12 @@ function DocsMenu() {
             border: '1px solid transparent',
             cursor: 'pointer',
             transition: 'all 0.2s ease',
-          }} onMouseOver={e => { e.currentTarget.style.borderColor = 'rgba(0,0,0,0.1)'; e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.02)'; }} onMouseOut={e => { e.currentTarget.style.borderColor = 'transparent'; e.currentTarget.style.backgroundColor = 'transparent'; }}>
-            <div style={{ fontSize: '14px', fontWeight: 600, color: '#111111', marginBottom: '6px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          }} onMouseOver={e => { e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)'; e.currentTarget.style.backgroundColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.02)'; }} onMouseOut={e => { e.currentTarget.style.borderColor = 'transparent'; e.currentTarget.style.backgroundColor = 'transparent'; }}>
+            <div style={{ fontSize: '14px', fontWeight: 600, color: isDark ? '#ffffff' : '#111111', marginBottom: '6px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               The SERVEX Initiative
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#111111" strokeWidth="2"><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={isDark ? "#ffffff" : "#111111"} strokeWidth="2"><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path></svg>
             </div>
-            <div style={{ fontSize: '13px', color: '#86868b', lineHeight: 1.5 }}>
+            <div style={{ fontSize: '13px', color: isDark ? '#a1a1aa' : '#86868b', lineHeight: 1.5 }}>
               Read how GLYNNE's control layer orchestrated autonomous catalog ingestion and ERP sync with zero margin for error.
             </div>
           </button>
@@ -130,6 +136,8 @@ function DocsMenu() {
 }
 
 export default function HomeTaskAuditSection() {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   return (
     <section className="mobile-audit-section" style={{ width: '100%', minHeight: 'auto', height: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4rem 1.5rem', position: 'relative', zIndex: 10 }}>
@@ -167,10 +175,10 @@ export default function HomeTaskAuditSection() {
         <div className="mobile-stack" style={{ position: 'relative', zIndex: 10, width: '100%', boxSizing: 'border-box', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'space-between', gap: '60px', padding: '0', backgroundColor: 'transparent' }}>
 
           <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
-            <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
+            <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: isDark ? '#ffffff' : '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
               Case Study: The Servex Autonomous Ecosystem
             </h2>
-            <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
+            <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: isDark ? '#a1a1aa' : '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
               Evidence of governed autonomy in production: We engineered an independent AI orchestration system for Servex—capable of processing high-volume product catalogs, resolving schema anomalies, and executing real-time ERP updates with 100% auditability.
             </p>
 
@@ -189,15 +197,15 @@ export default function HomeTaskAuditSection() {
               boxShadow: 'none',
               fontFamily: 'monospace, ui-monospace, Menlo, Monaco',
               fontSize: 'clamp(11px, 1.2vw, 13px)',
-              color: '#333333',
+              color: isDark ? '#ffffff' : '#333333',
               overflowX: 'auto',
               textAlign: 'left',
               border: 'none'
             }}>
               <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
-                <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#e5e5e5' }} />
-                <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#e5e5e5' }} />
-                <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#e5e5e5' }} />
+                <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: isDark ? 'rgba(255,255,255,0.15)' : '#e5e5e5' }} />
+                <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: isDark ? 'rgba(255,255,255,0.15)' : '#e5e5e5' }} />
+                <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: isDark ? 'rgba(255,255,255,0.15)' : '#e5e5e5' }} />
               </div>
               <AuditTaskCards />
             </div>

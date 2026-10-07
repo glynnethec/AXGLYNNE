@@ -238,3 +238,81 @@
     justify-content: center;
   }
 }
+
+/* Dark Theme Support */
+[data-theme="dark"] .footer {
+  border-top-color: rgba(255, 255, 255, 0.1);
+  color: #f5f5f7;
+}
+
+[data-theme="dark"] .footer-pre {
+  border-color: rgba(255, 255, 255, 0.08);
+  background-color: rgba(20, 20, 25, 0.6);
+}
+
+[data-theme="dark"] .footer-pre-title {
+  color: #f5f5f7;
+}
+
+[data-theme="dark"] .footer-pre-tags {
+  color: #f5f5f7;
+}
+
+[data-theme="dark"] .footer-pre-text {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .footer-logo {
+  filter: invert(1);
+}
+
+[data-theme="dark"] .footer-desc,
+[data-theme="dark"] .footer-link,
+[data-theme="dark"] .footer-newsletter-text,
+[data-theme="dark"] .footer-copyright,
+[data-theme="dark"] .footer-legal-link {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .footer-link:hover,
+[data-theme="dark"] .footer-legal-link:hover {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .footer-title {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .footer-social-btn {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #f5f5f7;
+}
+
+[data-theme="dark"] .footer-social-btn:hover {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+[data-theme="dark"] .footer-input {
+  border-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+[data-theme="dark"] .footer-input:focus {
+  border-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .footer-submit {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+[data-theme="dark"] .footer-submit:hover {
+  background-color: #e5e5e5;
+}
+
+[data-theme="dark"] .footer-bottom {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}

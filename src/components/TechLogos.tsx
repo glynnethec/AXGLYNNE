@@ -7,6 +7,7 @@ import {
 } from 'react-icons/si';
 import { TbBrain, TbRobot, TbApi, TbPlug } from 'react-icons/tb';
 import { FaAws, FaDatabase, FaNetworkWired } from 'react-icons/fa';
+import { useTheme } from '@/lib/ThemeContext';
 
 const techCategories = [
   {
@@ -62,6 +63,9 @@ const techCategories = [
 ];
 
 export default function TechLogos() {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
   return (
     <div style={{
       width: '100%',
@@ -93,12 +97,16 @@ export default function TechLogos() {
           display: flex;
           align-items: center;
           gap: 0.75rem;
-          color: #111;
-          opacity: 0.8;
+          color: ${isDark ? '#ffffff' : '#111111'};
+          opacity: 0.9;
           padding: 12px 24px;
           width: 100%;
           box-sizing: border-box;
-          transition: transform 0.3s ease;
+          transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .tech-card:hover {
+          opacity: 1;
         }
 
         .tech-icon {
@@ -155,15 +163,15 @@ export default function TechLogos() {
           }
 
           .duplicate-set {
-            display: contents; /* Display second set on mobile for infinite loop */
+            display: contents;
           }
 
           .tech-card {
             flex-direction: column;
             justify-content: center;
             opacity: 1;
-            background-color: transparent;
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: ${isDark ? 'rgba(255, 255, 255, 0.05)' : 'transparent'};
+            border: ${isDark ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.1)'};
             border-radius: 24px;
             padding: 1rem;
             min-width: 110px;
@@ -175,8 +183,8 @@ export default function TechLogos() {
 
           .tech-card:hover {
             transform: translateY(-8px) scale(1.05);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
-            background-color: #ffffff;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            background-color: ${isDark ? 'rgba(255, 255, 255, 0.12)' : '#ffffff'};
           }
 
           .tech-icon {
@@ -218,7 +226,7 @@ export default function TechLogos() {
           <h2 className="tech-title" style={{ 
             fontSize: '3.5rem', 
             fontWeight: 500, 
-            color: '#111', 
+            color: isDark ? '#ffffff' : '#111111', 
             margin: 0,
             letterSpacing: '-0.03em'
           }}>
@@ -229,7 +237,7 @@ export default function TechLogos() {
             <h4 className="tech-subtitle" style={{ 
               fontSize: '1rem', 
               fontWeight: 600, 
-              color: '#111',
+              color: isDark ? '#ffffff' : '#111111',
               marginBottom: '1rem'
             }}>
               The AI Ecosystem
@@ -237,7 +245,7 @@ export default function TechLogos() {
             <p className="tech-desc" style={{ 
               fontSize: '1rem', 
               lineHeight: 1.6, 
-              color: '#333',
+              color: isDark ? '#a1a1aa' : '#333333',
               margin: 0 
             }}>
               From responsive frontend interfaces to powerful AI agents and scalable data architectures, we leverage the most advanced technologies to build intelligent, high-performance applications that adapt to your business needs.

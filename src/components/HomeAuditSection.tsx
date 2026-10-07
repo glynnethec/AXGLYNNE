@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTheme } from '@/lib/ThemeContext';
 
 const CODE_TOKENS = [
   { t: "import ", c: "#999999" },
@@ -90,6 +91,8 @@ function TypewriterCode() {
 
 export default function HomeAuditSection() {
   const router = useRouter();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   return (
     <section style={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '2rem 1.5rem', position: 'relative', zIndex: 10 }}>
@@ -116,10 +119,10 @@ export default function HomeAuditSection() {
           textAlign: 'left',
           boxShadow: 'none'
         }}>
-          <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 8px 0', letterSpacing: '-0.02em' }}>
+          <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: isDark ? '#ffffff' : '#111111', lineHeight: 1.1, margin: '0 0 8px 0', letterSpacing: '-0.02em' }}>
             Deterministic Guardrails for Enterprise AI
           </h2>
-          <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, lineHeight: 1.6, margin: 0, maxWidth: '950px' }}>
+          <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: isDark ? '#a1a1aa' : '#86868b', fontWeight: 300, lineHeight: 1.6, margin: 0, maxWidth: '950px' }}>
             Unconstrained AI introduces operational risk. GLYNNE wraps foundation models inside a deterministic control layer that evaluates context, verifies permissions, and enforces strict business rules before any tool or API payload is executed.
           </p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'flex-start', marginTop: '24px', flexWrap: 'wrap' }}>
@@ -129,16 +132,16 @@ export default function HomeAuditSection() {
               style={{
                 padding: '14px 28px',
                 borderRadius: '999px',
-                backgroundColor: '#111111',
-                color: '#ffffff',
-                border: '1px solid #111111',
+                backgroundColor: isDark ? '#ffffff' : '#111111',
+                color: isDark ? '#000000' : '#ffffff',
+                border: isDark ? '1px solid #ffffff' : '1px solid #111111',
                 fontSize: '14px',
                 fontWeight: 500,
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
               }}
-              onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#333333'; e.currentTarget.style.transform = 'scale(1.02)' }}
-              onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#111111'; e.currentTarget.style.transform = 'scale(1)' }}
+              onMouseOver={(e) => { e.currentTarget.style.opacity = '0.85'; e.currentTarget.style.transform = 'scale(1.02)'; }}
+              onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1)'; }}
             >
               Explore the methodology
             </button>
@@ -150,15 +153,15 @@ export default function HomeAuditSection() {
                 padding: '14px 28px',
                 borderRadius: '999px',
                 backgroundColor: 'transparent',
-                color: '#111111',
-                border: '1px solid rgba(0,0,0,0.2)',
+                color: isDark ? '#ffffff' : '#111111',
+                border: isDark ? '1px solid rgba(255,255,255,0.3)' : '1px solid rgba(0,0,0,0.2)',
                 fontSize: '14px',
                 fontWeight: 500,
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
               }}
-              onMouseOver={(e) => { e.currentTarget.style.borderColor = '#111111'; e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.03)' }}
-              onMouseOut={(e) => { e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)'; e.currentTarget.style.backgroundColor = 'transparent' }}
+              onMouseOver={(e) => { e.currentTarget.style.borderColor = isDark ? '#ffffff' : '#111111'; e.currentTarget.style.backgroundColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.03)'; }}
+              onMouseOut={(e) => { e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.2)'; e.currentTarget.style.backgroundColor = 'transparent'; }}
             >
               Interact with AX
             </button>
@@ -168,10 +171,10 @@ export default function HomeAuditSection() {
         {/* Console Section (Floating without Card) */}
         <div style={{ position: 'relative', zIndex: 10, width: '100%', minHeight: '80vh', boxSizing: 'border-box', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '60px', padding: '0', backgroundColor: 'transparent' }}>
           <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
-            <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
+            <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: isDark ? '#ffffff' : '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
               Controlled Execution Pipeline
             </h2>
-            <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
+            <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: isDark ? '#a1a1aa' : '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
               From lightweight routing agents to deep reasoning models, GLYNNE dictates what data agents can read, which enterprise tools they can invoke, and how every decision is logged for total traceability.
             </p>
 
@@ -182,16 +185,16 @@ export default function HomeAuditSection() {
                 style={{
                   padding: '14px 28px',
                   borderRadius: '999px',
-                  backgroundColor: '#111111',
-                  color: '#ffffff',
-                  border: '1px solid #111111',
+                  backgroundColor: isDark ? '#ffffff' : '#111111',
+                  color: isDark ? '#000000' : '#ffffff',
+                  border: isDark ? '1px solid #ffffff' : '1px solid #111111',
                   fontSize: '14px',
                   fontWeight: 600,
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
                 }}
-                onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#333333'; e.currentTarget.style.transform = 'scale(1.02)' }}
-                onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#111111'; e.currentTarget.style.transform = 'scale(1)' }}
+                onMouseOver={(e) => { e.currentTarget.style.opacity = '0.85'; e.currentTarget.style.transform = 'scale(1.02)'; }}
+                onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1)'; }}
               >
                 Explore AI Models
               </button>

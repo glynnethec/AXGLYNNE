@@ -1,42 +1,40 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useTheme } from '@/lib/ThemeContext';
 
 export default function ClientLogosSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   const logos = [
     {
       name: 'SERVEX US',
-      tag: 'Enterprise AI & BPO',
       src: '/LogosClientes/logo.png',
       alt: 'SERVEX US - Enterprise AI & Catalog Automation Client',
       height: 48
     },
     {
       name: 'CUN',
-      tag: 'Higher Education',
       src: '/LogosClientes/CUN.svg',
       alt: 'Corporación Unificada Nacional CUN - Educational Institution',
       height: 56
     },
     {
       name: 'El Sol',
-      tag: 'Enterprise Business',
       src: '/LogosClientes/Logo_el_sol.webp',
       alt: 'El Sol - Enterprise Business Client',
       height: 60
     },
     {
       name: 'Nido Automation',
-      tag: 'Industrial Automation',
       src: '/LogosClientes/nido.svg',
       alt: 'Nido Automation - Industrial Automation Client',
       height: 54
     },
     {
       name: 'AXGLYNNE',
-      tag: 'Core Infrastructure',
       src: '/logos/GLYNNE.png',
       alt: 'AXGLYNNE Enterprise AI Infrastructure Emblem',
       height: 48
@@ -63,7 +61,7 @@ export default function ClientLogosSection() {
         .client-logos-title {
           font-size: 11px;
           font-weight: 600;
-          color: #86868b;
+          color: ${isDark ? '#ffffff' : '#86868b'};
           letter-spacing: 0.15em;
           text-transform: uppercase;
           margin-bottom: 2.5rem;
@@ -84,26 +82,26 @@ export default function ClientLogosSection() {
           align-items: center;
           justify-content: space-between;
           padding: 24px 20px 18px 20px;
-          background: rgba(255, 255, 255, 0.6);
+          background: ${isDark ? 'rgba(20, 20, 26, 0.75)' : 'rgba(255, 255, 255, 0.6)'};
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(0,0,0,0.06);
+          border: ${isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.06)'};
           border-radius: 20px;
-          box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+          box-shadow: ${isDark ? '0 4px 20px rgba(0,0,0,0.4)' : '0 4px 20px rgba(0,0,0,0.02)'};
           transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
           cursor: default;
           width: 210px;
-          height: 160px;
+          height: 140px;
           box-sizing: border-box;
         }
         .logo-card-item:hover {
           transform: translateY(-4px);
-          background: rgba(255, 255, 255, 0.95);
-          box-shadow: 0 16px 36px rgba(0,0,0,0.06);
-          border-color: rgba(0,0,0,0.12);
+          background: ${isDark ? 'rgba(30, 30, 38, 0.95)' : 'rgba(255, 255, 255, 0.95)'};
+          box-shadow: ${isDark ? '0 16px 36px rgba(0,0,0,0.6)' : '0 16px 36px rgba(0,0,0,0.06)'};
+          border-color: ${isDark ? 'rgba(255, 255, 255, 0.25)' : 'rgba(0, 0, 0, 0.12)'};
         }
         .logo-card-item:hover img {
-          filter: grayscale(0%) opacity(1) !important;
+          filter: ${isDark ? 'brightness(0) invert(1) opacity(1)' : 'brightness(0) opacity(1)'} !important;
           transform: scale(1.05);
         }
         .mobile-carousel {
@@ -140,28 +138,16 @@ export default function ClientLogosSection() {
                   maxHeight: logo.height + 'px', 
                   maxWidth: '140px', 
                   objectFit: 'contain', 
-                  filter: 'grayscale(100%) opacity(0.65)', 
+                  filter: isDark ? 'brightness(0) invert(1) opacity(0.75)' : 'grayscale(100%) brightness(0.2) opacity(0.7)', 
                   transition: 'all 0.3s ease' 
                 }} 
               />
             </div>
 
-            {/* Structured Text & Badge */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', marginTop: '12px' }}>
-              <span style={{ fontSize: '13px', fontWeight: 600, color: '#111111', letterSpacing: '-0.01em' }}>
+            {/* Name Only */}
+            <div style={{ marginTop: '10px', textAlign: 'center' }}>
+              <span style={{ fontSize: '13px', fontWeight: 600, color: isDark ? '#ffffff' : '#111111', letterSpacing: '-0.01em' }}>
                 {logo.name}
-              </span>
-              <span style={{ 
-                fontSize: '10px', 
-                fontWeight: 500, 
-                color: '#86868b', 
-                textTransform: 'uppercase', 
-                letterSpacing: '0.06em',
-                backgroundColor: 'rgba(0,0,0,0.04)',
-                padding: '3px 9px',
-                borderRadius: '999px'
-              }}>
-                {logo.tag}
               </span>
             </div>
           </div>
@@ -172,22 +158,22 @@ export default function ClientLogosSection() {
       <div className="mobile-carousel">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', maxWidth: '340px' }}>
           <button onClick={prev} style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: '10px' }} aria-label="Previous logo">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2"><path d="M15 18l-6-6 6-6" /></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={isDark ? "#ffffff" : "#666"} strokeWidth="2"><path d="M15 18l-6-6 6-6" /></svg>
           </button>
           
           <div style={{ 
-            height: '170px', 
+            height: '140px', 
             width: '230px', 
             display: 'flex', 
             flexDirection: 'column',
             alignItems: 'center', 
             justifyContent: 'space-between',
             padding: '24px 16px 18px 16px',
-            background: 'rgba(255, 255, 255, 0.9)',
+            background: isDark ? 'rgba(20, 20, 26, 0.9)' : 'rgba(255, 255, 255, 0.9)',
             backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(0,0,0,0.08)',
+            border: isDark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(0,0,0,0.08)',
             borderRadius: '20px',
-            boxShadow: '0 8px 30px rgba(0,0,0,0.04)',
+            boxShadow: isDark ? '0 8px 30px rgba(0,0,0,0.4)' : '0 8px 30px rgba(0,0,0,0.04)',
             boxSizing: 'border-box'
           }}>
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -196,25 +182,13 @@ export default function ClientLogosSection() {
                 key={`img-${currentIndex}`}
                 src={logos[currentIndex].src} 
                 alt={logos[currentIndex].alt} 
-                style={{ maxHeight: logos[currentIndex].height + 'px', maxWidth: '140px', objectFit: 'contain', filter: 'grayscale(0%) opacity(1)', animation: 'fadeIn 0.3s ease' }} 
+                style={{ maxHeight: logos[currentIndex].height + 'px', maxWidth: '140px', objectFit: 'contain', filter: isDark ? 'brightness(0) invert(1) opacity(0.9)' : 'brightness(0) opacity(0.85)', animation: 'fadeIn 0.3s ease' }} 
               />
             </div>
             
-            <div key={`text-${currentIndex}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', animation: 'fadeIn 0.3s ease' }}>
-              <span style={{ fontSize: '14px', fontWeight: 600, color: '#111', letterSpacing: '-0.01em' }}>
+            <div key={`text-${currentIndex}`} style={{ marginTop: '10px', textAlign: 'center', animation: 'fadeIn 0.3s ease' }}>
+              <span style={{ fontSize: '14px', fontWeight: 600, color: isDark ? '#ffffff' : '#111', letterSpacing: '-0.01em' }}>
                 {logos[currentIndex].name}
-              </span>
-              <span style={{ 
-                fontSize: '10px', 
-                fontWeight: 500, 
-                color: '#86868b', 
-                textTransform: 'uppercase', 
-                letterSpacing: '0.06em',
-                backgroundColor: 'rgba(0,0,0,0.04)',
-                padding: '3px 9px',
-                borderRadius: '999px'
-              }}>
-                {logos[currentIndex].tag}
               </span>
             </div>
 
@@ -227,7 +201,7 @@ export default function ClientLogosSection() {
           </div>
 
           <button onClick={next} style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: '10px' }} aria-label="Next logo">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={isDark ? "#ffffff" : "#666"} strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
           </button>
         </div>
         
@@ -238,7 +212,7 @@ export default function ClientLogosSection() {
               width: '6px',
               height: '6px',
               borderRadius: '50%',
-              backgroundColor: i === currentIndex ? '#111111' : '#d2d2d7',
+              backgroundColor: i === currentIndex ? (isDark ? '#ffffff' : '#111111') : (isDark ? 'rgba(255,255,255,0.2)' : '#d2d2d7'),
               transition: 'background-color 0.3s ease'
             }} />
           ))}

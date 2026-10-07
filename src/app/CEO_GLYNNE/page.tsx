@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 export default function AlexanderQuirogaProfile() {
   return (
-    <BackgroundWrapper theme="light">
+    <BackgroundWrapper>
       <div style={{ minHeight: '100vh', width: '100%', display: 'flex', flexDirection: 'column' }}>
 
         {/* Content Container */}

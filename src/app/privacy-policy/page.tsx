@@ -62,7 +62,7 @@ export default function PrivacyPolicy() {
         }
       `}</style>
       <Header />
-      <BackgroundWrapper theme="light">
+      <BackgroundWrapper>
         <div style={{
           minHeight: '100vh',
           padding: '160px 40px 80px 40px',

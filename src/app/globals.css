@@ -517,3 +517,36 @@ h1, h2, h3 {
     padding: 2rem 1rem !important;
   }
 }
+
+/* Dark Theme Support for Navigation Header */
+[data-theme="dark"] .fixed-header {
+  background: rgba(15, 15, 18, 0.85) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+[data-theme="dark"] .header-logo {
+  filter: invert(1);
+  opacity: 0.9;
+}
+
+[data-theme="dark"] .fixed-header .category-tab-btn {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .fixed-header .category-tab-btn:hover,
+[data-theme="dark"] .fixed-header .category-tab-btn.active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .splash-screen {
+  background-color: #000000;
+}
+
+[data-theme="dark"] .intro-hero h1 {
+  color: #ffffff;
+  -webkit-text-fill-color: #ffffff;
+}

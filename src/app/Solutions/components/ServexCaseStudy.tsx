@@ -6,9 +6,12 @@ import { useRouter } from 'next/navigation';
 import AutonomousAuditSection from '@/components/AutonomousAuditSection';
 import SolutionsGsapAnimation from './SolutionsGsapAnimation';
 import FlowDiagram from './FlowDiagram';
+import { useTheme } from '@/lib/ThemeContext';
 
 export default function ServexCaseStudy() {
   const router = useRouter();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   return (
     <section style={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '2rem 1.5rem 6rem', position: 'relative', zIndex: 10 }}>
       <style>{`
@@ -128,16 +131,22 @@ export default function ServexCaseStudy() {
 
                 {/* Modules Image Component */}
                 <div style={{ backgroundColor: 'transparent' }}>
-                  <div style={{ fontSize: '11px', fontWeight: 600, color: '#1d1d1f', letterSpacing: '0.05em', marginBottom: '8px' }}>MASSIVE SCALABILITY</div>
-                  <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: '#111111', margin: '0 0 16px 0', lineHeight: 1.1, letterSpacing: '-0.02em' }}>Total automation for every catalog and manufacturer</h2>
-                  <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', lineHeight: 1.6, fontWeight: 300, letterSpacing: '0.01em', margin: 0 }}>
+                  <div style={{ fontSize: '11px', fontWeight: 600, color: isDark ? '#ffffff' : '#1d1d1f', letterSpacing: '0.05em', marginBottom: '8px' }}>MASSIVE SCALABILITY</div>
+                  <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: isDark ? '#ffffff' : '#111111', margin: '0 0 16px 0', lineHeight: 1.1, letterSpacing: '-0.02em' }}>Total automation for every catalog and manufacturer</h2>
+                  <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: isDark ? '#a1a1aa' : '#86868b', lineHeight: 1.6, fontWeight: 300, letterSpacing: '0.01em', margin: 0 }}>
                     This cognitive ecosystem is not limited to a single task. The platform deploys this exact flow of intelligent auditing, extraction, and standardization simultaneously for each of the catalogs and systems, automating the corporate processes of every company on a massive scale without human intervention.
                   </p>
                   <div style={{ margin: '24px auto 16px auto', width: '100%', maxWidth: '1100px', boxShadow: 'none' }}>
                     <img 
                       src="/SERVEX/modulos.png" 
                       alt="Módulos de Servex" 
-                      style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '12px' }} 
+                      style={{ 
+                        width: '100%', 
+                        height: 'auto', 
+                        display: 'block', 
+                        borderRadius: '12px',
+                        filter: isDark ? 'grayscale(100%) brightness(1.2) invert(0.9)' : 'grayscale(100%) brightness(0.9) contrast(1.1)'
+                      }} 
                     />
                   </div>
                 </div>

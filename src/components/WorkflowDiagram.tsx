@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useTheme } from '@/lib/ThemeContext';
 
 const columns = [
   { title: "1. Analysis" },
@@ -48,6 +49,9 @@ const getPath = (fromCol: number, fromY: number, toCol: number, toY: number) => 
 };
 
 export default function WorkflowDiagram() {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
   return (
     <section className="desktop-only-section" style={{
       width: '100%',
@@ -63,19 +67,19 @@ export default function WorkflowDiagram() {
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        backgroundColor: '#f5f5f7',
+        backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : '#f5f5f7',
         borderRadius: '999px',
         padding: '6px 16px',
         marginBottom: '1rem'
       }}>
-        <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#111111', marginRight: '8px' }}></div>
-        <span style={{ fontSize: '11px', fontWeight: 600, color: '#1d1d1f', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Control Architecture</span>
+        <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: isDark ? '#ffffff' : '#111111', marginRight: '8px' }}></div>
+        <span style={{ fontSize: '11px', fontWeight: 600, color: isDark ? '#ffffff' : '#1d1d1f', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Control Architecture</span>
       </div>
 
       <h2 style={{
         fontSize: 'clamp(28px, 4vw, 40px)',
         fontWeight: 400,
-        color: '#111111',
+        color: isDark ? '#ffffff' : '#111111',
         letterSpacing: '-0.02em',
         marginBottom: '4rem',
         textAlign: 'center',
@@ -105,18 +109,18 @@ export default function WorkflowDiagram() {
             
             return (
               <g key={i}>
-                <path d={path} fill="none" stroke="rgba(0,0,0,0.15)" strokeWidth="3" />
+                <path d={path} fill="none" stroke={isDark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.15)"} strokeWidth="3" />
                 <path 
                   d={path} 
                   fill="none" 
-                  stroke="#111111" 
+                  stroke={isDark ? "#ffffff" : "#111111"} 
                   strokeWidth="3" 
                   strokeDasharray="10 20" 
                   className="animated-flow-line" 
                 />
                 <g transform={`translate(${midX}, ${midY})`}>
-                  <rect x="-22" y="-9" width="44" height="18" rx="9" fill="#111111" />
-                  <text x="0" y="2" fill="#ffffff" fontSize="8" fontWeight="600" textAnchor="middle" dominantBaseline="middle">{conn.label}</text>
+                  <rect x="-22" y="-9" width="44" height="18" rx="9" fill={isDark ? "#ffffff" : "#111111"} />
+                  <text x="0" y="2" fill={isDark ? "#000000" : "#ffffff"} fontSize="8" fontWeight="600" textAnchor="middle" dominantBaseline="middle">{conn.label}</text>
                 </g>
               </g>
             );
@@ -136,28 +140,28 @@ export default function WorkflowDiagram() {
               zIndex: 2
             }}>
               <div className="node-card" style={{
-                backgroundColor: 'transparent',
+                backgroundColor: isDark ? 'rgba(20, 20, 26, 0.75)' : 'transparent',
                 backdropFilter: 'blur(10px)',
                 WebkitBackdropFilter: 'blur(10px)',
                 borderRadius: '16px',
                 padding: '12px 14px',
-                border: '1px solid rgba(0,0,0,0.1)',
+                border: isDark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(0,0,0,0.1)',
                 display: 'flex',
                 flexDirection: 'column',
                 transition: 'transform 0.3s ease, border-color 0.3s ease',
               }}
-              onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)'; }}
-              onMouseOut={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = 'rgba(0,0,0,0.1)'; }}
+              onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.2)'; }}
+              onMouseOut={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.1)'; }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
                   <div>
-                    <h4 style={{ margin: 0, fontSize: '11px', fontWeight: 600, color: '#111', lineHeight: 1.2 }}>{node.title}</h4>
-                    <span style={{ fontSize: '9px', color: '#888' }}>{node.desc}</span>
+                    <h4 style={{ margin: 0, fontSize: '11px', fontWeight: 600, color: isDark ? '#ffffff' : '#111', lineHeight: 1.2 }}>{node.title}</h4>
+                    <span style={{ fontSize: '9px', color: isDark ? '#a1a1aa' : '#888' }}>{node.desc}</span>
                   </div>
                   <div style={{
                     backgroundColor: 'transparent',
-                    color: '#111',
-                    border: '1px solid rgba(0,0,0,0.1)',
+                    color: isDark ? '#ffffff' : '#111',
+                    border: isDark ? '1px solid rgba(255,255,255,0.2)' : '1px solid rgba(0,0,0,0.1)',
                     padding: '2px 8px',
                     borderRadius: '999px',
                     fontSize: '8px',
@@ -169,30 +173,30 @@ export default function WorkflowDiagram() {
                 </div>
                 
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '9px', marginTop: '6px' }}>
-                  <span style={{ color: '#888' }}>Status</span>
-                  <span style={{ fontWeight: 600, color: '#111' }}>{node.status}</span>
+                  <span style={{ color: isDark ? '#a1a1aa' : '#888' }}>Status</span>
+                  <span style={{ fontWeight: 600, color: isDark ? '#ffffff' : '#111' }}>{node.status}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '9px', marginTop: '4px' }}>
-                  <span style={{ color: '#888' }}>Owner</span>
-                  <span style={{ fontWeight: 500, color: '#111' }}>AX System</span>
+                  <span style={{ color: isDark ? '#a1a1aa' : '#888' }}>Owner</span>
+                  <span style={{ fontWeight: 500, color: isDark ? '#ffffff' : '#111' }}>AX System</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '9px', marginTop: '4px' }}>
-                  <span style={{ color: '#888' }}>Metric</span>
-                  <span style={{ fontWeight: 500, color: '#111' }}>{node.size}</span>
+                  <span style={{ color: isDark ? '#a1a1aa' : '#888' }}>Metric</span>
+                  <span style={{ fontWeight: 500, color: isDark ? '#ffffff' : '#111' }}>{node.size}</span>
                 </div>
                 
                 {node.isChart ? (
-                   <div style={{ marginTop: '12px', height: '30px', position: 'relative', borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: '8px' }}>
+                   <div style={{ marginTop: '12px', height: '30px', position: 'relative', borderTop: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.05)', paddingTop: '8px' }}>
                       <svg viewBox="0 0 100 40" preserveAspectRatio="none" style={{ width: '100%', height: '100%' }}>
-                        <polyline points="0,35 20,25 40,30 60,10 80,15 100,5" fill="none" stroke="#111" strokeWidth="2" strokeLinejoin="round" />
-                        <polygon points="0,40 0,35 20,25 40,30 60,10 80,15 100,5 100,40" fill="rgba(0, 0, 0, 0.05)" />
+                        <polyline points="0,35 20,25 40,30 60,10 80,15 100,5" fill="none" stroke={isDark ? "#ffffff" : "#111"} strokeWidth="2" strokeLinejoin="round" />
+                        <polygon points="0,40 0,35 20,25 40,30 60,10 80,15 100,5 100,40" fill={isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)"} />
                       </svg>
                    </div>
                 ) : (
-                   <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', marginTop: '12px', borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: '8px' }}>
-                      <div style={{ height: '3px', width: '85%', backgroundColor: 'rgba(0,0,0,0.05)', borderRadius: '2px' }}><div style={{ height: '100%', width: '70%', backgroundColor: '#111', borderRadius: '2px' }}></div></div>
-                      <div style={{ height: '3px', width: '95%', backgroundColor: 'rgba(0,0,0,0.05)', borderRadius: '2px' }}><div style={{ height: '100%', width: '40%', backgroundColor: '#111', borderRadius: '2px' }}></div></div>
-                      <div style={{ height: '3px', width: '70%', backgroundColor: 'rgba(0,0,0,0.05)', borderRadius: '2px' }}><div style={{ height: '100%', width: '90%', backgroundColor: '#111', borderRadius: '2px' }}></div></div>
+                   <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', marginTop: '12px', borderTop: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.05)', paddingTop: '8px' }}>
+                      <div style={{ height: '3px', width: '85%', backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)', borderRadius: '2px' }}><div style={{ height: '100%', width: '70%', backgroundColor: isDark ? '#ffffff' : '#111', borderRadius: '2px' }}></div></div>
+                      <div style={{ height: '3px', width: '95%', backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)', borderRadius: '2px' }}><div style={{ height: '100%', width: '40%', backgroundColor: isDark ? '#ffffff' : '#111', borderRadius: '2px' }}></div></div>
+                      <div style={{ height: '3px', width: '70%', backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)', borderRadius: '2px' }}><div style={{ height: '100%', width: '90%', backgroundColor: isDark ? '#ffffff' : '#111', borderRadius: '2px' }}></div></div>
                    </div>
                 )}
               </div>

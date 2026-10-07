@@ -156,7 +156,7 @@ export default function BackgroundWrapper({ children, theme: explicitTheme, disa
       >
         <defs>
           <pattern id="blackbox-grid" width="96" height="96" patternUnits="userSpaceOnUse">
-            <path d="M 96 0 L 0 0 0 96" fill="none" stroke={activeTheme === 'dark' ? "#333333" : "rgba(0,0,0,0.07)"} strokeWidth="1" />
+            <path d="M 96 0 L 0 0 0 96" fill="none" stroke={activeTheme === 'dark' ? "rgba(255, 255, 255, 0.08)" : "rgba(0,0,0,0.07)"} strokeWidth="1" />
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#blackbox-grid)" />

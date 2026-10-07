@@ -4,8 +4,9 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
-import { FaUser, FaChevronDown, FaCubes, FaRobot, FaBuilding, FaShieldAlt } from 'react-icons/fa';
+import { FaUser, FaChevronDown, FaCubes, FaRobot, FaBuilding, FaShieldAlt, FaSun, FaMoon } from 'react-icons/fa';
 import { supabaseGoogle, signOut } from '@/lib/supabaseClient';
+import { useTheme } from '@/lib/ThemeContext';
 
 interface NavItem {
   href: string;
@@ -73,6 +74,7 @@ const NAV_CATEGORIES: NavCategory[] = [
 ];
 
 export default function Header() {
+  const { theme, toggleTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('platform');
@@ -277,6 +279,44 @@ export default function Header() {
             gap: 10px;
           }
         }
+
+        [data-theme="dark"] .glynne-mega-dropdown {
+          background: rgba(10, 10, 14, 0.96);
+          border-bottom-color: rgba(255, 255, 255, 0.08);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        [data-theme="dark"] .category-tab-btn {
+          color: #a1a1aa;
+        }
+
+        [data-theme="dark"] .category-tab-btn:hover,
+        [data-theme="dark"] .category-tab-btn.active {
+          color: #ffffff;
+          background: rgba(255, 255, 255, 0.08);
+        }
+
+        [data-theme="dark"] .subnav-card-link {
+          background: rgba(255, 255, 255, 0.04);
+          border-color: rgba(255, 255, 255, 0.06);
+        }
+
+        [data-theme="dark"] .subnav-card-link:hover {
+          background: rgba(255, 255, 255, 0.08);
+          border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        [data-theme="dark"] .subnav-card-title {
+          color: #ffffff;
+        }
+
+        [data-theme="dark"] .subnav-card-desc {
+          color: #a1a1aa;
+        }
+
+        [data-theme="dark"] .mobile-menu-btn {
+          color: #ffffff;
+        }
       `}</style>
 
       {/* The Mega Dropdown Container */}
@@ -288,7 +328,7 @@ export default function Header() {
         }}
         onMouseLeave={handleMouseLeaveHeader}
       >
-        <BackgroundWrapper theme="light">
+        <BackgroundWrapper>
           <div className="mega-dropdown-content" style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '100px 24px 40px 24px', width: '100%' }}>
             
             {/* Desktop Tabs Header inside Mega Dropdown */}
@@ -422,17 +462,39 @@ export default function Header() {
         </div>
 
         <nav className="nav-links">
-          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <button
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+              style={{
+                background: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
+                border: theme === 'dark' ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(0, 0, 0, 0.08)',
+                borderRadius: '50%',
+                width: '34px',
+                height: '34px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                color: theme === 'dark' ? '#f5f5f7' : '#1d1d1f',
+                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                boxShadow: '0 2px 10px rgba(0,0,0,0.02)'
+              }}
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              {theme === 'dark' ? <FaSun size={13} color="#ffd700" /> : <FaMoon size={13} color="#555" />}
+            </button>
+
             <Link 
               href={isLoggedIn ? "/Panel" : "/login"} 
               style={{
                 padding: isLoggedIn ? '0' : '0.4rem 1.2rem',
                 borderRadius: '999px',
-                backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                backgroundColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.5)',
                 backdropFilter: 'blur(10px)',
                 WebkitBackdropFilter: 'blur(10px)',
-                color: '#111111',
-                border: '1px solid rgba(0,0,0,0.08)',
+                color: theme === 'dark' ? '#ffffff' : '#111111',
+                border: theme === 'dark' ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(0,0,0,0.08)',
                 fontSize: '0.85rem',
                 fontWeight: 500,
                 textDecoration: 'none',
@@ -445,18 +507,8 @@ export default function Header() {
                 minWidth: isLoggedIn ? '34px' : '80px',
                 boxShadow: '0 2px 10px rgba(0,0,0,0.02)'
               }}
-              onMouseOver={(e) => { 
-                e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)'; 
-                e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.8)'; 
-                e.currentTarget.style.transform = 'translateY(-1px)';
-              }}
-              onMouseOut={(e) => { 
-                e.currentTarget.style.borderColor = 'rgba(0,0,0,0.08)'; 
-                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'; 
-                e.currentTarget.style.transform = 'translateY(0)';
-              }}
             >
-              {isLoggedIn ? <FaUser size={13} color="#333" /> : <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><FaUser size={10} color="#888" /> Log In</span>}
+              {isLoggedIn ? <FaUser size={13} color={theme === 'dark' ? '#ffffff' : '#333333'} /> : <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><FaUser size={10} color={theme === 'dark' ? '#aaa' : '#888'} /> Log In</span>}
             </Link>
             
             <button className="mobile-menu-btn" onClick={toggleMobileMenu} aria-label="Toggle menu">

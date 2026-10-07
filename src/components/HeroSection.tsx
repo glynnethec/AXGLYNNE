@@ -1,7 +1,11 @@
 import IntenseHeroGrid from './IntenseHeroGrid';
 import Link from 'next/link';
+import { useTheme } from '@/lib/ThemeContext';
 
 export default function HeroSection() {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
   return (
     <section className="intro-hero" style={{ position: 'relative', backgroundColor: 'var(--bg-color)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <IntenseHeroGrid />
@@ -30,7 +34,7 @@ export default function HeroSection() {
           textAlign: 'center',
           fontSize: 'clamp(40px, 6.5vw, 64px)',
           fontWeight: 400,
-          color: '#111111',
+          color: isDark ? '#ffffff' : '#111111',
           lineHeight: 1.1,
           letterSpacing: '-0.02em',
           maxWidth: '1100px'
@@ -44,7 +48,7 @@ export default function HeroSection() {
           textAlign: 'center',
           fontSize: 'clamp(14px, 1.5vw, 16px)',
           lineHeight: 1.6,
-          color: '#86868b',
+          color: isDark ? '#a1a1aa' : '#86868b',
           fontWeight: 300,
           letterSpacing: '0.01em',
           maxWidth: '900px'
@@ -53,16 +57,16 @@ export default function HeroSection() {
         </p>
 
         {/* Buttons */}
-        <div style={{ display: 'flex', gap: '16px', marginTop: '16px' }}>
+        <div style={{ display: 'flex', gap: '16px', marginTop: '16px', flexWrap: 'wrap', justifyContent: 'center' }}>
           <Link href="/Methodology" style={{
             padding: '14px 28px',
-            backgroundColor: '#111111',
-            color: '#ffffff',
+            backgroundColor: isDark ? '#ffffff' : '#111111',
+            color: isDark ? '#000000' : '#ffffff',
             borderRadius: '999px',
             textDecoration: 'none',
             fontWeight: 600,
             fontSize: '14px',
-            border: '1px solid #111111',
+            border: isDark ? '1px solid #ffffff' : '1px solid #111111',
             transition: 'all 0.2s ease'
           }}>
             Explore Methodology
@@ -70,12 +74,12 @@ export default function HeroSection() {
           <Link href="/About" style={{
             padding: '14px 28px',
             backgroundColor: 'transparent',
-            color: '#111111',
+            color: isDark ? '#ffffff' : '#111111',
             borderRadius: '999px',
             textDecoration: 'none',
             fontWeight: 600,
             fontSize: '14px',
-            border: '1px solid rgba(0,0,0,0.1)',
+            border: isDark ? '1px solid rgba(255,255,255,0.3)' : '1px solid rgba(0,0,0,0.1)',
             transition: 'all 0.2s ease'
           }}>
             Explore Architecture

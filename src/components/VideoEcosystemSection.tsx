@@ -3,8 +3,12 @@
 import { useEffect } from 'react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import TechLogos from './TechLogos';
+import { useTheme } from '@/lib/ThemeContext';
 
 export default function VideoEcosystemSection() {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
   return (
     <section style={{
       width: '100%',
@@ -21,7 +25,7 @@ export default function VideoEcosystemSection() {
       <div className="responsive-solutions-width responsive-card-borderless" style={{
         width: '70vw',
         maxWidth: '70vw',
-        border: '1px solid rgba(0, 0, 0, 0.1)',
+        border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.1)',
         borderRadius: '40px',
         padding: '4rem 2rem',
         backgroundColor: 'transparent',
@@ -36,18 +40,18 @@ export default function VideoEcosystemSection() {
           display: 'flex',
           alignItems: 'center',
           gap: '8px',
-          backgroundColor: '#f5f5f7',
+          backgroundColor: isDark ? 'rgba(255, 255, 255, 0.08)' : '#f5f5f7',
           borderRadius: '999px',
           padding: '6px 16px',
           marginBottom: '32px'
         }}>
-          <span style={{ fontSize: '11px', fontWeight: 500, color: '#1d1d1f', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Infrastructure Ecosystem</span>
+          <span style={{ fontSize: '11px', fontWeight: 500, color: isDark ? '#ffffff' : '#1d1d1f', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Infrastructure Ecosystem</span>
         </div>
 
         <h2 style={{
           fontSize: '28px',
           fontWeight: 300,
-          color: '#111111',
+          color: isDark ? '#ffffff' : '#111111',
           letterSpacing: '-0.01em',
           margin: '0 0 12px 0',
           textAlign: 'center'
@@ -56,7 +60,7 @@ export default function VideoEcosystemSection() {
         </h2>
         <p style={{
           fontSize: '13px',
-          color: '#8f8f96',
+          color: isDark ? '#a1a1aa' : '#8f8f96',
           fontWeight: 300,
           letterSpacing: '0.02em',
           margin: '0 0 40px 0',
