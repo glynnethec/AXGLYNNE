@@ -38,7 +38,7 @@ export default function PanelFooter() {
         {/* Links Section */}
         <div className="panel-footer-links-col">
           <h4 className="panel-footer-title">Platform</h4>
-          <Link href="/Solutions" className="panel-footer-link">Solutions</Link>
+          <Link href="/Servex_solution" className="panel-footer-link">Solutions</Link>
           <Link href="/ia_vailable" className="panel-footer-link">AI Available</Link>
           <Link href="/AX_voice" className="panel-footer-link">AX Voice</Link>
           <Link href="/AX_chat" className="panel-footer-link">AX Chat</Link>

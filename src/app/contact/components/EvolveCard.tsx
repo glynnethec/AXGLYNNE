@@ -71,7 +71,7 @@ export default function EvolveCard() {
           }}>
             <button 
               className="responsive-btn"
-              onClick={() => router.push('/Solutions')}
+              onClick={() => router.push('/Servex_solution')}
               style={{
                 padding: '14px 28px',
                 borderRadius: '999px',

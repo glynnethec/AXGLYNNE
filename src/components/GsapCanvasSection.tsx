@@ -4,14 +4,19 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
+import { useTheme } from '@/lib/ThemeContext';
 
 export default function GsapCanvasSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const phase1Ref = useRef<HTMLDivElement>(null);
   const phase2Ref = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   useEffect(() => {
+    if (isDark) return;
+
     // Initialize Lenis for buttery smooth momentum scrolling
     const lenis = new Lenis({
       lerp: 0.08, // Fluid, natural momentum
@@ -177,12 +182,17 @@ export default function GsapCanvasSection() {
       gsap.ticker.remove(tick);
       lenis.destroy();
     };
-  }, []);
+  }, [isDark]);
+
+  if (isDark) return null;
 
   return (
     <div style={{ width: '100%', position: 'relative' }}>
-      <div ref={containerRef} className="hero-container">
-        <canvas ref={canvasRef} className="gsap-canvas" />
+      <div ref={containerRef} className="hero-container" style={{ position: 'relative' }}>
+        <canvas
+          ref={canvasRef}
+          className="gsap-canvas"
+        />
 
         <div className="overlay-content">
           <div ref={phase1Ref} style={{
@@ -228,3 +238,4 @@ export default function GsapCanvasSection() {
     </div>
   );
 }
+

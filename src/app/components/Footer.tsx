@@ -74,7 +74,7 @@ export default function Footer() {
         {/* Links Section */}
         <div className="footer-links-col">
           <h4 className="footer-title">Platform</h4>
-          <Link href="/Solutions" className="footer-link">Solutions</Link>
+          <Link href="/Servex_solution" className="footer-link">Solutions</Link>
           <Link href="/ia_vailable" className="footer-link">AI Available</Link>
           <Link href="/AX_voice" className="footer-link">AX Voice</Link>
           <Link href="/AX_chat" className="footer-link">AX Chat</Link>

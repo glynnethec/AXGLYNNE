@@ -354,7 +354,7 @@ export default function AssemblyDashboard() {
                 <span className="light-label">Area</span>
                 <span className="light-subtext">Discover what GLYNNE specializes in</span>
               </a>
-              <a href="https://axglynne.com/Solutions" target="_blank" rel="noopener noreferrer" className={`md-light-btn ${activeLight === 'Target' ? 'active' : ''}`} onClick={() => setActiveLight('Target')}>
+              <a href="https://axglynne.com/Servex_solution" target="_blank" rel="noopener noreferrer" className={`md-light-btn ${activeLight === 'Target' ? 'active' : ''}`} onClick={() => setActiveLight('Target')}>
                 <div className="icon-wrapper"><div className="target-icon">&#x2199;</div></div>
                 <span className="light-label">Target</span>
                 <span className="light-subtext">See how we modernize your company with GLYNNE</span>

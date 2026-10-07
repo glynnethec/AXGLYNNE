@@ -1,15 +1,19 @@
 'use client';
 
 import React from 'react';
+import { useTheme } from '@/lib/ThemeContext';
 
 export default function ToolsPhilosophy() {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
   return (
     <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '120px 20px 160px 20px' }}>
       <style>{`
         .phil-title {
           font-size: clamp(2.5rem, 6vw, 5rem);
           font-weight: 900;
-          background: linear-gradient(135deg, #000000 0%, #434345 100%);
+          background: ${isDark ? 'linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%)' : 'linear-gradient(135deg, #000000 0%, #434345 100%)'};
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           margin-bottom: 24px;
@@ -20,7 +24,7 @@ export default function ToolsPhilosophy() {
 
         .phil-text {
           font-size: clamp(0.9rem, 1.2vw, 1.1rem);
-          color: #555555;
+          color: ${isDark ? '#a1a1aa' : '#555555'};
           font-weight: 300;
           line-height: 1.6;
           max-width: 600px;
@@ -29,17 +33,17 @@ export default function ToolsPhilosophy() {
         }
 
         .flow-container {
-          background-color: #ffffff;
-          border: 1px solid rgba(0,0,0,0.05);
+          background-color: ${isDark ? 'rgba(18,18,22,0.85)' : '#ffffff'};
+          border: ${isDark ? '1px solid rgba(255,255,255,0.15)' : '1px solid rgba(0,0,0,0.05)'};
           border-radius: 24px;
           padding: 60px;
           width: 100%;
           max-width: 800px;
           font-family: monospace;
-          color: #111111;
+          color: ${isDark ? '#ffffff' : '#111111'};
           font-size: 14px;
           line-height: 1.8;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+          box-shadow: ${isDark ? '0 10px 30px rgba(0,0,0,0.4)' : '0 10px 30px rgba(0,0,0,0.02)'};
         }
 
         .flow-col {
@@ -51,23 +55,24 @@ export default function ToolsPhilosophy() {
 
         .flow-node {
           padding: 12px 24px;
-          background-color: #f5f5f7;
+          background-color: ${isDark ? 'rgba(255,255,255,0.08)' : '#f5f5f7'};
           border-radius: 8px;
           font-weight: 600;
           margin: 8px 0;
           min-width: 120px;
           text-align: center;
+          color: ${isDark ? '#ffffff' : '#111111'};
         }
 
         .flow-action {
-          color: #86868b;
+          color: ${isDark ? '#a1a1aa' : '#86868b'};
           font-style: italic;
           margin: 8px 0;
           font-size: 13px;
         }
 
         .flow-arrow {
-          color: #d2d2d7;
+          color: ${isDark ? '#52525b' : '#d2d2d7'};
           font-size: 16px;
         }
 
@@ -75,7 +80,7 @@ export default function ToolsPhilosophy() {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
-          background-color: #f5f5f7;
+          background-color: ${isDark ? 'rgba(255,255,255,0.05)' : '#f5f5f7'};
           padding: 24px 32px;
           border-radius: 12px;
           margin: 16px 0;
@@ -86,12 +91,13 @@ export default function ToolsPhilosophy() {
           display: flex;
           align-items: center;
           gap: 12px;
+          color: ${isDark ? '#ffffff' : '#111111'};
         }
 
         .tool-dot {
           width: 6px;
           height: 6px;
-          background-color: #111111;
+          background-color: ${isDark ? '#ffffff' : '#111111'};
           border-radius: 50%;
         }
 
@@ -116,25 +122,25 @@ export default function ToolsPhilosophy() {
           gap: 8px;
           text-align: center;
           padding: 32px;
-          background: rgba(255,255,255,0.5);
-          border: 1px solid rgba(0,0,0,0.05);
+          background: ${isDark ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.5)'};
+          border: ${isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.05)'};
           border-radius: 16px;
         }
         
         .summary-key {
           font-weight: 600;
-          color: #111111;
+          color: ${isDark ? '#ffffff' : '#111111'};
           font-size: 16px;
         }
 
         .summary-val {
-          color: #86868b;
+          color: ${isDark ? '#a1a1aa' : '#86868b'};
           font-size: 15px;
           font-weight: 300;
         }
       `}</style>
 
-      <div className="glynne-label" style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.1em', color: '#1d1d1f', marginBottom: '24px', textTransform: 'uppercase' }}>
+      <div className="glynne-label" style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.1em', color: isDark ? '#ffffff' : '#1d1d1f', marginBottom: '24px', textTransform: 'uppercase' }}>
         The Philosophy
       </div>
 
@@ -142,7 +148,7 @@ export default function ToolsPhilosophy() {
         Intelligence without execution<br/>is just conversation.
       </h2>
       <p className="phil-text">
-        We reserve a fundamental category that is not simply a technology, but the philosophy of our ecosystem: <strong>TOOLS</strong>. This is where the connection between intelligence and real operation happens.
+        We reserve a fundamental category that is not simply a technology, but the philosophy of our ecosystem: <strong style={{ color: isDark ? '#ffffff' : '#111111' }}>TOOLS</strong>. This is where the connection between intelligence and real operation happens.
       </p>
 
       <div className="flow-container">
@@ -159,7 +165,7 @@ export default function ToolsPhilosophy() {
           <div className="flow-action">selects</div>
           <div className="flow-arrow">↓</div>
           
-          <div className="flow-node" style={{ backgroundColor: '#111111', color: '#ffffff' }}>TOOL</div>
+          <div className="flow-node" style={{ backgroundColor: isDark ? '#ffffff' : '#111111', color: isDark ? '#111111' : '#ffffff' }}>TOOL</div>
           
           <div className="tools-list">
             <div className="tool-item"><div className="tool-dot"></div> Query database</div>
@@ -173,7 +179,7 @@ export default function ToolsPhilosophy() {
           <div className="flow-arrow">│</div>
           <div className="flow-arrow">↓</div>
           
-          <div className="flow-node" style={{ backgroundColor: 'transparent', border: '1px solid #111111' }}>RESULT</div>
+          <div className="flow-node" style={{ backgroundColor: 'transparent', border: isDark ? '1px solid #ffffff' : '1px solid #111111', color: isDark ? '#ffffff' : '#111111' }}>RESULT</div>
         </div>
       </div>
 

@@ -8,6 +8,8 @@ import {
   FiTrendingUp, FiCheckCircle, FiZap
 } from 'react-icons/fi';
 
+import { useTheme } from '@/lib/ThemeContext';
+
 const SECTIONS = [
   { id: 'intro', title: 'Introducción', icon: <FiFileText /> },
   { id: 'audit', title: '1. Fundamentos y Auditoría', icon: <FiTarget /> },
@@ -25,6 +27,8 @@ const SECTIONS = [
 export default function MethodologyManifesto() {
   const [activeSection, setActiveSection] = useState('intro');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   const scrollToSection = (id: string) => {
     setActiveSection(id);
@@ -46,16 +50,16 @@ export default function MethodologyManifesto() {
         .methodology-article h2 {
           font-size: 28px;
           font-weight: 500;
-          color: #111;
+          color: ${isDark ? '#ffffff' : '#111111'};
           letter-spacing: -0.01em;
           margin: 60px 0 20px 0;
           padding-bottom: 20px;
-          border-bottom: 1px solid rgba(0,0,0,0.1);
+          border-bottom: ${isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)'};
         }
         .methodology-article h3 {
           font-size: 22px;
           font-weight: 500;
-          color: #111;
+          color: ${isDark ? '#ffffff' : '#111111'};
           margin: 40px 0 16px 0;
         }
         .methodology-article p {
@@ -70,13 +74,14 @@ export default function MethodologyManifesto() {
         }
         .methodology-article strong {
           font-weight: 500;
-          color: #111;
+          color: ${isDark ? '#ffffff' : '#111111'};
         }
         .methodology-article .workflow-step {
           display: block;
           margin: 12px 0;
           font-family: monospace;
-          background: rgba(0,0,0,0.03);
+          background: ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)'};
+          color: ${isDark ? '#ffffff' : '#111111'};
           padding: 8px 16px;
           border-radius: 8px;
           font-size: 14px;
@@ -118,13 +123,13 @@ export default function MethodologyManifesto() {
               maxHeight: 'calc(100vh - 160px)',
               overflowY: 'auto',
               overflowX: 'hidden',
-              backgroundColor: 'rgba(255, 255, 255, 0.85)',
+              backgroundColor: isDark ? 'rgba(20, 20, 26, 0.85)' : 'rgba(255, 255, 255, 0.85)',
               backdropFilter: 'blur(30px)',
               WebkitBackdropFilter: 'blur(30px)',
               borderRadius: '24px',
               padding: isSidebarOpen ? '24px 16px' : '24px 0',
-              border: '1px solid rgba(0,0,0,0.06)',
-              boxShadow: isSidebarOpen ? '0 24px 80px rgba(0,0,0,0.1)' : '0 12px 40px rgba(0,0,0,0.04)',
+              border: isDark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(0,0,0,0.06)',
+              boxShadow: isSidebarOpen ? (isDark ? '0 24px 80px rgba(0,0,0,0.6)' : '0 24px 80px rgba(0,0,0,0.1)') : (isDark ? '0 12px 40px rgba(0,0,0,0.4)' : '0 12px 40px rgba(0,0,0,0.04)'),
               display: 'flex',
               flexDirection: 'column',
               alignItems: isSidebarOpen ? 'flex-start' : 'center',
@@ -150,18 +155,18 @@ export default function MethodologyManifesto() {
                   borderRadius: '12px',
                   fontSize: '13px',
                   fontWeight: activeSection === section.id ? 500 : 300,
-                  color: activeSection === section.id ? '#111' : '#86868b',
-                  backgroundColor: activeSection === section.id ? 'rgba(0,0,0,0.04)' : 'transparent',
+                  color: activeSection === section.id ? (isDark ? '#ffffff' : '#111111') : (isDark ? '#a1a1aa' : '#86868b'),
+                  backgroundColor: activeSection === section.id ? (isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.04)') : 'transparent',
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
                   whiteSpace: 'nowrap'
                 }}
                 onMouseOver={(e) => {
-                  if (activeSection !== section.id) e.currentTarget.style.color = '#111';
-                  if (activeSection !== section.id) e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.02)';
+                  if (activeSection !== section.id) e.currentTarget.style.color = isDark ? '#ffffff' : '#111111';
+                  if (activeSection !== section.id) e.currentTarget.style.backgroundColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.02)';
                 }}
                 onMouseOut={(e) => {
-                  if (activeSection !== section.id) e.currentTarget.style.color = '#86868b';
+                  if (activeSection !== section.id) e.currentTarget.style.color = isDark ? '#a1a1aa' : '#86868b';
                   if (activeSection !== section.id) e.currentTarget.style.backgroundColor = 'transparent';
                 }}
               >
@@ -200,13 +205,13 @@ export default function MethodologyManifesto() {
 
             {/* Hero Section */}
             <div style={{ textAlign: 'left', marginBottom: '80px', marginTop: '120px' }}>
-              <div style={{ fontSize: '11px', letterSpacing: '0.2em', fontWeight: 600, color: '#86868b', textTransform: 'uppercase', marginBottom: '24px' }}>
+              <div style={{ fontSize: '11px', letterSpacing: '0.2em', fontWeight: 600, color: isDark ? '#a1a1aa' : '#86868b', textTransform: 'uppercase', marginBottom: '24px' }}>
                 Our Methodology
               </div>
               <h1 style={{
                 fontSize: 'clamp(32px, 5vw, 48px)',
                 fontWeight: 400,
-                color: '#111111',
+                color: isDark ? '#ffffff' : '#111111',
                 letterSpacing: '-0.02em',
                 lineHeight: 1.1,
                 maxWidth: '800px',
@@ -216,7 +221,7 @@ export default function MethodologyManifesto() {
               </h1>
             </div>
 
-            <article className="methodology-article" style={{ fontSize: '18px', fontWeight: 300, color: '#333', lineHeight: 1.6 }}>
+            <article className="methodology-article" style={{ fontSize: '18px', fontWeight: 300, color: isDark ? '#e4e4e7' : '#333333', lineHeight: 1.6 }}>
 
               <section id="intro">
                 <p>Las empresas no necesitan simplemente incorporar inteligencia artificial.</p>
@@ -544,11 +549,11 @@ export default function MethodologyManifesto() {
                 <p>Porque la verdadera transformación no ocurre cuando una empresa empieza a utilizar IA. Ocurre cuando su infraestructura está diseñada para <strong>hacer algo nuevo con ella</strong>.</p>
               </section>
 
-              <h3 style={{ marginTop: '60px', fontSize: '24px', letterSpacing: '-0.02em', lineHeight: 1.4 }}>
+              <h3 style={{ marginTop: '60px', fontSize: '24px', letterSpacing: '-0.02em', lineHeight: 1.4, color: isDark ? '#ffffff' : '#111111' }}>
                 GLYNNE transforma procesos empresariales en sistemas tecnológicos capaces de operar, interpretar, ejecutar y evolucionar.
               </h3>
-              <p style={{ fontSize: '20px', fontWeight: 500 }}>Audita. Indaga. Construye. Crea.</p>
-              <p style={{ fontSize: '14px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888', marginTop: '40px' }}>IA como infraestructura natural.</p>
+              <p style={{ fontSize: '20px', fontWeight: 500, color: isDark ? '#ffffff' : '#111111' }}>Audita. Indaga. Construye. Crea.</p>
+              <p style={{ fontSize: '14px', letterSpacing: '0.1em', textTransform: 'uppercase', color: isDark ? '#a1a1aa' : '#888', marginTop: '40px' }}>IA como infraestructura natural.</p>
 
             </article>
           </div>
@@ -564,12 +569,12 @@ export default function MethodologyManifesto() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        backgroundColor: '#f5f5f7'
+        backgroundColor: isDark ? 'rgba(255,255,255,0.03)' : '#f5f5f7'
       }}>
         <h2 style={{
           fontSize: 'clamp(28px, 4vw, 40px)',
           fontWeight: 300,
-          color: '#111111',
+          color: isDark ? '#ffffff' : '#111111',
           lineHeight: 1.4,
           maxWidth: '900px',
           margin: '0 auto 60px auto',
@@ -581,8 +586,9 @@ export default function MethodologyManifesto() {
 
         <Link href="/contact" style={{
           padding: '16px 32px',
-          backgroundColor: '#111',
-          color: '#fff',
+          backgroundColor: isDark ? '#ffffff' : '#111111',
+          color: isDark ? '#111111' : '#ffffff',
+          border: isDark ? '1px solid #ffffff' : '1px solid #111111',
           borderRadius: '30px',
           fontSize: '15px',
           fontWeight: 500,
@@ -590,7 +596,7 @@ export default function MethodologyManifesto() {
           transition: 'transform 0.2s ease, opacity 0.2s ease',
         }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.opacity = '0.8';
+            e.currentTarget.style.opacity = '0.85';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.opacity = '1';

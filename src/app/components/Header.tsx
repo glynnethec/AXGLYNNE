@@ -31,7 +31,7 @@ const NAV_CATEGORIES: NavCategory[] = [
       { href: '/precios', label: 'Planes & Precios', desc: 'Suscripciones y precios para empresas' },
       { href: '/integraciones', label: 'Integraciones', desc: 'Conectores con WhatsApp, Supabase, Twilio y CRMs' },
       { href: '/caracteristicas', label: 'Características', desc: 'Capacidades de inferencia, voz y fine-tuning' },
-      { href: '/Solutions', label: 'Soluciones Enterprise', desc: 'Casos de estudio y conversión de matrices' },
+      { href: '/Servex_solution', label: 'Soluciones Enterprise', desc: 'Casos de estudio y conversión de matrices' },
       { href: '/Industries', label: 'Automatización B2B', desc: 'Soluciones por sector industrial' },
       { href: '/ia_vailable', label: 'Modelos de IA', desc: 'Catálogo de modelos LLM y adaptadores QLoRA' }
     ]

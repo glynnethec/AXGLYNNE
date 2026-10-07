@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useTheme } from '@/lib/ThemeContext';
 
 const nodes = [
   // LEVEL 1
@@ -91,6 +92,9 @@ const getPath = (fromX: number, fromY: number, toX: number, toY: number) => {
 };
 
 export default function FlowDiagram() {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
   return (
     <section style={{
       width: '100%',
@@ -123,18 +127,18 @@ export default function FlowDiagram() {
             
             return (
               <g key={i}>
-                <path d={path} fill="none" stroke="rgba(0,0,0,0.15)" strokeWidth="0.15" />
+                <path d={path} fill="none" stroke={isDark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.15)"} strokeWidth="0.15" />
                 <path 
                   d={path} 
                   fill="none" 
-                  stroke="#111111" 
+                  stroke={isDark ? "#ffffff" : "#111111"} 
                   strokeWidth="0.25" 
                   strokeDasharray="1 2" 
                   className="animated-flow-line" 
                 />
                 <g transform={`translate(${midX}, ${midY})`}>
-                  <rect x="-3" y="-0.4" width="6" height="0.8" rx="0.4" fill="#111111" />
-                  <text x="0" y="0.05" fill="#ffffff" fontSize="0.4" fontWeight="600" letterSpacing="0.02em" textAnchor="middle" dominantBaseline="middle">{conn.label}</text>
+                  <rect x="-3" y="-0.4" width="6" height="0.8" rx="0.4" fill={isDark ? "#ffffff" : "#111111"} />
+                  <text x="0" y="0.05" fill={isDark ? "#111111" : "#ffffff"} fontSize="0.4" fontWeight="600" letterSpacing="0.02em" textAnchor="middle" dominantBaseline="middle">{conn.label}</text>
                 </g>
               </g>
             );
@@ -154,37 +158,37 @@ export default function FlowDiagram() {
               zIndex: 2
             }}>
               <div className="node-card" style={{
-                backgroundColor: 'rgba(255,255,255,0.9)',
+                backgroundColor: isDark ? 'rgba(18,18,22,0.85)' : 'rgba(255,255,255,0.9)',
                 backdropFilter: 'blur(16px)',
                 WebkitBackdropFilter: 'blur(16px)',
                 borderRadius: '20px',
                 padding: '24px',
-                border: '1px solid rgba(0,0,0,0.1)',
+                border: isDark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(0,0,0,0.1)',
                 display: 'flex',
                 flexDirection: 'column',
                 transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                boxShadow: '0 12px 32px rgba(0,0,0,0.04)'
+                boxShadow: isDark ? '0 12px 32px rgba(0,0,0,0.5)' : '0 12px 32px rgba(0,0,0,0.04)'
               }}
               onMouseOver={(e) => { 
                 e.currentTarget.style.transform = 'translateY(-6px)'; 
-                e.currentTarget.style.borderColor = 'rgba(0,0,0,0.3)';
-                e.currentTarget.style.boxShadow = '0 30px 60px rgba(0,0,0,0.08)';
+                e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)';
+                e.currentTarget.style.boxShadow = isDark ? '0 30px 60px rgba(0,0,0,0.8)' : '0 30px 60px rgba(0,0,0,0.08)';
               }}
               onMouseOut={(e) => { 
                 e.currentTarget.style.transform = 'translateY(0)'; 
-                e.currentTarget.style.borderColor = 'rgba(0,0,0,0.1)';
-                e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.04)';
+                e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.1)';
+                e.currentTarget.style.boxShadow = isDark ? '0 12px 32px rgba(0,0,0,0.5)' : '0 12px 32px rgba(0,0,0,0.04)';
               }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
                   <div>
-                    <h4 style={{ margin: 0, fontSize: '11px', fontWeight: 600, color: '#111', lineHeight: 1.2 }}>{node.title}</h4>
-                    <span style={{ fontSize: '9px', color: '#888', display: 'block', marginTop: '2px', lineHeight: 1.4 }}>{node.desc}</span>
+                    <h4 style={{ margin: 0, fontSize: '11px', fontWeight: 600, color: isDark ? '#ffffff' : '#111', lineHeight: 1.2 }}>{node.title}</h4>
+                    <span style={{ fontSize: '9px', color: isDark ? '#a1a1aa' : '#888', display: 'block', marginTop: '2px', lineHeight: 1.4 }}>{node.desc}</span>
                   </div>
                   <div style={{
                     backgroundColor: 'transparent',
-                    color: '#111',
-                    border: '1px solid rgba(0,0,0,0.1)',
+                    color: isDark ? '#ffffff' : '#111',
+                    border: isDark ? '1px solid rgba(255,255,255,0.2)' : '1px solid rgba(0,0,0,0.1)',
                     padding: '2px 8px',
                     borderRadius: '999px',
                     fontSize: '8px',
@@ -198,55 +202,55 @@ export default function FlowDiagram() {
                 </div>
 
                 {node.customHtml && (
-                  <div style={{ backgroundColor: 'rgba(0,0,0,0.03)', padding: '6px 8px', borderRadius: '8px', fontSize: '9px', fontWeight: 600, color: '#555', textAlign: 'center', marginBottom: '12px', marginTop: '8px' }}>
+                  <div style={{ backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)', padding: '6px 8px', borderRadius: '8px', fontSize: '9px', fontWeight: 600, color: isDark ? '#d4d4d8' : '#555', textAlign: 'center', marginBottom: '12px', marginTop: '8px' }}>
                     {node.customHtml}
                   </div>
                 )}
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '9px', marginTop: 'auto', paddingTop: '8px', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
-                  <span style={{ color: '#888' }}>{node.status}</span>
-                  <span style={{ fontWeight: 600, color: '#111' }}>{node.size}</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '9px', marginTop: 'auto', paddingTop: '8px', borderTop: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.05)' }}>
+                  <span style={{ color: isDark ? '#a1a1aa' : '#888' }}>{node.status}</span>
+                  <span style={{ fontWeight: 600, color: isDark ? '#ffffff' : '#111' }}>{node.size}</span>
                 </div>
 
                 {/* --- CUSTOM SUB-CHARTS --- */}
                 
                 {node.isAgent && (
-                  <div style={{ marginTop: '20px', padding: '16px', backgroundColor: '#fafafa', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.05)' }}>
-                    <div style={{ fontSize: '10px', fontWeight: 700, color: '#111', textAlign: 'center', marginBottom: '12px', letterSpacing: '0.05em' }}>SPECIALIZED SUB-AGENTS</div>
+                  <div style={{ marginTop: '20px', padding: '16px', backgroundColor: isDark ? 'rgba(255,255,255,0.04)' : '#fafafa', borderRadius: '12px', border: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.05)' }}>
+                    <div style={{ fontSize: '10px', fontWeight: 700, color: isDark ? '#ffffff' : '#111', textAlign: 'center', marginBottom: '12px', letterSpacing: '0.05em' }}>SPECIALIZED SUB-AGENTS</div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', gap: '8px' }}>
-                      <div style={{ flex: 1, backgroundColor: '#fff', border: '1px solid rgba(0,0,0,0.1)', padding: '8px', borderRadius: '8px', textAlign: 'center', fontSize: '9px', fontWeight: 600 }}>FINANCE</div>
-                      <div style={{ flex: 1, backgroundColor: '#fff', border: '1px solid rgba(0,0,0,0.1)', padding: '8px', borderRadius: '8px', textAlign: 'center', fontSize: '9px', fontWeight: 600 }}>SUPPORT</div>
-                      <div style={{ flex: 1, backgroundColor: '#fff', border: '1px solid rgba(0,0,0,0.1)', padding: '8px', borderRadius: '8px', textAlign: 'center', fontSize: '9px', fontWeight: 600 }}>OPERATIONS</div>
+                      <div style={{ flex: 1, backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : '#fff', border: isDark ? '1px solid rgba(255,255,255,0.15)' : '1px solid rgba(0,0,0,0.1)', color: isDark ? '#ffffff' : '#111', padding: '8px', borderRadius: '8px', textAlign: 'center', fontSize: '9px', fontWeight: 600 }}>FINANCE</div>
+                      <div style={{ flex: 1, backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : '#fff', border: isDark ? '1px solid rgba(255,255,255,0.15)' : '1px solid rgba(0,0,0,0.1)', color: isDark ? '#ffffff' : '#111', padding: '8px', borderRadius: '8px', textAlign: 'center', fontSize: '9px', fontWeight: 600 }}>SUPPORT</div>
+                      <div style={{ flex: 1, backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : '#fff', border: isDark ? '1px solid rgba(255,255,255,0.15)' : '1px solid rgba(0,0,0,0.1)', color: isDark ? '#ffffff' : '#111', padding: '8px', borderRadius: '8px', textAlign: 'center', fontSize: '9px', fontWeight: 600 }}>OPERATIONS</div>
                     </div>
                   </div>
                 )}
 
                 {node.isTool && (
-                  <div style={{ marginTop: '20px', padding: '16px', backgroundColor: '#fafafa', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.05)' }}>
-                    <div style={{ fontSize: '10px', fontWeight: 700, color: '#111', textAlign: 'center', marginBottom: '8px' }}>Tools turn decisions into operations</div>
+                  <div style={{ marginTop: '20px', padding: '16px', backgroundColor: isDark ? 'rgba(255,255,255,0.04)' : '#fafafa', borderRadius: '12px', border: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.05)' }}>
+                    <div style={{ fontSize: '10px', fontWeight: 700, color: isDark ? '#ffffff' : '#111', textAlign: 'center', marginBottom: '8px' }}>Tools turn decisions into operations</div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', gap: '8px', marginTop: '12px' }}>
                       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                         <span style={{ fontSize: '9px', fontWeight: 600, marginTop: '4px' }}>QUERY</span>
-                         <span style={{ fontSize: '8px', color: '#888', marginTop: '2px' }}>Database</span>
+                         <span style={{ fontSize: '9px', fontWeight: 600, marginTop: '4px', color: isDark ? '#ffffff' : '#111' }}>QUERY</span>
+                         <span style={{ fontSize: '8px', color: isDark ? '#a1a1aa' : '#888', marginTop: '2px' }}>Database</span>
                       </div>
                       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                         <span style={{ fontSize: '9px', fontWeight: 600, marginTop: '4px' }}>CONNECT</span>
-                         <span style={{ fontSize: '8px', color: '#888', marginTop: '2px' }}>API</span>
+                         <span style={{ fontSize: '9px', fontWeight: 600, marginTop: '4px', color: isDark ? '#ffffff' : '#111' }}>CONNECT</span>
+                         <span style={{ fontSize: '8px', color: isDark ? '#a1a1aa' : '#888', marginTop: '2px' }}>API</span>
                       </div>
                       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                         <span style={{ fontSize: '9px', fontWeight: 600, marginTop: '4px' }}>EXECUTE</span>
-                         <span style={{ fontSize: '8px', color: '#888', marginTop: '2px' }}>Service</span>
+                         <span style={{ fontSize: '9px', fontWeight: 600, marginTop: '4px', color: isDark ? '#ffffff' : '#111' }}>EXECUTE</span>
+                         <span style={{ fontSize: '8px', color: isDark ? '#a1a1aa' : '#888', marginTop: '2px' }}>Service</span>
                       </div>
                     </div>
                   </div>
                 )}
 
                 {node.isOrchestrator && (
-                  <div style={{ marginTop: '20px', padding: '16px', backgroundColor: '#fafafa', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.05)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                     <div style={{ backgroundColor: '#111', color: '#fff', fontSize: '9px', padding: '4px 8px', borderRadius: '4px', fontWeight: 700 }}>EVENT</div>
-                     <div style={{ width: '2px', height: '12px', backgroundColor: '#111' }}></div>
-                     <div style={{ backgroundColor: '#fff', border: '1px solid rgba(0,0,0,0.1)', fontSize: '9px', padding: '6px 12px', borderRadius: '4px', fontWeight: 700, width: '100%', textAlign: 'center' }}>ORCHESTRATOR</div>
-                     <div style={{ display: 'flex', width: '100%', justifyContent: 'space-around', marginTop: '12px' }}>
+                  <div style={{ marginTop: '20px', padding: '16px', backgroundColor: isDark ? 'rgba(255,255,255,0.04)' : '#fafafa', borderRadius: '12px', border: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.05)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                     <div style={{ backgroundColor: isDark ? '#ffffff' : '#111', color: isDark ? '#111' : '#fff', fontSize: '9px', padding: '4px 8px', borderRadius: '4px', fontWeight: 700 }}>EVENT</div>
+                     <div style={{ width: '2px', height: '12px', backgroundColor: isDark ? '#ffffff' : '#111' }}></div>
+                     <div style={{ backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : '#fff', border: isDark ? '1px solid rgba(255,255,255,0.15)' : '1px solid rgba(0,0,0,0.1)', color: isDark ? '#ffffff' : '#111', fontSize: '9px', padding: '6px 12px', borderRadius: '4px', fontWeight: 700, width: '100%', textAlign: 'center' }}>ORCHESTRATOR</div>
+                     <div style={{ display: 'flex', width: '100%', justifyContent: 'space-around', marginTop: '12px', color: isDark ? '#ffffff' : '#111' }}>
                        <span style={{ fontSize: '9px', fontWeight: 600 }}>AGENT</span>
                        <span style={{ fontSize: '9px', fontWeight: 600 }}>TOOL</span>
                        <span style={{ fontSize: '9px', fontWeight: 600 }}>SERVICE</span>
@@ -255,8 +259,8 @@ export default function FlowDiagram() {
                 )}
 
                 {node.isRuntime && (
-                  <div style={{ marginTop: '20px', padding: '16px', backgroundColor: '#111', borderRadius: '12px', color: '#fff' }}>
-                     <div style={{ fontSize: '10px', fontWeight: 700, color: 'rgba(255,255,255,0.5)', marginBottom: '12px', letterSpacing: '0.05em' }}>EXECUTION CYCLE</div>
+                  <div style={{ marginTop: '20px', padding: '16px', backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : '#111', borderRadius: '12px', color: '#fff' }}>
+                     <div style={{ fontSize: '10px', fontWeight: 700, color: 'rgba(255,255,255,0.6)', marginBottom: '12px', letterSpacing: '0.05em' }}>EXECUTION CYCLE</div>
                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><div style={{width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#00ff88'}}></div><span style={{fontSize: '11px', fontWeight: 500}}>Event received</span></div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><div style={{width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#00ff88'}}></div><span style={{fontSize: '11px', fontWeight: 500}}>Context assembled</span></div>

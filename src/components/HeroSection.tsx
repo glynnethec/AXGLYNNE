@@ -25,7 +25,7 @@ export default function HeroSection() {
       >
         {/* Small Tag */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', fontWeight: 500, color: '#8f8f96', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-          <span style={{ fontSize: '16px' }}>⬡</span> GLYNNE CONTROL LAYER
+          <span style={{ fontSize: '16px' }}>⬡</span> GLYNNE AI ENGINEERING & FINE-TUNING
         </div>
 
         {/* Big Headline */}
@@ -39,7 +39,7 @@ export default function HeroSection() {
           letterSpacing: '-0.02em',
           maxWidth: '1100px'
         }}>
-          Enterprise AI Control & Infrastructure Layer
+          AI Engineering, Model Training & Autonomous Ecosystems
         </h1>
 
         {/* Paragraph */}
@@ -53,7 +53,7 @@ export default function HeroSection() {
           letterSpacing: '0.01em',
           maxWidth: '900px'
         }}>
-          GLYNNE is the governance runtime that integrates artificial intelligence into enterprise systems safely. We provide the architecture of control, permissions, and traceability that filters every action—enabling autonomous reasoning while maintaining absolute security.
+          At GLYNNE, we don't build traditional software or commercialize generic tools: we engineer dedicated AI architectures. We train, fine-tune parameters, and align models using your enterprise operational data to orchestrate intelligent ecosystems that transform your business processes with total precision and governance.
         </p>
 
         {/* Buttons */}

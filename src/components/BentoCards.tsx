@@ -48,7 +48,7 @@ export default function BentoCards() {
             Explore Glynne
           </button>
           <button 
-            onClick={() => router.push('/Solutions')}
+            onClick={() => router.push('/Servex_solution')}
             style={{
               padding: '14px 28px',
               borderRadius: '999px',

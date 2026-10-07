@@ -1,9 +1,12 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { useTheme } from '@/lib/ThemeContext';
 
 export default function InteractiveSystemDiagram() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   const [activeLayers, setActiveLayers] = useState({
     app: false,
     backend: false,
@@ -57,10 +60,10 @@ export default function InteractiveSystemDiagram() {
         
         .sys-block {
           width: 280px;
-          border: 1px solid rgba(0,0,0,0.1);
+          border: ${isDark ? '1px solid rgba(255,255,255,0.15)' : '1px solid rgba(0,0,0,0.1)'};
           border-radius: 12px;
           padding: 16px;
-          background: #ffffff;
+          background: ${isDark ? 'rgba(18,18,22,0.85)' : '#ffffff'};
           text-align: center;
           position: relative;
           z-index: 2;
@@ -72,30 +75,30 @@ export default function InteractiveSystemDiagram() {
         .sys-block.active {
           opacity: 1;
           transform: translateY(0);
-          box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+          box-shadow: ${isDark ? '0 10px 30px rgba(0,0,0,0.4)' : '0 10px 30px rgba(0,0,0,0.03)'};
         }
 
         .sys-block.online {
-          border-color: rgba(0, 0, 0, 0.3);
-          box-shadow: 0 0 20px rgba(0,0,0,0.05);
+          border-color: ${isDark ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.3)'};
+          box-shadow: ${isDark ? '0 0 20px rgba(255,255,255,0.1)' : '0 0 20px rgba(0,0,0,0.05)'};
         }
 
         .sys-title {
           font-size: 14px;
           font-weight: 600;
-          color: #111111;
+          color: ${isDark ? '#ffffff' : '#111111'};
           margin-bottom: 8px;
         }
 
         .sys-desc {
           font-size: 12px;
-          color: #86868b;
+          color: ${isDark ? '#a1a1aa' : '#86868b'};
         }
 
         .sys-line {
           width: 1px;
           height: 30px;
-          background-color: rgba(0,0,0,0.1);
+          background-color: ${isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)'};
           opacity: 0;
           transition: opacity 0.4s ease;
         }
@@ -105,7 +108,7 @@ export default function InteractiveSystemDiagram() {
         }
 
         .sys-line.online {
-          background-color: rgba(0,0,0,0.3);
+          background-color: ${isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.3)'};
         }
 
         /* Flowing particles for online state */
@@ -113,7 +116,7 @@ export default function InteractiveSystemDiagram() {
           position: absolute;
           width: 4px;
           height: 4px;
-          background-color: #111111;
+          background-color: ${isDark ? '#ffffff' : '#111111'};
           border-radius: 50%;
           opacity: 0;
           z-index: 3;
@@ -147,12 +150,12 @@ export default function InteractiveSystemDiagram() {
 
         .model-node {
           padding: 12px;
-          border: 1px solid rgba(0,0,0,0.1);
+          border: ${isDark ? '1px solid rgba(255,255,255,0.15)' : '1px solid rgba(0,0,0,0.1)'};
           border-radius: 8px;
           font-size: 11px;
-          color: #111111;
+          color: ${isDark ? '#ffffff' : '#111111'};
           font-weight: 600;
-          background: #ffffff;
+          background: ${isDark ? 'rgba(255,255,255,0.08)' : '#ffffff'};
         }
 
         .status-badge {
@@ -164,22 +167,22 @@ export default function InteractiveSystemDiagram() {
           letter-spacing: 0.1em;
           opacity: 0;
           transition: all 0.6s ease;
-          background: #f5f5f7;
-          color: #86868b;
+          background: ${isDark ? 'rgba(255,255,255,0.08)' : '#f5f5f7'};
+          color: ${isDark ? '#a1a1aa' : '#86868b'};
         }
 
         .status-badge.online {
           opacity: 1;
-          background: #111111;
-          color: #ffffff;
-          box-shadow: 0 0 15px rgba(0,0,0,0.1);
+          background: ${isDark ? '#ffffff' : '#111111'};
+          color: ${isDark ? '#111111' : '#ffffff'};
+          box-shadow: ${isDark ? '0 0 15px rgba(255,255,255,0.2)' : '0 0 15px rgba(0,0,0,0.1)'};
         }
       `}</style>
 
       <h2 style={{ 
         fontSize: 'clamp(3.5rem, 8vw, 6.5rem)', 
         fontWeight: 900, 
-        background: 'linear-gradient(135deg, #000000 0%, #434345 100%)',
+        background: isDark ? 'linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%)' : 'linear-gradient(135deg, #000000 0%, #434345 100%)',
         WebkitBackgroundClip: 'text',
         WebkitTextFillColor: 'transparent',
         marginBottom: '80px', 

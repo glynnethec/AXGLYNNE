@@ -120,10 +120,10 @@ export default function HomeAuditSection() {
           boxShadow: 'none'
         }}>
           <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: isDark ? '#ffffff' : '#111111', lineHeight: 1.1, margin: '0 0 8px 0', letterSpacing: '-0.02em' }}>
-            Deterministic Guardrails for Enterprise AI
+            Cognitive Automation & Dedicated AI Development
           </h2>
           <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: isDark ? '#a1a1aa' : '#86868b', fontWeight: 300, lineHeight: 1.6, margin: 0, maxWidth: '950px' }}>
-            Unconstrained AI introduces operational risk. GLYNNE wraps foundation models inside a deterministic control layer that evaluates context, verifies permissions, and enforces strict business rules before any tool or API payload is executed.
+            We take your enterprise to the next level by designing advanced AI pipelines. We adapt models, fine-tune algorithms with your own operational data, and deploy governed infrastructures ready to execute massive tasks with total precision and auditability.
           </p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'flex-start', marginTop: '24px', flexWrap: 'wrap' }}>
             <button
@@ -143,7 +143,7 @@ export default function HomeAuditSection() {
               onMouseOver={(e) => { e.currentTarget.style.opacity = '0.85'; e.currentTarget.style.transform = 'scale(1.02)'; }}
               onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1)'; }}
             >
-              Explore the methodology
+              Explore Methodology
             </button>
 
             <button
@@ -172,10 +172,10 @@ export default function HomeAuditSection() {
         <div style={{ position: 'relative', zIndex: 10, width: '100%', minHeight: '80vh', boxSizing: 'border-box', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '60px', padding: '0', backgroundColor: 'transparent' }}>
           <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
             <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: isDark ? '#ffffff' : '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
-              Controlled Execution Pipeline
+              Dedicated AI Models & Advanced Fine-Tuning
             </h2>
             <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: isDark ? '#a1a1aa' : '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
-              From lightweight routing agents to deep reasoning models, GLYNNE dictates what data agents can read, which enterprise tools they can invoke, and how every decision is logged for total traceability.
+              From specialized language models to deep reasoning architectures, we develop and adapt AI algorithms tailored to your enterprise. We perform continuous fine-tuning (QLoRA) on your own corporate data so agents resolve complex operational tasks with millimeter precision.
             </p>
 
             <div style={{ display: 'flex', gap: '16px', marginTop: '32px', flexWrap: 'wrap', justifyContent: 'flex-start' }}>

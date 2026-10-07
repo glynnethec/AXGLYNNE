@@ -21,19 +21,19 @@ export const metadata: Metadata = {
     'AXGLYNNE Solutions'
   ],
   alternates: {
-    canonical: 'https://axglynne.com/Solutions',
+    canonical: 'https://axglynne.com/Servex_solution',
     languages: {
-      'en-US': 'https://axglynne.com/Solutions',
-      'es-ES': 'https://axglynne.com/Solutions',
-      'es-MX': 'https://axglynne.com/Solutions',
-      'es-CO': 'https://axglynne.com/Solutions',
-      'x-default': 'https://axglynne.com/Solutions',
+      'en-US': 'https://axglynne.com/Servex_solution',
+      'es-ES': 'https://axglynne.com/Servex_solution',
+      'es-MX': 'https://axglynne.com/Servex_solution',
+      'es-CO': 'https://axglynne.com/Servex_solution',
+      'x-default': 'https://axglynne.com/Servex_solution',
     },
   },
   openGraph: {
     title: 'Soluciones de IA & Automatización de Catálogos XML Complejos | Ecosistema SERVEX',
     description: 'Infraestructura de IA para la conversión automática de catálogos XML complejos (CET Designer), matrices de datos y ejecución autónoma de procesos corporativos.',
-    url: 'https://axglynne.com/Solutions',
+    url: 'https://axglynne.com/Servex_solution',
     siteName: 'AXGLYNNE Enterprise AI Solutions',
     locale: 'es_US',
     alternateLocale: ['en_US', 'es_ES', 'es_MX', 'es_CO'],
@@ -53,7 +53,7 @@ export default function SolutionsLayout({ children }: { children: React.ReactNod
     "headline": "Ecosistema de IA y Automatización de Catálogos XML Complejos para SERVEX",
     "name": "Soluciones de IA Corporativa & Conversión XML Matrix",
     "description": "Solución de ingeniería desarrollada para SERVEX: Integración de modelos de IA para la lectura, conversión y actualización autónoma de catálogos XML de alta complejidad (CET Designer), transformando esquemas en datos estructurados y ejecutando análisis automáticos sin intervención manual del usuario.",
-    "url": "https://axglynne.com/Solutions",
+    "url": "https://axglynne.com/Servex_solution",
     "inLanguage": ["en", "es"],
     "author": {
       "@type": "Organization",

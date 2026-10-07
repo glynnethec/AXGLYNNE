@@ -6,12 +6,15 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import GsapCanvasSection from '@/components/GsapCanvasSection';
 import PcCardSection from '@/components/PcCardSection';
+import { useTheme } from '@/lib/ThemeContext';
 
 export default function AboutManifesto() {
   const router = useRouter();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   return (
-    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: 'transparent', color: '#111111' }}>
+    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: 'transparent', color: isDark ? '#ffffff' : '#111111' }}>
       <style>{`
         .glynne-section {
           width: 100%;
@@ -28,20 +31,20 @@ export default function AboutManifesto() {
           font-weight: 500;
           letter-spacing: 0.1em;
           text-transform: uppercase;
-          color: '#1d1d1f';
+          color: ${isDark ? '#ffffff' : '#1d1d1f'};
           margin-bottom: 24px;
         }
         .glynne-title {
           font-size: clamp(32px, 5vw, 56px);
           font-weight: 400;
           letter-spacing: -0.02em;
-          color: #111111;
+          color: ${isDark ? '#ffffff' : '#111111'};
           line-height: 1.1;
           margin: 0 0 40px 0;
         }
         .glynne-text {
           font-size: clamp(14px, 1.5vw, 16px);
-          color: #86868b;
+          color: ${isDark ? '#a1a1aa' : '#86868b'};
           font-weight: 300;
           line-height: 1.6;
           letter-spacing: 0.01em;
@@ -50,14 +53,14 @@ export default function AboutManifesto() {
         }
         .glynne-arrow {
           font-size: 24px;
-          color: #d2d2d7;
+          color: ${isDark ? '#52525b' : '#d2d2d7'};
           margin: 60px 0;
           font-weight: 300;
         }
         .tech-monospace {
           font-family: monospace;
           font-size: 14px;
-          color: #86868b;
+          color: ${isDark ? '#a1a1aa' : '#86868b'};
           line-height: 2;
           max-width: 800px;
           margin: 40px auto;
@@ -71,7 +74,7 @@ export default function AboutManifesto() {
           gap: 16px;
           font-family: monospace;
           font-size: 14px;
-          color: #111111;
+          color: ${isDark ? '#ffffff' : '#111111'};
           margin-top: 40px;
         }
         .work-process-item {
@@ -93,7 +96,7 @@ export default function AboutManifesto() {
         }
         .process-num {
           font-family: monospace;
-          color: #86868b;
+          color: ${isDark ? '#a1a1aa' : '#86868b'};
           font-size: 14px;
           padding-top: 4px;
         }
@@ -101,26 +104,26 @@ export default function AboutManifesto() {
           width: 100%;
           max-width: 600px;
           aspect-ratio: 16/9;
-          background-color: #f5f5f7;
+          background-color: ${isDark ? 'rgba(255,255,255,0.05)' : '#f5f5f7'};
           border-radius: 24px;
           margin: 40px 0;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #86868b;
+          color: ${isDark ? '#a1a1aa' : '#86868b'};
           font-size: 14px;
           letter-spacing: 0.05em;
         }
         .portrait-placeholder {
           width: 240px;
           height: 320px;
-          background-color: #f5f5f7;
+          background-color: ${isDark ? 'rgba(255,255,255,0.05)' : '#f5f5f7'};
           border-radius: 24px;
           margin: 0 auto 40px auto;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #86868b;
+          color: ${isDark ? '#a1a1aa' : '#86868b'};
           font-size: 12px;
           letter-spacing: 0.05em;
         }
@@ -168,7 +171,7 @@ export default function AboutManifesto() {
         <div className="glynne-label">Who We Are</div>
 
         <p className="glynne-text">
-          <strong style={{ color: '#111111', fontWeight: 400 }}>GLYNNE S.A.S.</strong> is a technology company founded in Bogotá, Colombia, dedicated to software architecture, artificial intelligence, and systems automation.
+          <strong style={{ color: isDark ? '#ffffff' : '#111111', fontWeight: 400 }}>GLYNNE S.A.S.</strong> is a technology company founded in Bogotá, Colombia, dedicated to software architecture, artificial intelligence, and systems automation.
         </p>
         <p className="glynne-text">
           We build technology for companies that need to solve complex problems through software tailored specifically to their operations. Our work combines software engineering, systems architecture, artificial intelligence, and solution design to create robust, scalable platforms ready to evolve.
@@ -190,7 +193,7 @@ export default function AboutManifesto() {
         <p className="glynne-text">
           At Glynne, we believe that a good technological solution doesn't depend solely on an AI model, a framework, or a specific tool.
         </p>
-        <p className="glynne-text" style={{ color: '#111111', fontWeight: 400, fontSize: '20px', margin: '16px auto 32px auto' }}>
+        <p className="glynne-text" style={{ color: isDark ? '#ffffff' : '#111111', fontWeight: 400, fontSize: '20px', margin: '16px auto 32px auto' }}>
           It depends on how all the pieces work together.
         </p>
         <p className="glynne-text">
@@ -222,7 +225,7 @@ export default function AboutManifesto() {
           More than accumulating technologies, we seek to understand them deeply and use them when they truly add value to the system.
         </p>
 
-        <p className="glynne-text" style={{ color: '#111111', fontWeight: 400, fontSize: '20px', marginTop: '32px' }}>
+        <p className="glynne-text" style={{ color: isDark ? '#ffffff' : '#111111', fontWeight: 400, fontSize: '20px', marginTop: '32px' }}>
           Tools change. Engineering remains.
         </p>
       </section>
@@ -236,19 +239,19 @@ export default function AboutManifesto() {
         <div className="work-process">
           <div className="work-process-item">
             <span>Understand</span>
-            <span className="arrow" style={{ color: '#d2d2d7' }}>→</span>
+            <span className="arrow" style={{ color: isDark ? '#52525b' : '#d2d2d7' }}>→</span>
           </div>
           <div className="work-process-item">
             <span>Investigate</span>
-            <span className="arrow" style={{ color: '#d2d2d7' }}>→</span>
+            <span className="arrow" style={{ color: isDark ? '#52525b' : '#d2d2d7' }}>→</span>
           </div>
           <div className="work-process-item">
             <span>Architect</span>
-            <span className="arrow" style={{ color: '#d2d2d7' }}>→</span>
+            <span className="arrow" style={{ color: isDark ? '#52525b' : '#d2d2d7' }}>→</span>
           </div>
           <div className="work-process-item">
             <span>Build</span>
-            <span className="arrow" style={{ color: '#d2d2d7' }}>→</span>
+            <span className="arrow" style={{ color: isDark ? '#52525b' : '#d2d2d7' }}>→</span>
           </div>
           <div className="work-process-item">
             <span>Evolve</span>
@@ -270,14 +273,14 @@ export default function AboutManifesto() {
             <div key={step.num} className="process-row">
               <div className="process-num">{step.num}</div>
               <div>
-                <strong style={{ color: '#111111', fontWeight: 400, display: 'block', marginBottom: '4px', fontSize: '16px' }}>{step.title}</strong>
-                <span style={{ color: '#86868b', fontWeight: 300, fontSize: '16px' }}>{step.desc}</span>
+                <strong style={{ color: isDark ? '#ffffff' : '#111111', fontWeight: 400, display: 'block', marginBottom: '4px', fontSize: '16px' }}>{step.title}</strong>
+                <span style={{ color: isDark ? '#a1a1aa' : '#86868b', fontWeight: 300, fontSize: '16px' }}>{step.desc}</span>
               </div>
             </div>
           ))}
         </div>
 
-        <p className="glynne-text" style={{ marginTop: '40px', color: '#111111' }}>
+        <p className="glynne-text" style={{ marginTop: '40px', color: isDark ? '#ffffff' : '#111111' }}>
           This ensures that every project has a solid technical foundation and doesn't rely on improvised solutions.
         </p>
       </section>
@@ -296,7 +299,7 @@ export default function AboutManifesto() {
         <p className="glynne-text">
           We experiment with new technologies, evaluate their behavior, and seek to understand how they can be responsibly incorporated into real systems. Our goal is not always to use the newest thing.
         </p>
-        <p className="glynne-text" style={{ color: '#111111', fontWeight: 400, fontSize: '20px', marginTop: '32px' }}>
+        <p className="glynne-text" style={{ color: isDark ? '#ffffff' : '#111111', fontWeight: 400, fontSize: '20px', marginTop: '32px' }}>
           It's about building with what works best today<br />and designing for what will be needed tomorrow.
         </p>
       </section>
@@ -320,9 +323,9 @@ export default function AboutManifesto() {
           Our location defines our origin, but not our reach. We work remotely with companies and collaborators around the world, leveraging global technological infrastructure and development methodologies that allow us to build systems regardless of where the team or client is located.
         </p>
 
-        <div style={{ marginTop: '60px', fontFamily: 'monospace', fontSize: '18px', color: '#111111', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+        <div style={{ marginTop: '60px', fontFamily: 'monospace', fontSize: '18px', color: isDark ? '#ffffff' : '#111111', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
           <span>Bogotá, Colombia</span>
-          <span style={{ color: '#d2d2d7' }}>↓</span>
+          <span style={{ color: isDark ? '#52525b' : '#d2d2d7' }}>↓</span>
           <span>THE WORLD</span>
         </div>
       </section>
@@ -330,22 +333,22 @@ export default function AboutManifesto() {
       <div className="glynne-arrow">↓</div>
 
       {/* 7. El Fundador Container */}
-      <div className="mobile-founder-container" style={{ position: 'relative', zIndex: 10, width: '70vw', boxSizing: 'border-box', margin: '0 auto 80px auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '40px', padding: '80px 60px', border: '1px solid rgba(0,0,0,0.05)', borderRadius: '32px', backgroundColor: 'transparent', backdropFilter: 'blur(10px)' }}>
+      <div className="mobile-founder-container" style={{ position: 'relative', zIndex: 10, width: '70vw', boxSizing: 'border-box', margin: '0 auto 80px auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '40px', padding: '80px 60px', border: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.05)', borderRadius: '32px', backgroundColor: 'transparent', backdropFilter: 'blur(10px)' }}>
 
         {/* Left: Bio Text */}
         <div className="mobile-founder-text" style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
-          <div className="glynne-label mobile-founder-text" style={{ marginBottom: '24px', textAlign: 'left', color: '#111111' }}>The Founder</div>
+          <div className="glynne-label mobile-founder-text" style={{ marginBottom: '24px', textAlign: 'left', color: isDark ? '#ffffff' : '#111111' }}>The Founder</div>
 
-          <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, marginBottom: '24px' }}>
-            <strong style={{ color: '#111111', fontWeight: 400 }}>Software architect, researcher, and developer</strong> specialized in artificial intelligence and automation systems.
+          <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: isDark ? '#a1a1aa' : '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, marginBottom: '24px' }}>
+            <strong style={{ color: isDark ? '#ffffff' : '#111111', fontWeight: 400 }}>Software architect, researcher, and developer</strong> specialized in artificial intelligence and automation systems.
           </p>
-          <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, marginBottom: '24px' }}>
+          <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: isDark ? '#a1a1aa' : '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, marginBottom: '24px' }}>
             His work focuses on designing architectures capable of integrating software, data, and artificial intelligence to solve complex operational problems and transform processes into technological systems.
           </p>
-          <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, marginBottom: '24px' }}>
+          <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: isDark ? '#a1a1aa' : '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, marginBottom: '24px' }}>
             From software development to researching new AI applications, his approach combines engineering, experimentation, and a vision oriented towards building technology that can grow alongside the organizations that use it.
           </p>
-          <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
+          <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: isDark ? '#a1a1aa' : '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
             As founder and CEO of Glynne, he leads the technological direction of the company and participates directly in the design and development of its architectures and solutions.
           </p>
         </div>
@@ -354,32 +357,32 @@ export default function AboutManifesto() {
         <div className="mobile-founder-img-wrapper" style={{ flex: '1.5 1 400px', display: 'flex', justifyContent: 'center' }}>
           <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
             {/* Subtle Logo Background */}
-            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '110%', height: '110%', backgroundImage: 'url(/logos/GLYNNE.svg)', backgroundSize: 'contain', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', opacity: 0.08, filter: 'brightness(0)', zIndex: 0 }} />
+            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '110%', height: '110%', backgroundImage: 'url(/logos/GLYNNE.svg)', backgroundSize: 'contain', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', opacity: 0.08, filter: isDark ? 'brightness(0) invert(1)' : 'brightness(0)', zIndex: 0 }} />
 
             <img
               src="/AlexanderCEO.png"
               alt="Alexander Quiroga - Founder & CEO"
-              style={{ width: '100%', display: 'block', filter: 'grayscale(100%) brightness(1.15) contrast(0.95)', position: 'relative', zIndex: 1 }}
+              style={{ width: '100%', display: 'block', filter: isDark ? 'grayscale(100%) brightness(0.9) contrast(1.1)' : 'grayscale(100%) brightness(1.15) contrast(0.95)', position: 'relative', zIndex: 1 }}
             />
 
             {/* Name Overlay acting as a masking frame */}
-            <div style={{ position: 'absolute', bottom: '-25px', left: '-10%', right: '-10%', zIndex: 2, textAlign: 'center', background: 'linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.8) 60%, #ffffff 90%, #ffffff 100%)', paddingTop: '40px', paddingBottom: '20px' }}>
-              <h3 style={{ fontSize: 'clamp(24px, 5vw, 36px)', fontWeight: 400, color: '#86868b', margin: '0', letterSpacing: '-0.01em', textTransform: 'uppercase' }}>
+            <div style={{ position: 'absolute', bottom: '-25px', left: '-10%', right: '-10%', zIndex: 2, textAlign: 'center', background: isDark ? 'linear-gradient(to bottom, transparent 0%, rgba(10,10,12,0.8) 60%, #0a0a0c 90%, #0a0a0c 100%)' : 'linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.8) 60%, #ffffff 90%, #ffffff 100%)', paddingTop: '40px', paddingBottom: '20px' }}>
+              <h3 style={{ fontSize: 'clamp(24px, 5vw, 36px)', fontWeight: 400, color: isDark ? '#ffffff' : '#86868b', margin: '0', letterSpacing: '-0.01em', textTransform: 'uppercase' }}>
                 ALEXANDER QUIROGA
               </h3>
-              <p style={{ fontSize: '13px', color: '#111111', fontWeight: 500, letterSpacing: '0.15em', textTransform: 'uppercase', margin: '8px 0 0 0' }}>
+              <p style={{ fontSize: '13px', color: isDark ? '#a1a1aa' : '#111111', fontWeight: 500, letterSpacing: '0.15em', textTransform: 'uppercase', margin: '8px 0 0 0' }}>
                 Founder & CEO
               </p>
               <div style={{ marginTop: '16px' }}>
                 <a href="/CEO_GLYNNE" style={{
                   fontSize: '13px',
-                  color: '#86868b',
+                  color: isDark ? '#a1a1aa' : '#86868b',
                   textDecoration: 'none',
                   fontWeight: 500,
                   transition: 'color 0.2s ease'
                 }}
-                  onMouseOver={(e) => e.currentTarget.style.color = '#111'}
-                  onMouseOut={(e) => e.currentTarget.style.color = '#86868b'}
+                  onMouseOver={(e) => e.currentTarget.style.color = isDark ? '#ffffff' : '#111111'}
+                  onMouseOut={(e) => e.currentTarget.style.color = isDark ? '#a1a1aa' : '#86868b'}
                 >
                   View Full Profile →
                 </a>
@@ -394,14 +397,14 @@ export default function AboutManifesto() {
 
       {/* 8. Cierre & Quote */}
       <section className="glynne-section" style={{ paddingTop: '40px', paddingBottom: '160px' }}>
-        <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 300, color: '#111111', fontStyle: 'italic', lineHeight: 1.4, maxWidth: '800px', margin: '0 auto 120px auto' }}>
+        <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 300, color: isDark ? '#ffffff' : '#111111', fontStyle: 'italic', lineHeight: 1.4, maxWidth: '800px', margin: '0 auto 120px auto' }}>
           “Technology shouldn't limit what a company can do.<br />It should expand what it is capable of imagining.”
         </h2>
 
         <div className="glynne-arrow" style={{ margin: '0 0 120px 0' }}>↓</div>
 
         <div className="glynne-label" style={{ fontSize: '16px', letterSpacing: '0.2em' }}>GLYNNE</div>
-        <h2 style={{ fontSize: 'clamp(40px, 6vw, 72px)', fontWeight: 400, color: '#111111', letterSpacing: '-0.02em', lineHeight: 1.1, margin: '24px 0 0 0' }}>
+        <h2 style={{ fontSize: 'clamp(40px, 6vw, 72px)', fontWeight: 400, color: isDark ? '#ffffff' : '#111111', letterSpacing: '-0.02em', lineHeight: 1.1, margin: '24px 0 0 0' }}>
           Engineers. Researchers.<br />Builders.
         </h2>
       </section>

@@ -38,7 +38,7 @@ export default function ServexSpecification() {
               customTitle="Govern AI across your enterprise"
               customDescription="Servex Copilot is the infrastructure layer that integrates artificial intelligence into enterprise systems safely and with total governance. AI shouldn't have unrestricted access. We provide the architecture of control, permissions, and traceability that filters every action—allowing AI to provide autonomous reasoning while you retain absolute security."
               primaryButtonText="Learn more about Servex Copilot"
-              primaryButtonUrl="https://axglynne.com/Solutions"
+              primaryButtonUrl="https://axglynne.com/Servex_solution"
             />
 
             {/* Autonomous Audit Section */}

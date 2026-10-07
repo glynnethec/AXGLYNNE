@@ -109,7 +109,7 @@ function DocsMenu() {
       }}>
         <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
 
-          <button onClick={() => router.push('/Solutions')} style={{
+          <button onClick={() => router.push('/Servex_solution')} style={{
             display: 'block',
             width: '100%',
             textAlign: 'left',

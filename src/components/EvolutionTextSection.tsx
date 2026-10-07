@@ -70,7 +70,7 @@ export default function EvolutionTextSection() {
             justifyContent: 'center'
           }}>
             <button 
-              onClick={() => router.push('/Solutions')}
+              onClick={() => router.push('/Servex_solution')}
               style={{
                 padding: '14px 28px',
                 borderRadius: '999px',

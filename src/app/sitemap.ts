@@ -19,7 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/novedades',
     '/status',
     '/About',
-    '/Solutions',
+    '/Servex_solution',
     '/Industries',
     '/industrias/atencion-al-cliente',
     '/industrias/salud-y-clinicas',
@@ -50,7 +50,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return publicRoutes.map((route) => {
     let priority = 0.7;
     if (route === '') priority = 1.0;
-    else if (['/precios', '/integraciones', '/docs', '/Solutions', '/ia_vailable'].includes(route)) priority = 0.9;
+    else if (['/precios', '/integraciones', '/docs', '/Servex_solution', '/ia_vailable'].includes(route)) priority = 0.9;
     else if (['/comparar', '/caracteristicas', '/novedades'].includes(route)) priority = 0.8;
     else if (route.includes('/policy') || route.includes('terms')) priority = 0.3;
 

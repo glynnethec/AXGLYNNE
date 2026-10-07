@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
+import { useTheme } from '@/lib/ThemeContext';
 
 export default function SolutionsGsapAnimation() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -12,8 +13,12 @@ export default function SolutionsGsapAnimation() {
   const phase2Ref = useRef<HTMLDivElement>(null);
   const phase3Ref = useRef<HTMLDivElement>(null);
   const phase4Ref = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   useEffect(() => {
+    if (isDark) return;
+
     // Initialize Lenis for buttery smooth momentum scrolling
     const lenis = new Lenis({
       lerp: 0.08, // Fluid, natural momentum
@@ -172,7 +177,9 @@ export default function SolutionsGsapAnimation() {
       gsap.ticker.remove(tick);
       lenis.destroy();
     };
-  }, []);
+  }, [isDark]);
+
+  if (isDark) return null;
 
   return (
     <div style={{ width: '100%', position: 'relative' }}>

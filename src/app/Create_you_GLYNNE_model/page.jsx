@@ -1776,7 +1776,7 @@ export default function CreateYourGlynneModelPage() {
                 </a>
 
                 <a
-                  href="https://axglynne.com/Solutions"
+                  href="https://axglynne.com/Servex_solution"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
