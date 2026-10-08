@@ -38,6 +38,7 @@ export default function AssemblyDashboard() {
     { name: 'AX_chat', label: 'Chat with AX', desc: 'Intelligent conversational interfaces.', model: 'GPT OSS 120B OpenAI', details: 'High-parameter natural language processing ready.' },
     { name: 'AX_voice', label: 'AX Voice', desc: 'Real-time vocal synthesis and analysis.', model: 'VOX-SYNTH V2.0', details: 'Acoustic waveform modulation standing by.' },
     { name: 'Create_you_GLYNNE_model', label: 'Create AI Model', desc: 'Custom QLoRA fine-tuning and synthetic dataset studio.', model: 'QLoRA / Unsloth Core', details: 'Private model training protocols active.' },
+    { name: 'Librarymodel', label: 'Open-Source Model Library', desc: 'Explore and download complete open-source model weights for offline, air-gapped deployment.', model: 'Open-Weights Repository', details: 'Full quantized model weights (GGUF, FP16, EXL2) ready for local inference.' },
   ];
 
   const aiPhrases = [
