@@ -31,7 +31,7 @@ export default function LinPromptSection({
   const gridPatchLineColor = isDark ? 'rgba(255, 255, 255, 0.25)' : 'rgba(0, 0, 0, 0.25)';
   const labelColor = isDark ? 'rgba(255, 255, 255, 0.55)' : 'rgba(0, 0, 0, 0.55)';
   const subtextColor = isDark ? 'rgba(255, 255, 255, 0.65)' : 'rgba(0, 0, 0, 0.65)';
-  const magentaAccent = '#f43f5e';
+  const magentaAccent = isDark ? '#ffffff' : '#111111';
 
   const handleSend = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -331,7 +331,7 @@ export default function LinPromptSection({
             color: isDark ? 'rgba(255, 255, 255, 0.65)' : 'rgba(0, 0, 0, 0.65)'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ color: '#f43f5e', fontSize: '12px' }}>✧</span>
+              <span style={{ color: textColor, fontSize: '12px' }}>✧</span>
               <span>Nuevo: Modelo AX 5.2 disponible</span>
             </div>
             <button
@@ -340,7 +340,7 @@ export default function LinPromptSection({
               style={{
                 background: 'transparent',
                 border: 'none',
-                color: '#f43f5e',
+                color: textColor,
                 fontSize: '11px',
                 fontWeight: 600,
                 fontFamily: "'SF Mono', monospace",

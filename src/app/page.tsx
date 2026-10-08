@@ -25,11 +25,9 @@ export default function Home() {
         {/* 1. WHAT IS GLYNNE? */}
         <HeroSection />
 
-        {/* 2. PROMPT INPUT SECTION */}
+        {/* 2. PROMPT INPUT SECTION (BLUEPRINT LIN PROMPT) */}
         <div style={{
-          width: '80vw',
-          maxWidth: '80vw',
-          margin: '2rem auto 0',
+          width: '100%',
           backgroundColor: 'transparent',
           padding: '0'
         }}>

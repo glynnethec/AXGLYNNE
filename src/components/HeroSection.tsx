@@ -39,7 +39,7 @@ export default function HeroSection() {
           letterSpacing: '-0.02em',
           maxWidth: '1100px'
         }}>
-          AI Engineering, Model Training & Autonomous Ecosystems
+          Ingeniería de IA, entrenamiento de modelos y ecosistemas autónomos
         </h1>
 
         {/* Paragraph */}
@@ -53,7 +53,7 @@ export default function HeroSection() {
           letterSpacing: '0.01em',
           maxWidth: '900px'
         }}>
-          At GLYNNE, we don't build traditional software or commercialize generic tools: we engineer dedicated AI architectures. We train, fine-tune parameters, and align models using your enterprise operational data to orchestrate intelligent ecosystems that transform your business processes with total precision and governance.
+          En GLYNNE, no desarrollamos software tradicional ni comercializamos herramientas genéricas: diseñamos arquitecturas de IA especializadas. Entrenamos, ajustamos parámetros y alineamos modelos utilizando los datos operativos de su empresa para orquestar ecosistemas inteligentes que transforman sus procesos de negocio con total precisión y control.
         </p>
 
         {/* Text Links */}
@@ -69,10 +69,10 @@ export default function HeroSection() {
             letterSpacing: '0.01em',
             transition: 'opacity 0.2s ease',
           }}
-          onMouseOver={(e) => { e.currentTarget.style.opacity = '0.7'; }}
-          onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
+            onMouseOver={(e) => { e.currentTarget.style.opacity = '0.7'; }}
+            onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
           >
-            Explore Methodology <span style={{ fontSize: '15px' }}>→</span>
+            Explorar la metodología <span style={{ fontSize: '15px' }}>→</span>
           </Link>
 
           <Link href="/About" style={{
@@ -86,10 +86,10 @@ export default function HeroSection() {
             letterSpacing: '0.01em',
             transition: 'opacity 0.2s ease',
           }}
-          onMouseOver={(e) => { e.currentTarget.style.opacity = '0.7'; e.currentTarget.style.color = isDark ? '#ffffff' : '#111111'; }}
-          onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.color = isDark ? '#a1a1aa' : '#666666'; }}
+            onMouseOver={(e) => { e.currentTarget.style.opacity = '0.7'; e.currentTarget.style.color = isDark ? '#ffffff' : '#111111'; }}
+            onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.color = isDark ? '#a1a1aa' : '#666666'; }}
           >
-            Explore Architecture <span style={{ fontSize: '15px' }}>→</span>
+            Explora la arquitectura <span style={{ fontSize: '15px' }}>→</span>
           </Link>
         </div>
       </div>

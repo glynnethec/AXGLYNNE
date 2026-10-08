@@ -74,11 +74,17 @@ export default function UncommonlyGoodResultsSection() {
 
   return (
     <section style={{
-      width: '100%',
-      padding: '80px 0',
+      width: '100vw',
+      maxWidth: '100vw',
+      position: 'relative',
+      left: '50%',
+      right: '50%',
+      marginLeft: '-50vw',
+      marginRight: '-50vw',
+      padding: '80px clamp(16px, 4vw, 64px)',
       marginTop: '40px',
       marginBottom: '60px',
-      position: 'relative',
+      boxSizing: 'border-box',
       zIndex: 10
     }}>
       <style>{`
