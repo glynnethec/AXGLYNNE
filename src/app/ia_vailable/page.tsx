@@ -4,6 +4,10 @@ import BackgroundWrapper from '@/components/BackgroundWrapper';
 import Footer from '@/app/components/Footer';
 import LinPromptSection from '@/components/LinPromptSection';
 import OrbCardSection from '@/components/OrbCardSection';
+import ProcessGridSection from '@/components/ProcessGridSection';
+import IntegrationCapabilitiesSection from '@/components/IntegrationCapabilitiesSection';
+import ModelBestPracticesSection from '@/components/ModelBestPracticesSection';
+import PixelModelCatalogSection from '@/components/PixelModelCatalogSection';
 import { useTheme } from '@/lib/ThemeContext';
 
 const eliteModels = [
@@ -129,18 +133,18 @@ export default function IaAvailablePage() {
         {/* Header Section */}
         <section style={{ paddingTop: '160px', paddingBottom: '60px', width: '100%', maxWidth: '1000px', margin: '0 auto', paddingLeft: '20px', paddingRight: '20px' }}>
           <div style={{
-            fontSize: '11px',
+            fontSize: '12px',
             fontWeight: 500,
-            letterSpacing: '0.1em',
+            letterSpacing: '0.15em',
             textTransform: 'uppercase',
-            color: isDark ? '#ffffff' : '#1d1d1f',
+            color: isDark ? '#8f8f96' : '#86868b',
             marginBottom: '24px'
           }}>
             Integration Capabilities
           </div>
 
           <h1 style={{
-            fontSize: 'clamp(40px, 6vw, 72px)',
+            fontSize: 'clamp(40px, 6.5vw, 64px)',
             fontWeight: 400,
             letterSpacing: '-0.02em',
             color: isDark ? '#ffffff' : '#111111',
@@ -155,6 +159,7 @@ export default function IaAvailablePage() {
             color: isDark ? '#a1a1aa' : '#86868b',
             fontWeight: 300,
             lineHeight: 1.6,
+            letterSpacing: '0.01em',
             maxWidth: '600px',
             margin: 0
           }}>
@@ -162,60 +167,30 @@ export default function IaAvailablePage() {
           </p>
         </section>
 
-        <div style={{ padding: '0 20px', maxWidth: '1000px', margin: '0 auto', width: '100%' }}>
-          <LinPromptSection hideCard={true} hideOrbCard={true} />
+        {/* 1. Integration Capabilities Section (First - 100vw) */}
+        <div style={{ width: '100vw', maxWidth: '100vw', margin: '0', padding: '0', boxSizing: 'border-box', position: 'relative', zIndex: 5, userSelect: 'text' }}>
+          <IntegrationCapabilitiesSection />
         </div>
 
-        <div style={{ height: '30vh', width: '100%' }}></div>
+        {/* 2. LinPromptSection */}
+        <div style={{ width: '100vw', maxWidth: '100vw', margin: '0', padding: '0', boxSizing: 'border-box', position: 'relative', zIndex: 5, userSelect: 'text' }}>
+          <LinPromptSection hideCard={true} hideOrbCard={true} lang="en" />
+        </div>
 
-        {/* Tables Section */}
-        <section style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 20px 80px 20px' }}>
+        {/* 3. Process Section */}
+        <div style={{ width: '100vw', maxWidth: '100vw', margin: '0', padding: '0', boxSizing: 'border-box', position: 'relative', zIndex: 5, userSelect: 'text' }}>
+          <ProcessGridSection />
+        </div>
 
-          {[
-            { title: "Elite Foundation Models", desc: "The absolute best-in-class frontier models available via API on the market today. Ideal for complex reasoning, autonomous agent architectures, and high-impact tasks.", data: eliteModels },
-            { title: "Production Models (Groq Cloud)", desc: "Production models are intended for use in your production environments. They meet or exceed high standards for speed, quality, and reliability.", data: productionModels },
-            { title: "Production Systems", desc: "Systems are a collection of models and tools that work together to answer a user query.", data: productionSystems },
-            { title: "Preview Models", desc: "Preview models are intended for evaluation purposes only and should not be used in production environments as they may be discontinued at short notice.", data: previewModels }
-          ].map((section, idx) => (
-            <div key={idx} style={{ marginBottom: '80px', width: '100%' }}>
-              <div style={{ marginBottom: '24px' }}>
-                <h2 style={{ fontSize: '24px', fontWeight: 500, color: isDark ? '#ffffff' : '#111111', marginBottom: '8px' }}>{section.title}</h2>
-                <p style={{ fontSize: '14px', color: isDark ? '#a1a1aa' : '#86868b', lineHeight: 1.5, margin: 0 }}>{section.desc}</p>
-              </div>
+        {/* 4. Model Best Practices Retro Pixel Section */}
+        <div style={{ width: '100vw', maxWidth: '100vw', margin: '0', padding: '0', boxSizing: 'border-box', position: 'relative', zIndex: 5, userSelect: 'text' }}>
+          <ModelBestPracticesSection />
+        </div>
 
-              <div className="table-wrapper">
-                <table className="premium-table">
-                  <thead>
-                    <tr>
-                      <th>Model ID</th>
-                      <th>Speed (T/s)</th>
-                      <th>Price</th>
-                      <th>Rate Limits</th>
-                      <th>Context</th>
-                      <th>Max Comp.</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {section.data.map((item, index) => (
-                      <tr key={item.id} style={{ borderBottom: index === section.data.length - 1 ? 'none' : (isDark ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(0,0,0,0.03)'), transition: 'background-color 0.2s', cursor: 'default' }} onMouseOver={(e) => { if (window.innerWidth > 700) e.currentTarget.style.backgroundColor = isDark ? 'rgba(255,255,255,0.05)' : '#fafafa' }} onMouseOut={(e) => { if (window.innerWidth > 700) e.currentTarget.style.backgroundColor = 'transparent' }}>
-                        <td data-label="Model ID" style={{ padding: '16px 24px' }}>
-                          <div style={{ fontSize: '14px', fontWeight: 500, color: isDark ? '#ffffff' : '#111111' }}>{item.name}</div>
-                          <div style={{ fontSize: '12px', color: isDark ? '#a1a1aa' : '#86868b', fontFamily: 'monospace', marginTop: '4px' }}>{item.id}</div>
-                        </td>
-                        <td data-label="Speed (T/s)" style={{ padding: '16px 24px', fontSize: '14px', color: isDark ? '#ffffff' : '#333333', fontFamily: 'monospace' }}>{item.speed}</td>
-                        <td data-label="Price" style={{ padding: '16px 24px', fontSize: '13px', color: isDark ? '#a1a1aa' : '#555555' }}>{item.price}</td>
-                        <td data-label="Rate Limits" style={{ padding: '16px 24px', fontSize: '13px', color: isDark ? '#a1a1aa' : '#555555' }}>{item.limit}</td>
-                        <td data-label="Context" style={{ padding: '16px 24px', fontSize: '13px', color: isDark ? '#ffffff' : '#333333', fontFamily: 'monospace' }}>{item.context}</td>
-                        <td data-label="Max Comp." style={{ padding: '16px 24px', fontSize: '13px', color: isDark ? '#ffffff' : '#333333', fontFamily: 'monospace' }}>{item.completion}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          ))}
-
-        </section>
+        {/* 5. Pixel Model Catalog Section (Cards 8-Bit & Pixel Table) */}
+        <div style={{ width: '100vw', maxWidth: '100vw', margin: '0', padding: '0', boxSizing: 'border-box', position: 'relative', zIndex: 5, userSelect: 'text' }}>
+          <PixelModelCatalogSection />
+        </div>
 
         <section style={{ width: '100%', maxWidth: '1000px', margin: '0 auto', padding: '0 20px 80px 20px' }}>
           <OrbCardSection />

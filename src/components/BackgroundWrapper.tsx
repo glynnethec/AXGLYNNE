@@ -152,7 +152,7 @@ export default function BackgroundWrapper({ children, theme: explicitTheme, disa
       <svg
         width="100%"
         height="100%"
-        style={{ position: 'absolute', top: 0, left: 0, zIndex: 0 }}
+        style={{ position: 'absolute', top: 0, left: 0, zIndex: 0, pointerEvents: 'none' }}
       >
         <defs>
           <pattern id="blackbox-grid" width="96" height="96" patternUnits="userSpaceOnUse">
