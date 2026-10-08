@@ -5,6 +5,7 @@ import Header from '@/app/components/Header';
 import Footer from '@/app/components/Footer';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
 import LinPromptSection from '@/components/LinPromptSection';
+import PolicyBrandBanner from '@/components/PolicyBrandBanner';
 import { useTheme } from '@/lib/ThemeContext';
 import {
   FiFileText, FiUser, FiTarget, FiDatabase, FiBriefcase,
@@ -89,9 +90,25 @@ export default function PrivacyPolicy() {
       `}</style>
       <Header />
       <BackgroundWrapper>
+        {/* Full Width Brand Guidelines Banner matching reference image */}
+        <div style={{ width: '100%', position: 'relative', zIndex: 10, paddingTop: '80px' }}>
+          <PolicyBrandBanner
+            titleLine1="Privacy"
+            titleLine2="Policies"
+            subTitle="DATA PRIVACY & COMPLIANCE GOVERNANCE STANDARDS"
+            brandLogoText="AXGLYNNE"
+            badgeText="AX"
+          />
+        </div>
+
+        {/* Full Width 100vw Input Section */}
+        <div style={{ width: '100%', position: 'relative', zIndex: 10 }}>
+          <LinPromptSection hideCard={true} hideOrbCard={true} />
+        </div>
+
         <div style={{
           minHeight: '100vh',
-          padding: '160px 40px 80px 40px',
+          padding: '40px 40px 80px 40px',
           display: 'flex',
           position: 'relative',
           zIndex: 10,
@@ -205,9 +222,7 @@ export default function PrivacyPolicy() {
               margin: '0 auto',
               padding: '0 0 80px 0',
             }}>
-              <LinPromptSection hideCard={true} hideOrbCard={true} />
-
-              <h1 style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 400, color: isDark ? '#ffffff' : '#111111', margin: '120px 0 16px 0', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+              <h1 style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 400, color: isDark ? '#ffffff' : '#111111', margin: '40px 0 16px 0', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
                 Privacy Policy
               </h1>
               <p style={{ fontSize: '12px', color: isDark ? '#a1a1aa' : '#86868b', marginBottom: '48px', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
