@@ -11,27 +11,32 @@ export default function VideoEcosystemSection() {
 
   return (
     <section style={{
-      width: '100%',
+      width: '100vw',
+      maxWidth: '100vw',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
       backgroundColor: 'transparent',
       position: 'relative',
       zIndex: 10,
-      padding: '0 1.5rem 12rem',
-      marginTop: '2rem'
+      padding: '0 0 12rem',
+      marginTop: '2rem',
+      boxSizing: 'border-box',
+      overflowX: 'hidden'
     }}>
       {/* Bordered Container */}
-      <div className="responsive-solutions-width responsive-card-borderless" style={{
-        width: '70vw',
-        maxWidth: '70vw',
-        border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.1)',
-        borderRadius: '40px',
-        padding: '4rem 2rem',
+      <div style={{
+        width: '100vw',
+        maxWidth: '100vw',
+        borderTop: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.1)',
+        borderBottom: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.1)',
+        borderRadius: '0px',
+        padding: '4rem 10vw',
         backgroundColor: 'transparent',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
+        boxSizing: 'border-box'
       }}>
         {/* HIDDEN ON MOBILE */}
         <div className="desktop-only" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>

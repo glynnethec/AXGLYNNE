@@ -330,24 +330,27 @@ export default function LinPromptSection({
           {customDescription}
         </p>
 
-        {/* Interactive AI Input Box (Matching Reference Image) */}
+        {/* Interactive AI Input Box (Matching GLYNNE Design Language) */}
         <form
           onSubmit={handleSend}
+          className="prompt-input-form"
           style={{
             width: '100%',
-            maxWidth: '660px',
-            backgroundColor: isDark ? 'rgba(20, 20, 24, 0.95)' : 'rgba(255, 255, 255, 0.95)',
-            backdropFilter: 'blur(16px)',
+            maxWidth: '680px',
+            backgroundColor: isDark ? 'rgba(14, 14, 18, 0.75)' : 'rgba(255, 255, 255, 0.85)',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
             borderRadius: '24px',
-            padding: '14px',
-            border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.12)',
+            padding: '16px',
+            border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.08)',
             boxShadow: isDark
-              ? '0 25px 60px rgba(0,0,0,0.7), 0 0 1px rgba(255,255,255,0.15)'
-              : '0 20px 50px rgba(0,0,0,0.08)',
+              ? '0 30px 60px rgba(0, 0, 0, 0.5), 0 0 1px rgba(255, 255, 255, 0.1)'
+              : '0 20px 40px rgba(0, 0, 0, 0.06)',
             display: 'flex',
             flexDirection: 'column',
-            gap: '10px',
-            textAlign: 'left'
+            gap: '12px',
+            textAlign: 'left',
+            transition: 'all 0.3s ease'
           }}
         >
           {/* Top Announcement Bar */}
@@ -355,14 +358,16 @@ export default function LinPromptSection({
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            padding: '2px 8px 4px 8px',
+            padding: '2px 8px 8px 8px',
             fontSize: '11px',
-            fontFamily: "'SF Mono', monospace",
-            color: isDark ? 'rgba(255, 255, 255, 0.65)' : 'rgba(0, 0, 0, 0.65)'
+            fontFamily: "'SF Mono', Monaco, monospace",
+            letterSpacing: '0.04em',
+            borderBottom: isDark ? '1px solid rgba(255, 255, 255, 0.06)' : '1px solid rgba(0, 0, 0, 0.05)',
+            color: isDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span className="prompt-input-icon" style={{ color: textColor, fontSize: '12px' }}>✧</span>
-              <span>{t.newModel}</span>
+              <span className="prompt-input-icon" style={{ color: isDark ? '#ffffff' : '#111111', fontSize: '11px', opacity: 0.8 }}>⬡</span>
+              <span style={{ textTransform: 'uppercase', fontWeight: 500 }}>{t.newModel}</span>
             </div>
             <button
               type="button"
@@ -373,23 +378,28 @@ export default function LinPromptSection({
                 color: textColor,
                 fontSize: '11px',
                 fontWeight: 600,
-                fontFamily: "'SF Mono', monospace",
+                fontFamily: "'SF Mono', Monaco, monospace",
+                letterSpacing: '0.04em',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '4px'
+                gap: '4px',
+                opacity: 0.9,
+                transition: 'opacity 0.2s ease'
               }}
+              onMouseOver={(e) => { e.currentTarget.style.opacity = '1'; }}
+              onMouseOut={(e) => { e.currentTarget.style.opacity = '0.9'; }}
             >
-              {t.tryModel}
+              <span>{t.tryModel} →</span>
             </button>
           </div>
 
           {/* Inner Textarea Input Box */}
           <div style={{
-            backgroundColor: isDark ? 'rgba(12, 12, 14, 0.95)' : '#f5f5f7',
+            backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.025)',
             borderRadius: '16px',
             padding: '14px 16px',
-            border: isDark ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid rgba(0, 0, 0, 0.06)',
+            border: isDark ? '1px solid rgba(255, 255, 255, 0.06)' : '1px solid rgba(0, 0, 0, 0.04)',
             display: 'flex',
             flexDirection: 'column',
             gap: '12px'
@@ -433,42 +443,44 @@ export default function LinPromptSection({
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
+                  color: isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.45)',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  padding: '4px',
-                  borderRadius: '6px',
-                  transition: 'color 0.2s ease'
+                  padding: '6px',
+                  borderRadius: '8px',
+                  transition: 'all 0.2s ease'
                 }}
-                onMouseOver={(e) => { e.currentTarget.style.color = textColor; }}
-                onMouseOut={(e) => { e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'; }}
+                onMouseOver={(e) => { e.currentTarget.style.color = textColor; e.currentTarget.style.backgroundColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'; }}
+                onMouseOut={(e) => { e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.45)'; e.currentTarget.style.backgroundColor = 'transparent'; }}
               >
-                <svg className="prompt-input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg className="prompt-input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                   <line x1="12" y1="5" x2="12" y2="19" />
                   <line x1="5" y1="12" x2="19" y2="12" />
                 </svg>
               </button>
 
               {/* Right Controls: Microphone & Circular Arrow Button */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <button
                   type="button"
                   className="prompt-input-icon-btn"
                   style={{
                     background: 'transparent',
                     border: 'none',
-                    color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
+                    color: isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.45)',
                     cursor: 'pointer',
-                    padding: '4px',
+                    padding: '6px',
+                    borderRadius: '8px',
                     display: 'flex',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    transition: 'all 0.2s ease'
                   }}
-                  onMouseOver={(e) => { e.currentTarget.style.color = textColor; }}
-                  onMouseOut={(e) => { e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'; }}
+                  onMouseOver={(e) => { e.currentTarget.style.color = textColor; e.currentTarget.style.backgroundColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'; }}
+                  onMouseOut={(e) => { e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.45)'; e.currentTarget.style.backgroundColor = 'transparent'; }}
                 >
-                  <svg className="prompt-input-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <svg className="prompt-input-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                     <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
                     <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
                     <line x1="12" y1="19" x2="12" y2="23" />
@@ -476,7 +488,7 @@ export default function LinPromptSection({
                   </svg>
                 </button>
 
-                {/* White Circular Send Button with Up Arrow */}
+                {/* Circular Send Button with Up Arrow */}
                 <button
                   type="submit"
                   disabled={!inputValue.trim()}
@@ -486,7 +498,7 @@ export default function LinPromptSection({
                     borderRadius: '50%',
                     backgroundColor: inputValue.trim()
                       ? (isDark ? '#ffffff' : '#111111')
-                      : (isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.1)'),
+                      : (isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)'),
                     color: inputValue.trim()
                       ? (isDark ? '#000000' : '#ffffff')
                       : (isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'),
@@ -495,10 +507,11 @@ export default function LinPromptSection({
                     alignItems: 'center',
                     justifyContent: 'center',
                     cursor: inputValue.trim() ? 'pointer' : 'default',
-                    transition: 'all 0.2s ease'
+                    transition: 'all 0.2s ease',
+                    boxShadow: inputValue.trim() ? '0 2px 8px rgba(0,0,0,0.2)' : 'none'
                   }}
                 >
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <line x1="12" y1="19" x2="12" y2="5" />
                     <polyline points="5 12 12 5 19 12" />
                   </svg>
@@ -525,14 +538,15 @@ export default function LinPromptSection({
                 gap: '6px',
                 padding: '5px 12px',
                 borderRadius: '999px',
-                border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(0, 0, 0, 0.15)',
-                backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : '#ffffff',
+                border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
+                backgroundColor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.02)',
                 fontSize: '12px',
                 fontWeight: 500,
                 color: textColor,
-                cursor: 'pointer'
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
               }}>
-                <svg className="prompt-input-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg className="prompt-input-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                   <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                 </svg>
                 <span>AX 5.2</span>
@@ -543,19 +557,22 @@ export default function LinPromptSection({
                 type="button"
                 className="prompt-input-icon-btn"
                 style={{
-                  width: '32px',
-                  height: '32px',
+                  width: '30px',
+                  height: '30px',
                   borderRadius: '50%',
-                  border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(0, 0, 0, 0.15)',
-                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : '#ffffff',
-                  color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
+                  border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
+                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
+                  color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
                 }}
+                onMouseOver={(e) => { e.currentTarget.style.color = textColor; e.currentTarget.style.backgroundColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'; }}
+                onMouseOut={(e) => { e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)'; e.currentTarget.style.backgroundColor = isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)'; }}
               >
-                <svg className="prompt-input-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg className="prompt-input-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                   <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2" />
                 </svg>
               </button>
@@ -565,19 +582,22 @@ export default function LinPromptSection({
                 type="button"
                 className="prompt-input-icon-btn"
                 style={{
-                  width: '32px',
-                  height: '32px',
+                  width: '30px',
+                  height: '30px',
                   borderRadius: '50%',
-                  border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(0, 0, 0, 0.15)',
-                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : '#ffffff',
-                  color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
+                  border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
+                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
+                  color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
                 }}
+                onMouseOver={(e) => { e.currentTarget.style.color = textColor; e.currentTarget.style.backgroundColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'; }}
+                onMouseOut={(e) => { e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)'; e.currentTarget.style.backgroundColor = isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)'; }}
               >
-                <svg className="prompt-input-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg className="prompt-input-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                   <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
                 </svg>
               </button>
@@ -587,19 +607,22 @@ export default function LinPromptSection({
                 type="button"
                 className="prompt-input-icon-btn"
                 style={{
-                  width: '32px',
-                  height: '32px',
+                  width: '30px',
+                  height: '30px',
                   borderRadius: '50%',
-                  border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(0, 0, 0, 0.15)',
-                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : '#ffffff',
-                  color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
+                  border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
+                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
+                  color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
                 }}
+                onMouseOver={(e) => { e.currentTarget.style.color = textColor; e.currentTarget.style.backgroundColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'; }}
+                onMouseOut={(e) => { e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)'; e.currentTarget.style.backgroundColor = isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)'; }}
               >
-                <svg className="prompt-input-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg className="prompt-input-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                   <circle cx="12" cy="12" r="10" />
                   <line x1="2" y1="12" x2="22" y2="12" />
                   <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
@@ -616,15 +639,18 @@ export default function LinPromptSection({
                 gap: '6px',
                 padding: '5px 12px',
                 borderRadius: '999px',
-                border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(0, 0, 0, 0.15)',
-                backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : '#ffffff',
+                border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
+                backgroundColor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.02)',
                 fontSize: '12px',
                 fontWeight: 500,
                 color: textColor,
-                cursor: 'pointer'
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
               }}
+              onMouseOver={(e) => { e.currentTarget.style.backgroundColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'; }}
+              onMouseOut={(e) => { e.currentTarget.style.backgroundColor = isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.02)'; }}
             >
-              <svg className="prompt-input-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg className="prompt-input-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                 <rect x="4" y="4" width="16" height="16" rx="2" />
                 <path d="M9 9h6M9 13h6M9 17h4" />
               </svg>
