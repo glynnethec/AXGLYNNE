@@ -24,15 +24,15 @@ export default function Home() {
         {/* 1. WHAT IS GLYNNE? */}
         <HeroSection />
 
-        {/* 2. WHY DOES IT MATTER? */}
+        {/* 2. PROMPT INPUT SECTION */}
         <div style={{
           width: '80vw',
           maxWidth: '80vw',
           margin: '2rem auto 0',
           backgroundColor: 'transparent',
-          padding: '2rem 0 0 0'
+          padding: '0'
         }}>
-          <LinPromptSection hideCard={true} />
+          <LinPromptSection hideCard={true} hideOrbCard={true} />
         </div>
 
         {/* 3. HOW DOES IT WORK? */}

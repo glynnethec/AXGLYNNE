@@ -196,9 +196,6 @@ export default function LinPromptSection({
             </div>
           </form>
 
-          {/* Orb and Bento Grid Section */}
-          {!hideOrbCard && <OrbCardSection />}
-
         </div>
       </div>
     </section>
