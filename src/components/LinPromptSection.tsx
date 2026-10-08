@@ -97,6 +97,12 @@ export default function LinPromptSection({
             padding: 2rem 1rem !important;
           }
         }
+        @media (max-width: 700px) {
+          .prompt-input-icon-btn,
+          .prompt-input-icon {
+            display: none !important;
+          }
+        }
       `}</style>
 
       {/* SVG Canvas for Blueprint Lines, Grid Patches & Technical Marks */}
@@ -355,7 +361,7 @@ export default function LinPromptSection({
             color: isDark ? 'rgba(255, 255, 255, 0.65)' : 'rgba(0, 0, 0, 0.65)'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ color: textColor, fontSize: '12px' }}>✧</span>
+              <span className="prompt-input-icon" style={{ color: textColor, fontSize: '12px' }}>✧</span>
               <span>{t.newModel}</span>
             </div>
             <button
@@ -374,7 +380,7 @@ export default function LinPromptSection({
                 gap: '4px'
               }}
             >
-              <span>💥</span> {t.tryModel}
+              {t.tryModel}
             </button>
           </div>
 
@@ -423,6 +429,7 @@ export default function LinPromptSection({
               {/* Left Plus Attachment Icon Button */}
               <button
                 type="button"
+                className="prompt-input-icon-btn"
                 style={{
                   background: 'transparent',
                   border: 'none',
@@ -438,7 +445,7 @@ export default function LinPromptSection({
                 onMouseOver={(e) => { e.currentTarget.style.color = textColor; }}
                 onMouseOut={(e) => { e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'; }}
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg className="prompt-input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <line x1="12" y1="5" x2="12" y2="19" />
                   <line x1="5" y1="12" x2="19" y2="12" />
                 </svg>
@@ -448,6 +455,7 @@ export default function LinPromptSection({
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <button
                   type="button"
+                  className="prompt-input-icon-btn"
                   style={{
                     background: 'transparent',
                     border: 'none',
@@ -460,7 +468,7 @@ export default function LinPromptSection({
                   onMouseOver={(e) => { e.currentTarget.style.color = textColor; }}
                   onMouseOut={(e) => { e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'; }}
                 >
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <svg className="prompt-input-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
                     <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
                     <line x1="12" y1="19" x2="12" y2="23" />
@@ -524,7 +532,7 @@ export default function LinPromptSection({
                 color: textColor,
                 cursor: 'pointer'
               }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg className="prompt-input-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                 </svg>
                 <span>AX 5.2</span>
@@ -533,6 +541,7 @@ export default function LinPromptSection({
               {/* Sync Icon Pill Button */}
               <button
                 type="button"
+                className="prompt-input-icon-btn"
                 style={{
                   width: '32px',
                   height: '32px',
@@ -546,7 +555,7 @@ export default function LinPromptSection({
                   cursor: 'pointer'
                 }}
               >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg className="prompt-input-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2" />
                 </svg>
               </button>
@@ -554,6 +563,7 @@ export default function LinPromptSection({
               {/* Sparkle/Pointer Icon Pill Button */}
               <button
                 type="button"
+                className="prompt-input-icon-btn"
                 style={{
                   width: '32px',
                   height: '32px',
@@ -567,7 +577,7 @@ export default function LinPromptSection({
                   cursor: 'pointer'
                 }}
               >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg className="prompt-input-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
                 </svg>
               </button>
@@ -575,6 +585,7 @@ export default function LinPromptSection({
               {/* Web Globe Search Icon Pill Button */}
               <button
                 type="button"
+                className="prompt-input-icon-btn"
                 style={{
                   width: '32px',
                   height: '32px',
@@ -588,7 +599,7 @@ export default function LinPromptSection({
                   cursor: 'pointer'
                 }}
               >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg className="prompt-input-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <circle cx="12" cy="12" r="10" />
                   <line x1="2" y1="12" x2="22" y2="12" />
                   <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
@@ -613,7 +624,7 @@ export default function LinPromptSection({
                 cursor: 'pointer'
               }}
             >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg className="prompt-input-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <rect x="4" y="4" width="16" height="16" rx="2" />
                 <path d="M9 9h6M9 13h6M9 17h4" />
               </svg>
