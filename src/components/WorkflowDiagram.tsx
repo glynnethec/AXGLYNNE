@@ -4,41 +4,130 @@ import React from 'react';
 import { useTheme } from '@/lib/ThemeContext';
 
 const columns = [
-  { title: "1. Analysis" },
-  { title: "2. Strategy" },
-  { title: "3. Execution" },
-  { title: "4. Transformation" }
+  { title: "1. Análisis" },
+  { title: "2. Estrategia" },
+  { title: "3. Ejecución" },
+  { title: "4. Transformación" }
 ];
 
 const nodes = [
   // Col 1
-  { id: 1, col: 1, y: 250, title: 'Contextualize', tag: 'Phase 1', status: 'Active', size: 'Context', desc: 'Define operational scope.' },
-  { id: 2, col: 1, y: 750, title: 'Permissions', tag: 'Phase 1', status: 'Active', size: 'Access Control', desc: 'Restrict tool execution.' },
+  {
+    id: 1,
+    col: 1,
+    y: 250,
+    title: 'Contextualizar',
+    tag: 'Fase 1',
+    status: 'Activo',
+    owner: 'Sistema AX',
+    size: 'Contexto',
+    desc: 'Definir el alcance operativo.',
+    type: 'dial'
+  },
+  {
+    id: 2,
+    col: 1,
+    y: 750,
+    title: 'Permisos',
+    tag: 'Fase 1',
+    status: 'Activo',
+    owner: 'Sistema AX',
+    size: 'Control de acceso',
+    desc: 'Restringir la ejecución de la herramienta.',
+    type: 'bar'
+  },
   
   // Col 2
-  { id: 3, col: 2, y: 350, title: 'Design Filter', tag: 'Phase 2', status: 'Active', size: 'Control Layer', desc: 'Inspect prompt & payload.' },
-  { id: 4, col: 2, y: 650, title: 'Security Protocol', tag: 'Phase 2', status: 'Active', size: 'Zero-Trust', desc: 'Verify identity & policy.' },
+  {
+    id: 3,
+    col: 2,
+    y: 350,
+    title: 'Filtro de diseño',
+    tag: 'Fase 2',
+    status: 'Activo',
+    owner: 'Sistema AX',
+    size: 'Capa de control',
+    desc: 'Inspeccione el mensaje y la carga útil.',
+    type: 'buttons'
+  },
+  {
+    id: 4,
+    col: 2,
+    y: 650,
+    title: 'Protocolo de seguridad',
+    tag: 'Fase 2',
+    status: 'Activo',
+    owner: 'Sistema AX',
+    size: 'Confianza cero',
+    desc: 'Verificar identidad y política.',
+    type: 'dial'
+  },
 
   // Col 3
-  { id: 5, col: 3, y: 200, title: 'Rules Engine', tag: 'Phase 3', status: 'Active', size: 'Guardrails', desc: 'Enforce deterministic rules.' },
-  { id: 6, col: 3, y: 500, title: 'Integration', tag: 'Phase 3', status: 'Active', size: 'API Gateways', desc: 'Connect enterprise tools.' },
-  { id: 7, col: 3, y: 800, title: 'Traceability', tag: 'Phase 3', status: 'Active', size: 'Audit Logs', desc: 'Log decision telemetry.' },
+  {
+    id: 5,
+    col: 3,
+    y: 200,
+    title: 'Motor de reglas',
+    tag: 'Fase 3',
+    status: 'Activo',
+    owner: 'Sistema AX',
+    size: 'Barandillas de seguridad',
+    desc: 'Aplicar reglas deterministas.',
+    type: 'bar'
+  },
+  {
+    id: 6,
+    col: 3,
+    y: 500,
+    title: 'Integración',
+    tag: 'Fase 3',
+    status: 'Activo',
+    owner: 'Sistema AX',
+    size: 'Puertas de enlace API',
+    desc: 'Conecte las herramientas empresariales.',
+    type: 'buttons'
+  },
+  {
+    id: 7,
+    col: 3,
+    y: 800,
+    title: 'Trazabilidad',
+    tag: 'Fase 3',
+    status: 'Activo',
+    owner: 'Sistema AX',
+    size: 'Registros de auditoría',
+    desc: 'Registrar la telemetría de decisiones.',
+    type: 'bar'
+  },
 
   // Col 4
-  { id: 8, col: 4, y: 500, title: 'Governed Autonomy', tag: 'Outcome', status: 'Continuous', size: 'Production', desc: 'Safe, auditable execution.', isChart: true }
+  {
+    id: 8,
+    col: 4,
+    y: 500,
+    title: 'Autonomía Gobernada',
+    tag: 'Resultado',
+    status: 'Continuo',
+    owner: 'Sistema AX',
+    size: 'Producción',
+    desc: 'Ejecución segura y auditable.',
+    type: 'chart',
+    isChart: true
+  }
 ];
 
 const connections = [
-  { from: 1, to: 3, label: 'Context' },
-  { from: 2, to: 3, label: 'Access' },
-  { from: 2, to: 4, label: 'Policy' },
-  { from: 3, to: 5, label: 'Payload' },
-  { from: 3, to: 6, label: 'Intent' },
+  { from: 1, to: 3, label: 'Contexto' },
+  { from: 2, to: 3, label: 'Acceso' },
+  { from: 2, to: 4, label: 'Política' },
+  { from: 3, to: 5, label: 'Carga Útil' },
+  { from: 3, to: 6, label: 'Intención' },
   { from: 4, to: 6, label: 'Token' },
-  { from: 4, to: 7, label: 'Identity' },
-  { from: 5, to: 8, label: 'Rule OK' },
-  { from: 6, to: 8, label: 'Executed' },
-  { from: 7, to: 8, label: 'Audited' }
+  { from: 4, to: 7, label: 'Identidad' },
+  { from: 5, to: 8, label: 'Regla OK' },
+  { from: 6, to: 8, label: 'Ejecutado' },
+  { from: 7, to: 8, label: 'Auditado' }
 ];
 
 const getPath = (fromCol: number, fromY: number, toCol: number, toY: number) => {
@@ -52,6 +141,11 @@ export default function WorkflowDiagram() {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
 
+  const textColor = isDark ? '#ffffff' : '#111111';
+  const subtextColor = isDark ? '#a1a1aa' : '#555555';
+  const borderLine = isDark ? 'rgba(255, 255, 255, 0.18)' : 'rgba(0, 0, 0, 0.15)';
+  const cardBg = isDark ? '#08080a' : '#ffffff';
+
   return (
     <section className="desktop-only-section" style={{
       width: '100%',
@@ -64,30 +158,36 @@ export default function WorkflowDiagram() {
       backgroundColor: 'transparent'
     }}>
       
+      {/* Top Header Pill */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
         backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : '#f5f5f7',
         borderRadius: '999px',
         padding: '6px 16px',
-        marginBottom: '1rem'
+        marginBottom: '1rem',
+        border: `1px solid ${borderLine}`
       }}>
-        <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: isDark ? '#ffffff' : '#111111', marginRight: '8px' }}></div>
-        <span style={{ fontSize: '11px', fontWeight: 600, color: isDark ? '#ffffff' : '#1d1d1f', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Control Architecture</span>
+        <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: textColor, marginRight: '8px' }} />
+        <span style={{ fontSize: '11px', fontWeight: 600, color: textColor, letterSpacing: '0.08em', textTransform: 'uppercase', fontFamily: 'monospace' }}>
+          Arquitectura de Control AX
+        </span>
       </div>
 
       <h2 style={{
         fontSize: 'clamp(28px, 4vw, 40px)',
         fontWeight: 400,
-        color: isDark ? '#ffffff' : '#111111',
+        color: textColor,
         letterSpacing: '-0.02em',
         marginBottom: '4rem',
         textAlign: 'center',
-        maxWidth: '700px'
+        maxWidth: '700px',
+        fontFamily: "var(--font-serif), Georgia, serif"
       }}>
-        How GLYNNE Filters & Controls AI Actions
+        Cómo AX Filtra y Controla las Acciones de IA
       </h2>
 
+      {/* Main Flow Container */}
       <div className="flow-container" style={{
         position: 'relative',
         width: '100%',
@@ -109,25 +209,27 @@ export default function WorkflowDiagram() {
             
             return (
               <g key={i}>
-                <path d={path} fill="none" stroke={isDark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.15)"} strokeWidth="3" />
+                <path d={path} fill="none" stroke={borderLine} strokeWidth="2" />
                 <path 
                   d={path} 
                   fill="none" 
-                  stroke={isDark ? "#ffffff" : "#111111"} 
-                  strokeWidth="3" 
-                  strokeDasharray="10 20" 
+                  stroke={textColor} 
+                  strokeWidth="2" 
+                  strokeDasharray="8 16" 
                   className="animated-flow-line" 
                 />
                 <g transform={`translate(${midX}, ${midY})`}>
-                  <rect x="-22" y="-9" width="44" height="18" rx="9" fill={isDark ? "#ffffff" : "#111111"} />
-                  <text x="0" y="2" fill={isDark ? "#000000" : "#ffffff"} fontSize="8" fontWeight="600" textAnchor="middle" dominantBaseline="middle">{conn.label}</text>
+                  <rect x="-26" y="-10" width="52" height="20" fill={textColor} stroke={borderLine} strokeWidth="1" />
+                  <text x="0" y="2" fill={isDark ? "#000000" : "#ffffff"} fontSize="8" fontWeight="700" fontFamily="monospace" textAnchor="middle" dominantBaseline="middle">
+                    {conn.label}
+                  </text>
                 </g>
               </g>
             );
           })}
         </svg>
 
-        {/* Node Cards */}
+        {/* Node Cards Layer - Reference Image Cyberpunk/Blueprint UI Style */}
         <div className="nodes-layer" style={{ width: '100%', height: '100%', position: 'relative' }}>
           {nodes.map(node => (
             <div key={node.id} className="node-card-wrapper" style={{
@@ -135,70 +237,216 @@ export default function WorkflowDiagram() {
               top: `${node.y / 10}%`,
               left: `${(node.col - 1) * 25}%`,
               width: '25%',
-              padding: '0 3%',
+              padding: '0 2%',
               transform: 'translateY(-50%)',
               zIndex: 2
             }}>
+              {/* Sharp Blueprint Card Matching User Reference Image */}
               <div className="node-card" style={{
-                backgroundColor: isDark ? 'rgba(20, 20, 26, 0.75)' : 'transparent',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                borderRadius: '16px',
-                padding: '12px 14px',
-                border: isDark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(0,0,0,0.1)',
+                backgroundColor: cardBg,
+                borderRadius: '0px',
+                border: borderLine,
                 display: 'flex',
                 flexDirection: 'column',
-                transition: 'transform 0.3s ease, border-color 0.3s ease',
+                boxShadow: isDark ? '0 8px 30px rgba(0,0,0,0.9)' : '0 4px 20px rgba(0,0,0,0.06)',
+                fontFamily: "'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+                transition: 'transform 0.25s ease, border-color 0.25s ease',
+                overflow: 'hidden'
               }}
-              onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.2)'; }}
-              onMouseOut={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.1)'; }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = 'translateY(-4px)';
+                e.currentTarget.style.borderColor = textColor;
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.borderColor = borderLine;
+              }}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
-                  <div>
-                    <h4 style={{ margin: 0, fontSize: '11px', fontWeight: 600, color: isDark ? '#ffffff' : '#111', lineHeight: 1.2 }}>{node.title}</h4>
-                    <span style={{ fontSize: '9px', color: isDark ? '#a1a1aa' : '#888' }}>{node.desc}</span>
+                {/* 1. Header Box: Title & Phase Tag */}
+                <div style={{
+                  padding: '10px 12px',
+                  borderBottom: borderLine,
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)'
+                }}>
+                  <div style={{ flex: 1, minWidth: 0, paddingRight: '8px' }}>
+                    <h4 style={{
+                      margin: 0,
+                      fontSize: '11px',
+                      fontWeight: 700,
+                      color: textColor,
+                      letterSpacing: '0.06em',
+                      textTransform: 'uppercase',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis'
+                    }}>
+                      {node.title}
+                    </h4>
+                    <div style={{
+                      fontSize: '9px',
+                      color: subtextColor,
+                      marginTop: '2px',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis'
+                    }}>
+                      {node.desc}
+                    </div>
                   </div>
+
                   <div style={{
-                    backgroundColor: 'transparent',
-                    color: isDark ? '#ffffff' : '#111',
-                    border: isDark ? '1px solid rgba(255,255,255,0.2)' : '1px solid rgba(0,0,0,0.1)',
-                    padding: '2px 8px',
-                    borderRadius: '999px',
-                    fontSize: '8px',
+                    fontSize: '9px',
                     fontWeight: 700,
-                    letterSpacing: '0.02em'
+                    fontFamily: 'monospace',
+                    padding: '2px 6px',
+                    border: borderLine,
+                    color: textColor,
+                    letterSpacing: '0.05em',
+                    textTransform: 'uppercase',
+                    whiteSpace: 'nowrap'
                   }}>
                     {node.tag}
                   </div>
                 </div>
-                
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '9px', marginTop: '6px' }}>
-                  <span style={{ color: isDark ? '#a1a1aa' : '#888' }}>Status</span>
-                  <span style={{ fontWeight: 600, color: isDark ? '#ffffff' : '#111' }}>{node.status}</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '9px', marginTop: '4px' }}>
-                  <span style={{ color: isDark ? '#a1a1aa' : '#888' }}>Owner</span>
-                  <span style={{ fontWeight: 500, color: isDark ? '#ffffff' : '#111' }}>AX System</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '9px', marginTop: '4px' }}>
-                  <span style={{ color: isDark ? '#a1a1aa' : '#888' }}>Metric</span>
-                  <span style={{ fontWeight: 500, color: isDark ? '#ffffff' : '#111' }}>{node.size}</span>
-                </div>
-                
-                {node.isChart ? (
-                   <div style={{ marginTop: '12px', height: '30px', position: 'relative', borderTop: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.05)', paddingTop: '8px' }}>
-                      <svg viewBox="0 0 100 40" preserveAspectRatio="none" style={{ width: '100%', height: '100%' }}>
-                        <polyline points="0,35 20,25 40,30 60,10 80,15 100,5" fill="none" stroke={isDark ? "#ffffff" : "#111"} strokeWidth="2" strokeLinejoin="round" />
-                        <polygon points="0,40 0,35 20,25 40,30 60,10 80,15 100,5 100,40" fill={isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)"} />
+
+                {/* 2. Technical HUD Widget Area (Dial, Hash Bar, Action Buttons, Chart) */}
+                <div style={{
+                  padding: '12px',
+                  borderBottom: borderLine,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: '44px',
+                  boxSizing: 'border-box'
+                }}>
+                  {node.type === 'dial' && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%' }}>
+                      <svg width="34" height="34" viewBox="0 0 40 40" fill="none">
+                        {Array.from({ length: 16 }).map((_, i) => {
+                          const angle = (i * 22.5 - 135) * (Math.PI / 180);
+                          const x1 = 20 + 11 * Math.cos(angle);
+                          const y1 = 20 + 11 * Math.sin(angle);
+                          const x2 = 20 + 16 * Math.cos(angle);
+                          const y2 = 20 + 16 * Math.sin(angle);
+                          const active = i < 11;
+                          return (
+                            <line
+                              key={i}
+                              x1={x1}
+                              y1={y1}
+                              x2={x2}
+                              y2={y2}
+                              stroke={active ? textColor : subtextColor}
+                              strokeWidth="1.5"
+                              opacity={active ? 1 : 0.25}
+                            />
+                          );
+                        })}
+                        <circle cx="20" cy="20" r="4" fill="none" stroke={textColor} strokeWidth="1" />
                       </svg>
-                   </div>
-                ) : (
-                   <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', marginTop: '12px', borderTop: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.05)', paddingTop: '8px' }}>
-                      <div style={{ height: '3px', width: '85%', backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)', borderRadius: '2px' }}><div style={{ height: '100%', width: '70%', backgroundColor: isDark ? '#ffffff' : '#111', borderRadius: '2px' }}></div></div>
-                      <div style={{ height: '3px', width: '95%', backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)', borderRadius: '2px' }}><div style={{ height: '100%', width: '40%', backgroundColor: isDark ? '#ffffff' : '#111', borderRadius: '2px' }}></div></div>
-                      <div style={{ height: '3px', width: '70%', backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)', borderRadius: '2px' }}><div style={{ height: '100%', width: '90%', backgroundColor: isDark ? '#ffffff' : '#111', borderRadius: '2px' }}></div></div>
-                   </div>
-                )}
+                      <div style={{ fontSize: '9px', fontFamily: 'monospace', color: subtextColor, lineHeight: 1.3 }}>
+                        <span style={{ color: textColor, fontWeight: 700 }}>68.4%</span>
+                        <br />OPERATIVO
+                      </div>
+                    </div>
+                  )}
+
+                  {node.type === 'bar' && (
+                    <div style={{ width: '100%' }}>
+                      <div style={{
+                        display: 'flex',
+                        gap: '2px',
+                        height: '14px',
+                        alignItems: 'center',
+                        overflow: 'hidden'
+                      }}>
+                        {Array.from({ length: 22 }).map((_, i) => (
+                          <div
+                            key={i}
+                            style={{
+                              flex: 1,
+                              height: '100%',
+                              backgroundColor: i < 14 ? textColor : (isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)')
+                            }}
+                          />
+                        ))}
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '8px', color: subtextColor, marginTop: '4px', fontFamily: 'monospace' }}>
+                        <span>VOLUMEN 561TB</span>
+                        <span>PROGRESO 50%</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {node.type === 'buttons' && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', width: '100%' }}>
+                      <div style={{
+                        border: borderLine,
+                        padding: '2px 0',
+                        fontSize: '8px',
+                        textAlign: 'center',
+                        fontWeight: 700,
+                        color: textColor,
+                        letterSpacing: '0.05em',
+                        textTransform: 'uppercase'
+                      }}>
+                        CANCELAR
+                      </div>
+                      <div style={{
+                        border: borderLine,
+                        padding: '2px 0',
+                        fontSize: '8px',
+                        textAlign: 'center',
+                        color: subtextColor,
+                        letterSpacing: '0.05em',
+                        textTransform: 'uppercase'
+                      }}>
+                        CERRAR VENTANA
+                      </div>
+                    </div>
+                  )}
+
+                  {node.type === 'chart' && (
+                    <div style={{ width: '100%', height: '30px' }}>
+                      <svg viewBox="0 0 100 30" preserveAspectRatio="none" style={{ width: '100%', height: '100%' }}>
+                        <polyline points="0,25 20,18 40,22 60,8 80,12 100,4" fill="none" stroke={textColor} strokeWidth="1.5" />
+                        <polygon points="0,30 0,25 20,18 40,22 60,8 80,12 100,4 100,30" fill={isDark ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.08)"} />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+
+                {/* 3. Compartment Grid: Estado, Dueño, Métrico */}
+                <div style={{
+                  padding: '10px 12px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '4px',
+                  fontSize: '9px',
+                  fontFamily: "'SF Mono', monospace"
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ color: subtextColor, fontSize: '8px', textTransform: 'uppercase' }}>Estado</span>
+                    <span style={{ color: textColor, fontWeight: 700 }}>{node.status}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ color: subtextColor, fontSize: '8px', textTransform: 'uppercase' }}>Dueño</span>
+                    <span style={{ color: textColor, fontWeight: 600 }}>{node.owner}</span>
+                  </div>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    borderTop: borderLine,
+                    paddingTop: '4px',
+                    marginTop: '2px'
+                  }}>
+                    <span style={{ color: subtextColor, fontSize: '8px', textTransform: 'uppercase' }}>Métrico</span>
+                    <span style={{ color: textColor, fontWeight: 600 }}>{node.size}</span>
+                  </div>
+                </div>
               </div>
             </div>
           ))}
@@ -234,11 +482,6 @@ export default function WorkflowDiagram() {
             width: 100% !important;
             transform: none !important;
             padding: 0 !important;
-          }
-        }
-        @media (max-width: 700px) {
-          .desktop-only-section {
-            display: none !important;
           }
         }
       `}} />
