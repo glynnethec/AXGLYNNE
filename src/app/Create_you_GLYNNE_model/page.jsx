@@ -99,7 +99,7 @@ export default function CreateYourGlynneModelPage() {
         router.replace('/login');
       } else {
         setIsAuthenticated(true);
-        setUserEmail(user.email || 'usuario@axglynne.com');
+        setUserEmail(user.email || 'user@axglynne.com');
       }
     };
     checkAuth();
@@ -477,7 +477,7 @@ export default function CreateYourGlynneModelPage() {
 
   return (
     <BackgroundWrapper theme={theme}>
-      <div data-theme={theme} style={{ height: '100vh', width: '100vw', overflow: 'hidden', position: 'relative', backgroundColor: theme === 'light' ? '#f8f9fc' : '#000000' }}>
+      <div data-theme={theme} style={{ minHeight: '100vh', width: '100vw', overflowY: isSmallScreen ? 'auto' : 'hidden', overflowX: 'hidden', position: 'relative', backgroundColor: theme === 'light' ? '#f8f9fc' : '#000000' }}>
       
       {/* Intro Loading & Welcome Sequence Overlay (Reveals Interactive Grid Background) */}
       <div
@@ -485,7 +485,7 @@ export default function CreateYourGlynneModelPage() {
           position: 'fixed',
           inset: 0,
           zIndex: introFinished ? -1 : 99999,
-          backgroundColor: theme === 'light' ? 'rgba(245, 245, 247, 0.82)' : 'rgba(0, 0, 0, 0.82)',
+          backgroundColor: theme === 'light' ? 'rgba(245, 245, 247, 0.95)' : 'rgba(0, 0, 0, 0.95)',
           backdropFilter: 'blur(24px)',
           WebkitBackdropFilter: 'blur(24px)',
           color: theme === 'light' ? '#111111' : '#ffffff',
@@ -493,9 +493,10 @@ export default function CreateYourGlynneModelPage() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '24px',
+          padding: isSmallScreen ? '16px 12px' : '24px',
           fontFamily: 'system-ui, -apple-system, sans-serif',
-          overflow: 'hidden',
+          overflowY: 'auto',
+          overflowX: 'hidden',
           transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
           transform: isLaunching ? 'scale(1.04)' : 'scale(1)',
           opacity: isLaunching ? 0 : 1,
@@ -504,9 +505,9 @@ export default function CreateYourGlynneModelPage() {
       >
 
         {/* Foreground Intro Content (Floats above interactive Gravity Canvas) */}
-        <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', pointerEvents: 'none' }}>
+        <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '640px', margin: '0 auto', pointerEvents: 'none' }}>
           {/* Central Monochromatic Spinning Neural Ring */}
-          <div style={{ position: 'relative', width: '160px', height: '160px', marginBottom: '32px' }}>
+          <div style={{ position: 'relative', width: isSmallScreen ? '100px' : '160px', height: isSmallScreen ? '100px' : '160px', marginBottom: isSmallScreen ? '16px' : '32px' }}>
           {/* Outer Spinning Ring */}
           <svg
             viewBox="0 0 100 100"
@@ -579,8 +580,8 @@ export default function CreateYourGlynneModelPage() {
             animation: 'pulseCoreMonochrome 3s ease-in-out infinite'
           }}>
             <div style={{
-              width: '56px',
-              height: '56px',
+              width: isSmallScreen ? '40px' : '56px',
+              height: isSmallScreen ? '40px' : '56px',
               borderRadius: '50%',
               backgroundColor: theme === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.04)',
               border: theme === 'light' ? '1px solid rgba(0, 0, 0, 0.12)' : '1px solid rgba(255, 255, 255, 0.15)',
@@ -593,8 +594,8 @@ export default function CreateYourGlynneModelPage() {
                 src="/logos/GLYNNE.svg"
                 alt="GLYNNE Logo"
                 style={{
-                  width: '28px',
-                  height: '28px',
+                  width: isSmallScreen ? '20px' : '28px',
+                  height: isSmallScreen ? '20px' : '28px',
                   filter: 'brightness(0) invert(1)',
                   objectFit: 'contain'
                 }}
@@ -604,20 +605,20 @@ export default function CreateYourGlynneModelPage() {
         </div>
 
         {/* Title & Stage Header */}
-        <div style={{ textAlign: 'center', maxWidth: '580px', marginBottom: '28px', animation: 'fadeInUpMonochrome 0.5s ease' }}>
+        <div style={{ textAlign: 'center', maxWidth: '580px', width: '100%', marginBottom: isSmallScreen ? '16px' : '28px', animation: 'fadeInUpMonochrome 0.5s ease' }}>
           {introStage !== 'ready' && (
             <span style={{
-              fontSize: '11px',
-              fontWeight: 500,
-              letterSpacing: '0.12em',
+              fontSize: isSmallScreen ? '9.5px' : '11px',
+              fontWeight: 600,
+              letterSpacing: '0.1em',
               textTransform: 'uppercase',
               color: theme === 'light' ? '#111111' : '#ffffff',
               backgroundColor: theme === 'light' ? 'rgba(0, 0, 0, 0.04)' : 'rgba(255, 255, 255, 0.06)',
-              padding: '6px 16px',
+              padding: '5px 12px',
               borderRadius: '999px',
               border: theme === 'light' ? '1px solid rgba(0, 0, 0, 0.08)' : '1px solid rgba(255, 255, 255, 0.1)',
               display: 'inline-block',
-              marginBottom: '16px',
+              marginBottom: '12px',
               transition: 'all 0.3s ease'
             }}>
               {introStage === 'initializing' ? 'PHASE 1 — INITIALIZING NODE & VRAM' : 'PHASE 2 — VERIFYING KERNELS & DATASETS'}
@@ -625,18 +626,18 @@ export default function CreateYourGlynneModelPage() {
           )}
 
           <h1 style={{
-            fontSize: 'clamp(26px, 4vw, 40px)',
-            fontWeight: 500,
-            letterSpacing: introStage === 'ready' ? '0.14em' : '-0.02em',
+            fontSize: 'clamp(20px, 4.5vw, 38px)',
+            fontWeight: 600,
+            letterSpacing: introStage === 'ready' ? '0.08em' : '-0.02em',
             lineHeight: 1.15,
-            margin: '0 0 12px 0',
+            margin: '0 0 8px 0',
             color: theme === 'light' ? '#111111' : '#ffffff',
             transition: 'letter-spacing 0.3s ease'
           }}>
             {introStage === 'ready' ? 'GLYNNE AI STUDIO' : 'Loading Adaptation Environment'}
           </h1>
 
-          <p style={{ fontSize: '15px', color: '#86868b', fontWeight: 300, margin: 0, lineHeight: 1.5 }}>
+          <p style={{ fontSize: isSmallScreen ? '13px' : '15px', color: '#86868b', fontWeight: 300, margin: 0, lineHeight: 1.45 }}>
             {introStage === 'ready' 
               ? 'Re-train and adapt AI models tailored to your exact enterprise needs.'
               : 'Connecting to inference infrastructure & verifying credentials'
@@ -648,38 +649,38 @@ export default function CreateYourGlynneModelPage() {
         <div style={{
           width: '100%',
           maxWidth: '580px',
-          backgroundColor: theme === 'light' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(18, 18, 20, 0.7)',
+          backgroundColor: theme === 'light' ? 'rgba(255, 255, 255, 0.75)' : 'rgba(18, 18, 20, 0.75)',
           backdropFilter: 'blur(20px)',
-          border: theme === 'light' ? '1px solid rgba(0, 0, 0, 0.08)' : '1px solid rgba(255, 255, 255, 0.08)',
-          borderRadius: '16px',
-          padding: '18px 22px',
-          marginBottom: '28px',
+          border: theme === 'light' ? '1px solid rgba(0, 0, 0, 0.1)' : '1px solid rgba(255, 255, 255, 0.1)',
+          borderRadius: '14px',
+          padding: isSmallScreen ? '12px 14px' : '18px 22px',
+          marginBottom: isSmallScreen ? '16px' : '28px',
           boxShadow: theme === 'light' ? '0 10px 30px rgba(0,0,0,0.03)' : '0 10px 30px rgba(0,0,0,0.4)'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px', borderBottom: theme === 'light' ? '1px solid rgba(0,0,0,0.06)' : '1px solid rgba(255,255,255,0.06)', paddingBottom: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px', borderBottom: theme === 'light' ? '1px solid rgba(0,0,0,0.06)' : '1px solid rgba(255,255,255,0.06)', paddingBottom: '8px' }}>
             <div style={{ display: 'flex', gap: '6px' }}>
-              <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: theme === 'light' ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.2)' }} />
-              <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: theme === 'light' ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.2)' }} />
-              <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: theme === 'light' ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.2)' }} />
+              <div style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: theme === 'light' ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.2)' }} />
+              <div style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: theme === 'light' ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.2)' }} />
+              <div style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: theme === 'light' ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.2)' }} />
             </div>
-            <span style={{ fontSize: '11px', fontFamily: 'monospace', color: '#86868b', letterSpacing: '0.05em' }}>
+            <span style={{ fontSize: '10px', fontFamily: 'monospace', color: '#86868b', letterSpacing: '0.05em' }}>
               DIAGNOSTIC_TERMINAL // V2.4
             </span>
           </div>
 
           <div style={{
             fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
-            fontSize: '12px',
+            fontSize: isSmallScreen ? '10.5px' : '12px',
             color: theme === 'light' ? '#333333' : '#d4d4d8',
             display: 'flex',
             flexDirection: 'column',
-            gap: '6px',
-            minHeight: '110px',
-            maxHeight: '130px',
+            gap: '4px',
+            minHeight: isSmallScreen ? '80px' : '110px',
+            maxHeight: isSmallScreen ? '100px' : '130px',
             overflowY: 'auto'
           }}>
             {introLogs.map((log, index) => (
-              <div key={`intro-log-${index}`} style={{ opacity: index === introLogs.length - 1 ? 1 : 0.5, transition: 'opacity 0.2s ease' }}>
+              <div key={`intro-log-${index}`} style={{ opacity: index === introLogs.length - 1 ? 1 : 0.5, transition: 'opacity 0.2s ease', wordBreak: 'break-word' }}>
                 {log}
               </div>
             ))}
@@ -692,10 +693,10 @@ export default function CreateYourGlynneModelPage() {
         </div>
 
         {/* Minimal Progress Bar */}
-        <div style={{ width: '100%', maxWidth: '580px', marginBottom: '32px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', fontWeight: 500, color: '#86868b', marginBottom: '8px' }}>
+        <div style={{ width: '100%', maxWidth: '580px', marginBottom: isSmallScreen ? '20px' : '32px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', fontWeight: 600, color: '#86868b', marginBottom: '6px' }}>
             <span>PROGRESS</span>
-            <span style={{ color: theme === 'light' ? '#111' : '#fff', fontWeight: 600 }}>{introProgress}%</span>
+            <span style={{ color: theme === 'light' ? '#111' : '#fff', fontWeight: 700 }}>{introProgress}%</span>
           </div>
           <div style={{
             height: '4px',
@@ -714,38 +715,43 @@ export default function CreateYourGlynneModelPage() {
           </div>
         </div>
 
-        {/* Action Launch Button Container (Always mounted in DOM to prevent React Fiber removeChild errors) */}
+        {/* Action Launch Button Container (Always mounted in DOM) */}
         <div style={{
           textAlign: 'center',
           opacity: introStage === 'ready' ? 1 : 0,
           visibility: introStage === 'ready' ? 'visible' : 'hidden',
           pointerEvents: introStage === 'ready' ? 'auto' : 'none',
-          transition: 'opacity 0.4s ease, visibility 0.4s ease'
+          transition: 'opacity 0.4s ease, visibility 0.4s ease',
+          width: '100%'
         }}>
           {userEmail && (
-            <div style={{ fontSize: '13px', color: '#86868b', marginBottom: '16px', fontWeight: 400 }}>
-              Verified session: <span style={{ color: theme === 'light' ? '#111' : '#fff' }}>{userEmail}</span>
+            <div style={{ fontSize: '12px', color: '#86868b', marginBottom: '14px', fontWeight: 400 }}>
+              Verified session: <span style={{ color: theme === 'light' ? '#111' : '#fff', fontWeight: 600 }}>{userEmail}</span>
             </div>
           )}
+
           {isSmallScreen ? (
             <div style={{
-              maxWidth: '460px',
+              maxWidth: '440px',
+              width: '100%',
               margin: '0 auto',
-              padding: '20px 24px',
-              borderRadius: '18px',
-              backgroundColor: theme === 'light' ? 'rgba(255, 255, 255, 0.85)' : 'rgba(24, 24, 27, 0.85)',
-              border: theme === 'light' ? '1px solid rgba(225, 29, 72, 0.25)' : '1px solid rgba(244, 63, 94, 0.3)',
+              padding: '18px 20px',
+              borderRadius: '16px',
+              backgroundColor: theme === 'light' ? 'rgba(255, 255, 255, 0.92)' : 'rgba(18, 18, 22, 0.92)',
+              border: theme === 'light' ? '1px solid rgba(225, 29, 72, 0.3)' : '1px solid rgba(244, 63, 94, 0.35)',
               backdropFilter: 'blur(16px)',
-              boxShadow: theme === 'light' ? '0 12px 30px rgba(0, 0, 0, 0.06)' : '0 12px 35px rgba(0, 0, 0, 0.5)',
+              WebkitBackdropFilter: 'blur(16px)',
+              boxShadow: theme === 'light' ? '0 12px 30px rgba(0, 0, 0, 0.06)' : '0 12px 35px rgba(0, 0, 0, 0.6)',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: '12px',
-              textAlign: 'center'
+              gap: '10px',
+              textAlign: 'center',
+              boxSizing: 'border-box'
             }}>
               <div style={{
-                width: '44px',
-                height: '44px',
+                width: '40px',
+                height: '40px',
                 borderRadius: '50%',
                 backgroundColor: theme === 'light' ? 'rgba(225, 29, 72, 0.08)' : 'rgba(244, 63, 94, 0.12)',
                 color: theme === 'light' ? '#e11d48' : '#fb7185',
@@ -753,7 +759,7 @@ export default function CreateYourGlynneModelPage() {
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
                   <line x1="8" y1="21" x2="16" y2="21"/>
                   <line x1="12" y1="17" x2="12" y2="21"/>
@@ -761,43 +767,47 @@ export default function CreateYourGlynneModelPage() {
               </div>
               <div>
                 <h3 style={{
-                  fontSize: '15px',
-                  fontWeight: 600,
-                  margin: '0 0 6px 0',
-                  color: theme === 'light' ? '#111111' : '#ffffff'
+                  fontSize: '13.5px',
+                  fontWeight: 700,
+                  margin: '0 0 4px 0',
+                  color: theme === 'light' ? '#111111' : '#ffffff',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.04em'
                 }}>
-                  Función exclusiva para PC / Escritorio
+                  Exclusive Desktop / PC Feature
                 </h3>
                 <p style={{
-                  fontSize: '13px',
+                  fontSize: '11.5px',
                   color: '#86868b',
                   margin: 0,
-                  lineHeight: 1.5,
+                  lineHeight: 1.45,
                   fontWeight: 400
                 }}>
-                  El panel de Fine-Tuning y entrenamiento de modelos GLYNNE requiere una pantalla de computadora (resolución superior a 700px). No se puede utilizar en dispositivos móviles.
+                  The GLYNNE AI model fine-tuning and adaptation studio requires a desktop or laptop screen (resolution above 700px). Mobile displays are not supported for high-compute training.
                 </p>
               </div>
               <Link
                 href="/Panel"
                 style={{
-                  marginTop: '4px',
-                  padding: '10px 22px',
+                  marginTop: '2px',
+                  padding: '9px 20px',
                   borderRadius: '999px',
                   backgroundColor: theme === 'light' ? '#111111' : '#ffffff',
                   color: theme === 'light' ? '#ffffff' : '#111111',
-                  fontSize: '13px',
-                  fontWeight: 500,
+                  fontSize: '11.5px',
+                  fontWeight: 700,
+                  letterSpacing: '0.04em',
+                  textTransform: 'uppercase',
                   textDecoration: 'none',
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '8px',
+                  gap: '6px',
                   transition: 'transform 0.2s ease'
                 }}
-                onMouseOver={(e) => { e.currentTarget.style.transform = 'scale(1.03)'; }}
+                onMouseOver={(e) => { e.currentTarget.style.transform = 'scale(1.02)'; }}
                 onMouseOut={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
               >
-                <span>&larr; Volver al Dashboard</span>
+                <span>&larr; Return to Dashboard</span>
               </Link>
             </div>
           ) : (
@@ -833,20 +843,22 @@ export default function CreateYourGlynneModelPage() {
         </div>
       </div>
 
-      {/* Container 100vh matching Panel */}
+      {/* Container matching Panel */}
       <div
         className="md-container"
         style={{
-          position: 'absolute',
+          position: isSmallScreen ? 'relative' : 'absolute',
           top: 0,
           left: 0,
           width: '100vw',
-          height: '100vh',
-          padding: '16px 24px',
+          height: isSmallScreen ? 'auto' : '100vh',
+          minHeight: '100dvh',
+          padding: isSmallScreen ? '12px 14px' : '16px 24px',
           display: 'flex',
           flexDirection: 'column',
           gap: '12px',
-          zIndex: 10000
+          zIndex: 10000,
+          overflowY: isSmallScreen ? 'auto' : 'hidden'
         }}
       >
 
@@ -855,13 +867,15 @@ export default function CreateYourGlynneModelPage() {
           position: 'relative',
           zIndex: 10,
           display: 'flex',
+          flexDirection: isSmallScreen ? 'column' : 'row',
           justifyContent: 'space-between',
-          alignItems: 'center',
+          alignItems: isSmallScreen ? 'flex-start' : 'center',
+          gap: isSmallScreen ? '10px' : '0',
           paddingBottom: '8px',
           borderBottom: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.12)' : '1px solid rgba(255, 255, 255, 0.1)',
-          height: '40px'
+          height: isSmallScreen ? 'auto' : '40px'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
             <Link
               href="/Panel"
               style={{
@@ -879,13 +893,13 @@ export default function CreateYourGlynneModelPage() {
               &larr; Back to Dashboard
             </Link>
             <span style={{ color: theme === 'light' ? '#cbd5e1' : '#334155' }}>|</span>
-            <div className="md-title" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div className="md-title" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px', fontSize: isSmallScreen ? '10px' : '11px' }}>
               <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: theme === 'light' ? '#0f172a' : '#ffffff' }} />
               GLYNNE CORE // MODEL FINE-TUNING STUDIO (QLoRA)
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
             {/* Status Badge */}
             <span style={{
               fontSize: '10px',
@@ -947,10 +961,10 @@ export default function CreateYourGlynneModelPage() {
         </div>
 
         {/* Main Layout - 3 Columns (GLYNNE Panel Style) */}
-        <div className="md-main" style={{ display: 'flex', gap: '16px', height: 'calc(100vh - 75px)', overflow: 'hidden' }}>
+        <div className="md-main" style={{ display: 'flex', flexDirection: isSmallScreen ? 'column' : 'row', gap: '16px', height: isSmallScreen ? 'auto' : 'calc(100vh - 75px)', overflow: isSmallScreen ? 'visible' : 'hidden', paddingBottom: isSmallScreen ? '50px' : '0' }}>
 
           {/* COLUMN 1 (LEFT): MODEL ARCHITECTURE & DATASET CONFIGURATION */}
-          <div className="md-left" style={{ width: '380px', height: '100%', display: 'flex', flexDirection: 'column', gap: '16px', overflowY: 'auto', paddingRight: '6px' }}>
+          <div className="md-left" style={{ width: isSmallScreen ? '100%' : '380px', height: isSmallScreen ? 'auto' : '100%', display: 'flex', flexDirection: 'column', gap: '16px', overflowY: isSmallScreen ? 'visible' : 'auto', paddingRight: isSmallScreen ? '0' : '6px' }}>
 
             {/* Section 1: Base Model Architecture (Carousel) */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
