@@ -93,9 +93,9 @@ export default function PrivacyPolicy() {
         {/* Full Width Brand Guidelines Banner matching reference image */}
         <div style={{ width: '100%', position: 'relative', zIndex: 10, paddingTop: '80px' }}>
           <PolicyBrandBanner
-            titleLine1="Privacy"
-            titleLine2="Policies"
-            subTitle="DATA PRIVACY & COMPLIANCE GOVERNANCE STANDARDS"
+            titleLine1="Privacidad"
+            titleLine2="Políticas"
+            subTitle="Normas de gobernanza para la privacidad de datos y el cumplimiento"
             brandLogoText="AXGLYNNE"
             badgeText="AX"
           />
