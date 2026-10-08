@@ -96,10 +96,10 @@ export default function TrainModelGridManifesto() {
             lineHeight: 1.4
           }}>
             <span style={{ color: mutedTextColor, fontWeight: 300 }}>
-              Para aprender, para ajustar, para controlar,{' '}
+              To learn, to tune, to control,{' '}
             </span>
             <span style={{ color: textColor, fontWeight: 600 }}>
-              para evolucionar.
+              to evolve.
             </span>
           </div>
         </div>

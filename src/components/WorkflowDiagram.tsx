@@ -4,10 +4,10 @@ import React from 'react';
 import { useTheme } from '@/lib/ThemeContext';
 
 const columns = [
-  { title: "1. Análisis" },
-  { title: "2. Estrategia" },
-  { title: "3. Ejecución" },
-  { title: "4. Transformación" }
+  { title: "1. Analysis" },
+  { title: "2. Strategy" },
+  { title: "3. Execution" },
+  { title: "4. Transformation" }
 ];
 
 const nodes = [
@@ -16,24 +16,24 @@ const nodes = [
     id: 1,
     col: 1,
     y: 250,
-    title: 'Contextualizar',
-    tag: 'Fase 1',
-    status: 'Activo',
-    owner: 'Sistema AX',
-    size: 'Contexto',
-    desc: 'Definir el alcance operativo.',
+    title: 'Contextualize',
+    tag: 'Phase 1',
+    status: 'Active',
+    owner: 'AX System',
+    size: 'Context',
+    desc: 'Define the operational scope.',
     type: 'dial'
   },
   {
     id: 2,
     col: 1,
     y: 750,
-    title: 'Permisos',
-    tag: 'Fase 1',
-    status: 'Activo',
-    owner: 'Sistema AX',
-    size: 'Control de acceso',
-    desc: 'Restringir la ejecución de la herramienta.',
+    title: 'Permissions',
+    tag: 'Phase 1',
+    status: 'Active',
+    owner: 'AX System',
+    size: 'Access control',
+    desc: 'Restrict tool execution.',
     type: 'bar'
   },
   
@@ -42,24 +42,24 @@ const nodes = [
     id: 3,
     col: 2,
     y: 350,
-    title: 'Filtro de diseño',
-    tag: 'Fase 2',
-    status: 'Activo',
-    owner: 'Sistema AX',
-    size: 'Capa de control',
-    desc: 'Inspeccione el mensaje y la carga útil.',
+    title: 'Design filter',
+    tag: 'Phase 2',
+    status: 'Active',
+    owner: 'AX System',
+    size: 'Control layer',
+    desc: 'Inspect the prompt and payload.',
     type: 'buttons'
   },
   {
     id: 4,
     col: 2,
     y: 650,
-    title: 'Protocolo de seguridad',
-    tag: 'Fase 2',
-    status: 'Activo',
-    owner: 'Sistema AX',
-    size: 'Confianza cero',
-    desc: 'Verificar identidad y política.',
+    title: 'Security protocol',
+    tag: 'Phase 2',
+    status: 'Active',
+    owner: 'AX System',
+    size: 'Zero trust',
+    desc: 'Verify identity and policy.',
     type: 'dial'
   },
 
@@ -68,36 +68,36 @@ const nodes = [
     id: 5,
     col: 3,
     y: 200,
-    title: 'Motor de reglas',
-    tag: 'Fase 3',
-    status: 'Activo',
-    owner: 'Sistema AX',
-    size: 'Barandillas de seguridad',
-    desc: 'Aplicar reglas deterministas.',
+    title: 'Rules engine',
+    tag: 'Phase 3',
+    status: 'Active',
+    owner: 'AX System',
+    size: 'Guardrails',
+    desc: 'Apply deterministic rules.',
     type: 'bar'
   },
   {
     id: 6,
     col: 3,
     y: 500,
-    title: 'Integración',
-    tag: 'Fase 3',
-    status: 'Activo',
-    owner: 'Sistema AX',
-    size: 'Puertas de enlace API',
-    desc: 'Conecte las herramientas empresariales.',
+    title: 'Integration',
+    tag: 'Phase 3',
+    status: 'Active',
+    owner: 'AX System',
+    size: 'API gateways',
+    desc: 'Connect enterprise tools.',
     type: 'buttons'
   },
   {
     id: 7,
     col: 3,
     y: 800,
-    title: 'Trazabilidad',
-    tag: 'Fase 3',
-    status: 'Activo',
-    owner: 'Sistema AX',
-    size: 'Registros de auditoría',
-    desc: 'Registrar la telemetría de decisiones.',
+    title: 'Traceability',
+    tag: 'Phase 3',
+    status: 'Active',
+    owner: 'AX System',
+    size: 'Audit logs',
+    desc: 'Log decision telemetry.',
     type: 'bar'
   },
 
@@ -106,28 +106,28 @@ const nodes = [
     id: 8,
     col: 4,
     y: 500,
-    title: 'Autonomía Gobernada',
-    tag: 'Resultado',
-    status: 'Continuo',
-    owner: 'Sistema AX',
-    size: 'Producción',
-    desc: 'Ejecución segura y auditable.',
+    title: 'Governed Autonomy',
+    tag: 'Outcome',
+    status: 'Continuous',
+    owner: 'AX System',
+    size: 'Production',
+    desc: 'Secure, auditable execution.',
     type: 'chart',
     isChart: true
   }
 ];
 
 const connections = [
-  { from: 1, to: 3, label: 'Contexto' },
-  { from: 2, to: 3, label: 'Acceso' },
-  { from: 2, to: 4, label: 'Política' },
-  { from: 3, to: 5, label: 'Carga Útil' },
-  { from: 3, to: 6, label: 'Intención' },
+  { from: 1, to: 3, label: 'Context' },
+  { from: 2, to: 3, label: 'Access' },
+  { from: 2, to: 4, label: 'Policy' },
+  { from: 3, to: 5, label: 'Payload' },
+  { from: 3, to: 6, label: 'Intent' },
   { from: 4, to: 6, label: 'Token' },
-  { from: 4, to: 7, label: 'Identidad' },
-  { from: 5, to: 8, label: 'Regla OK' },
-  { from: 6, to: 8, label: 'Ejecutado' },
-  { from: 7, to: 8, label: 'Auditado' }
+  { from: 4, to: 7, label: 'Identity' },
+  { from: 5, to: 8, label: 'Rule OK' },
+  { from: 6, to: 8, label: 'Executed' },
+  { from: 7, to: 8, label: 'Audited' }
 ];
 
 const getPath = (fromCol: number, fromY: number, toCol: number, toY: number) => {
@@ -176,7 +176,7 @@ export default function WorkflowDiagram() {
       }}>
         <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: textColor, marginRight: '8px' }} />
         <span style={{ fontSize: '11px', fontWeight: 600, color: textColor, letterSpacing: '0.08em', textTransform: 'uppercase', fontFamily: 'monospace' }}>
-          Arquitectura de Control AX
+          AX Control Architecture
         </span>
       </div>
 
@@ -190,7 +190,7 @@ export default function WorkflowDiagram() {
         maxWidth: '700px',
         fontFamily: "var(--font-serif), Georgia, serif"
       }}>
-        Cómo AX Filtra y Controla las Acciones de IA
+        How AX Filters and Controls AI Actions
       </h2>
 
       {/* Main Flow Container */}
@@ -355,7 +355,7 @@ export default function WorkflowDiagram() {
                       </svg>
                       <div style={{ fontSize: '9px', fontFamily: 'monospace', color: subtextColor, lineHeight: 1.3 }}>
                         <span style={{ color: textColor, fontWeight: 700 }}>68.4%</span>
-                        <br />OPERATIVO
+                        <br />OPERATIONAL
                       </div>
                     </div>
                   )}
@@ -381,8 +381,8 @@ export default function WorkflowDiagram() {
                         ))}
                       </div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '8px', color: subtextColor, marginTop: '4px', fontFamily: 'monospace' }}>
-                        <span>VOLUMEN 561TB</span>
-                        <span>PROGRESO 50%</span>
+                        <span>VOLUME 561TB</span>
+                        <span>PROGRESS 50%</span>
                       </div>
                     </div>
                   )}
@@ -399,7 +399,7 @@ export default function WorkflowDiagram() {
                         letterSpacing: '0.05em',
                         textTransform: 'uppercase'
                       }}>
-                        CANCELAR
+                        CANCEL
                       </div>
                       <div style={{
                         border: borderLine,
@@ -410,7 +410,7 @@ export default function WorkflowDiagram() {
                         letterSpacing: '0.05em',
                         textTransform: 'uppercase'
                       }}>
-                        CERRAR VENTANA
+                        CLOSE WINDOW
                       </div>
                     </div>
                   )}
@@ -435,11 +435,11 @@ export default function WorkflowDiagram() {
                   fontFamily: "'SF Mono', monospace"
                 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ color: subtextColor, fontSize: '8px', textTransform: 'uppercase' }}>Estado</span>
+                    <span style={{ color: subtextColor, fontSize: '8px', textTransform: 'uppercase' }}>Status</span>
                     <span style={{ color: textColor, fontWeight: 700 }}>{node.status}</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ color: subtextColor, fontSize: '8px', textTransform: 'uppercase' }}>Dueño</span>
+                    <span style={{ color: subtextColor, fontSize: '8px', textTransform: 'uppercase' }}>Owner</span>
                     <span style={{ color: textColor, fontWeight: 600 }}>{node.owner}</span>
                   </div>
                   <div style={{
@@ -449,7 +449,7 @@ export default function WorkflowDiagram() {
                     paddingTop: '4px',
                     marginTop: '2px'
                   }}>
-                    <span style={{ color: subtextColor, fontSize: '8px', textTransform: 'uppercase' }}>Métrico</span>
+                    <span style={{ color: subtextColor, fontSize: '8px', textTransform: 'uppercase' }}>Metric</span>
                     <span style={{ color: textColor, fontWeight: 600 }}>{node.size}</span>
                   </div>
                 </div>

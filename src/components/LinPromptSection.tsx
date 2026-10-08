@@ -11,16 +11,40 @@ interface LinPromptSectionProps {
   customDescription?: string;
   primaryButtonText?: string;
   primaryButtonUrl?: string;
+  lang?: 'es' | 'en';
 }
+
+const LIN_PROMPT_TEXT = {
+  es: {
+    title: "Razonamiento de IA basado en la experiencia",
+    description: "Interactúa con AX, el motor de razonamiento autónomo que opera bajo la capa de control de GLYNNE, para explorar cómo funciona la autonomía empresarial segura.",
+    newModel: 'Nuevo: Modelo AX 5.2 disponible',
+    tryModel: 'Probar AX 5.2',
+    placeholder: 'Pregunta cualquier cosa...',
+    promptLibrary: 'Biblioteca de prompts'
+  },
+  en: {
+    title: "Experience-driven AI reasoning",
+    description: "Interact with AX, the autonomous reasoning engine running under GLYNNE's control layer, to explore how secure enterprise autonomy works.",
+    newModel: 'New: AX 5.2 model available',
+    tryModel: 'Try AX 5.2',
+    placeholder: 'Ask anything...',
+    promptLibrary: 'Prompt library'
+  }
+};
 
 export default function LinPromptSection({
   hideCard = false,
   hideOrbCard = false,
-  customTitle = "Razonamiento de IA basado en la experiencia",
-  customDescription = "Interactúa con AX, el motor de razonamiento autónomo que opera bajo la capa de control de GLYNNE, para explorar cómo funciona la autonomía empresarial segura.",
+  customTitle,
+  customDescription,
   primaryButtonText = "Explorar la metodología",
-  primaryButtonUrl = "/Methodology"
+  primaryButtonUrl = "/Methodology",
+  lang = 'es'
 }: LinPromptSectionProps = {}) {
+  const t = LIN_PROMPT_TEXT[lang];
+  customTitle = customTitle ?? t.title;
+  customDescription = customDescription ?? t.description;
   const [inputValue, setInputValue] = useState('');
   const router = useRouter();
   const { theme } = useTheme();
@@ -332,7 +356,7 @@ export default function LinPromptSection({
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <span style={{ color: textColor, fontSize: '12px' }}>✧</span>
-              <span>Nuevo: Modelo AX 5.2 disponible</span>
+              <span>{t.newModel}</span>
             </div>
             <button
               type="button"
@@ -350,7 +374,7 @@ export default function LinPromptSection({
                 gap: '4px'
               }}
             >
-              <span>💥</span> Probar AX 5.2
+              <span>💥</span> {t.tryModel}
             </button>
           </div>
 
@@ -373,7 +397,7 @@ export default function LinPromptSection({
                   handleSend();
                 }
               }}
-              placeholder="Pregunta cualquier cosa..."
+              placeholder={t.placeholder}
               rows={2}
               style={{
                 border: 'none',
@@ -593,7 +617,7 @@ export default function LinPromptSection({
                 <rect x="4" y="4" width="16" height="16" rx="2" />
                 <path d="M9 9h6M9 13h6M9 17h4" />
               </svg>
-              <span>Biblioteca de prompts</span>
+              <span>{t.promptLibrary}</span>
             </button>
           </div>
         </form>

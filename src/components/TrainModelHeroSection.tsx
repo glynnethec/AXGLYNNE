@@ -123,9 +123,9 @@ export default function TrainModelHeroSection() {
           </div>
 
           <div style={{ display: 'flex', gap: '24px', color: subtextColor, letterSpacing: '0.08em', fontSize: '11px', fontFamily: "'SF Mono', monospace", textTransform: 'uppercase' }}>
-            <span>Proceso</span>
-            <span>Recursos</span>
-            <span>Inversiones</span>
+            <span>Process</span>
+            <span>Resources</span>
+            <span>Investments</span>
             <span>Podcast</span>
           </div>
         </div>
@@ -145,9 +145,9 @@ export default function TrainModelHeroSection() {
                 letterSpacing: '0.12em',
                 lineHeight: 1.3
               }}>
-                REENTRENAMIENTO QLORA<br />
-                ALINEACIÓN DE PESOS<br />
-                MODELOS PRIVADOS
+                QLORA RETRAINING<br />
+                WEIGHT ALIGNMENT<br />
+                PRIVATE MODELS
               </div>
 
               {/* Eye Vector Micro Graphic */}
@@ -241,7 +241,7 @@ export default function TrainModelHeroSection() {
               letterSpacing: '0.1em'
             }}>
               <div>001 &gt;&gt;&gt;&gt;&gt;&gt;&gt;</div>
-              <div style={{ fontWeight: 700 }}>AVANCE RÁPIDO</div>
+              <div style={{ fontWeight: 700 }}>FAST FORWARD</div>
             </div>
           </div>
 
@@ -259,8 +259,8 @@ export default function TrainModelHeroSection() {
                 fontFamily: "var(--font-serif), Georgia, 'Times New Roman', serif"
               }}>
                 Evolve ®<br />
-                la forma en<br />
-                que entrenas
+                the way<br />
+                you train
               </h1>
 
               {/* Sub-badge Location Line */}
@@ -275,9 +275,9 @@ export default function TrainModelHeroSection() {
                 alignItems: 'center',
                 gap: '12px'
               }}>
-                <span>ESTUDIO DE FINE-TUNING</span>
+                <span>FINE-TUNING STUDIO</span>
                 <span style={{ color: subtextColor }}>/</span>
-                <span>REENTRENAMIENTO DE MODELOS</span>
+                <span>MODEL RETRAINING</span>
               </div>
 
               {/* Paragraph Copy */}
@@ -289,7 +289,7 @@ export default function TrainModelHeroSection() {
                 margin: '0 0 36px 0',
                 maxWidth: '460px'
               }}>
-                Accede al entorno de fine-tuning empresarial para crear, personalizar y reentrenar tus propios modelos de IA. Carga tus conjuntos de datos, ajusta los hiperparámetros LoRA y ejecuta procesos de reentrenamiento optimizados mediante QLoRA para obtener pesos adaptados a tu organización.
+                Access the enterprise fine-tuning environment to create, customize, and retrain your own AI models. Upload your datasets, adjust LoRA hyperparameters, and run QLoRA-optimized retraining jobs to obtain weights tailored to your organization.
               </p>
             </div>
 
@@ -314,7 +314,7 @@ export default function TrainModelHeroSection() {
                 onMouseOver={(e) => { e.currentTarget.style.opacity = '0.9'; }}
                 onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
               >
-                CREAR Y REENTRENAR MODELO
+                CREATE & RETRAIN MODEL
               </button>
 
               <button
@@ -339,7 +339,7 @@ export default function TrainModelHeroSection() {
                 onMouseOver={(e) => { e.currentTarget.style.backgroundColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)'; }}
                 onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
               >
-                CATÁLOGO DE MODELOS
+                MODEL CATALOG
               </button>
             </div>
           </div>
@@ -347,8 +347,8 @@ export default function TrainModelHeroSection() {
 
         {/* Bottom Metadata Bar */}
         <div className="hud-bottom-bar">
-          <div>01/10 &nbsp; ESTUDIO DE FINE-TUNING Y REENTRENAMIENTO</div>
-          <div>ESTADO: LISTO PARA ENTRENAR</div>
+          <div>01/10 &nbsp; FINE-TUNING & RETRAINING STUDIO</div>
+          <div>STATUS: READY TO TRAIN</div>
           <div style={{ fontWeight: 700, color: textColor }}>FINE-TUNING QLORA / 8-BIT</div>
         </div>
 

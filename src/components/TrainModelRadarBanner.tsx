@@ -106,8 +106,8 @@ export default function TrainModelRadarBanner() {
               letterSpacing: '-0.02em',
               fontFamily: "var(--font-serif), Georgia, 'Times New Roman', serif"
             }}>
-              Reentrenamiento<br />
-              sin límites
+              Retraining<br />
+              without limits
             </h2>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', maxWidth: '520px' }}>
@@ -119,7 +119,7 @@ export default function TrainModelRadarBanner() {
                 margin: 0,
                 fontWeight: 300
               }}>
-                Nuestra arquitectura de reentrenamiento integra motores de optimización QLoRA de 8 bits y cuantización avanzada, permitiendo ajustar modelos fundacionales de peso abierto (como Llama, Qwen o Phi) directamente sobre la memoria del sistema. Esto permite adaptar la inteligencia artificial a los datos privados y terminología específica de tu empresa con máxima precisión matemática, eliminando la dependencia de infraestructuras masivas y garantizando soberanía absoluta sobre tu información.
+                Our retraining architecture integrates 8-bit QLoRA optimization engines and advanced quantization, allowing open-weight foundation models (such as Llama, Qwen, or Phi) to be fine-tuned directly in system memory. This lets you adapt AI to your company's private data and specific terminology with maximum mathematical precision, eliminating dependence on massive infrastructure and guaranteeing absolute sovereignty over your information.
               </p>
 
               <p style={{
@@ -130,7 +130,7 @@ export default function TrainModelRadarBanner() {
                 margin: 0,
                 fontWeight: 300
               }}>
-                El proceso se ejecuta de manera intuitiva y estructurada: cargas tus conjuntos de datos corporativos en formatos estándar (JSONL, CSV o TXT), utilizas nuestros generadores automáticos de pares instrucción-respuesta y defines los hiperparámetros clave —tales como rango LoRA (r), alpha, tasa de aprendizaje y ciclos de época. El sistema procesa los tensores y calcula las matrices de adaptación de bajo rango en tiempo récord.
+                The process is intuitive and structured: upload your corporate datasets in standard formats (JSONL, CSV, or TXT), use our automatic instruction-response pair generators, and define the key hyperparameters — such as LoRA rank (r), alpha, learning rate, and epochs. The system processes the tensors and computes the low-rank adaptation matrices in record time.
               </p>
 
               <p style={{
@@ -141,7 +141,7 @@ export default function TrainModelRadarBanner() {
                 margin: 0,
                 fontWeight: 300
               }}>
-                Desde nuestro panel de reentrenamiento, supervisas en tiempo real gráficos de pérdida (loss), convergencia de métricas y registros del servidor. Una vez finalizado el ciclo, puedes validar el comportamiento del modelo ajustado en el entorno de pruebas integrado y exportar los adaptadores LoRA o archivos GGUF listos para desplegarse de forma autónoma y segura en cualquier entorno.
+                From our retraining dashboard, you monitor loss curves, metric convergence, and server logs in real time. Once the cycle completes, you can validate the fine-tuned model's behavior in the built-in testing environment and export LoRA adapters or GGUF files ready to be deployed autonomously and securely in any environment.
               </p>
             </div>
           </div>
@@ -149,7 +149,7 @@ export default function TrainModelRadarBanner() {
           <button
             onClick={() => router.push('/Create_you_GLYNNE_model')}
             className="white-cta-btn"
-            title="Iniciar Reentrenamiento"
+            title="Start Retraining"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <line x1="7" y1="17" x2="17" y2="7" />

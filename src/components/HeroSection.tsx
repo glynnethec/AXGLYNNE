@@ -39,7 +39,7 @@ export default function HeroSection() {
           letterSpacing: '-0.02em',
           maxWidth: '1100px'
         }}>
-          Ingeniería de IA, entrenamiento de modelos y ecosistemas autónomos
+          AI engineering, model training, and autonomous ecosystems
         </h1>
 
         {/* Paragraph */}
@@ -53,7 +53,7 @@ export default function HeroSection() {
           letterSpacing: '0.01em',
           maxWidth: '900px'
         }}>
-          En GLYNNE, no desarrollamos software tradicional ni comercializamos herramientas genéricas: diseñamos arquitecturas de IA especializadas. Entrenamos, ajustamos parámetros y alineamos modelos utilizando los datos operativos de su empresa para orquestar ecosistemas inteligentes que transforman sus procesos de negocio con total precisión y control.
+          At GLYNNE, we don't build traditional software or sell generic tools: we design specialized AI architectures. We train, fine-tune, and align models using your company's operational data to orchestrate intelligent ecosystems that transform your business processes with complete precision and control.
         </p>
 
         {/* Text Links */}
@@ -72,7 +72,7 @@ export default function HeroSection() {
             onMouseOver={(e) => { e.currentTarget.style.opacity = '0.7'; }}
             onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
           >
-            Explorar la metodología <span style={{ fontSize: '15px' }}>→</span>
+            Explore the methodology <span style={{ fontSize: '15px' }}>→</span>
           </Link>
 
           <Link href="/About" style={{
@@ -89,7 +89,7 @@ export default function HeroSection() {
             onMouseOver={(e) => { e.currentTarget.style.opacity = '0.7'; e.currentTarget.style.color = isDark ? '#ffffff' : '#111111'; }}
             onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.color = isDark ? '#a1a1aa' : '#666666'; }}
           >
-            Explora la arquitectura <span style={{ fontSize: '15px' }}>→</span>
+            Explore the architecture <span style={{ fontSize: '15px' }}>→</span>
           </Link>
         </div>
       </div>

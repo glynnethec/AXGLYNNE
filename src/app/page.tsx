@@ -31,7 +31,7 @@ export default function Home() {
           backgroundColor: 'transparent',
           padding: '0'
         }}>
-          <LinPromptSection hideCard={true} hideOrbCard={true} />
+          <LinPromptSection hideCard={true} hideOrbCard={true} lang="en" />
         </div>
 
         {/* 3. HOW DOES IT WORK? */}

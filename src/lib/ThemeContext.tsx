@@ -18,11 +18,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>('dark');
 
   useEffect(() => {
-    const stored = localStorage.getItem('ax_theme') as Theme | null;
-    if (stored === 'light' || stored === 'dark') {
-      setTheme(stored);
-      document.documentElement.setAttribute('data-theme', stored);
-    }
+    // Siempre iniciar en tema oscuro al abrir la página
+    document.documentElement.setAttribute('data-theme', 'dark');
   }, []);
 
   const toggleTheme = () => {

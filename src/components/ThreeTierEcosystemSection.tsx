@@ -16,15 +16,15 @@ export default function ThreeTierEcosystemSection() {
   const tiers = [
     {
       id: 'nucleo',
-      title: 'Fase 01 · Núcleo',
-      subtitle: 'base determinista',
+      title: 'Phase 01 · Core',
+      subtitle: 'deterministic foundation',
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={graphicStroke} strokeWidth="1.5">
           <circle cx="10" cy="14" r="6" />
           <path d="M14 8 C16 8 20 10 20 14" strokeLinecap="round" />
         </svg>
       ),
-      text: 'Es imposible descubrir nuevos horizontes sin una base sólida; Nosotros creamos el núcleo de IA determinista que ayuda a las implementaciones en fase inicial ya los equipos empresariales a escalar sin perder precisión ni control.',
+      text: 'It is impossible to discover new horizons without a solid foundation. We build the deterministic AI core that helps early-stage deployments and enterprise teams scale without losing precision or control.',
       graphic: (
         <svg width="100%" height="240" viewBox="0 0 280 240" fill="none" style={{ display: 'block' }}>
           {/* Wireframe 3D Sphere / Globe */}
@@ -40,14 +40,14 @@ export default function ThreeTierEcosystemSection() {
     },
     {
       id: 'ajuste-fino',
-      title: 'Fase 02 · Ajuste Fino',
-      subtitle: 'alineación qlora',
+      title: 'Phase 02 · Fine-Tuning',
+      subtitle: 'qlora alignment',
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={graphicStroke} strokeWidth="1.5">
           <path d="M12 2 L14.5 9.5 L22 12 L14.5 14.5 L12 22 L9.5 14.5 L2 12 L9.5 9.5 Z" fill="none" />
         </svg>
       ),
-      text: 'Incluso los sistemas empresariales consolidados siempre tienen margen de mejora. Realizamos un ajuste fino continuo de QLoRA y una alineación de parámetros específicos para que sus modelos de IA especializados brillen aún más.',
+      text: 'Even established enterprise systems always have room to improve. We perform continuous QLoRA fine-tuning and targeted parameter alignment so your specialized AI models shine even brighter.',
       graphic: (
         <svg width="100%" height="240" viewBox="0 0 280 240" fill="none" style={{ display: 'block' }}>
           {/* 4-Point / 8-Point Sparkling Vector Star */}
@@ -65,8 +65,8 @@ export default function ThreeTierEcosystemSection() {
     },
     {
       id: 'ecosistema',
-      title: 'Fase 03 · Ecosistema',
-      subtitle: 'red multiagente',
+      title: 'Phase 03 · Ecosystem',
+      subtitle: 'multi-agent network',
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={graphicStroke} strokeWidth="1.5">
           <circle cx="12" cy="12" r="3" fill={graphicStroke} />
@@ -74,7 +74,7 @@ export default function ThreeTierEcosystemSection() {
           <ellipse cx="12" cy="12" rx="9" ry="4" transform="rotate(30 12 12)" />
         </svg>
       ),
-      text: 'En un ecosistema extenso, todo debe regirse por una arquitectura unificada. Diseñamos redes multiagente autónomas que operan bajo estrictas capas de control para un crecimiento sistemático en toda la empresa.',
+      text: 'In a large ecosystem, everything must be governed by a unified architecture. We design autonomous multi-agent networks that operate under strict control layers for systematic, company-wide growth.',
       graphic: (
         <svg width="100%" height="240" viewBox="0 0 280 240" fill="none" style={{ display: 'block' }}>
           {/* Multi-Ellipse Orbital Galaxy Network */}
