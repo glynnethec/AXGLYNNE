@@ -2,17 +2,17 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://axglynne.com'),
-  title: 'Especificación Técnica SERVEX | AXGLYNNE',
-  description: 'Especificación técnica del proyecto SERVEX: Conversión automatizada de esquemas XML (CET Designer), matrices de datos y ejecución autónoma de procesos.',
+  title: 'SERVEX Technical Specification | AI & XML Matrix Pipeline',
+  description: 'Technical specification for SERVEX: Automated XML schema conversion (CET Designer), matrix data science, and autonomous process execution.',
   keywords: [
-    'Especificación Técnica SERVEX',
-    'CET Designer XML Matrix',
-    'Caso de Estudio SERVEX',
-    'Convertidor XML a Datos Estructurados',
-    'IA para Procesos BPO',
-    'Automatización de Catálogos Complejos',
+    'SERVEX Technical Specification',
+    'CET Designer XML Matrix Converter',
+    'SERVEX Case Study',
+    'XML to Structured Data Converter',
+    'AI for BPO Process Optimization',
+    'Complex Catalog Automation',
     'Servex AI Case Study',
-    'AXGLYNNE Servex'
+    'AXGLYNNE Servex Solutions'
   ],
   alternates: {
     canonical: 'https://axglynne.com/servex_espesification',
@@ -25,12 +25,12 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Especificación Técnica SERVEX | Conversor de Matrices XML & IA',
-    description: 'Documentación técnica del ecosistema de IA desarrollado para SERVEX: Procesamiento de matrices XML y automatización autónoma.',
+    title: 'SERVEX Technical Specification | XML Matrix Converter & AI',
+    description: 'Technical documentation of the AI ecosystem developed for SERVEX: XML matrix processing and autonomous workflow execution.',
     url: 'https://axglynne.com/servex_espesification',
-    siteName: 'AXGLYNNE Enterprise AI',
-    locale: 'es_US',
-    alternateLocale: ['en_US', 'es_ES', 'es_MX', 'es_CO'],
+    siteName: 'AXGLYNNE Frontier AI',
+    locale: 'en_US',
+    alternateLocale: ['es_US', 'es_ES', 'es_MX', 'es_CO'],
     type: 'article',
   },
   twitter: {
@@ -44,16 +44,15 @@ export default function ServexCaseStudyLayout({ children }: { children: React.Re
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "TechArticle",
-    "headline": "Especificación Técnica y Arquitectura de IA para SERVEX",
-    "description": "Estudio detallado sobre la implementación de algoritmos de procesamiento de datos y modelos de IA para la automatización de catálogos matriciales XML (CET Designer) en SERVEX.",
+    "headline": "SERVEX Technical Specification & AI Architecture",
+    "description": "Detailed technical study on data processing algorithms and AI model integration for matrix catalog automation (CET Designer) at SERVEX.",
     "url": "https://axglynne.com/servex_espesification",
     "inLanguage": ["en", "es"],
     "author": {
-      "@type": "Organization",
+      "@type": "ResearchOrganization",
       "name": "AXGLYNNE",
       "legalName": "GLYNNE S.A.S.",
-      "alternateName": ["AXGLYNNE Enterprise AI", "AXGLYNNE Custom AI Labs", "GLYNNE AI Technology"],
-      "disambiguatingDescription": "AXGLYNNE (GLYNNE S.A.S.) es una firma de arquitectura de software e ingeniería de Inteligencia Artificial (LLM Fine-Tuning, QLoRA, MCP, RAG) fundada por Alexander Quiroga, sin relación con figuras musicales o la industria del entretenimiento.",
+      "alternateName": ["AXGLYNNE Frontier AI Labs"],
       "url": "https://axglynne.com"
     }
   };

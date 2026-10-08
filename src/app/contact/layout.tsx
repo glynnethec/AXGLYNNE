@@ -3,26 +3,19 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   metadataBase: new URL('https://axglynne.com'),
   title: {
-    template: '%s | AXGLYNNE Custom AI Labs',
-    default: 'Contacto & Asesoría Técnica',
+    template: '%s | AXGLYNNE Frontier AI & Data Science Labs',
+    default: 'Contact & AI Research Consultation',
   },
-  description: 'Contacta al equipo de ingeniería de AXGLYNNE: Consulta sobre Fine-Tuning de LLMs, arquitectura de software, integración MCP y despliegue de modelos privados.',
+  description: 'Contact AXGLYNNE engineering & research team: Schedule a consultation for open-weights model fine-tuning (QLoRA, Unsloth), MCP agent protocols, advanced RAG, and private AI deployment.',
   keywords: [
-    // Contact Specific Terms (Spanish)
-    'Contacto AXGLYNNE',
-    'Asesoría de Ingeniería de IA',
-    'Consultoría Fine-Tuning LLM',
-    'Contacto Arquitectura de Software IA',
-    'Cotizar Modelos de IA Privados',
-    'Agendar Demostración de IA Corporativa',
-    'Contacto GLYNNE S.A.S.',
-    // Contact Specific Terms (English)
-    'Contact AXGLYNNE Sales & Engineering',
-    'AI Engineering Consultation',
-    'Enterprise AI Demo Request',
-    'Custom LLM Fine-Tuning Sales',
-    'Private AI Infrastructure Quote',
-    'AXGLYNNE Contact Us'
+    'Contact AXGLYNNE',
+    'AI Research Consultation',
+    'LLM Fine-Tuning Sales',
+    'Open Weights AI Quote',
+    'MCP Agent Protocol Integration',
+    'AI Process Optimization Consultation',
+    'AXGLYNNE Contact Us',
+    'AXGLYNNE Engineering Team'
   ],
   alternates: {
     canonical: 'https://axglynne.com/contact',
@@ -35,18 +28,18 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Contacto & Asesoría de Ingeniería de IA | AXGLYNNE Enterprise Labs',
-    description: 'Habla directamente con nuestro equipo de arquitectura de software e ingeniería de IA: Consulta sobre entrenamiento de modelos propietarios, MCP, RAG y plataformas seguras.',
+    title: 'Contact & AI Research Consultation | AXGLYNNE Frontier AI Labs',
+    description: 'Speak directly with our AI research and engineering team: Consultation on open-weights model indoctrination, MCP agent systems, RAG pipelines, and private AI infrastructure.',
     url: 'https://axglynne.com/contact',
-    siteName: 'AXGLYNNE Custom AI Labs',
-    locale: 'es_US',
-    alternateLocale: ['en_US', 'es_ES', 'es_MX', 'es_CO'],
+    siteName: 'AXGLYNNE Frontier AI Labs',
+    locale: 'en_US',
+    alternateLocale: ['es_US', 'es_ES', 'es_MX', 'es_CO'],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Contact AXGLYNNE | AI Engineering & Private Platform Consultation',
-    description: 'Schedule a technical consultation for custom LLM fine-tuning, software architecture, MCP integration, and private AI deployment in US & LatAm.',
+    title: 'Contact AXGLYNNE | AI Research & Private Platform Consultation',
+    description: 'Schedule a technical research consultation for custom LLM fine-tuning, MCP agent integration, data science engineering, and private AI deployment.',
   },
 };
 
@@ -54,16 +47,15 @@ export default function ContactLayout({ children }: { children: React.ReactNode 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ContactPage",
-    "name": "Contacto y Asesoría Técnica AXGLYNNE",
-    "description": "Página oficial de contacto y solicitud de asesoría en ingeniería de Inteligencia Artificial, Fine-Tuning de LLMs, arquitectura de software y despliegue de modelos privados.",
+    "name": "AXGLYNNE Contact & Technical Research Consultation",
+    "description": "Official contact page for AI research consultation, open-weights model re-training (QLoRA), MCP agent architectures, and private AI deployment.",
     "url": "https://axglynne.com/contact",
     "inLanguage": ["en", "es"],
     "mainEntity": {
-      "@type": "Organization",
+      "@type": "ResearchOrganization",
       "name": "AXGLYNNE",
       "legalName": "GLYNNE S.A.S.",
-      "alternateName": ["AXGLYNNE Enterprise AI", "AXGLYNNE Custom AI Labs", "GLYNNE AI Technology"],
-      "disambiguatingDescription": "AXGLYNNE (GLYNNE S.A.S.) es una firma de arquitectura de software e ingeniería de Inteligencia Artificial (LLM Fine-Tuning, QLoRA, MCP, RAG) fundada por Alexander Quiroga, sin relación con figuras musicales o la industria del entretenimiento.",
+      "alternateName": ["AXGLYNNE Frontier AI Labs", "AXGLYNNE Open-Weights AI Research"],
       "url": "https://axglynne.com",
       "email": "alexglynne7@gmail.com",
       "contactPoint": [

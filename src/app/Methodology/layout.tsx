@@ -3,34 +3,21 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   metadataBase: new URL('https://axglynne.com'),
   title: {
-    template: '%s | AXGLYNNE Custom AI Labs',
-    default: 'Metodología de Gobierno de IA',
+    template: '%s | AXGLYNNE Frontier AI & Data Science Labs',
+    default: 'AI Process Optimization & Research Methodology',
   },
-  description: 'Metodología de ingeniería de IA: Transformación de procesos, Fine-Tuning especializado (QLoRA/Unsloth), protocolo MCP y plataformas corporativas seguras.',
+  description: 'AI research and development methodology: AI process optimization, open-weights model re-training and indoctrination (QLoRA/Unsloth), specialized MCP agent architectures, RAG pipelines, and data science engineering.',
   keywords: [
-    // Architecture & Ecosystem Creation Terms
-    'Creación de Ecosistemas Tecnológicos',
-    'Arquitectura de Software para IA',
-    'Diseño de Ecosistemas Inteligentes',
-    'Metodología de Arquitectura Empresarial',
-    'Integración de Sistemas Complejos',
-    'Arquitectura Modular de Software',
-    // AI & Model Engineering Process
-    'Metodología de Ingeniería de IA',
-    'Proceso de Entrenamiento LLM',
-    'Fine-Tuning QLoRA & Unsloth',
-    'Arquitectura Determinista de IA',
-    'Protocolo de Contexto MCP',
-    'Orquestación de Agentes y Modelos',
-    'Despliegue On-Premise e Infraestructura Privada',
-    'Control de Acceso RBAC y Gobierno de Datos',
-    // English Search Terms (US & Global)
-    'Enterprise AI Architecture Methodology',
-    'AI Ecosystem Creation',
-    'Software Architecture & System Design',
-    'Deterministic AI Process',
-    'LLM Fine-Tuning Workflow',
-    'AXGLYNNE Architecture Labs'
+    'AI Process Optimization Research',
+    'Open-Weights Model Re-Training',
+    'Model Indoctrination & Alignment',
+    'MCP Process Engineering with Specialized Agents',
+    'Data Science Optimization',
+    'Advanced RAG Architectures',
+    'QLoRA & Unsloth Fine-Tuning',
+    'AI Model Curation',
+    'Autonomous AI Systems',
+    'Frontier AI Research Methodology'
   ],
   alternates: {
     canonical: 'https://axglynne.com/Methodology',
@@ -43,18 +30,18 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Arquitectura de Software, Creación de Ecosistemas & IA Determinista | AXGLYNNE',
-    description: 'Metodología de creación de ecosistemas de IA: Diseño de arquitectura de software, reprocesamiento de datos, fine-tuning especializado (QLoRA/Unsloth), protocolo MCP y plataformas corporativas seguras.',
+    title: 'Research Methodology, Data Science & MCP Agent Protocols | AXGLYNNE',
+    description: 'Deterministic step-by-step methodology: AI process optimization research, custom model indoctrination (QLoRA/Unsloth), specialized MCP agent workflows, and data science.',
     url: 'https://axglynne.com/Methodology',
-    siteName: 'AXGLYNNE Custom AI Labs',
-    locale: 'es_US',
-    alternateLocale: ['en_US', 'es_ES', 'es_MX', 'es_CO'],
+    siteName: 'AXGLYNNE Frontier AI Labs',
+    locale: 'en_US',
+    alternateLocale: ['es_US', 'es_ES', 'es_MX', 'es_CO'],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Software Architecture, Ecosystem Creation & Deterministic AI | AXGLYNNE',
-    description: 'How AXGLYNNE operates: End-to-end tech ecosystem creation, system architecture design, fine-tuning (QLoRA, Unsloth), MCP server integration, and secure private deployment.',
+    title: 'AI Process Optimization Research & Data Science Methodology | AXGLYNNE',
+    description: 'Scientific workflow: AI process optimization, custom model indoctrination, specialized MCP agent architectures, advanced RAG, and data science engineering.',
   },
 };
 
@@ -62,43 +49,42 @@ export default function MethodologyLayout({ children }: { children: React.ReactN
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "HowTo",
-    "name": "Metodología de Arquitectura de Software y Creación de Ecosistemas de IA AXGLYNNE",
-    "description": "Metodología determinista paso a paso para la creación de ecosistemas tecnológicos e ingeniería de Inteligencia Artificial: Diseño de arquitectura de software modular, reprocesamiento de datasets, Fine-Tuning avanzado (QLoRA/Unsloth), integración MCP, RAG enterprise y despliegue en plataformas con control de roles (RBAC) y alta seguridad.",
+    "name": "AXGLYNNE AI Process Optimization & Research Methodology",
+    "description": "Deterministic step-by-step scientific methodology for AI process optimization research: Data science ingestion, open-weights model re-training and indoctrination (QLoRA/Unsloth), specialized MCP agent process development, RAG pipelines, and high-precision inference.",
     "url": "https://axglynne.com/Methodology",
     "inLanguage": ["en", "es"],
     "author": {
-      "@type": "Organization",
+      "@type": "ResearchOrganization",
       "name": "AXGLYNNE",
       "legalName": "GLYNNE S.A.S.",
-      "alternateName": ["AXGLYNNE Enterprise AI", "AXGLYNNE Custom AI Labs", "GLYNNE AI Technology"],
-      "disambiguatingDescription": "AXGLYNNE (GLYNNE S.A.S.) es una firma de arquitectura de software e ingeniería de Inteligencia Artificial (LLM Fine-Tuning, QLoRA, MCP, RAG) fundada por Alexander Quiroga, sin relación con figuras musicales o la industria del entretenimiento.",
+      "alternateName": ["AXGLYNNE Frontier AI Labs", "AXGLYNNE Data Science & AI Engineering"],
       "url": "https://axglynne.com"
     },
     "step": [
       {
         "@type": "HowToStep",
-        "name": "Diseño de Arquitectura y Creación del Ecosistema",
-        "text": "Modelado de la arquitectura de software modular, definición de componentes interactivos y diseño del ecosistema donde coexistirán los modelos de IA y las aplicaciones de usuario."
+        "name": "1. AI Process Optimization Research & Audit",
+        "text": "Scientific analysis and mapping of complex information workflows to determine optimal intervention points for AI models and data science."
       },
       {
         "@type": "HowToStep",
-        "name": "Ingesta y Reprocesamiento de Datos",
-        "text": "Extracción, limpieza y alineación de datos corporativos no estructurados para crear datasets de entrenamiento de alta densidad."
+        "name": "2. Data Science Development & Optimization",
+        "text": "Massive ingestion, structuring, and curation of unstructured data to generate high-density training datasets."
       },
       {
         "@type": "HowToStep",
-        "name": "Fine-Tuning de Modelos Propietarios (QLoRA & Unsloth)",
-        "text": "Entrenamiento de precisión empleando técnicas PEFT/QLoRA y aceleración Unsloth para adaptar modelos de lenguaje al dominio específico de la arquitectura."
+        "name": "3. Open-Weights Model Re-Training & Indoctrination (QLoRA / Unsloth)",
+        "text": "PEFT/QLoRA 4-bit adaptation and Unsloth kernel acceleration to indoctrinate neural networks for domain-specific functions."
       },
       {
         "@type": "HowToStep",
-        "name": "Integración MCP & RAG Enterprise",
-        "text": "Implementación de servidores Model Context Protocol (MCP) y arquitecturas de recuperación de información para interconectar el ecosistema con bases de datos y software corporativo."
+        "name": "4. MCP Process Development with Specialized Agents",
+        "text": "Implementation of Model Context Protocol (MCP) and orchestration of multiple specialized autonomous agents collaborating on complex execution tasks."
       },
       {
         "@type": "HowToStep",
-        "name": "Despliegue de Plataforma & Gobierno de Seguridad (RBAC)",
-        "text": "Instalación del ecosistema tecnológico en infraestructura segura con control de acceso por roles (RBAC), monitoreo en tiempo real, auditoría de ejecución y privacidad absoluta."
+        "name": "5. RAG Architectures & Secure Private Deployment",
+        "text": "Real-time vector retrieval RAG integration and deployment in private infrastructure with full observability."
       }
     ]
   };

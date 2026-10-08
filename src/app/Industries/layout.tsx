@@ -3,18 +3,18 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   metadataBase: new URL('https://axglynne.com'),
   title: {
-    template: '%s | AXGLYNNE Custom AI Labs',
-    default: 'Automatización B2B por Sectores',
+    template: '%s | AXGLYNNE Frontier AI & Data Science Labs',
+    default: 'AI Process Optimization Across Enterprise Sectors',
   },
-  description: 'Soluciones de IA y software para sectores clave: Automatización de procesos B2B, matrices de datos complejas e integración de modelos privados seguros.',
+  description: 'Frontier AI solutions & research tailored for key enterprise sectors: AI process optimization, custom model indoctrination, specialized MCP agent protocols, and complex data science matrices.',
   keywords: [
-    'IA para Industrias',
-    'Automatización de Procesos B2B',
-    'Inteligencia Artificial para Operaciones',
-    'IA para Sector Financiero y Servicios',
-    'Modelos de IA por Industria',
-    'Enterprise AI Architecture for Industries',
-    'B2B Process Automation',
+    'AI for Enterprise Sectors',
+    'AI Process Optimization',
+    'Artificial Intelligence Operations',
+    'Financial & BPO AI Systems',
+    'Industry Custom AI Models',
+    'Frontier AI Research for Enterprise',
+    'Specialized MCP Agent Workflows',
     'AXGLYNNE Industries'
   ],
   alternates: {
@@ -28,18 +28,18 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Industrias & Automatización de Procesos Complejos | AXGLYNNE Enterprise',
-    description: 'Soluciones de IA a medida para optimizar operaciones B2B, matrices de datos complejas e infraestructura corporativa.',
+    title: 'Industries & Complex AI Process Optimization | AXGLYNNE',
+    description: 'Custom AI research solutions optimizing enterprise operations, complex data matrices, open-weights model deployment, and autonomous agent systems.',
     url: 'https://axglynne.com/Industries',
-    siteName: 'AXGLYNNE Enterprise AI',
-    locale: 'es_US',
-    alternateLocale: ['en_US', 'es_ES', 'es_MX', 'es_CO'],
+    siteName: 'AXGLYNNE Frontier AI Labs',
+    locale: 'en_US',
+    alternateLocale: ['es_US', 'es_ES', 'es_MX', 'es_CO'],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Industries & Enterprise AI Automation | AXGLYNNE',
-    description: 'Custom AI solutions automating B2B operations, complex data matrices, and private model deployment across key enterprise sectors.',
+    title: 'Industries & Enterprise AI Optimization | AXGLYNNE',
+    description: 'Custom AI research solutions optimizing enterprise operations, complex data matrices, and open-weights model deployment across key sectors.',
   },
 };
 
@@ -47,17 +47,16 @@ export default function IndustriesLayout({ children }: { children: React.ReactNo
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Service",
-    "serviceType": "Enterprise AI & B2B Process Automation",
+    "serviceType": "Frontier AI Research & Process Optimization",
     "provider": {
-      "@type": "Organization",
+      "@type": "ResearchOrganization",
       "name": "AXGLYNNE",
       "legalName": "GLYNNE S.A.S.",
-      "alternateName": ["AXGLYNNE Enterprise AI", "AXGLYNNE Custom AI Labs", "GLYNNE AI Technology"],
-      "disambiguatingDescription": "AXGLYNNE (GLYNNE S.A.S.) es una firma de arquitectura de software e ingeniería de Inteligencia Artificial (LLM Fine-Tuning, QLoRA, MCP, RAG) fundada por Alexander Quiroga, sin relación con figuras musicales o la industria del entretenimiento.",
+      "alternateName": ["AXGLYNNE Frontier AI Labs", "AXGLYNNE Data Science & AI Engineering"],
       "url": "https://axglynne.com"
     },
     "areaServed": ["US", "LATAM", "ES", "Global"],
-    "description": "Servicios de integración de Inteligencia Artificial, fine-tuning y automatización de procesos complejos para sectores industriales y empresariales."
+    "description": "Artificial Intelligence research, custom model indoctrination, MCP agent integration, and complex process optimization for enterprise sectors."
   };
 
   return (

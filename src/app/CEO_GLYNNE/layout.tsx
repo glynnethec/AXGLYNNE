@@ -2,16 +2,17 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://axglynne.com'),
-  title: 'Alexander Quiroga | CEO & Arquitecto de IA',
-  description: 'Alexander Quiroga es CEO y Arquitecto de Software en AXGLYNNE. Especialista en Fine-Tuning de LLMs (QLoRA, Unsloth), arquitectura MCP y sistemas de IA.',
+  title: 'Alexander Quiroga | CEO & Lead AI Engineering Researcher',
+  description: 'Alexander Quiroga is CEO, Software Architect, and Lead AI Engineering Researcher at AXGLYNNE. Specialized in frontier AI research, open-weights LLM fine-tuning (QLoRA, Unsloth), MCP agent protocols, and neural architectures.',
   keywords: [
     'Alexander Quiroga',
     'CEO AXGLYNNE',
     'Software Architect',
-    'AI Researcher',
-    'Investigador de Inteligencia Artificial',
-    'Arquitecto de Software IA',
+    'Lead AI Researcher',
+    'Artificial Intelligence Researcher',
+    'AI Software Architect',
     'LLM Fine-Tuning Specialist',
+    'Open Weights Intelligence Researcher',
     'AXGLYNNE Founder'
   ],
   alternates: {
@@ -25,19 +26,19 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Alexander Quiroga - CEO & Software Architect at AXGLYNNE',
-    description: 'Alexander Quiroga leads AI engineering, custom model fine-tuning, and software architecture research at AXGLYNNE.',
+    title: 'Alexander Quiroga - CEO, Software Architect & Lead AI Researcher | AXGLYNNE',
+    description: 'Alexander Quiroga leads frontier AI research, open-weights model fine-tuning, MCP agent protocols, and data science engineering at AXGLYNNE.',
     url: 'https://axglynne.com/CEO_GLYNNE',
     type: 'profile',
-    siteName: 'AXGLYNNE Custom AI Labs',
-    locale: 'es_US',
-    alternateLocale: ['en_US', 'es_ES', 'es_MX', 'es_CO'],
+    siteName: 'AXGLYNNE Frontier AI Labs',
+    locale: 'en_US',
+    alternateLocale: ['es_US', 'es_ES', 'es_MX', 'es_CO'],
     images: ['/AlexanderCEO.png'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Alexander Quiroga | CEO & Software Architect | AXGLYNNE',
-    description: 'CEO, Software Architect & Lead AI Researcher at AXGLYNNE. Specialized in LLM fine-tuning, MCP architectures, and private AI deployment.',
+    title: 'Alexander Quiroga | CEO & Lead AI Researcher | AXGLYNNE',
+    description: 'CEO, Software Architect & Lead AI Researcher at AXGLYNNE. Specialized in LLM fine-tuning, open weights, MCP architectures, and autonomous AI systems.',
     images: ['/AlexanderCEO.png'],
   },
 };
@@ -53,11 +54,11 @@ export default function AlexanderLayout({
     "name": "Alexander Quiroga",
     "jobTitle": "CEO, Software Architect & Lead AI Engineering Researcher",
     "worksFor": {
-      "@type": "Organization",
+      "@type": "ResearchOrganization",
       "name": "AXGLYNNE",
       "legalName": "GLYNNE S.A.S.",
-      "alternateName": ["AXGLYNNE Enterprise AI", "AXGLYNNE Custom AI Labs", "GLYNNE AI Technology"],
-      "disambiguatingDescription": "AXGLYNNE (GLYNNE S.A.S.) es una firma de arquitectura de software e ingeniería de Inteligencia Artificial (LLM Fine-Tuning, QLoRA, MCP, RAG) fundada por Alexander Quiroga, sin relación con figuras musicales o la industria del entretenimiento.",
+      "alternateName": ["AXGLYNNE Frontier AI Labs", "AXGLYNNE Data Science & AI Engineering"],
+      "disambiguatingDescription": "AXGLYNNE (GLYNNE S.A.S.) is a technology research organization specializing in frontier Artificial Intelligence, open-weights model fine-tuning (QLoRA, Unsloth), MCP agent protocols, and data science founded by Alexander Quiroga.",
       "url": "https://axglynne.com"
     },
     "url": "https://axglynne.com/CEO_GLYNNE",
@@ -65,12 +66,13 @@ export default function AlexanderLayout({
       "https://www.linkedin.com/in/alexander-quiroga-a992452b4/"
     ],
     "knowsAbout": [
-      "Artificial Intelligence Engineering",
-      "LLM Fine-Tuning & QLoRA",
+      "Frontier Artificial Intelligence Engineering",
+      "Open-Weights Intelligence & LLM Fine-Tuning",
+      "QLoRA 4-bit/8-bit & PEFT Architecture",
       "Unsloth Model Acceleration",
-      "Model Context Protocol (MCP)",
-      "Enterprise Software Architecture",
-      "Deterministic AI Systems"
+      "Model Context Protocol (MCP) & Autonomous Agents",
+      "Machine Learning & Deep Learning (ML/DL)",
+      "Enterprise Data Science & Vector Pipelines"
     ]
   };
 

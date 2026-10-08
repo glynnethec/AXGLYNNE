@@ -1,20 +1,21 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Visión & Arquitectura de IA',
-  description: 'Visión e infraestructura de AXGLYNNE: Fine-Tuning de modelos (QLoRA, Unsloth), arquitectura MCP, RAG enterprise y plataformas seguras con control RBAC.',
+  metadataBase: new URL('https://axglynne.com'),
+  title: 'About AXGLYNNE | Frontier AI Research & Data Science Labs',
+  description: 'Discover AXGLYNNE (GLYNNE S.A.S.): Frontier Artificial Intelligence research, open-weights model re-training and indoctrination (QLoRA 4-bit/8-bit, Unsloth), specialized MCP agent architectures, advanced RAG, and data science.',
   keywords: [
-    'Sobre AXGLYNNE',
-    'AXGLYNNE AI Engineering',
+    'About AXGLYNNE',
+    'AXGLYNNE Frontier AI Labs',
+    'GLYNNE S.A.S. Technology',
     'Alexander Quiroga CEO',
-    'Custom LLM Fine-Tuning Lab',
-    'Enterprise AI Architecture',
-    'Ingeniería de Inteligencia Artificial',
-    'Desarrollo de Modelos Privados',
-    'Plataformas de IA Seguras',
-    'Control de Acceso RBAC',
-    'Model Context Protocol MCP',
-    'IA para Empresas EE.UU. y LatAm'
+    'Frontier AI Research',
+    'Open-Weights Intelligence',
+    'Model Re-training & Indoctrination',
+    'Specialized MCP Agent Systems',
+    'Data Science Optimization',
+    'Public AI Developer Tools',
+    'Latin America AI Research Lab'
   ],
   alternates: {
     canonical: 'https://axglynne.com/About',
@@ -27,18 +28,18 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Sobre AXGLYNNE | Firma de Ingeniería de IA & Plataformas Corporativas',
-    description: 'Nuestra historia, arquitectura e infraestructura de IA: Fine-tuning a medida, plataformas de software interactivas, control de roles (RBAC) y privacidad de datos.',
+    title: 'About AXGLYNNE | AI Research, Data Science & Neural Engineering',
+    description: 'Pioneer technology research organization: Custom model indoctrination (QLoRA, Unsloth), specialized autonomous MCP agent architectures, advanced RAG pipelines, and public developer tools.',
     url: 'https://axglynne.com/About',
-    siteName: 'AXGLYNNE Custom AI Labs',
-    locale: 'es_US',
-    alternateLocale: ['en_US', 'es_ES', 'es_MX', 'es_CO'],
+    siteName: 'AXGLYNNE Frontier AI Labs',
+    locale: 'en_US',
+    alternateLocale: ['es_US', 'es_ES', 'es_MX', 'es_CO'],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Sobre AXGLYNNE | AI Engineering & Secure Platform Labs',
-    description: 'Discover AXGLYNNE: Custom LLM fine-tuning, interactive enterprise platforms, RBAC access control, data privacy, and private AI deployment.',
+    title: 'About AXGLYNNE | AI Research & Data Science Engineering',
+    description: 'Discover AXGLYNNE: AI process optimization research, custom model indoctrination (QLoRA, Unsloth), MCP agent protocols, and public AI developer tools.',
   },
 };
 
@@ -47,30 +48,29 @@ export default function AboutLayout({ children }: { children: React.ReactNode })
     "@context": "https://schema.org",
     "@type": "AboutPage",
     "mainEntity": {
-      "@type": "Organization",
+      "@type": "ResearchOrganization",
       "name": "AXGLYNNE",
       "legalName": "GLYNNE S.A.S.",
-      "alternateName": ["AXGLYNNE Enterprise AI", "AXGLYNNE Custom AI Labs", "GLYNNE AI Technology"],
-      "disambiguatingDescription": "AXGLYNNE (GLYNNE S.A.S.) es una firma de arquitectura de software e ingeniería de Inteligencia Artificial (LLM Fine-Tuning, QLoRA, MCP, RAG) fundada por Alexander Quiroga, sin relación con figuras musicales o la industria del entretenimiento.",
+      "alternateName": ["AXGLYNNE Frontier AI Labs", "AXGLYNNE Data Science & AI Engineering"],
+      "disambiguatingDescription": "AXGLYNNE (GLYNNE S.A.S.) is a pioneer technology and innovation organization specializing in frontier Artificial Intelligence research, Data Science, open-weights model re-training and indoctrination (QLoRA, Unsloth), Model Context Protocol (MCP) specialized agent workflows, RAG systems, and technical infrastructure founded by Alexander Quiroga.",
       "url": "https://axglynne.com",
       "inLanguage": ["en", "es"],
-      "description": "AXGLYNNE es una firma de ingeniería de Inteligencia Artificial y arquitectura de software especializada en Fine-Tuning de LLMs (QLoRA, Unsloth), integración MCP, RAG enterprise y plataformas seguras con control de acceso por roles (RBAC) para corporaciones en Estados Unidos y Latinoamérica.",
+      "description": "Pioneer technology research organization specializing in Frontier Artificial Intelligence, Data Science, and Autonomous Systems. We lead AI process optimization research, custom model re-training (QLoRA 4-bit/8-bit, Unsloth), specialized MCP agent architectures, and public developer tools for the global community.",
       "founder": {
         "@type": "Person",
         "name": "Alexander Quiroga",
-        "jobTitle": "CEO, Software Architect & AI Engineering Researcher",
+        "jobTitle": "CEO, Software Architect & Lead AI Engineering Researcher",
         "sameAs": "https://www.linkedin.com/in/alexander-quiroga-a992452b4/"
       },
       "knowsAbout": [
-        "LLM Fine-Tuning & Quantization",
-        "QLoRA & PEFT Architecture",
-        "Unsloth Acceleration",
-        "Model Context Protocol (MCP)",
-        "Enterprise RAG Infrastructure",
-        "Private On-Premise Model Deployment",
-        "Role-Based Access Control (RBAC)",
-        "Enterprise Data Security & Privacy",
-        "Custom Interactive AI Web Applications"
+        "Frontier AI Process Optimization Research",
+        "Open-Weights Model Re-training & Indoctrination (QLoRA / Unsloth)",
+        "Model Context Protocol (MCP) Process Engineering",
+        "Specialized Autonomous Agent Architectures",
+        "Advanced RAG Pipelines & Semantic Search",
+        "Data Science Development & Matrix Optimization",
+        "AI Model Curation & Benchmarking",
+        "Public AI Developer Tools"
       ]
     }
   };

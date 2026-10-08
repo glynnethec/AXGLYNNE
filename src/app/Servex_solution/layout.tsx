@@ -1,22 +1,17 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Soluciones de IA & Caso Servex',
-  description: 'Infraestructura de IA para SERVEX: Conversión automática de esquemas XML (CET Designer), matrices de datos y ejecución autónoma de procesos BPO.',
+  metadataBase: new URL('https://axglynne.com'),
+  title: 'AI Solutions & SERVEX Case Study',
+  description: 'AI infrastructure & research for SERVEX: Automated XML matrix conversion (CET Designer), structured data pipelines, and autonomous execution of BPO QA processes.',
   keywords: [
-    // Solution Specific (XML, Catalog Automation, SERVEX, CET Designer)
-    'Automatización de Catálogos XML',
-    'CET Designer XML Matrix Converter',
-    'Procesamiento de Esquemas XML Complejos',
-    'Caso de Estudio SERVEX IA',
-    'Ecosistema de Datos Autónomo',
-    'Convertidores XML a Data Estructurada',
-    'Ejecución Autónoma de Análisis de Datos',
-    // English & Global Search Terms
     'Automated XML Catalog Processing',
-    'CET Designer XML Integration',
-    'Enterprise Data Matrix Converters',
-    'Autonomous AI Data Pipeline',
+    'CET Designer XML Matrix Converter',
+    'Complex XML Schema Parsing',
+    'SERVEX AI Case Study',
+    'Autonomous Data Ecosystem',
+    'XML to Structured Data Converters',
+    'Autonomous Data Processing Pipeline',
     'Custom AI Ecosystem SERVEX',
     'AXGLYNNE Solutions'
   ],
@@ -31,12 +26,12 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Soluciones de IA & Automatización de Catálogos XML Complejos | Ecosistema SERVEX',
-    description: 'Infraestructura de IA para la conversión automática de catálogos XML complejos (CET Designer), matrices de datos y ejecución autónoma de procesos corporativos.',
+    title: 'AI Solutions & Complex XML Matrix Automation | SERVEX Infrastructure',
+    description: 'AI research infrastructure for automated conversion of complex XML catalogs (CET Designer), data matrices, and autonomous execution of corporate workflows.',
     url: 'https://axglynne.com/Servex_solution',
-    siteName: 'AXGLYNNE Enterprise AI Solutions',
-    locale: 'es_US',
-    alternateLocale: ['en_US', 'es_ES', 'es_MX', 'es_CO'],
+    siteName: 'AXGLYNNE Frontier AI Solutions',
+    locale: 'en_US',
+    alternateLocale: ['es_US', 'es_ES', 'es_MX', 'es_CO'],
     type: 'website',
   },
   twitter: {
@@ -50,21 +45,20 @@ export default function SolutionsLayout({ children }: { children: React.ReactNod
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "TechArticle",
-    "headline": "Ecosistema de IA y Automatización de Catálogos XML Complejos para SERVEX",
-    "name": "Soluciones de IA Corporativa & Conversión XML Matrix",
-    "description": "Solución de ingeniería desarrollada para SERVEX: Integración de modelos de IA para la lectura, conversión y actualización autónoma de catálogos XML de alta complejidad (CET Designer), transformando esquemas en datos estructurados y ejecutando análisis automáticos sin intervención manual del usuario.",
+    "headline": "AI Ecosystem & Complex XML Catalog Automation for SERVEX",
+    "name": "Enterprise AI Solutions & XML Matrix Conversion",
+    "description": "Engineering solution developed for SERVEX: AI model integration for reading, converting, and autonomously updating highly complex XML catalogs (CET Designer), transforming schemas into structured data and executing automated analytics without manual user intervention.",
     "url": "https://axglynne.com/Servex_solution",
     "inLanguage": ["en", "es"],
     "author": {
-      "@type": "Organization",
+      "@type": "ResearchOrganization",
       "name": "AXGLYNNE",
       "legalName": "GLYNNE S.A.S.",
-      "alternateName": ["AXGLYNNE Enterprise AI", "AXGLYNNE Custom AI Labs", "GLYNNE AI Technology"],
-      "disambiguatingDescription": "AXGLYNNE (GLYNNE S.A.S.) es una firma de arquitectura de software e ingeniería de Inteligencia Artificial (LLM Fine-Tuning, QLoRA, MCP, RAG) fundada por Alexander Quiroga, sin relación con figuras musicales o la industria del entretenimiento.",
+      "alternateName": ["AXGLYNNE Frontier AI Labs", "AXGLYNNE Custom AI Labs"],
       "url": "https://axglynne.com"
     },
     "publisher": {
-      "@type": "Organization",
+      "@type": "ResearchOrganization",
       "name": "AXGLYNNE",
       "legalName": "GLYNNE S.A.S.",
       "url": "https://axglynne.com"

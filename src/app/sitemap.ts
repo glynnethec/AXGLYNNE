@@ -3,31 +3,27 @@ import { MetadataRoute } from 'next';
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://axglynne.com';
 
-  const publicRoutes = [
-    '',
-    '/About',
-    '/Servex_solution',
-    '/Industries',
-    '/ia_vailable',
-    '/Methodology',
-    '/contact',
-    '/cookie-policy',
-    '/privacy-policy',
-    '/terms-of-service',
-    '/login'
+  // Explicit priority order for Google Sitelinks indexing
+  const routesWithPriority = [
+    { route: '', priority: 1.0, changeFrequency: 'daily' as const },
+    { route: '/TrainModel', priority: 0.95, changeFrequency: 'daily' as const },
+    { route: '/About', priority: 0.90, changeFrequency: 'weekly' as const },
+    { route: '/ia_vailable', priority: 0.85, changeFrequency: 'daily' as const },
+    { route: '/Servex_solution', priority: 0.80, changeFrequency: 'weekly' as const },
+    { route: '/Methodology', priority: 0.70, changeFrequency: 'monthly' as const },
+    { route: '/CEO_GLYNNE', priority: 0.65, changeFrequency: 'monthly' as const },
+    { route: '/contact', priority: 0.60, changeFrequency: 'monthly' as const },
+    { route: '/cookie-policy', priority: 0.20, changeFrequency: 'yearly' as const },
+    { route: '/privacy-policy', priority: 0.20, changeFrequency: 'yearly' as const },
+    { route: '/terms-of-service', priority: 0.20, changeFrequency: 'yearly' as const }
   ];
 
-  return publicRoutes.map((route) => {
-    let priority = 0.7;
-    if (route === '') priority = 1.0;
-    else if (['/Servex_solution', '/ia_vailable', '/Industries'].includes(route)) priority = 0.9;
-    else if (route.includes('/policy') || route.includes('terms')) priority = 0.3;
-
-    return {
-      url: `${baseUrl}${route}`,
-      lastModified: new Date(),
-      changeFrequency: route === '' ? 'daily' : 'weekly',
-      priority
-    };
-  });
+  return routesWithPriority.map((item) => ({
+    url: `${baseUrl}${item.route}`,
+    lastModified: new Date(),
+    changeFrequency: item.changeFrequency,
+    priority: item.priority
+  }));
 }
+
+
