@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { route: '', priority: 1.0, changeFrequency: 'daily' as const },
     { route: '/TrainModel', priority: 0.95, changeFrequency: 'daily' as const },
     { route: '/About', priority: 0.90, changeFrequency: 'weekly' as const },
+    { route: '/Librarymodel', priority: 0.88, changeFrequency: 'daily' as const },
     { route: '/ia_vailable', priority: 0.85, changeFrequency: 'daily' as const },
     { route: '/Servex_solution', priority: 0.80, changeFrequency: 'weekly' as const },
     { route: '/Methodology', priority: 0.70, changeFrequency: 'monthly' as const },

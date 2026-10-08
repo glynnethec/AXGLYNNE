@@ -39,7 +39,9 @@ const NAV_CATEGORIES: NavCategory[] = [
     icon: <FaRobot size={13} />,
     items: [
       { href: '/AX_chat', label: 'Asistente de Chat (AX)', desc: 'Prueba nuestro chat inteligente capaz de responder y analizar información al instante' },
-      { href: '/AX_voice', label: 'Asistente de Voz Interactivo', desc: 'Experimenta conversaciones de voz fluidas directamente con nuestra IA' }
+      { href: '/AX_voice', label: 'Asistente de Voz Interactivo', desc: 'Experimenta conversaciones de voz fluidas directamente con nuestra IA' },
+      { href: '/ia_vailable', label: 'Pesos & Modelos Open-Source', desc: 'Catálogo de modelos open-weights para despliegue offline y data 100% blindada' },
+      { href: '/TrainModel', label: 'Entrena tu Modelo de IA', desc: 'Construye y ajusta tu propia arquitectura IA reduciendo al extremo tus costos' }
     ]
   },
   {
