@@ -65,6 +65,7 @@ const NAV_CATEGORIES: NavCategory[] = [
 
 export default function Header() {
   const { theme, toggleTheme } = useTheme();
+  const isDark = theme === 'dark';
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('platform');
@@ -147,14 +148,14 @@ export default function Header() {
           top: 0;
           left: 0;
           width: 100%;
-          background: rgba(255, 255, 255, 0.96);
+          background: ${isDark ? 'rgba(10, 10, 14, 0.96)' : 'rgba(255, 255, 255, 0.96)'};
           backdrop-filter: blur(28px);
           -webkit-backdrop-filter: blur(28px);
           z-index: 9998;
           display: flex;
           flex-direction: column;
-          border-bottom: 1px solid rgba(0,0,0,0.06);
-          box-shadow: 0 20px 40px rgba(0,0,0,0.04);
+          border-bottom: ${isDark ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid rgba(0,0,0,0.06)'};
+          box-shadow: ${isDark ? '0 20px 40px rgba(0,0,0,0.5)' : '0 20px 40px rgba(0,0,0,0.04)'};
           opacity: 0;
           transform: translateY(-100%);
           pointer-events: none;
@@ -344,7 +345,7 @@ export default function Header() {
             {/* Mobile View - Accordion Sections */}
             <div className="mobile-only-accordion" style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {NAV_CATEGORIES.map(cat => (
-                <div key={cat.id} style={{ borderBottom: '1px solid rgba(0,0,0,0.06)', paddingBottom: '12px' }}>
+                <div key={cat.id} style={{ borderBottom: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.06)', paddingBottom: '12px' }}>
                   <button
                     onClick={() => toggleMobileAccordion(cat.id)}
                     style={{
@@ -357,14 +358,14 @@ export default function Header() {
                       padding: '10px 0',
                       fontSize: '15px',
                       fontWeight: 600,
-                      color: '#111',
+                      color: isDark ? '#ffffff' : '#111111',
                       cursor: 'pointer'
                     }}
                   >
                     <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       {cat.icon} {cat.label}
                     </span>
-                    <FaChevronDown style={{ transform: openMobileAccordion === cat.id ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease' }} size={12} color="#888" />
+                    <FaChevronDown style={{ transform: openMobileAccordion === cat.id ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease' }} size={12} color={isDark ? '#a1a1aa' : '#888888'} />
                   </button>
 
                   {openMobileAccordion === cat.id && (
@@ -376,15 +377,16 @@ export default function Header() {
                           style={{
                             padding: '10px 14px',
                             borderRadius: '10px',
-                            backgroundColor: 'rgba(0,0,0,0.03)',
+                            backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
+                            border: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.04)',
                             textDecoration: 'none',
                             display: 'flex',
                             flexDirection: 'column'
                           }}
                           onClick={() => setIsOpen(false)}
                         >
-                          <span style={{ fontSize: '14px', fontWeight: 500, color: '#111' }}>{item.label}</span>
-                          <span style={{ fontSize: '11px', color: '#777' }}>{item.desc}</span>
+                          <span style={{ fontSize: '14px', fontWeight: 500, color: isDark ? '#ffffff' : '#111111' }}>{item.label}</span>
+                          <span style={{ fontSize: '11px', color: isDark ? '#a1a1aa' : '#777777' }}>{item.desc}</span>
                         </Link>
                       ))}
                     </div>
@@ -400,7 +402,12 @@ export default function Header() {
       {/* Dynamic Floating Navbar Header */}
       <header
         className={`fixed-header ${isScrolled ? "header-visible" : "header-hidden"}`}
-        style={{ zIndex: 9999 }}
+        style={{
+          zIndex: 9999,
+          backgroundColor: isDark ? 'rgba(15, 15, 18, 0.92)' : '#ffffff',
+          borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.08)',
+          boxShadow: isDark ? '0 12px 32px rgba(0, 0, 0, 0.5)' : '0 12px 32px rgba(0, 0, 0, 0.08)'
+        }}
         onMouseLeave={handleMouseLeaveHeader}
       >
         {/* 1. Left: Logo */}
@@ -465,7 +472,7 @@ export default function Header() {
               {isLoggedIn ? <FaUser size={13} color={theme === 'dark' ? '#ffffff' : '#333333'} /> : <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><FaUser size={10} color={theme === 'dark' ? '#aaa' : '#888'} /> Log In</span>}
             </Link>
 
-            <button className="mobile-menu-btn" onClick={toggleMobileMenu} aria-label="Toggle menu">
+            <button className="mobile-menu-btn" onClick={toggleMobileMenu} aria-label="Toggle menu" style={{ color: isDark ? '#ffffff' : '#111111' }}>
               {isOpen ? (
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18"></line>
