@@ -93,17 +93,20 @@ export default function PrivacyPolicy() {
         {/* Full Width Brand Guidelines Banner matching reference image */}
         <div style={{ width: '100%', position: 'relative', zIndex: 10, paddingTop: '80px' }}>
           <PolicyBrandBanner
-            titleLine1="Privacidad"
-            titleLine2="Políticas"
-            subTitle="Normas de gobernanza para la privacidad de datos y el cumplimiento"
+            titleLine1="Privacy"
+            titleLine2="Policies"
+            subTitle="Data privacy & compliance governance standards"
             brandLogoText="AXGLYNNE"
             badgeText="AX"
+            section1Label="ELEMENTS OF GOVERNANCE & ARCHITECTURE"
+            footerLeftLabel="SECURITY & ENCRYPTION PROTOCOLS"
+            footerRightLabel="REGULATORY SCOPE & DATA SUBJECT RIGHTS"
           />
         </div>
 
         {/* Full Width 100vw Input Section */}
         <div style={{ width: '100%', position: 'relative', zIndex: 10 }}>
-          <LinPromptSection hideCard={true} hideOrbCard={true} />
+          <LinPromptSection lang="en" hideCard={true} hideOrbCard={true} />
         </div>
 
         <div style={{

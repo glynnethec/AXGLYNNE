@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import Header from '@/app/components/Header';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
 import LinPromptSection from '@/components/LinPromptSection';
+import PolicyBrandBanner from '@/components/PolicyBrandBanner';
+import { useTheme } from '@/lib/ThemeContext';
 import {
   FiFileText, FiInfo, FiBriefcase, FiSettings, FiCpu, FiLayers,
   FiDatabase, FiAlertCircle, FiCloud, FiActivity, FiShield, FiKey,
@@ -46,6 +48,8 @@ export default function TermsOfService() {
   const currentDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
   const [activeSection, setActiveSection] = useState('intro');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   const scrollToSection = (id: string) => {
     setActiveSection(id);
@@ -64,12 +68,50 @@ export default function TermsOfService() {
             display: none !important;
           }
         }
+        .terms-content h2 {
+          font-size: 20px;
+          font-weight: 400;
+          color: ${isDark ? '#ffffff' : '#111111'};
+          margin-bottom: 16px;
+          letter-spacing: -0.01em;
+        }
+        .terms-content strong {
+          font-weight: 600;
+          color: ${isDark ? '#ffffff' : '#111111'};
+        }
+        .terms-content a {
+          color: ${isDark ? '#ffffff' : '#111111'};
+          text-decoration: underline;
+        }
       `}</style>
       <Header />
       <BackgroundWrapper>
+        {/* Full Width Brand Guidelines Banner matching Privacy Policy */}
+        <div style={{ width: '100%', position: 'relative', zIndex: 10, paddingTop: '80px' }}>
+          <PolicyBrandBanner
+            tagline="GLYNNE SERVICE TERMS"
+            desc1="Welcome to the GLYNNE S.A.S. Terms of Service framework. Governing enterprise service contracts, software solutions, and AI infrastructure integrations."
+            desc2="Our automation systems, agentic MCP architectures, and custom model developments operate with strict confidentiality and proprietary code governance."
+            desc3="Compliant with Colombian commercial legislation and global enterprise contracting standards."
+            titleLine1="Terms of"
+            titleLine2="Service"
+            subTitle="General terms of service, contracting & tech governance"
+            brandLogoText="AXGLYNNE"
+            badgeText="AX"
+            section1Label="ELEMENTS OF GOVERNANCE & ARCHITECTURE"
+            footerLeftLabel="LEGAL CONTRACTING & ENTERPRISE TERMS"
+            footerRightLabel="INTELLECTUAL PROPERTY & DEPLOYMENT SCOPE"
+          />
+        </div>
+
+        {/* Full Width 100vw Input Section */}
+        <div style={{ width: '100%', position: 'relative', zIndex: 10 }}>
+          <LinPromptSection lang="en" hideCard={true} hideOrbCard={true} />
+        </div>
+
         <div style={{
           minHeight: '100vh',
-          padding: '160px 40px 80px 40px',
+          padding: '40px 40px 80px 40px',
           display: 'flex',
           position: 'relative',
           zIndex: 10,
@@ -101,19 +143,19 @@ export default function TermsOfService() {
                     maxHeight: 'calc(100vh - 160px)',
                     overflowY: 'auto',
                     overflowX: 'hidden',
-                    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+                    backgroundColor: isDark ? 'rgba(18, 18, 22, 0.85)' : 'rgba(255, 255, 255, 0.85)',
                     backdropFilter: 'blur(30px)',
                     WebkitBackdropFilter: 'blur(30px)',
                     borderRadius: '24px',
                     padding: isSidebarOpen ? '24px 16px' : '24px 0',
-                    border: '1px solid rgba(0,0,0,0.06)',
-                    boxShadow: isSidebarOpen ? '0 24px 80px rgba(0,0,0,0.1)' : '0 12px 40px rgba(0,0,0,0.04)',
+                    border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0,0,0,0.06)',
+                    boxShadow: isSidebarOpen ? (isDark ? '0 24px 80px rgba(0,0,0,0.6)' : '0 24px 80px rgba(0,0,0,0.1)') : (isDark ? '0 12px 40px rgba(0,0,0,0.4)' : '0 12px 40px rgba(0,0,0,0.04)'),
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: isSidebarOpen ? 'flex-start' : 'center',
                     gap: '6px',
                     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                    zIndex: 100 // Ensure it overlaps the content
+                    zIndex: 100
                   }}
                 >
 
@@ -134,18 +176,18 @@ export default function TermsOfService() {
                         borderRadius: '12px',
                         fontSize: '13px',
                         fontWeight: activeSection === section.id ? 500 : 300,
-                        color: activeSection === section.id ? '#111' : '#86868b',
-                        backgroundColor: activeSection === section.id ? 'rgba(0,0,0,0.04)' : 'transparent',
+                        color: activeSection === section.id ? (isDark ? '#ffffff' : '#111111') : (isDark ? '#a1a1aa' : '#86868b'),
+                        backgroundColor: activeSection === section.id ? (isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0,0,0,0.04)') : 'transparent',
                         cursor: 'pointer',
                         transition: 'all 0.2s ease',
                         whiteSpace: 'nowrap'
                       }}
                       onMouseOver={(e) => {
-                        if (activeSection !== section.id) e.currentTarget.style.color = '#111';
-                        if (activeSection !== section.id) e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.02)';
+                        if (activeSection !== section.id) e.currentTarget.style.color = isDark ? '#ffffff' : '#111111';
+                        if (activeSection !== section.id) e.currentTarget.style.backgroundColor = isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0,0,0,0.02)';
                       }}
                       onMouseOut={(e) => {
-                        if (activeSection !== section.id) e.currentTarget.style.color = '#86868b';
+                        if (activeSection !== section.id) e.currentTarget.style.color = isDark ? '#a1a1aa' : '#86868b';
                         if (activeSection !== section.id) e.currentTarget.style.backgroundColor = 'transparent';
                       }}
                     >
@@ -183,16 +225,14 @@ export default function TermsOfService() {
               margin: '0 auto',
               padding: '0 0 80px 0',
             }}>
-              <LinPromptSection hideCard={true} hideOrbCard={true} />
-
-              <h1 style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 400, color: '#111', margin: '120px 0 16px 0', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+              <h1 style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 400, color: isDark ? '#ffffff' : '#111111', margin: '40px 0 16px 0', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
                 Terms of Service
               </h1>
-              <p style={{ fontSize: '12px', color: '#86868b', marginBottom: '48px', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+              <p style={{ fontSize: '12px', color: isDark ? '#a1a1aa' : '#86868b', marginBottom: '48px', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
                 Last updated: {currentDate}
               </p>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', color: '#1d1d1f', fontSize: '15px', lineHeight: 1.7, fontWeight: 300, letterSpacing: '0.01em' }}>
+              <div className="terms-content" style={{ display: 'flex', flexDirection: 'column', gap: '32px', color: isDark ? '#a1a1aa' : '#1d1d1f', fontSize: '15px', lineHeight: 1.7, fontWeight: 300, letterSpacing: '0.01em' }}>
 
                 <section id="intro">
                   <p>These Terms of Service govern the access, contracting, and use of services, platforms, software solutions, automation systems, technological integrations, and related services provided by GLYNNE S.A.S. ("GLYNNE", "we", "us", or "the company").</p>

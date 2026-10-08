@@ -23,22 +23,22 @@ interface PolicyBrandBannerProps {
 }
 
 export default function PolicyBrandBanner({
-  tagline = "GLYNNE GOBERNANZA DE DATOS",
-  desc1 = "Bienvenido al marco de privacidad y gobierno de datos de GLYNNE S.A.S. Garantizamos la transparencia total, la auditoría y el control empresarial sobre todos los datos procesados.",
-  desc2 = "Nuestros sistemas de IA de vanguardia y arquitecturas MCP basadas en agentes funcionan con configuraciones predeterminadas estrictas de cero retención, cifrado de extremo a extremo y aislamiento de peso de modelo propietario.",
-  desc3 = "Cumple íntegramente con la normativa colombiana de protección de datos (Ley 1581 de 2012) y con los estándares globales de seguridad empresarial y ciberseguridad.",
-  contactHeader = "INFORMACIÓN CORPORATIVA",
-  companyName = "GLYNNE S.A.S. — Laboratorios de IA Frontier",
+  tagline = "GLYNNE DATA GOVERNANCE",
+  desc1 = "Welcome to the GLYNNE S.A.S. Privacy & Data Governance Framework. We ensure total transparency, auditability, and enterprise control over all processed data assets.",
+  desc2 = "Our frontier AI systems and agentic MCP architectures operate with strict zero-retention defaults, end-to-end encryption, and proprietary model weight isolation.",
+  desc3 = "Fully compliant with Colombian data protection regulations (Ley 1581 de 2012) and global enterprise security and cybersecurity standards.",
+  contactHeader = "CORPORATE INFORMATION",
+  companyName = "GLYNNE S.A.S. — Frontier AI Labs",
   companyAddress = "Madrid, Cundinamarca · Bogotá, Colombia",
   companyContact = "NIT: 901966512 | alexglynne7@gmail.com",
-  titleLine1 = "Privacidad",
-  titleLine2 = "Políticas",
+  titleLine1 = "Privacy",
+  titleLine2 = "Policies",
   badgeText = "AX",
-  subTitle = "Normas de gobernanza para la privacidad de datos y el cumplimiento",
-  section1Label = "ELEMENTOS DE GOBIERNO Y ARQUITECTURA",
+  subTitle = "Data privacy & compliance governance standards",
+  section1Label = "ELEMENTS OF GOVERNANCE & ARCHITECTURE",
   brandLogoText = "AXGLYNNE",
-  footerLeftLabel = "PROTOCOLOS DE SEGURIDAD & CIFRADO",
-  footerRightLabel = "MARCO NORMATIVO Y DERECHOS ARCO"
+  footerLeftLabel = "SECURITY & ENCRYPTION PROTOCOLS",
+  footerRightLabel = "REGULATORY SCOPE & DATA SUBJECT RIGHTS"
 }: PolicyBrandBannerProps) {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
