@@ -66,11 +66,130 @@ const DEFAULT_DATASET = [
   }
 ];
 
+const TUTORIAL_STEPS = [
+  {
+    step: '01 / 05',
+    badge: 'STUDIO OVERVIEW',
+    title: 'Welcome to GLYNNE AI Model Fine-Tuning Studio',
+    subtitle: '/// HIGH-PERFORMANCE QLoRA RETRAINING ENVIRONMENT',
+    content: (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <p style={{ margin: 0 }}>This studio allows you to adapt open-source foundation LLMs (Qwen 2.5, Llama 3.2, Phi 3.5) with your company’s proprietary data in minutes.</p>
+        <div style={{ padding: '12px', backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.15)', fontSize: '11px' }}>
+          <strong style={{ color: '#ffffff', display: 'block', marginBottom: '4px' }}>⚡ What is QLoRA Fine-Tuning?</strong>
+          Instead of retraining billions of parameters from scratch, QLoRA freezes the base model weights in 4-bit precision and trains a lightweight <strong>Adapter Matrix</strong>. This achieves enterprise precision using minimal GPU VRAM.
+        </div>
+        <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)' }}>
+          Follow this step-by-step walkthrough to configure base models, prepare training datasets, run H100 GPU fine-tuning, and test your custom AI.
+        </div>
+      </div>
+    )
+  },
+  {
+    step: '02 / 05',
+    badge: 'COLUMN 1 — ARCHITECTURE & PARAMS',
+    title: 'Select Base Model & Hyperparameters',
+    subtitle: '/// FOUNDATION MODEL CONFIGURATION',
+    content: (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <p style={{ margin: 0 }}>In the left column (<strong>MODEL CONFIGURATION</strong>), you set the foundation rules for training:</p>
+        <ul style={{ margin: 0, paddingLeft: '18px', display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '11px', lineHeight: 1.5 }}>
+          <li><strong>Select Preset Base Model:</strong> Choose between ultra-fast models (Qwen 0.5B / 1.5B), instruction followers (Llama 3.2 1B), or heavy logic (Phi 3.5 3.8B).</li>
+          <li><strong>Quantization (4-bit NF4):</strong> Keeps VRAM footprint minimal while maintaining high precision.</li>
+          <li><strong>Training Epochs & Learning Rate:</strong> Epochs dictate how many passes the model makes over your dataset. Recommended default: <code>3 Epochs</code>.</li>
+          <li><strong>LoRA Rank & Alpha:</strong> Controls the parameter capacity of the adapter. Higher rank = deeper memorization of complex patterns.</li>
+        </ul>
+      </div>
+    )
+  },
+  {
+    step: '03 / 05',
+    badge: 'COLUMN 2 — DATASET STUDIO',
+    title: 'Build & Generate Synthetic Datasets',
+    subtitle: '/// GROQ SYNTHETIC STUDIO & MANUAL DATASET BUFFER',
+    content: (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <p style={{ margin: 0 }}>In the middle column (<strong>TRAINING DATASET & PROMPTS</strong>), you supply the exact Q&A examples your model will master:</p>
+        <div style={{ padding: '12px', backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.15)', fontSize: '11px' }}>
+          <strong style={{ color: '#ffffff', display: 'block', marginBottom: '4px' }}>✨ Don't have a dataset? Use Synthetic GROQ Generation!</strong>
+          Type a prompt (e.g. <em>"Generate 10 customer service responses for e-commerce returns"</em>) and click <strong>Generate Synthetic Dataset with GROQ</strong>. The system auto-builds high-quality training pairs instantly!
+        </div>
+        <ul style={{ margin: 0, paddingLeft: '18px', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '11px' }}>
+          <li><strong>Manual Table:</strong> Edit Instruction, Customer Query (Input), and Expected Answer (Output) directly.</li>
+          <li><strong>JSON Import/Export:</strong> Upload raw <code>.json</code> dataset files or export your prepared buffer.</li>
+        </ul>
+      </div>
+    )
+  },
+  {
+    step: '04 / 05',
+    badge: 'COLUMN 3 — EXECUTION & MONITORING',
+    title: 'Run H100 Fine-Tuning & Diagnostic Logs',
+    subtitle: '/// UNSLOTH ULTRA-FAST KERNELS',
+    content: (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <p style={{ margin: 0 }}>In the right column (<strong>TRAINING MONITOR & CONSOLE</strong>), you trigger the training pipeline on our H100 GPU cluster:</p>
+        <ul style={{ margin: 0, paddingLeft: '18px', display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '11px', lineHeight: 1.5 }}>
+          <li>Click <strong>⚡ START FINE-TUNING MODEL NOW</strong> to transmit your dataset and hyperparameter payload to the <code>GLYNNE_LOGIC_2026</code> backend.</li>
+          <li><strong>Real-Time Diagnostic Logs:</strong> Watch memory allocation, Unsloth kernel compilation, step progress, and loss metrics.</li>
+          <li><strong>Loss Trajectory:</strong> As training progresses, loss will decrease, indicating your model is learning your specific domain tone.</li>
+        </ul>
+      </div>
+    )
+  },
+  {
+    step: '05 / 05',
+    badge: 'DEPLOYS & INFERENCE',
+    title: 'Test Your Custom Model & Export Weights',
+    subtitle: '/// INTERACTIVE SANDBOX & PRIVATE DEPLOYMENT',
+    content: (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <p style={{ margin: 0 }}>Once training completes, your custom model is live and ready for testing:</p>
+        <div style={{ padding: '12px', backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.15)', fontSize: '11px' }}>
+          <strong style={{ color: '#ffffff', display: 'block', marginBottom: '4px' }}>💬 Test Chat Sandbox:</strong>
+          Use the chat prompt box in the right column to test queries live against your newly trained QLoRA model.
+        </div>
+        <p style={{ fontSize: '11px', margin: 0 }}>
+          You can export your fine-tuned weights for <strong>100% offline deployment</strong> on private servers, mobile devices, or Hugging Face.
+        </p>
+      </div>
+    )
+  }
+];
+
 export default function CreateYourGlynneModelPage() {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { theme, toggleTheme } = useTheme();
+
+  // Modal de confirmación al intentar salir
+  const [showExitModal, setShowExitModal] = useState(false);
+
+  // Guided Onboarding Tutorial Modal States
+  const [showTutorialModal, setShowTutorialModal] = useState(false);
+  const [tutorialStep, setTutorialStep] = useState(0);
+
+  // 🛡️ INTERCEPTAR NAVEGACIÓN (BOTÓN ATRÁS DEL NAVEGADOR & REFRESH)
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      e.preventDefault();
+      e.returnValue = '';
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    window.history.pushState(null, '', window.location.href);
+    const handlePopState = () => {
+      window.history.pushState(null, '', window.location.href);
+      setShowExitModal(true);
+    };
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
 
   // Intro Loading & Welcome Animation States
   const [userEmail, setUserEmail] = useState('');
@@ -142,6 +261,8 @@ export default function CreateYourGlynneModelPage() {
     setIsLaunching(true);
     setTimeout(() => {
       setIntroFinished(true);
+      setTutorialStep(0);
+      setShowTutorialModal(true);
     }, 600);
   };
 
@@ -876,8 +997,9 @@ export default function CreateYourGlynneModelPage() {
           height: isSmallScreen ? 'auto' : '40px'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
-            <Link
-              href="/Panel"
+            <button
+              type="button"
+              onClick={() => setShowExitModal(true)}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -887,11 +1009,15 @@ export default function CreateYourGlynneModelPage() {
                 letterSpacing: '0.05em',
                 textTransform: 'uppercase',
                 color: theme === 'light' ? '#0f172a' : '#ffffff',
-                textDecoration: 'none'
+                textDecoration: 'none',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0
               }}
             >
               &larr; Back to Dashboard
-            </Link>
+            </button>
             <span style={{ color: theme === 'light' ? '#cbd5e1' : '#334155' }}>|</span>
             <div className="md-title" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px', fontSize: isSmallScreen ? '10px' : '11px' }}>
               <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: theme === 'light' ? '#0f172a' : '#ffffff' }} />
@@ -937,6 +1063,33 @@ export default function CreateYourGlynneModelPage() {
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
               <span>CLEAR ALL</span>
+            </button>
+
+            {/* Onboarding Guide Tutorial Button */}
+            <button
+              onClick={() => {
+                setTutorialStep(0);
+                setShowTutorialModal(true);
+              }}
+              title="Open Step-by-Step Guided Tutorial"
+              style={{
+                padding: '4px 10px',
+                fontSize: '10px',
+                fontWeight: 700,
+                borderRadius: '4px',
+                backgroundColor: theme === 'light' ? '#0f172a' : '#ffffff',
+                color: theme === 'light' ? '#ffffff' : '#000000',
+                border: 'none',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                fontFamily: "'SF Mono', Monaco, monospace"
+              }}
+            >
+              <span>/// ONBOARDING GUIDE</span>
             </button>
 
             {/* Theme Toggle Button */}
@@ -2170,6 +2323,291 @@ export default function CreateYourGlynneModelPage() {
             </div>
           </div>
         )}
+
+        {/* MODAL DE CONFIRMACIÓN DE SALIDA (EXACTAMENTE IGUAL A AX_CHAT) */}
+        {showExitModal && (
+          <div className="md-logout-overlay">
+            <div className="md-logout-modal">
+              <h3>End Session?</h3>
+              <p>Your fine-tuning configuration, prompt parameters, and dataset buffer are securely stored. Are you sure you want to leave the AI model training studio?</p>
+              <div className="md-logout-actions">
+                <button className="md-btn-cancel" onClick={() => setShowExitModal(false)}>Cancel</button>
+                <button className="md-btn-confirm" onClick={() => {
+                  window.onbeforeunload = null;
+                  router.push('/Panel');
+                }}>Exit Studio</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* INTERACTIVE GUIDED ONBOARDING TUTORIAL MODAL */}
+        {showTutorialModal && (
+          <div
+            style={{
+              position: 'fixed',
+              inset: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.85)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              zIndex: 999999,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '20px',
+              fontFamily: "'SF Mono', Monaco, 'Courier New', Consolas, monospace"
+            }}
+          >
+            <div
+              style={{
+                width: '100%',
+                maxWidth: '640px',
+                backgroundColor: '#000000',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                borderRadius: '0px',
+                padding: '32px',
+                color: '#ffffff',
+                boxShadow: '0 30px 70px rgba(0, 0, 0, 0.9)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '20px',
+                position: 'relative'
+              }}
+            >
+              {/* Header Bar: Badge & Step Indicator */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.2)', paddingBottom: '14px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '10px', fontWeight: 800, color: '#ffffff', letterSpacing: '0.12em' }}>
+                  <span>///</span> STEP {TUTORIAL_STEPS[tutorialStep].step} — {TUTORIAL_STEPS[tutorialStep].badge}
+                </div>
+                <button
+                  onClick={() => setShowTutorialModal(false)}
+                  style={{
+                    background: 'transparent',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    color: 'rgba(255, 255, 255, 0.6)',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    padding: '2px 8px',
+                    fontFamily: 'inherit'
+                  }}
+                >
+                  SKIP TUTORIAL
+                </button>
+              </div>
+
+              {/* Step Title & Subtitle */}
+              <div>
+                <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.5)', letterSpacing: '0.08em', marginBottom: '4px' }}>
+                  {TUTORIAL_STEPS[tutorialStep].subtitle}
+                </div>
+                <h3 style={{ fontSize: '20px', fontWeight: 800, margin: 0, color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.01em' }}>
+                  {TUTORIAL_STEPS[tutorialStep].title}
+                </h3>
+              </div>
+
+              {/* Step Content Body */}
+              <div style={{ fontSize: '12px', lineHeight: 1.6, color: 'rgba(255, 255, 255, 0.85)', minHeight: '180px' }}>
+                {TUTORIAL_STEPS[tutorialStep].content}
+              </div>
+
+              {/* Progress Dots Bar */}
+              <div style={{ display: 'flex', gap: '6px', alignItems: 'center', justifyContent: 'center', padding: '10px 0' }}>
+                {TUTORIAL_STEPS.map((s, idx) => (
+                  <div
+                    key={idx}
+                    onClick={() => setTutorialStep(idx)}
+                    style={{
+                      height: '4px',
+                      flex: 1,
+                      backgroundColor: idx === tutorialStep ? '#ffffff' : 'rgba(255, 255, 255, 0.2)',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease'
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* Navigation Action Buttons */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', paddingTop: '14px', borderTop: '1px solid rgba(255, 255, 255, 0.2)' }}>
+                <button
+                  disabled={tutorialStep === 0}
+                  onClick={() => setTutorialStep(prev => Math.max(0, prev - 1))}
+                  style={{
+                    padding: '10px 18px',
+                    borderRadius: '0px',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    backgroundColor: 'transparent',
+                    color: tutorialStep === 0 ? 'rgba(255, 255, 255, 0.25)' : '#ffffff',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    cursor: tutorialStep === 0 ? 'not-allowed' : 'pointer',
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    fontFamily: 'inherit'
+                  }}
+                >
+                  ← PREVIOUS
+                </button>
+
+                {tutorialStep < TUTORIAL_STEPS.length - 1 ? (
+                  <button
+                    onClick={() => setTutorialStep(prev => prev + 1)}
+                    style={{
+                      padding: '10px 22px',
+                      borderRadius: '0px',
+                      border: 'none',
+                      backgroundColor: '#ffffff',
+                      color: '#000000',
+                      fontSize: '11px',
+                      fontWeight: 800,
+                      cursor: 'pointer',
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase',
+                      fontFamily: 'inherit'
+                    }}
+                  >
+                    NEXT STEP →
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setShowTutorialModal(false)}
+                    style={{
+                      padding: '10px 22px',
+                      borderRadius: '0px',
+                      border: 'none',
+                      backgroundColor: '#ffffff',
+                      color: '#000000',
+                      fontSize: '11px',
+                      fontWeight: 800,
+                      cursor: 'pointer',
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase',
+                      fontFamily: 'inherit'
+                    }}
+                  >
+                    ✓ ENTER STUDIO NOW
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        <style dangerouslySetInnerHTML={{
+          __html: `
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes scaleUp {
+          from { opacity: 0; transform: scale(0.95); }
+          to { opacity: 1; transform: scale(1); }
+        }
+        .md-logout-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background: rgba(0, 0, 0, 0.75);
+          backdrop-filter: blur(8px);
+          z-index: 999999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          animation: fadeIn 0.3s ease;
+        }
+
+        .md-logout-modal {
+          position: relative;
+          background-image:
+            linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(15, 15, 15, 0.95), rgba(5, 5, 5, 0.98));
+          background-size: 20px 20px, 20px 20px, 100% 100%;
+          background-position: center center;
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          border-top: 1px solid rgba(255, 255, 255, 0.3);
+          border-radius: 4px;
+          padding: 40px 32px;
+          width: 90%;
+          max-width: 420px;
+          text-align: center;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 40px rgba(255, 255, 255, 0.02);
+          animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          font-family: 'SF Mono', Monaco, monospace;
+        }
+
+        .md-logout-modal h3 {
+          font-size: 18px;
+          font-weight: 600;
+          color: #fff;
+          letter-spacing: 0.15em;
+          margin-bottom: 16px;
+          text-transform: uppercase;
+          text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .md-logout-modal p {
+          font-size: 13px;
+          color: #a1a1aa;
+          line-height: 1.5;
+          margin-bottom: 32px;
+        }
+
+        .md-logout-actions {
+          display: flex;
+          gap: 16px;
+          justify-content: center;
+        }
+
+        .md-btn-cancel {
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: #fff;
+          padding: 12px 24px;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 12px;
+          font-weight: 600;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          transition: all 0.2s ease;
+          flex: 1;
+        }
+
+        .md-btn-cancel:hover {
+          background: rgba(255, 255, 255, 0.1);
+          border-color: rgba(255, 255, 255, 0.4);
+          transform: translateY(-1px);
+        }
+
+        .md-btn-confirm {
+          background: rgba(220, 38, 38, 0.15);
+          border: 1px solid rgba(220, 38, 38, 0.4);
+          color: #fca5a5;
+          padding: 12px 24px;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 12px;
+          font-weight: 600;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          transition: all 0.2s ease;
+          flex: 1;
+          box-shadow: 0 0 15px rgba(220, 38, 38, 0.1);
+        }
+
+        .md-btn-confirm:hover {
+          background: rgba(220, 38, 38, 0.25);
+          border-color: rgba(220, 38, 38, 0.8);
+          color: #fff;
+          text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+          box-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
+          transform: translateY(-1px);
+        }
+      `}} />
       </div>
     </div>
   </BackgroundWrapper>
