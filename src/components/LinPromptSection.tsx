@@ -300,103 +300,300 @@ export default function LinPromptSection({
           {customDescription}
         </p>
 
-        {/* Interactive AI Prompt Input Form */}
+        {/* Interactive AI Input Box (Matching Reference Image) */}
         <form
           onSubmit={handleSend}
           style={{
             width: '100%',
-            maxWidth: '620px',
-            backgroundColor: isDark ? 'rgba(20, 20, 22, 0.85)' : 'rgba(255, 255, 255, 0.9)',
-            backdropFilter: 'blur(12px)',
-            borderRadius: '16px',
-            padding: '14px 16px',
-            border: `1px solid ${borderLineColor}`,
+            maxWidth: '660px',
+            backgroundColor: isDark ? 'rgba(20, 20, 24, 0.95)' : 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(16px)',
+            borderRadius: '24px',
+            padding: '14px',
+            border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.12)',
             boxShadow: isDark
-              ? '0 12px 35px rgba(0,0,0,0.5)'
-              : '0 12px 35px rgba(0,0,0,0.06)',
+              ? '0 25px 60px rgba(0,0,0,0.7), 0 0 1px rgba(255,255,255,0.15)'
+              : '0 20px 50px rgba(0,0,0,0.08)',
             display: 'flex',
             flexDirection: 'column',
-            gap: '8px'
+            gap: '10px',
+            textAlign: 'left'
           }}
         >
-          <textarea
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                handleSend();
-              }
-            }}
-            placeholder="Pregunta a AX sobre gobernanza de IA empresarial, permisos o integración de sistemas..."
-            rows={2}
-            style={{
-              border: 'none',
-              outline: 'none',
-              fontSize: '14px',
-              color: textColor,
-              width: '100%',
-              padding: '2px 0',
-              fontWeight: 300,
-              backgroundColor: 'transparent',
-              fontFamily: 'inherit',
-              resize: 'none',
-              lineHeight: 1.4,
-              letterSpacing: '0.01em'
-            }}
-          />
-
-          {/* Tools & Send Button Row */}
+          {/* Top Announcement Bar */}
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            paddingTop: '8px',
-            borderTop: `1px solid ${borderLineColor}`
+            padding: '2px 8px 4px 8px',
+            fontSize: '11px',
+            fontFamily: "'SF Mono', monospace",
+            color: isDark ? 'rgba(255, 255, 255, 0.65)' : 'rgba(0, 0, 0, 0.65)'
           }}>
-            {/* Model Selector / Tag */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '4px 10px',
-              backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : '#f5f5f7',
-              borderRadius: '8px',
-              fontSize: '10px',
-              fontWeight: 600,
-              color: textColor,
-              letterSpacing: '0.05em',
-              textTransform: 'uppercase',
-              fontFamily: "'SF Mono', monospace"
-            }}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-              </svg>
-              AX Core Engine
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ color: '#f43f5e', fontSize: '12px' }}>✧</span>
+              <span>Nuevo: Modelo AX 5.2 disponible</span>
             </div>
-
-            {/* Right Arrow Submit Button */}
             <button
-              type="submit"
-              disabled={!inputValue.trim()}
+              type="button"
+              onClick={() => router.push('/TrainModel')}
               style={{
-                width: '32px',
-                height: '32px',
-                borderRadius: '50%',
-                backgroundColor: inputValue.trim() ? textColor : (isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'),
-                color: inputValue.trim() ? (isDark ? '#000000' : '#ffffff') : subtextColor,
+                background: 'transparent',
                 border: 'none',
+                color: '#f43f5e',
+                fontSize: '11px',
+                fontWeight: 600,
+                fontFamily: "'SF Mono', monospace",
+                cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                cursor: inputValue.trim() ? 'pointer' : 'default',
-                transition: 'all 0.2s ease'
+                gap: '4px'
               }}
             >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="12" y1="19" x2="12" y2="5" />
-                <polyline points="5 12 12 5 19 12" />
+              <span>💥</span> Probar AX 5.2
+            </button>
+          </div>
+
+          {/* Inner Textarea Input Box */}
+          <div style={{
+            backgroundColor: isDark ? 'rgba(12, 12, 14, 0.95)' : '#f5f5f7',
+            borderRadius: '16px',
+            padding: '14px 16px',
+            border: isDark ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid rgba(0, 0, 0, 0.06)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px'
+          }}>
+            <textarea
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSend();
+                }
+              }}
+              placeholder="Pregunta cualquier cosa..."
+              rows={2}
+              style={{
+                border: 'none',
+                outline: 'none',
+                fontSize: '15px',
+                color: textColor,
+                width: '100%',
+                backgroundColor: 'transparent',
+                fontFamily: 'inherit',
+                resize: 'none',
+                lineHeight: 1.5,
+                fontWeight: 300,
+                letterSpacing: '0.01em'
+              }}
+            />
+
+            {/* Inner Bottom Controls (+ Left, Mic & Send Right) */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}>
+              {/* Left Plus Attachment Icon Button */}
+              <button
+                type="button"
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '4px',
+                  borderRadius: '6px',
+                  transition: 'color 0.2s ease'
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.color = textColor; }}
+                onMouseOut={(e) => { e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'; }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </button>
+
+              {/* Right Controls: Microphone & Circular Arrow Button */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <button
+                  type="button"
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
+                    cursor: 'pointer',
+                    padding: '4px',
+                    display: 'flex',
+                    alignItems: 'center'
+                  }}
+                  onMouseOver={(e) => { e.currentTarget.style.color = textColor; }}
+                  onMouseOut={(e) => { e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'; }}
+                >
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                    <line x1="12" y1="19" x2="12" y2="23" />
+                    <line x1="8" y1="23" x2="16" y2="23" />
+                  </svg>
+                </button>
+
+                {/* White Circular Send Button with Up Arrow */}
+                <button
+                  type="submit"
+                  disabled={!inputValue.trim()}
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    backgroundColor: inputValue.trim()
+                      ? (isDark ? '#ffffff' : '#111111')
+                      : (isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.1)'),
+                    color: inputValue.trim()
+                      ? (isDark ? '#000000' : '#ffffff')
+                      : (isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'),
+                    border: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: inputValue.trim() ? 'pointer' : 'default',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="12" y1="19" x2="12" y2="5" />
+                    <polyline points="5 12 12 5 19 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Action Pill Bar */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '2px 4px 0 4px',
+            gap: '8px',
+            flexWrap: 'wrap'
+          }}>
+            {/* Left Pill Group */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              {/* Model Pill Badge */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '5px 12px',
+                borderRadius: '999px',
+                border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(0, 0, 0, 0.15)',
+                backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : '#ffffff',
+                fontSize: '12px',
+                fontWeight: 500,
+                color: textColor,
+                cursor: 'pointer'
+              }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                </svg>
+                <span>AX 5.2</span>
+              </div>
+
+              {/* Sync Icon Pill Button */}
+              <button
+                type="button"
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(0, 0, 0, 0.15)',
+                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : '#ffffff',
+                  color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer'
+                }}
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2" />
+                </svg>
+              </button>
+
+              {/* Sparkle/Pointer Icon Pill Button */}
+              <button
+                type="button"
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(0, 0, 0, 0.15)',
+                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : '#ffffff',
+                  color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer'
+                }}
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                </svg>
+              </button>
+
+              {/* Web Globe Search Icon Pill Button */}
+              <button
+                type="button"
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(0, 0, 0, 0.15)',
+                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : '#ffffff',
+                  color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer'
+                }}
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="2" y1="12" x2="22" y2="12" />
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Right Side: Prompt Library Pill */}
+            <button
+              type="button"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '5px 12px',
+                borderRadius: '999px',
+                border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(0, 0, 0, 0.15)',
+                backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : '#ffffff',
+                fontSize: '12px',
+                fontWeight: 500,
+                color: textColor,
+                cursor: 'pointer'
+              }}
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="4" y="4" width="16" height="16" rx="2" />
+                <path d="M9 9h6M9 13h6M9 17h4" />
               </svg>
+              <span>Biblioteca de prompts</span>
             </button>
           </div>
         </form>
