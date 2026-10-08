@@ -131,7 +131,7 @@ export default function B2BProcessManifesto() {
 
       <div style={{
         minHeight: '100vh',
-        padding: '160px 40px 80px 40px',
+        padding: '60px 40px 80px 40px',
         display: 'flex',
         position: 'relative',
         zIndex: 10,
@@ -146,39 +146,36 @@ export default function B2BProcessManifesto() {
           position: 'relative'
         }}>
 
-          {/* Left Spacer - Reserves space for the fixed sidebar */}
-          <div className="desktop-only-sidebar" style={{ flex: '0 0 64px' }}></div>
-
-          {/* Fixed Island Sidebar - Expands on hover */}
-          <aside
-            className="desktop-only-sidebar"
-            onMouseEnter={() => setIsSidebarOpen(true)}
-            onMouseLeave={() => setIsSidebarOpen(false)}
-            style={{
-              position: 'fixed',
-              top: '50%',
-              left: '40px',
-              transform: 'translateY(-50%)',
-              width: isSidebarOpen ? '320px' : '64px',
-              height: 'fit-content',
-              maxHeight: 'calc(100vh - 160px)',
-              overflowY: 'auto',
-              overflowX: 'hidden',
-              backgroundColor: isDark ? 'rgba(18, 18, 22, 0.85)' : 'rgba(255, 255, 255, 0.85)',
-              backdropFilter: 'blur(30px)',
-              WebkitBackdropFilter: 'blur(30px)',
-              borderRadius: '24px',
-              padding: isSidebarOpen ? '24px 16px' : '24px 0',
-              border: isDark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(0,0,0,0.06)',
-              boxShadow: isSidebarOpen ? (isDark ? '0 24px 80px rgba(0,0,0,0.6)' : '0 24px 80px rgba(0,0,0,0.1)') : (isDark ? '0 12px 40px rgba(0,0,0,0.4)' : '0 12px 40px rgba(0,0,0,0.04)'),
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: isSidebarOpen ? 'flex-start' : 'center',
-              gap: '6px',
-              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-              zIndex: 100 // Ensure it overlaps the content
-            }}
-          >
+          {/* Left Column with Sticky Sidebar - Only visible within the text section */}
+          <div className="desktop-only-sidebar" style={{ flex: '0 0 64px', position: 'relative' }}>
+            <div style={{ position: 'sticky', top: '120px' }}>
+              <aside
+                onMouseEnter={() => setIsSidebarOpen(true)}
+                onMouseLeave={() => setIsSidebarOpen(false)}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: isSidebarOpen ? '320px' : '64px',
+                  height: 'fit-content',
+                  maxHeight: 'calc(100vh - 160px)',
+                  overflowY: 'auto',
+                  overflowX: 'hidden',
+                  backgroundColor: isDark ? 'rgba(18, 18, 22, 0.85)' : 'rgba(255, 255, 255, 0.85)',
+                  backdropFilter: 'blur(30px)',
+                  WebkitBackdropFilter: 'blur(30px)',
+                  borderRadius: '24px',
+                  padding: isSidebarOpen ? '24px 16px' : '24px 0',
+                  border: isDark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(0,0,0,0.06)',
+                  boxShadow: isSidebarOpen ? (isDark ? '0 24px 80px rgba(0,0,0,0.6)' : '0 24px 80px rgba(0,0,0,0.1)') : (isDark ? '0 12px 40px rgba(0,0,0,0.4)' : '0 12px 40px rgba(0,0,0,0.04)'),
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: isSidebarOpen ? 'flex-start' : 'center',
+                  gap: '6px',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  zIndex: 100
+                }}
+              >
             {CATEGORIES.map(category => (
               <div key={category} style={{ width: '100%', marginBottom: isSidebarOpen ? '16px' : '0' }}>
                 {isSidebarOpen && (
@@ -268,20 +265,17 @@ export default function B2BProcessManifesto() {
               </div>
             ))}
           </aside>
+        </div>
+      </div>
 
-          {/* Right Content Area */}
+          {/* Right Content Area - Transparent on Background Grid (85vw) */}
           <div style={{
             flex: '1',
-            maxWidth: '800px',
+            width: '85vw',
+            maxWidth: '85vw',
             margin: '0 auto',
-            width: '100%',
-            backgroundColor: isDark ? 'rgba(18, 18, 22, 0.85)' : '#ffffff',
-            backdropFilter: 'blur(30px)',
-            WebkitBackdropFilter: 'blur(30px)',
-            borderRadius: '24px',
-            padding: '60px',
-            boxShadow: isDark ? '0 12px 40px rgba(0,0,0,0.5)' : '0 4px 20px rgba(0,0,0,0.03)',
-            border: isDark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(0,0,0,0.04)'
+            backgroundColor: 'transparent',
+            padding: '0 0 60px 0'
           }}>
             <article className="methodology-article" style={{ fontSize: '17px', lineHeight: 1.7, color: isDark ? '#a1a1aa' : '#1d1d1f', fontWeight: 300 }}>
 
