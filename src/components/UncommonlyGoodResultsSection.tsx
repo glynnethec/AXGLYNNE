@@ -167,7 +167,7 @@ export default function UncommonlyGoodResultsSection() {
           </p>
 
           <button
-            onClick={() => router.push('/Create_you_GLYNNE_model')}
+            onClick={() => router.push('/TrainModel')}
             style={{
               padding: '14px 28px',
               borderRadius: '999px',

@@ -119,30 +119,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var t = localStorage.getItem('ax_theme') || 'dark';
-                  document.documentElement.setAttribute('data-theme', t);
-                  var bg = t === 'light' ? '#f8f9fc' : '#000000';
-                  document.documentElement.style.backgroundColor = bg;
-                  if (document.body) document.body.style.backgroundColor = bg;
-                } catch (e) {}
-              })();
-            `,
-          }}
-        />
+      <body className="min-h-full flex flex-col">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-      </head>
-      <body className="min-h-full flex flex-col">
         <ThemeProvider>
           <Header />
           {children}

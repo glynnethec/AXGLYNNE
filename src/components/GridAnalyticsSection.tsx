@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { useTheme } from '@/lib/ThemeContext';
 
 export default function GridAnalyticsSection() {
@@ -19,20 +20,13 @@ export default function GridAnalyticsSection() {
 
   const cards = [
     {
-      id: 'cost-tracking',
-      title: 'COST TRACKING',
-      desc: 'Total token spend, per-Runner, per-department, per-workflow. Know exactly what your AI workforce costs.',
+      id: 'local-models',
+      title: 'EDGE & LOCAL MODEL LIBRARY',
+      desc: 'Download ultra-fast, quantized open-source models (GGUF Q4_K_M / Q8_0) ready to run directly on consumer laptops, edge devices, or local hardware with zero token fees.',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <circle cx="16" cy="6" r="1.5" fill={textColor} />
-          <circle cx="19" cy="6" r="1.5" fill={textColor} />
-          <circle cx="16" cy="9" r="1.5" fill={textColor} />
-          <circle cx="19" cy="9" r="1.5" fill={textColor} />
-          <circle cx="13" cy="12" r="1.5" fill={textColor} />
-          <circle cx="16" cy="12" r="1.5" fill={textColor} />
-          <circle cx="19" cy="12" r="1.5" fill={textColor} />
-          <circle cx="10" cy="15" r="1.5" fill={textColor} />
-          <circle cx="13" cy="15" r="1.5" fill={textColor} />
+          <rect x="3" y="4" width="18" height="12" rx="2" stroke={textColor} strokeWidth="1.5" />
+          <path d="M7 20 H17 M12 16 V20" stroke={textColor} strokeWidth="1.5" strokeLinecap="round" />
         </svg>
       ),
       diagram: (
@@ -41,41 +35,35 @@ export default function GridAnalyticsSection() {
           <path d="M0 40 L240 40 M0 80 L240 80 M0 120 L240 120 M0 160 L240 160" stroke={svgFaint} strokeDasharray="2 4" strokeWidth="1" />
           <path d="M30 0 L210 180 M90 0 L240 150 M0 30 L180 180" stroke={svgFaint} strokeDasharray="2 4" strokeWidth="1" />
           
-          {/* 3D Isometric Staircase Blocks */}
-          {/* Block 1 (20k) */}
+          {/* 3D Isometric Staircase Blocks for Parameters (3B, 7B, 14B) */}
+          {/* Block 1 (3B) */}
           <path d="M30 145 L65 125 L100 145 L65 165 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
           <path d="M30 145 L30 160 L65 180 L65 165 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
           <path d="M65 165 L65 180 L100 160 L100 145 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
-          <text x="50" y="152" fill={textColor} fontSize="10" fontFamily="monospace" fontWeight="600">20k</text>
+          <text x="54" y="152" fill={textColor} fontSize="10" fontFamily="monospace" fontWeight="600">3B</text>
 
-          {/* Block 2 (32k) */}
+          {/* Block 2 (7B) */}
           <path d="M80 115 L120 92 L160 115 L120 138 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
           <path d="M80 115 L80 140 L120 163 L120 138 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
           <path d="M120 138 L120 163 L160 140 L160 115 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
-          <text x="106" y="122" fill={textColor} fontSize="10" fontFamily="monospace" fontWeight="600">32k</text>
+          <text x="110" y="122" fill={textColor} fontSize="10" fontFamily="monospace" fontWeight="600">7B</text>
 
-          {/* Block 3 (85k) */}
+          {/* Block 3 (14B) */}
           <path d="M140 70 L185 45 L230 70 L185 95 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
           <path d="M140 70 L140 105 L185 130 L185 95 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
           <path d="M185 95 L185 130 L230 105 L230 70 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
-          <text x="172" y="77" fill={textColor} fontSize="10" fontFamily="monospace" fontWeight="600">85k</text>
+          <text x="172" y="77" fill={textColor} fontSize="10" fontFamily="monospace" fontWeight="600">14B</text>
         </svg>
       )
     },
     {
-      id: 'compliance-metrics',
-      title: 'COMPLIANCE METRICS',
-      desc: 'NCUA-aligned reporting. Automated compliance posture snapshots. Always audit-ready.',
+      id: 'heavy-architectures',
+      title: 'COMPLEX FOUNDATION ENGINES',
+      desc: 'Access state-of-the-art heavy reasoning architectures (Llama 3.2, Qwen 2.5, Phi 3.5) pre-aligned for enterprise workflows and internal infrastructure deployment.',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <circle cx="16" cy="8" r="1.5" fill={textColor} />
-          <circle cx="19" cy="8" r="1.5" fill={textColor} />
-          <circle cx="16" cy="11" r="1.5" fill={textColor} />
-          <circle cx="19" cy="11" r="1.5" fill={textColor} />
-          <circle cx="16" cy="14" r="1.5" fill={textColor} />
-          <circle cx="19" cy="14" r="1.5" fill={textColor} />
-          <circle cx="16" cy="17" r="1.5" fill={textColor} />
-          <circle cx="19" cy="17" r="1.5" fill={textColor} />
+          <circle cx="12" cy="12" r="9" stroke={textColor} strokeWidth="1.5" />
+          <path d="M12 7 V12 L16 14" stroke={textColor} strokeWidth="1.5" strokeLinecap="round" />
         </svg>
       ),
       diagram: (
@@ -90,22 +78,20 @@ export default function GridAnalyticsSection() {
           {/* Active Highlight Segment */}
           <path d="M195 98 L210 110 L210 125 L195 113 Z" fill={textColor} stroke={textColor} />
 
-          {/* Center Health Score */}
-          <text x="120" y="112" textAnchor="middle" fill={subtextColor} fontSize="9" fontFamily="monospace" letterSpacing="0.08em">HEALTH SCORE</text>
-          <text x="120" y="132" textAnchor="middle" fill={textColor} fontSize="22" fontFamily="sans-serif" fontWeight="700">810</text>
+          {/* Center Benchmark Score */}
+          <text x="120" y="108" textAnchor="middle" fill={subtextColor} fontSize="8" fontFamily="monospace" letterSpacing="0.08em">OPEN BENCHMARK</text>
+          <text x="120" y="128" textAnchor="middle" fill={textColor} fontSize="20" fontFamily="sans-serif" fontWeight="700">94.8%</text>
         </svg>
       )
     },
     {
-      id: 'performance-trends',
-      title: 'PERFORMANCE TRENDS',
-      desc: 'Playbook execution times, success rates, escalation frequencies. Spot drift before it becomes a problem.',
+      id: 'weight-export',
+      title: '1-CLICK WEIGHT FILE EXPORTS',
+      desc: 'Obtain the exact mathematical algorithm file containing 100% of functional model weights with a single click. Deploy on your own private cloud or air-gapped systems.',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M7 17 L17 7 M17 7 H9 M17 7 V15" stroke={textColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          <circle cx="6" cy="18" r="1.5" fill={textColor} />
-          <circle cx="9" cy="18" r="1.5" fill={textColor} />
-          <circle cx="6" cy="15" r="1.5" fill={textColor} />
+          <path d="M12 4 V16 M7 11 L12 16 L17 11" stroke={textColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M4 20 H20" stroke={textColor} strokeWidth="1.5" strokeLinecap="round" />
         </svg>
       ),
       diagram: (
@@ -124,23 +110,18 @@ export default function GridAnalyticsSection() {
 
           {/* Highlight Node */}
           <circle cx="150" cy="100" r="5" fill={textColor} />
+          <text x="120" y="165" textAnchor="middle" fill={subtextColor} fontSize="8" fontFamily="monospace">GGUF / SAFETENSORS</text>
         </svg>
       )
     },
     {
-      id: 'capacity-modeling',
-      title: 'CAPACITY MODELING',
-      desc: "Understand where your Runners are saturated and where there's room to expand. Plan intelligently.",
+      id: 'retrain-sync',
+      title: 'RETRAIN PANEL INTEGRATION',
+      desc: 'Instantly connect any model from our open catalog directly into our QLoRA retraining panel to fine-tune parameters using your corporate operational data.',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <rect x="13" y="5" width="3" height="3" fill={textColor} />
-          <rect x="17" y="5" width="3" height="3" fill={textColor} />
-          <rect x="13" y="9" width="3" height="3" fill={textColor} />
-          <rect x="17" y="9" width="3" height="3" fill={textColor} />
-          <rect x="5" y="13" width="3" height="3" fill={textColor} />
-          <rect x="9" y="13" width="3" height="3" fill={textColor} />
-          <rect x="5" y="17" width="3" height="3" fill={textColor} />
-          <rect x="9" y="17" width="3" height="3" fill={textColor} />
+          <path d="M4 12 A8 8 0 0 1 12 4 M20 12 A8 8 0 0 1 12 20" stroke={textColor} strokeWidth="1.5" strokeLinecap="round" />
+          <path d="M12 1 V7 L15 4 M12 23 V17 L9 20" stroke={textColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       ),
       diagram: (
@@ -154,9 +135,9 @@ export default function GridAnalyticsSection() {
           <path d="M150 145 L150 180 L230 135 L230 100 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
 
           {/* Labels on Box */}
-          <text x="105" y="125" fill={textColor} fontSize="10" fontFamily="monospace" fontWeight="700">SHERLOCK</text>
-          <text x="105" y="138" fill={subtextColor} fontSize="8" fontFamily="monospace">CAPACITY: 55%</text>
-          <text x="50" y="165" fill={subtextColor} fontSize="9" fontFamily="monospace">JOY</text>
+          <text x="105" y="125" fill={textColor} fontSize="10" fontFamily="monospace" fontWeight="700">RETRAIN STUDIO</text>
+          <text x="105" y="138" fill={subtextColor} fontSize="8" fontFamily="monospace">QLORA: READY</text>
+          <text x="45" y="165" fill={subtextColor} fontSize="8" fontFamily="monospace">FINE-TUNED</text>
         </svg>
       )
     }
@@ -187,7 +168,7 @@ export default function GridAnalyticsSection() {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          min-height: 480px;
+          min-height: 490px;
           transition: transform 0.3s ease, border-color 0.3s ease;
           clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
         }
@@ -226,18 +207,37 @@ export default function GridAnalyticsSection() {
           margin: '0 0 16px 0',
           fontFamily: "var(--font-serif), Georgia, 'Times New Roman', serif"
         }}>
-          Not Just Control. Clarity.
+          Open Weights. Total Sovereignty.
         </h2>
         <p style={{
           fontSize: 'clamp(14px, 1.5vw, 16px)',
           color: subtextColor,
           fontWeight: 300,
           lineHeight: 1.6,
-          margin: '0 auto',
-          maxWidth: '620px'
+          margin: '0 auto 24px auto',
+          maxWidth: '720px'
         }}>
-          Grid Analytics surfaces org-wide patterns that no individual Runner can see on its own.
+          Explore and download our curated catalog of open-source LLM architectures. From ultra-lightweight models for local device execution to heavy foundation engines pre-configured for retraining.
         </p>
+
+        <Link
+          href="/ia_vailable"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            color: textColor,
+            fontSize: '14px',
+            fontWeight: 500,
+            textDecoration: 'none',
+            letterSpacing: '0.01em',
+            transition: 'opacity 0.2s ease',
+          }}
+          onMouseOver={(e) => { e.currentTarget.style.opacity = '0.7'; }}
+          onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
+        >
+          Browse Full Model Library <span style={{ fontSize: '15px' }}>→</span>
+        </Link>
       </div>
 
       {/* 4 Cards Grid */}
@@ -250,7 +250,7 @@ export default function GridAnalyticsSection() {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'flex-start',
-                marginBottom: '28px',
+                marginBottom: '24px',
                 gap: '12px'
               }}>
                 <h3 style={{
@@ -262,7 +262,7 @@ export default function GridAnalyticsSection() {
                   textTransform: 'uppercase',
                   margin: 0,
                   lineHeight: 1.3,
-                  maxWidth: '160px'
+                  maxWidth: '170px'
                 }}>
                   {card.title}
                 </h3>
@@ -275,7 +275,7 @@ export default function GridAnalyticsSection() {
                 color: subtextColor,
                 fontWeight: 300,
                 lineHeight: 1.6,
-                margin: '0 0 32px 0'
+                margin: '0 0 28px 0'
               }}>
                 {card.desc}
               </p>
