@@ -79,6 +79,18 @@ export default function CreateYourGlynneModelPage() {
   const [introLogs, setIntroLogs] = useState([]);
   const [introStage, setIntroStage] = useState('initializing'); // 'initializing' | 'verifying' | 'ready'
   const [isLaunching, setIsLaunching] = useState(false);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (typeof window !== 'undefined') {
+        setIsSmallScreen(window.innerWidth < 700);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -715,33 +727,108 @@ export default function CreateYourGlynneModelPage() {
               Verified session: <span style={{ color: theme === 'light' ? '#111' : '#fff' }}>{userEmail}</span>
             </div>
           )}
-          <button
-            onClick={handleLaunchStudio}
-            style={{
-              padding: '16px 36px',
-              borderRadius: '999px',
-              border: 'none',
-              backgroundColor: theme === 'light' ? '#111111' : '#ffffff',
-              color: theme === 'light' ? '#ffffff' : '#111111',
-              fontSize: '15px',
-              fontWeight: 500,
-              letterSpacing: '-0.01em',
-              cursor: 'pointer',
-              transition: 'transform 0.2s ease, background-color 0.2s ease',
-              display: 'inline-flex',
+          {isSmallScreen ? (
+            <div style={{
+              maxWidth: '460px',
+              margin: '0 auto',
+              padding: '20px 24px',
+              borderRadius: '18px',
+              backgroundColor: theme === 'light' ? 'rgba(255, 255, 255, 0.85)' : 'rgba(24, 24, 27, 0.85)',
+              border: theme === 'light' ? '1px solid rgba(225, 29, 72, 0.25)' : '1px solid rgba(244, 63, 94, 0.3)',
+              backdropFilter: 'blur(16px)',
+              boxShadow: theme === 'light' ? '0 12px 30px rgba(0, 0, 0, 0.06)' : '0 12px 35px rgba(0, 0, 0, 0.5)',
+              display: 'flex',
+              flexDirection: 'column',
               alignItems: 'center',
-              gap: '10px'
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.transform = 'scale(1.02)';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.transform = 'scale(1)';
-            }}
-          >
-            <span>Enter Training Studio</span>
-            <span style={{ fontSize: '16px' }}>→</span>
-          </button>
+              gap: '12px',
+              textAlign: 'center'
+            }}>
+              <div style={{
+                width: '44px',
+                height: '44px',
+                borderRadius: '50%',
+                backgroundColor: theme === 'light' ? 'rgba(225, 29, 72, 0.08)' : 'rgba(244, 63, 94, 0.12)',
+                color: theme === 'light' ? '#e11d48' : '#fb7185',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                  <line x1="8" y1="21" x2="16" y2="21"/>
+                  <line x1="12" y1="17" x2="12" y2="21"/>
+                </svg>
+              </div>
+              <div>
+                <h3 style={{
+                  fontSize: '15px',
+                  fontWeight: 600,
+                  margin: '0 0 6px 0',
+                  color: theme === 'light' ? '#111111' : '#ffffff'
+                }}>
+                  Función exclusiva para PC / Escritorio
+                </h3>
+                <p style={{
+                  fontSize: '13px',
+                  color: '#86868b',
+                  margin: 0,
+                  lineHeight: 1.5,
+                  fontWeight: 400
+                }}>
+                  El panel de Fine-Tuning y entrenamiento de modelos GLYNNE requiere una pantalla de computadora (resolución superior a 700px). No se puede utilizar en dispositivos móviles.
+                </p>
+              </div>
+              <Link
+                href="/Panel"
+                style={{
+                  marginTop: '4px',
+                  padding: '10px 22px',
+                  borderRadius: '999px',
+                  backgroundColor: theme === 'light' ? '#111111' : '#ffffff',
+                  color: theme === 'light' ? '#ffffff' : '#111111',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  transition: 'transform 0.2s ease'
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.transform = 'scale(1.03)'; }}
+                onMouseOut={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+              >
+                <span>&larr; Volver al Dashboard</span>
+              </Link>
+            </div>
+          ) : (
+            <button
+              onClick={handleLaunchStudio}
+              style={{
+                padding: '16px 36px',
+                borderRadius: '999px',
+                border: 'none',
+                backgroundColor: theme === 'light' ? '#111111' : '#ffffff',
+                color: theme === 'light' ? '#ffffff' : '#111111',
+                fontSize: '15px',
+                fontWeight: 500,
+                letterSpacing: '-0.01em',
+                cursor: 'pointer',
+                transition: 'transform 0.2s ease, background-color 0.2s ease',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '10px'
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = 'scale(1.02)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
+            >
+              <span>Enter Training Studio</span>
+              <span style={{ fontSize: '16px' }}>→</span>
+            </button>
+          )}
         </div>
         </div>
       </div>
