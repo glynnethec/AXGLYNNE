@@ -104,26 +104,25 @@ export default function HomeThirdAuditSection() {
               GLYNNE is engineered by systems architects who believe AI cannot enter enterprise operations without strict deterministic control. We design the infrastructure that makes AI predictable, secure, and fully auditable.
             </p>
 
-            <div style={{ display: 'flex', gap: '16px', marginTop: '32px', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
-              <button
-                className="responsive-btn"
+            <div style={{ display: 'flex', gap: '16px', marginTop: '24px', flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center' }}>
+              <span
                 onClick={() => window.location.href = '/About'}
                 style={{
-                  padding: '14px 28px',
-                  borderRadius: '999px',
-                  backgroundColor: isDark ? '#ffffff' : '#111111',
-                  color: isDark ? '#000000' : '#ffffff',
-                  border: isDark ? '1px solid #ffffff' : '1px solid #111111',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  color: isDark ? '#ffffff' : '#111111',
                   fontSize: '14px',
-                  fontWeight: 600,
+                  fontWeight: 500,
                   cursor: 'pointer',
-                  transition: 'all 0.2s ease',
+                  letterSpacing: '0.01em',
+                  transition: 'opacity 0.2s ease',
                 }}
-                onMouseOver={(e) => { e.currentTarget.style.opacity = '0.85'; e.currentTarget.style.transform = 'scale(1.02)' }}
-                onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1)' }}
+                onMouseOver={(e) => { e.currentTarget.style.opacity = '0.7'; }}
+                onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
               >
-                Discover our vision & team
-              </button>
+                Discover our vision & team <span style={{ fontSize: '15px' }}>→</span>
+              </span>
             </div>
           </div>
 

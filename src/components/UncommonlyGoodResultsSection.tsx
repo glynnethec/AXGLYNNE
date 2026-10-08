@@ -12,8 +12,8 @@ export default function UncommonlyGoodResultsSection() {
   const items = [
     {
       num: '001',
-      title: 'Extracción & Dataset Sintético (SFT)',
-      desc: 'Subes tus documentos (PDF, TXT, CSV, JSON) y nuestra tecnología extrae y genera cientos de pares de instrucción-respuesta con máxima diversidad sintáctica para evitar que el modelo alucine o repita muletillas.',
+      title: 'Extraction & Synthetic Dataset Generation (SFT)',
+      desc: 'Upload your documents (PDF, TXT, CSV, JSON) and our technology extracts and generates hundreds of high-diversity instruction-response pairs to prevent model hallucinations and repetitive phrasing.',
       icon: (
         <svg width="80" height="80" viewBox="0 0 80 80" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           {/* Data Ingestion & Synthetic Dataset Icon */}
@@ -28,8 +28,8 @@ export default function UncommonlyGoodResultsSection() {
     },
     {
       num: '002',
-      title: 'Entrenamiento QLoRA en GPUs de Alta Velocidad',
-      desc: 'Inyectamos adaptadores neuronales LoRA (r=16) en modelos base de vanguardia (Llama 3.2, Qwen 2.5, Phi 3.5) cuantizados en 4-bits sobre clusters GPU de alto rendimiento.',
+      title: 'QLoRA Training on High-Speed GPUs',
+      desc: 'We inject LoRA neural adapters (r=16) into state-of-the-art base models (Llama 3.2, Qwen 2.5, Phi 3.5) quantized to 4-bit over high-performance GPU clusters.',
       icon: (
         <svg width="80" height="80" viewBox="0 0 80 80" fill="none" stroke="currentColor" strokeWidth="1.5">
           {/* Neural Fine-Tuning Weight Matrix Icon */}
@@ -44,8 +44,8 @@ export default function UncommonlyGoodResultsSection() {
     },
     {
       num: '003',
-      title: 'Ajuste Antisobreajuste & Telemetría en Vivo',
-      desc: 'Monitoreas el proceso de entrenamiento en tiempo real. Ajustamos tasas de aprendizaje y plantillas ChatML para asegurar que la IA responda exactamente con las reglas de tu empresa.',
+      title: 'Anti-Overfitting Tuning & Live Telemetry',
+      desc: 'Monitor your training process in real time. We optimize learning rates and ChatML formatting to ensure the AI strictly adheres to your corporate governance and rules.',
       icon: (
         <svg width="80" height="80" viewBox="0 0 80 80" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           {/* Real-time Telemetry Analytics Icon */}
@@ -58,8 +58,8 @@ export default function UncommonlyGoodResultsSection() {
     },
     {
       num: '004',
-      title: 'Prueba en Vivo & Descarga de Pesos (GGUF)',
-      desc: 'Pruebas tu IA entrenada inmediatamente en nuestro chat interactivo o descargas los pesos finales (GGUF / Safetensors) para desplegarlos en tus propios servidores sin costo por token.',
+      title: 'Live Chat Testing & Weight Download (GGUF)',
+      desc: 'Test your custom-trained AI immediately in our interactive chat or download the final weights (GGUF / Safetensors) to deploy on your own servers with zero per-token fees.',
       icon: (
         <svg width="80" height="80" viewBox="0 0 80 80" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           {/* Model Download & Open Export Icon */}
@@ -145,7 +145,7 @@ export default function UncommonlyGoodResultsSection() {
           margin: 0,
           maxWidth: '680px'
         }}>
-          Convierte la información de tu empresa en un Modelo de IA propio, entrenado y 100% tuyo.
+          Turn your enterprise data into your own proprietary AI Model, fully trained and 100% owned by you.
         </h2>
 
         {/* Right side info & CTA button */}
@@ -163,7 +163,7 @@ export default function UncommonlyGoodResultsSection() {
             lineHeight: 1.6,
             margin: 0
           }}>
-            No dependas de respuestas genéricas. Poseemos tecnología propietaria de Fine-Tuning (QLoRA) para entrenar modelos LLM con tus propios manuales, bases de datos y procesos operacionales. Prueba tu modelo en el panel o descarga los pesos en formato abierto para ejecutarlo en tu propia infraestructura.
+            Don't rely on generic responses. We possess proprietary Fine-Tuning technology (QLoRA) to train LLM models using your own manuals, databases, and operational processes. Test your model in our control panel or download the open-weight files to run it on your own infrastructure.
           </p>
 
           <button
@@ -193,7 +193,7 @@ export default function UncommonlyGoodResultsSection() {
               e.currentTarget.style.transform = 'scale(1)';
             }}
           >
-            <span>Crear & Entrenar Mi Modelo GLYNNE</span>
+            <span>Create & Train My GLYNNE Model</span>
             <span style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -228,7 +228,7 @@ export default function UncommonlyGoodResultsSection() {
           letterSpacing: '0.08em',
           textTransform: 'uppercase'
         }}>
-          / PLATAFORMA DE ENTRENAMIENTO Y DESCARGA DE MODELOS (QLoRA SFT)
+          / MODEL TRAINING & OPEN WEIGHT DOWNLOAD PLATFORM (QLoRA SFT)
         </span>
 
         <span style={{
@@ -242,7 +242,7 @@ export default function UncommonlyGoodResultsSection() {
           alignItems: 'center',
           gap: '6px'
         }}>
-          TECNOLOGÍA PROPIETARIA <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: isDark ? '#ffffff' : '#111111', display: 'inline-block' }}></span>
+          PROPRIETARY TECHNOLOGY <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: isDark ? '#ffffff' : '#111111', display: 'inline-block' }}></span>
         </span>
       </div>
 

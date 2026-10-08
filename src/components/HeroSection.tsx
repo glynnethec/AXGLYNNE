@@ -56,33 +56,40 @@ export default function HeroSection() {
           At GLYNNE, we don't build traditional software or commercialize generic tools: we engineer dedicated AI architectures. We train, fine-tune parameters, and align models using your enterprise operational data to orchestrate intelligent ecosystems that transform your business processes with total precision and governance.
         </p>
 
-        {/* Buttons */}
-        <div style={{ display: 'flex', gap: '16px', marginTop: '16px', flexWrap: 'wrap', justifyContent: 'center' }}>
+        {/* Text Links */}
+        <div style={{ display: 'flex', gap: '32px', marginTop: '24px', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
           <Link href="/Methodology" style={{
-            padding: '14px 28px',
-            backgroundColor: isDark ? '#ffffff' : '#111111',
-            color: isDark ? '#000000' : '#ffffff',
-            borderRadius: '999px',
-            textDecoration: 'none',
-            fontWeight: 600,
-            fontSize: '14px',
-            border: isDark ? '1px solid #ffffff' : '1px solid #111111',
-            transition: 'all 0.2s ease'
-          }}>
-            Explore Methodology
-          </Link>
-          <Link href="/About" style={{
-            padding: '14px 28px',
-            backgroundColor: 'transparent',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
             color: isDark ? '#ffffff' : '#111111',
-            borderRadius: '999px',
             textDecoration: 'none',
-            fontWeight: 600,
+            fontWeight: 500,
             fontSize: '14px',
-            border: isDark ? '1px solid rgba(255,255,255,0.3)' : '1px solid rgba(0,0,0,0.1)',
-            transition: 'all 0.2s ease'
-          }}>
-            Explore Architecture
+            letterSpacing: '0.01em',
+            transition: 'opacity 0.2s ease',
+          }}
+          onMouseOver={(e) => { e.currentTarget.style.opacity = '0.7'; }}
+          onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
+          >
+            Explore Methodology <span style={{ fontSize: '15px' }}>→</span>
+          </Link>
+
+          <Link href="/About" style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            color: isDark ? '#a1a1aa' : '#666666',
+            textDecoration: 'none',
+            fontWeight: 500,
+            fontSize: '14px',
+            letterSpacing: '0.01em',
+            transition: 'opacity 0.2s ease',
+          }}
+          onMouseOver={(e) => { e.currentTarget.style.opacity = '0.7'; e.currentTarget.style.color = isDark ? '#ffffff' : '#111111'; }}
+          onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.color = isDark ? '#a1a1aa' : '#666666'; }}
+          >
+            Explore Architecture <span style={{ fontSize: '15px' }}>→</span>
           </Link>
         </div>
       </div>

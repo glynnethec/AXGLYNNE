@@ -13,14 +13,15 @@ export default function OrbCardSection() {
   return (
     <div className="orb-section-container" style={{
       width: '100%',
+      minHeight: '60vh',
       display: 'flex',
       flexDirection: 'row-reverse',
       flexWrap: 'wrap',
       alignItems: 'center',
       justifyContent: 'space-between',
       gap: '40px',
-      marginTop: '0px',
-      padding: '40px 0',
+      margin: '0 auto',
+      padding: '60px 0',
       border: 'none',
       borderRadius: '24px',
       backgroundColor: 'transparent',

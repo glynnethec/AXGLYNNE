@@ -10,6 +10,7 @@ import HomeTaskAuditSection from '@/components/HomeTaskAuditSection';
 import HomeSecondAuditSection from '@/components/HomeSecondAuditSection';
 import HomeThirdAuditSection from '@/components/HomeThirdAuditSection';
 import WorkflowDiagram from '@/components/WorkflowDiagram';
+import OrbCardSection from '@/components/OrbCardSection';
 import VideoEcosystemSection from '@/components/VideoEcosystemSection';
 import Footer from '@/app/components/Footer';
 import { useTheme } from '@/lib/ThemeContext';
@@ -48,6 +49,20 @@ export default function Home() {
 
         {/* 4. HOW IS AI CONTROLLED? */}
         <WorkflowDiagram />
+
+        {/* ORB SECTION (VOICE CALL) */}
+        <div style={{
+          width: '80vw',
+          maxWidth: '80vw',
+          minHeight: '60vh',
+          display: 'flex',
+          alignItems: 'center',
+          margin: '4rem auto',
+          backgroundColor: 'transparent',
+          padding: '0'
+        }}>
+          <OrbCardSection />
+        </div>
 
         {/* 5. HOW IS THE SYSTEM BUILT? */}
         <VideoEcosystemSection />

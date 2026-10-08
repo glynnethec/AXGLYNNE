@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTheme } from '@/lib/ThemeContext';
 import UncommonlyGoodResultsSection from './UncommonlyGoodResultsSection';
-import OrbCardSection from './OrbCardSection';
+import GridAnalyticsSection from './GridAnalyticsSection';
 
 const CODE_TOKENS = [
   { t: "import ", c: "#999999" },
@@ -119,26 +119,25 @@ export default function HomeAuditSection() {
               From specialized language models to deep reasoning architectures, we develop and adapt AI algorithms tailored to your enterprise. We perform continuous fine-tuning (QLoRA) on your own corporate data so agents resolve complex operational tasks with millimeter precision.
             </p>
 
-            <div style={{ display: 'flex', gap: '16px', marginTop: '32px', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
-              <button
-                className="responsive-btn"
+            <div style={{ display: 'flex', gap: '16px', marginTop: '24px', flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center' }}>
+              <span
                 onClick={() => router.push('/ia_vailable')}
                 style={{
-                  padding: '14px 28px',
-                  borderRadius: '999px',
-                  backgroundColor: isDark ? '#ffffff' : '#111111',
-                  color: isDark ? '#000000' : '#ffffff',
-                  border: isDark ? '1px solid #ffffff' : '1px solid #111111',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  color: isDark ? '#ffffff' : '#111111',
                   fontSize: '14px',
-                  fontWeight: 600,
+                  fontWeight: 500,
                   cursor: 'pointer',
-                  transition: 'all 0.2s ease',
+                  letterSpacing: '0.01em',
+                  transition: 'opacity 0.2s ease',
                 }}
-                onMouseOver={(e) => { e.currentTarget.style.opacity = '0.85'; e.currentTarget.style.transform = 'scale(1.02)'; }}
-                onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1)'; }}
+                onMouseOver={(e) => { e.currentTarget.style.opacity = '0.7'; }}
+                onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
               >
-                Explore AI Models
-              </button>
+                Explore AI Models <span style={{ fontSize: '15px' }}>→</span>
+              </span>
             </div>
           </div>
 
@@ -167,8 +166,8 @@ export default function HomeAuditSection() {
           </div>
         </div>
 
-        {/* Orb Section (Voice Call) */}
-        <OrbCardSection />
+        {/* Grid Analytics Section (Not Just Control. Clarity.) */}
+        <GridAnalyticsSection />
 
         {/* Cognitive Automation & Dedicated AI Development */}
         <div style={{
@@ -191,26 +190,25 @@ export default function HomeAuditSection() {
           <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: isDark ? '#a1a1aa' : '#86868b', fontWeight: 300, lineHeight: 1.6, margin: 0, maxWidth: '950px' }}>
             We take your enterprise to the next level by designing advanced AI pipelines. We adapt models, fine-tune algorithms with your own operational data, and deploy governed infrastructures ready to execute massive tasks with total precision and auditability.
           </p>
-          <div style={{ display: 'flex', gap: '16px', justifyContent: 'flex-start', marginTop: '24px', flexWrap: 'wrap' }}>
-            <button
-              className="responsive-btn"
+          <div style={{ display: 'flex', gap: '24px', alignItems: 'center', marginTop: '24px', flexWrap: 'wrap' }}>
+            <span
               onClick={() => router.push('/Methodology')}
               style={{
-                padding: '14px 28px',
-                borderRadius: '999px',
-                backgroundColor: isDark ? '#ffffff' : '#111111',
-                color: isDark ? '#000000' : '#ffffff',
-                border: isDark ? '1px solid #ffffff' : '1px solid #111111',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                color: isDark ? '#ffffff' : '#111111',
                 fontSize: '14px',
                 fontWeight: 500,
                 cursor: 'pointer',
-                transition: 'all 0.2s ease',
+                letterSpacing: '0.01em',
+                transition: 'opacity 0.2s ease',
               }}
-              onMouseOver={(e) => { e.currentTarget.style.opacity = '0.85'; e.currentTarget.style.transform = 'scale(1.02)'; }}
-              onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1)'; }}
+              onMouseOver={(e) => { e.currentTarget.style.opacity = '0.7'; }}
+              onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
             >
-              Explore Methodology
-            </button>
+              Explore Methodology <span style={{ fontSize: '15px' }}>→</span>
+            </span>
 
             <button
               className="responsive-btn"
