@@ -241,17 +241,21 @@ export default function LinPromptSection({
         height: '47%',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         justifyContent: 'center',
-        paddingLeft: 'clamp(20px, 3vw, 50px)',
-        paddingRight: 'clamp(20px, 3vw, 40px)',
+        textAlign: 'center',
+        paddingLeft: 'clamp(20px, 2vw, 40px)',
+        paddingRight: 'clamp(20px, 2vw, 40px)',
         zIndex: 5,
         boxSizing: 'border-box'
       }}>
         {/* Title Block with Magenta Underline */}
         <div style={{
           position: 'relative',
-          marginBottom: '10px'
+          marginBottom: '10px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
         }}>
           <h2 style={{
             fontSize: 'clamp(22px, 3vw, 36px)',
@@ -259,7 +263,8 @@ export default function LinPromptSection({
             color: textColor,
             letterSpacing: '-0.02em',
             margin: 0,
-            lineHeight: 1.15
+            lineHeight: 1.15,
+            textAlign: 'center'
           }}>
             {customTitle}
           </h2>
@@ -268,8 +273,10 @@ export default function LinPromptSection({
           <div style={{
             position: 'absolute',
             bottom: '-4px',
-            left: 0,
+            left: '50%',
+            transform: 'translateX(-50%)',
             width: '100%',
+            maxWidth: '100%',
             display: 'flex',
             alignItems: 'center'
           }}>
@@ -286,8 +293,9 @@ export default function LinPromptSection({
           fontWeight: 300,
           lineHeight: 1.5,
           letterSpacing: '0.01em',
-          margin: '12px 0 20px 0',
-          maxWidth: '580px'
+          margin: '12px auto 20px auto',
+          maxWidth: '580px',
+          textAlign: 'center'
         }}>
           {customDescription}
         </p>
