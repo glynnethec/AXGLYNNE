@@ -1,14 +1,16 @@
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 interface ChatInputProps {
   inputValue: string;
   setInputValue: (value: string) => void;
   handleSend: (e: React.FormEvent) => void;
   hasStarted: boolean;
-  setIsPopupOpen: (isOpen: boolean) => void;
+  setIsPopupOpen?: (isOpen: boolean) => void;
 }
 
-export default function ChatInput({ inputValue, setInputValue, handleSend, hasStarted, setIsPopupOpen }: ChatInputProps) {
+export default function ChatInput({ inputValue, setInputValue, handleSend, hasStarted }: ChatInputProps) {
+  const router = useRouter();
   return (
     <div className={`chat-input-wrapper ${hasStarted ? 'started' : ''}`} style={{
       position: 'fixed',
@@ -106,8 +108,8 @@ export default function ChatInput({ inputValue, setInputValue, handleSend, hasSt
             {/* Orb Toggle Switch */}
             <button 
               type="button" 
-              onClick={() => setIsPopupOpen(true)} 
-              title="Activate Visualizer"
+              onClick={() => router.push('/AX_voice')} 
+              title="Ir a AX Voice"
               style={{ 
                 background: '#2c2c2e', 
                 border: '1px solid rgba(255,255,255,0.05)',

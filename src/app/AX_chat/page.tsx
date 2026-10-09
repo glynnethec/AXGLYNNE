@@ -6,7 +6,6 @@ import { getCurrentUser, fetchChatList, fetchChatMessages, createChatHistory, up
 import BackgroundWrapper from '@/components/BackgroundWrapper';
 import MessageList from './components/MessageList';
 import ChatInput from './components/ChatInput';
-import SettingsPopup from './components/SettingsPopup';
 import ChatSidebar from './components/ChatSidebar';
 import { useTheme } from '@/lib/ThemeContext';
 
@@ -16,7 +15,6 @@ export default function AXChatPage() {
   const [inputValue, setInputValue] = useState('');
   const [hasStarted, setHasStarted] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [showExitModal, setShowExitModal] = useState(false);
@@ -245,15 +243,9 @@ export default function AXChatPage() {
               setInputValue={setInputValue}
               handleSend={handleSend}
               hasStarted={hasStarted}
-              setIsPopupOpen={setIsPopupOpen}
             />
           </div>
         </div>
-
-        <SettingsPopup
-          isPopupOpen={isPopupOpen}
-          setIsPopupOpen={setIsPopupOpen}
-        />
 
         {/* MODAL DE CONFIRMACIÓN DE SALIDA */}
         {showExitModal && (
