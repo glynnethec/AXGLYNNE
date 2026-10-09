@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCurrentUser } from '@/lib/supabaseClient';
-import GravityBackground from '../AX_chat/components/GravityBackground';
+import BackgroundWrapper from '@/components/BackgroundWrapper';
 import VoiceOrb from './components/VoiceOrb';
 import { useTheme } from '@/lib/ThemeContext';
 
@@ -1065,7 +1065,7 @@ export default function AXVoicePage() {
         position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
         zIndex: 10
       }}>
-        <GravityBackground theme={theme}>
+        <BackgroundWrapper theme={theme}>
           {/* Centered Content */}
           <div className="ax-voice-inner" style={{
             display: 'flex',
@@ -1095,21 +1095,40 @@ export default function AXVoicePage() {
 
             {/* AI Response Text Removed for Immersive Audio Experience */}
 
-            {/* ORB */}
-            <div
-              style={{
-                animation: 'orbReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both',
-                width: '100%',
-                maxWidth: '400px',
-                aspectRatio: '1/1',
-                filter: orbState === 'listening' ? (theme === 'light' ? 'brightness(1.1) drop-shadow(0 0 30px rgba(0,0,0,0.15))' : 'brightness(1.5) drop-shadow(0 0 30px rgba(255,255,255,0.2))') : 'none',
-                transition: 'filter 0.3s ease'
-              }}
-            >
-              <VoiceOrb orbState={orbState} audioRef={audioRef} theme={theme} />
+            {/* ORB Container with Floor Shadow matching Panel */}
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '400px' }}>
+              <div
+                style={{
+                  animation: 'orbReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both',
+                  width: '100%',
+                  aspectRatio: '1/1',
+                  filter: orbState === 'listening' ? (theme === 'light' ? 'brightness(1.1) drop-shadow(0 0 30px rgba(0,0,0,0.15))' : 'brightness(1.5) drop-shadow(0 0 30px rgba(255,255,255,0.2))') : 'none',
+                  transition: 'filter 0.3s ease',
+                  zIndex: 20
+                }}
+              >
+                <VoiceOrb orbState={orbState} audioRef={audioRef} theme={theme} />
+              </div>
+
+              {/* Floor Radial Shadow matching Panel */}
+              <div 
+                style={{
+                  position: 'absolute',
+                  width: '320px',
+                  height: '320px',
+                  borderRadius: '50%',
+                  background: theme === 'light'
+                    ? 'radial-gradient(circle, rgba(15, 23, 42, 0.10) 0%, transparent 70%)'
+                    : 'radial-gradient(circle, rgba(0, 0, 0, 0.9) 0%, transparent 70%)',
+                  pointerEvents: 'none',
+                  zIndex: 10,
+                  transform: 'translateY(190px) rotateX(75deg)',
+                  transition: 'opacity 0.3s ease'
+                }}
+              />
             </div>
           </div>
-        </GravityBackground>
+        </BackgroundWrapper>
       </div>
 
       {/* MODAL DE CONFIRMACIÓN DE SALIDA */}

@@ -143,10 +143,20 @@ export default function VoiceOrb({ orbState = 'idle', theme = 'dark', audioRef }
       // Suavizado rápido para que responda instantáneamente a los fonemas
       smoothedVolume = smoothedVolume * 0.72 + rawVolume * 0.28;
       
-      const baseRadius = width * 0.28; 
+      const baseRadius = width * 0.36; 
       const radius = baseRadius;
 
       ctx.clearRect(0, 0, width, height);
+
+      // Base sphere background (matching LiquidOrb in Panel)
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      ctx.fillStyle = currentTheme === 'light' ? '#ffffff' : '#000000';
+      ctx.fill();
+
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = currentTheme === 'light' ? 'rgba(0, 0, 0, 0.15)' : 'rgba(255, 255, 255, 0.05)';
+      ctx.stroke();
 
       // Rotación idéntica a LiquidOrb en el Panel
       // X: -20° tilt, Y: giro continuo (0.2 rad/s) + 35° base, Z: PI/2 para vértices horizontales
