@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { getCurrentUser } from '@/lib/supabaseClient';
 import Header from '@/app/components/Header';
 import Footer from '@/app/components/Footer';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
@@ -248,6 +249,20 @@ export default function LibraryModelPage() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS
+  useEffect(() => {
+    const checkAuth = async () => {
+      const user = await getCurrentUser();
+      if (!user) {
+        router.replace('/login');
+      } else {
+        setIsAuthenticated(true);
+      }
+    };
+    checkAuth();
+  }, [router]);
 
   // Modal de confirmación al intentar salir
   const [showExitModal, setShowExitModal] = useState(false);
@@ -323,6 +338,8 @@ export default function LibraryModelPage() {
     const matchesCategory = selectedCategory === 'All' || m.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  if (!isAuthenticated) return null;
 
   return (
     <>

@@ -34,7 +34,24 @@ export default function AXVoicePage() {
   const [hoursUntilReset, setHoursUntilReset] = useState<number>(48);
 
   const [userId, setUserId] = useState<string>('default_user');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+
+  // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS
+  useEffect(() => {
+    const checkUser = async () => {
+      const user = await getCurrentUser();
+      if (!user) {
+        router.replace('/login');
+      } else {
+        setIsAuthenticated(true);
+        if (user.id) {
+          setUserId(user.id);
+        }
+      }
+    };
+    checkUser();
+  }, [router]);
 
   const aiResponseRef = useRef(aiResponse);
   const isMutedRef = useRef(isMuted);
@@ -788,6 +805,8 @@ export default function AXVoicePage() {
       } catch (e) { }
     }
   }, [userId, isSessionActive, language]);
+
+  if (!isAuthenticated) return null;
 
   return (
     <div className="ax-voice-root" data-theme={theme} style={{
