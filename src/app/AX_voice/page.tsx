@@ -291,8 +291,13 @@ export default function AXVoicePage() {
             listeningSilenceHits = 0;
           }
         }, 50);
-      } catch (err) {
-        console.warn('Microphone VAD initialization error:', err);
+      } catch (err: any) {
+        if (err?.name === 'NotAllowedError' || err?.name === 'PermissionDeniedError') {
+          setIsSessionActive(false);
+          setOrbState('idle');
+        } else {
+          console.warn('Microphone VAD initialization error:', err);
+        }
       }
     };
 
@@ -356,10 +361,13 @@ export default function AXVoicePage() {
         };
 
         recognition.onerror = (event: any) => {
-          console.error('Speech recognition error', event.error);
           if (event.error === 'no-speech' && isSessionActiveRef.current) {
             // Ignorar no-speech
+          } else if (event.error === 'not-allowed') {
+            setIsSessionActive(false);
+            setOrbState('idle');
           } else {
+            console.error('Speech recognition error', event.error);
             setIsSessionActive(false);
             setOrbState('idle');
           }
