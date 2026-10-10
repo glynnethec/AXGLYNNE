@@ -118,16 +118,9 @@ export default function AXVoicePage() {
     }
   }, [language]);
 
-  // Persistent language selection per tab session (sessionStorage)
+  // Ensure modal always appears on fresh entry into AX_voice
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const savedLang = sessionStorage.getItem('ax_voice_language');
-        if (savedLang === 'es' || savedLang === 'en') {
-          setLanguage(savedLang);
-        }
-      } catch (e) { }
-    }
+    setLanguage(null);
   }, []);
 
   const handleSelectLanguage = (lang: 'es' | 'en') => {
@@ -814,152 +807,186 @@ export default function AXVoicePage() {
       height: '100dvh',
       position: 'relative',
       overflow: 'hidden',
-      backgroundColor: theme === 'light' ? '#f8f9fc' : '#000000',
-      touchAction: 'none'
+      backgroundColor: theme === 'light' ? '#f5f5f7' : '#0b0b0d'
     }}>
-
-      {/* 🌐 ULTRA-STYLIZED LANGUAGE SELECTION MODAL */}
+      {/* 🌐 PANEL-STYLED LANGUAGE SELECTION MODAL */}
       {language === null && (
         <div style={{
           position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          background: theme === 'light' ? 'rgba(245, 245, 247, 0.75)' : 'rgba(0, 0, 0, 0.75)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
-          padding: '20px'
+          background: theme === 'light' ? 'rgba(255, 255, 255, 0.75)' : 'rgba(0, 0, 0, 0.85)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10000,
+          padding: '20px',
+          animation: 'fadeIn 0.25s ease'
         }}>
           <div style={{
-            background: theme === 'light' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(18, 18, 22, 0.95)',
-            padding: '36px 32px',
-            borderRadius: '28px',
-            textAlign: 'center',
-            maxWidth: '380px',
+            position: 'relative',
+            backgroundColor: theme === 'light' ? '#ffffff' : '#000000',
+            backgroundImage: theme === 'light'
+              ? 'radial-gradient(rgba(0, 0, 0, 0.15) 1px, transparent 1px)'
+              : 'radial-gradient(rgba(255, 255, 255, 0.25) 1px, transparent 1px)',
+            backgroundSize: '8px 8px',
+            border: theme === 'light' ? '1px solid rgba(0, 0, 0, 0.25)' : '1px solid rgba(255, 255, 255, 0.25)',
+            borderTop: theme === 'light' ? '1px solid rgba(0, 0, 0, 0.4)' : '1px solid rgba(255, 255, 255, 0.4)',
+            borderRadius: '6px',
+            padding: '32px 28px',
+            maxWidth: '400px',
             width: '100%',
-            border: theme === 'light' ? '1px solid rgba(0, 0, 0, 0.08)' : '1px solid rgba(255, 255, 255, 0.08)',
+            textAlign: 'center',
             boxShadow: theme === 'light'
-              ? '0 24px 48px -12px rgba(15, 23, 42, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.8) inset'
-              : '0 24px 60px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05) inset',
+              ? '0 20px 50px rgba(0, 0, 0, 0.12), inset 0 0 30px rgba(0, 0, 0, 0.02)'
+              : '0 24px 60px rgba(0, 0, 0, 0.85), inset 0 0 40px rgba(255, 255, 255, 0.02)',
             display: 'flex',
             flexDirection: 'column',
-            position: 'relative',
-            overflow: 'hidden'
+            gap: '24px',
+            animation: 'scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1)'
           }}>
-            {/* Ambient subtle glow (Monochrome) */}
+
+            {/* Top Bar Terminal Header Decorator */}
             <div style={{
-              position: 'absolute',
-              top: '-60px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '180px',
-              height: '180px',
-              background: theme === 'light'
-                ? 'radial-gradient(circle, rgba(0, 0, 0, 0.03) 0%, rgba(0,0,0,0) 70%)'
-                : 'radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, rgba(0,0,0,0) 70%)',
-              pointerEvents: 'none',
-              borderRadius: '50%'
-            }} />
-
-            {/* Centered GLYNNE SVG Logo without container */}
-            <svg
-              width="36"
-              height="36"
-              viewBox="0 0 500 500"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              style={{ color: theme === 'light' ? '#1d1d1f' : '#f5f5f7' }}
-            >
-              <path d="M 50 248.252 L 50 456.751 192.750 457.379 C 271.263 457.725, 361.262 458.287, 392.750 458.628 L 450 459.248 L 450 250.748 L 450 42.249 307.250 41.621 C 228.737 41.275, 138.738 40.713, 107.250 40.372 L 50 39.752 50 248.252 M 67 248.291 L 67 440.765 108.250 441.368 C 130.938 441.700, 213.287 442.244, 291.250 442.577 L 433 443.184 433 250.709 L 433 58.235 391.750 57.632 C 369.063 57.300, 286.712 56.756, 208.750 56.423 L 67 55.816 67 248.291 M 128.116 83.980 C 107.992 89.424, 91.038 105.784, 83.655 126.882 C 81.077 134.249, 80.576 137.340, 80.204 148.180 C 79.673 163.622, 81.383 172.548, 87.025 183.787 C 93.772 197.229, 104.680 208.233, 117.500 214.531 C 127.055 219.225, 134.751 221, 145.550 221 C 174.345 221, 198.757 203.773, 206.388 178.068 C 207.554 174.140, 208 168.537, 208 157.818 L 208 143 176.500 143 L 145 143 145 155 L 145 167 160.500 167 C 177.973 167, 177.379 166.666, 174.859 175.078 C 173.124 180.868, 168.620 185.570, 161.405 189.122 C 148.447 195.501, 134.730 192.833, 124.556 181.956 C 108.755 165.064, 109.516 135.415, 126.170 119.022 C 133.040 112.260, 140.029 109.650, 149.673 110.246 C 159.182 110.834, 166.448 114.382, 172.726 121.503 L 177.445 126.854 184.577 119.177 C 188.499 114.955, 192.964 110.008, 194.498 108.185 L 197.288 104.869 192.894 100.309 C 186.535 93.709, 177.818 88.354, 168.578 85.369 C 157.254 81.711, 138.840 81.079, 128.116 83.980 M 221 151.500 L 221 219 260 219 L 299 219 299 205.500 L 299 192 L 275.500 192 L 252 192 252 138 L 252 84 236.500 84 L 221 84 221 151.500 M 299 84.506 C 299 84.785, 310.025 101.546, 323.500 121.754 L 348 158.496 348 188.748 L 348 219 L 363.500 219 L 379 219 L 379.001 189.250 L 379.001 159.500 404 122 L 429 84.500 410.809 84.227 C 397.075 84.020, 392.328 84.265, 391.434 85.227 C 390.782 85.927, 384.737 95.050, 378 105.500 C 371.263 115.950, 365.244 125.032, 364.625 125.682 C 363.777 126.573, 360.071 121.580, 349.595 105.432 L 335.691 84 317.345 84 C 307.255 84, 299 84.228, 299 84.506 M 85 313 L 85 377 99.989 377 L 114.977 377 L 115.239 337.600 L 115.500 298.201 140.825 337.600 L 166.150 377 L 181.075 377 L 196 377 196 313 L 196 249 L 181.012 249 L 166.023 249 165.762 288.132 L 165.500 327.264 L 140.500 288.179 L 115.500 249.094 L 100.250 249.047 L 85 249 85 313 M 214 313 L 214 377 L 228.988 377 L 243.977 377 L 244.238 337.996 L 244.500 298.993 269.500 337.975 L 294.500 376.956 L 309.250 376.978 L 324 377 L 324 313 L 324 249 L 309.511 249 L 295.023 249 L 294.761 288.502 L 294.500 328.005 L 269.115 288.502 L 243.730 249 L 228.865 249 L 214 249 214 313 M 343 313 L 343 377 L 380.030 377 L 417.060 377 L 416.780 364.250 L 416.500 351.500 394.250 351.231 L 372 350.962 L 372 338.481 L 372 326 L 393.500 326 L 415 326 L 415 313 L 415 300 L 393.500 300 L 372 300 L 372 287.519 L 372 275.038 L 394.250 274.769 L 416.500 274.500 L 416.780 261.750 L 417.060 249 L 380.030 249 L 343 249 L 343 313" stroke="none" fill="currentColor" fillRule="evenodd" />
-            </svg>
-
-            {/* Title & Subtitle */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              <h2 style={{
-                color: theme === 'light' ? '#1d1d1f' : '#f5f5f7',
-                fontSize: '22px',
-                fontWeight: 700,
-                letterSpacing: '-0.02em',
-                fontFamily: "'Outfit', var(--font-geist-sans), 'Inter', sans-serif",
-                margin: 0
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '100%',
+              paddingBottom: '12px',
+              borderBottom: theme === 'light' ? '1px solid rgba(0, 0, 0, 0.1)' : '1px solid rgba(255, 255, 255, 0.1)'
+            }}>
+              <div style={{ display: 'flex', gap: '6px' }}>
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: theme === 'light' ? '#000' : '#ff5f56' }} />
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: theme === 'light' ? 'rgba(0,0,0,0.4)' : '#ffbd2e' }} />
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: theme === 'light' ? 'rgba(0,0,0,0.2)' : '#27c93f' }} />
+              </div>
+              <span style={{
+                fontFamily: "var(--font-orbitron), 'SF Mono', Monaco, monospace",
+                fontSize: '10px',
+                fontWeight: 600,
+                letterSpacing: '0.15em',
+                color: theme === 'light' ? '#64748b' : '#8e8e93',
+                textTransform: 'uppercase'
               }}>
-                AX Voice
-              </h2>
-              <p style={{
-                color: theme === 'light' ? '#86868b' : '#a1a1aa',
-                fontSize: '13px',
-                fontWeight: 400,
-                fontFamily: "var(--font-geist-sans), 'Inter', sans-serif",
-                margin: 0,
-                lineHeight: '1.4',
-                letterSpacing: '-0.01em'
-              }}>
-                Selecciona tu idioma / Select your language
-              </p>
+                SYSTEM // LANGUAGE PROTOCOL
+              </span>
+            </div>
+
+            {/* GLYNNE SVG Logo + Header */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '14px' }}>
+              <svg
+                width="38"
+                height="38"
+                viewBox="0 0 500 500"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                style={{ color: theme === 'light' ? '#000000' : '#ffffff' }}
+              >
+                <path d="M 50 248.252 L 50 456.751 192.750 457.379 C 271.263 457.725, 361.262 458.287, 392.750 458.628 L 450 459.248 L 450 250.748 L 450 42.249 307.250 41.621 C 228.737 41.275, 138.738 40.713, 107.250 40.372 L 50 39.752 50 248.252 M 67 248.291 L 67 440.765 108.250 441.368 C 130.938 441.700, 213.287 442.244, 291.250 442.577 L 433 443.184 433 250.709 L 433 58.235 391.750 57.632 C 369.063 57.300, 286.712 56.756, 208.750 56.423 L 67 55.816 67 248.291 M 128.116 83.980 C 107.992 89.424, 91.038 105.784, 83.655 126.882 C 81.077 134.249, 80.576 137.340, 80.204 148.180 C 79.673 163.622, 81.383 172.548, 87.025 183.787 C 93.772 197.229, 104.680 208.233, 117.500 214.531 C 127.055 219.225, 134.751 221, 145.550 221 C 174.345 221, 198.757 203.773, 206.388 178.068 C 207.554 174.140, 208 168.537, 208 157.818 L 208 143 176.500 143 L 145 143 145 155 L 145 167 160.500 167 C 177.973 167, 177.379 166.666, 174.859 175.078 C 173.124 180.868, 168.620 185.570, 161.405 189.122 C 148.447 195.501, 134.730 192.833, 124.556 181.956 C 108.755 165.064, 109.516 135.415, 126.170 119.022 C 133.040 112.260, 140.029 109.650, 149.673 110.246 C 159.182 110.834, 166.448 114.382, 172.726 121.503 L 177.445 126.854 184.577 119.177 C 188.499 114.955, 192.964 110.008, 194.498 108.185 L 197.288 104.869 192.894 100.309 C 186.535 93.709, 177.818 88.354, 168.578 85.369 C 157.254 81.711, 138.840 81.079, 128.116 83.980 M 221 151.500 L 221 219 260 219 L 299 219 L 299 205.500 L 299 192 L 275.500 192 L 252 192 252 138 L 252 84 236.500 84 L 221 84 221 151.500 M 299 84.506 C 299 84.785, 310.025 101.546, 323.500 121.754 L 348 158.496 348 188.748 L 348 219 L 363.500 219 L 379 219 L 379.001 189.250 L 379.001 159.500 404 122 L 429 84.500 410.809 84.227 C 397.075 84.020, 392.328 84.265, 391.434 85.227 C 390.782 85.927, 384.737 95.050, 378 105.500 C 371.263 115.950, 365.244 125.032, 364.625 125.682 C 363.777 126.573, 360.071 121.580, 349.595 105.432 L 335.691 84 317.345 84 C 307.255 84, 299 84.228, 299 84.506 M 85 313 L 85 377 99.989 377 L 114.977 377 L 115.239 337.600 L 115.500 298.201 140.825 337.600 L 166.150 377 L 181.075 377 L 196 377 196 313 L 196 249 L 181.012 249 L 166.023 249 165.762 288.132 L 165.500 327.264 L 140.500 288.179 L 115.500 249.094 L 100.250 249.047 L 85 249 85 313 M 214 313 L 214 377 L 228.988 377 L 243.977 377 L 244.238 337.996 L 244.500 298.993 269.500 337.975 L 294.500 376.956 L 309.250 376.978 L 324 377 L 324 313 L 324 249 L 309.511 249 L 295.023 249 L 294.761 288.502 L 294.500 328.005 L 269.115 288.502 L 243.730 249 L 228.865 249 L 214 249 214 313 M 343 313 L 343 377 L 380.030 377 L 417.060 377 L 416.780 364.250 L 416.500 351.500 394.250 351.231 L 372 350.962 L 372 338.481 L 372 326 L 393.500 326 L 415 326 L 415 313 L 415 300 L 393.500 300 L 372 300 L 372 287.519 L 372 275.038 L 394.250 274.769 L 416.500 274.500 L 416.780 261.750 L 417.060 249 L 380.030 249 L 343 249 L 343 313" stroke="none" fill="currentColor" fillRule="evenodd" />
+              </svg>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <h2 style={{
+                  color: theme === 'light' ? '#000000' : '#ffffff',
+                  fontSize: '18px',
+                  fontWeight: 700,
+                  letterSpacing: '0.12em',
+                  fontFamily: "var(--font-orbitron), 'SF Mono', Monaco, monospace",
+                  textTransform: 'uppercase',
+                  margin: 0
+                }}>
+                  AX Voice Core
+                </h2>
+                <p style={{
+                  color: theme === 'light' ? '#475569' : 'rgba(255, 255, 255, 0.7)',
+                  fontSize: '11px',
+                  fontWeight: 500,
+                  fontFamily: "'SF Mono', Monaco, monospace",
+                  margin: 0,
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase'
+                }}>
+                  SELECCIONA TU IDIOMA / SELECT YOUR LANGUAGE
+                </p>
+              </div>
             </div>
 
             {/* Language Selection Options */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
               {/* Option 1: Spanish */}
               <button
                 onClick={() => handleSelectLanguage('es')}
                 style={{
                   width: '100%',
-                  padding: '14px 16px',
-                  borderRadius: '16px',
-                  background: theme === 'light' ? 'rgba(248, 250, 252, 0.8)' : 'rgba(255, 255, 255, 0.03)',
-                  border: theme === 'light' ? '1px solid rgba(226, 232, 240, 0.8)' : '1px solid rgba(255, 255, 255, 0.07)',
-                  color: theme === 'light' ? '#0f172a' : '#ffffff',
+                  padding: '14px 18px',
+                  borderRadius: '4px',
+                  background: theme === 'light' ? '#ffffff' : '#000000',
+                  border: theme === 'light' ? '1px solid rgba(0, 0, 0, 0.3)' : '1px solid rgba(255, 255, 255, 0.3)',
+                  color: theme === 'light' ? '#000000' : '#ffffff',
                   cursor: 'pointer',
                   transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   gap: '12px',
-                  outline: 'none'
+                  outline: 'none',
+                  fontFamily: "'SF Mono', Monaco, monospace"
                 }}
                 onMouseOver={(e) => {
-                  e.currentTarget.style.background = theme === 'light' ? 'rgba(0, 0, 0, 0.04)' : 'rgba(255, 255, 255, 0.08)';
-                  e.currentTarget.style.borderColor = theme === 'light' ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.25)';
+                  e.currentTarget.style.background = theme === 'light' ? '#000000' : '#ffffff';
+                  e.currentTarget.style.color = theme === 'light' ? '#ffffff' : '#000000';
+                  e.currentTarget.style.borderColor = theme === 'light' ? '#000000' : '#ffffff';
                   e.currentTarget.style.transform = 'translateY(-1px)';
-                  e.currentTarget.style.boxShadow = theme === 'light' ? '0 4px 12px rgba(0, 0, 0, 0.05)' : '0 4px 16px rgba(0, 0, 0, 0.4)';
+                  const subtext = e.currentTarget.querySelector('.lang-subtext') as HTMLElement;
+                  if (subtext) subtext.style.color = theme === 'light' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)';
+                  const badge = e.currentTarget.querySelector('.lang-badge') as HTMLElement;
+                  if (badge) {
+                    badge.style.background = theme === 'light' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.15)';
+                    badge.style.color = theme === 'light' ? '#ffffff' : '#000000';
+                  }
                 }}
                 onMouseOut={(e) => {
-                  e.currentTarget.style.background = theme === 'light' ? 'rgba(248, 250, 252, 0.8)' : 'rgba(255, 255, 255, 0.03)';
-                  e.currentTarget.style.borderColor = theme === 'light' ? 'rgba(226, 232, 240, 0.8)' : 'rgba(255, 255, 255, 0.07)';
+                  e.currentTarget.style.background = theme === 'light' ? '#ffffff' : '#000000';
+                  e.currentTarget.style.color = theme === 'light' ? '#000000' : '#ffffff';
+                  e.currentTarget.style.borderColor = theme === 'light' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.3)';
                   e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'none';
+                  const subtext = e.currentTarget.querySelector('.lang-subtext') as HTMLElement;
+                  if (subtext) subtext.style.color = theme === 'light' ? '#64748b' : 'rgba(255, 255, 255, 0.6)';
+                  const badge = e.currentTarget.querySelector('.lang-badge') as HTMLElement;
+                  if (badge) {
+                    badge.style.background = theme === 'light' ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.1)';
+                    badge.style.color = theme === 'light' ? '#000000' : '#ffffff';
+                  }
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
                   {/* Colombia SVG Flag */}
                   <div style={{
-                    width: '24px',
+                    width: '26px',
                     height: '18px',
-                    borderRadius: '4px',
+                    borderRadius: '2px',
                     overflow: 'hidden',
                     display: 'flex',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-                    border: '1px solid rgba(255,255,255,0.1)',
+                    border: '1px solid rgba(255,255,255,0.2)',
                     flexShrink: 0
                   }}>
-                    <svg width="24" height="18" viewBox="0 0 24 18" fill="none">
+                    <svg width="26" height="18" viewBox="0 0 24 18" fill="none">
                       <rect width="24" height="9" fill="#FCD116" />
                       <rect y="9" width="24" height="4.5" fill="#003893" />
                       <rect y="13.5" width="24" height="4.5" fill="#CE1126" />
                     </svg>
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '1px' }}>
-                    <span style={{ fontSize: '14px', fontWeight: 600, letterSpacing: '-0.01em' }}>Español</span>
-                    <span style={{ fontSize: '11px', color: theme === 'light' ? '#64748b' : '#94a3b8' }}>Spanish</span>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '2px' }}>
+                    <span style={{ fontSize: '13px', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase' }}>Español</span>
+                    <span className="lang-subtext" style={{ fontSize: '10px', color: theme === 'light' ? '#64748b' : 'rgba(255, 255, 255, 0.6)', transition: 'color 0.2s ease' }}>NATIVO / LATAM</span>
                   </div>
                 </div>
-                <span style={{
+                <span className="lang-badge" style={{
                   fontSize: '11px',
                   fontWeight: 700,
-                  padding: '4px 10px',
-                  borderRadius: '99px',
-                  background: theme === 'light' ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.08)',
-                  color: theme === 'light' ? '#475569' : '#cbd5e1',
-                  letterSpacing: '0.05em'
+                  padding: '3px 9px',
+                  borderRadius: '3px',
+                  background: theme === 'light' ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.1)',
+                  color: theme === 'light' ? '#000000' : '#ffffff',
+                  letterSpacing: '0.08em',
+                  transition: 'all 0.2s ease'
                 }}>ES</span>
               </button>
 
@@ -968,45 +995,59 @@ export default function AXVoicePage() {
                 onClick={() => handleSelectLanguage('en')}
                 style={{
                   width: '100%',
-                  padding: '14px 16px',
-                  borderRadius: '16px',
-                  background: theme === 'light' ? 'rgba(248, 250, 252, 0.8)' : 'rgba(255, 255, 255, 0.03)',
-                  border: theme === 'light' ? '1px solid rgba(226, 232, 240, 0.8)' : '1px solid rgba(255, 255, 255, 0.07)',
-                  color: theme === 'light' ? '#0f172a' : '#ffffff',
+                  padding: '14px 18px',
+                  borderRadius: '4px',
+                  background: theme === 'light' ? '#ffffff' : '#000000',
+                  border: theme === 'light' ? '1px solid rgba(0, 0, 0, 0.3)' : '1px solid rgba(255, 255, 255, 0.3)',
+                  color: theme === 'light' ? '#000000' : '#ffffff',
                   cursor: 'pointer',
                   transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   gap: '12px',
-                  outline: 'none'
+                  outline: 'none',
+                  fontFamily: "'SF Mono', Monaco, monospace"
                 }}
                 onMouseOver={(e) => {
-                  e.currentTarget.style.background = theme === 'light' ? 'rgba(0, 0, 0, 0.04)' : 'rgba(255, 255, 255, 0.08)';
-                  e.currentTarget.style.borderColor = theme === 'light' ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.25)';
+                  e.currentTarget.style.background = theme === 'light' ? '#000000' : '#ffffff';
+                  e.currentTarget.style.color = theme === 'light' ? '#ffffff' : '#000000';
+                  e.currentTarget.style.borderColor = theme === 'light' ? '#000000' : '#ffffff';
                   e.currentTarget.style.transform = 'translateY(-1px)';
-                  e.currentTarget.style.boxShadow = theme === 'light' ? '0 4px 12px rgba(0, 0, 0, 0.05)' : '0 4px 16px rgba(0, 0, 0, 0.4)';
+                  const subtext = e.currentTarget.querySelector('.lang-subtext') as HTMLElement;
+                  if (subtext) subtext.style.color = theme === 'light' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)';
+                  const badge = e.currentTarget.querySelector('.lang-badge') as HTMLElement;
+                  if (badge) {
+                    badge.style.background = theme === 'light' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.15)';
+                    badge.style.color = theme === 'light' ? '#ffffff' : '#000000';
+                  }
                 }}
                 onMouseOut={(e) => {
-                  e.currentTarget.style.background = theme === 'light' ? 'rgba(248, 250, 252, 0.8)' : 'rgba(255, 255, 255, 0.03)';
-                  e.currentTarget.style.borderColor = theme === 'light' ? 'rgba(226, 232, 240, 0.8)' : 'rgba(255, 255, 255, 0.07)';
+                  e.currentTarget.style.background = theme === 'light' ? '#ffffff' : '#000000';
+                  e.currentTarget.style.color = theme === 'light' ? '#000000' : '#ffffff';
+                  e.currentTarget.style.borderColor = theme === 'light' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.3)';
                   e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'none';
+                  const subtext = e.currentTarget.querySelector('.lang-subtext') as HTMLElement;
+                  if (subtext) subtext.style.color = theme === 'light' ? '#64748b' : 'rgba(255, 255, 255, 0.6)';
+                  const badge = e.currentTarget.querySelector('.lang-badge') as HTMLElement;
+                  if (badge) {
+                    badge.style.background = theme === 'light' ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.1)';
+                    badge.style.color = theme === 'light' ? '#000000' : '#ffffff';
+                  }
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
                   {/* USA SVG Flag */}
                   <div style={{
-                    width: '24px',
+                    width: '26px',
                     height: '18px',
-                    borderRadius: '4px',
+                    borderRadius: '2px',
                     overflow: 'hidden',
                     display: 'flex',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-                    border: '1px solid rgba(255,255,255,0.1)',
+                    border: '1px solid rgba(255,255,255,0.2)',
                     flexShrink: 0
                   }}>
-                    <svg width="24" height="18" viewBox="0 0 24 18" fill="none">
+                    <svg width="26" height="18" viewBox="0 0 24 18" fill="none">
                       <rect width="24" height="18" fill="#B22234" />
                       <path d="M0 2.77h24M0 5.54h24M0 8.3h24M0 11.07h24M0 13.84h24M0 16.6h24" stroke="#FFFFFF" strokeWidth="1.38" />
                       <rect width="9.6" height="9.7" fill="#3C3B6E" />
@@ -1020,19 +1061,20 @@ export default function AXVoicePage() {
                       <circle cx="7.2" cy="7.2" r="0.7" fill="#FFF" />
                     </svg>
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '1px' }}>
-                    <span style={{ fontSize: '14px', fontWeight: 600, letterSpacing: '-0.01em' }}>English</span>
-                    <span style={{ fontSize: '11px', color: theme === 'light' ? '#64748b' : '#94a3b8' }}>Inglés</span>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '2px' }}>
+                    <span style={{ fontSize: '13px', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase' }}>English</span>
+                    <span className="lang-subtext" style={{ fontSize: '10px', color: theme === 'light' ? '#64748b' : 'rgba(255, 255, 255, 0.6)', transition: 'color 0.2s ease' }}>GLOBAL / US</span>
                   </div>
                 </div>
-                <span style={{
+                <span className="lang-badge" style={{
                   fontSize: '11px',
                   fontWeight: 700,
-                  padding: '4px 10px',
-                  borderRadius: '99px',
-                  background: theme === 'light' ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.08)',
-                  color: theme === 'light' ? '#475569' : '#cbd5e1',
-                  letterSpacing: '0.05em'
+                  padding: '3px 9px',
+                  borderRadius: '3px',
+                  background: theme === 'light' ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.1)',
+                  color: theme === 'light' ? '#000000' : '#ffffff',
+                  letterSpacing: '0.08em',
+                  transition: 'all 0.2s ease'
                 }}>EN</span>
               </button>
             </div>
@@ -1158,37 +1200,39 @@ export default function AXVoicePage() {
         </BackgroundWrapper>
       </div>
 
-      {/* MODAL DE CONFIRMACIÓN DE SALIDA */}
-      {showExitModal && (
-        <div className="md-logout-overlay">
-          <div className="md-logout-modal">
-            <h3>End Session?</h3>
-            <p>Your voice session is securely saved. Are you sure you want to leave the immersive interface?</p>
-            <div className="md-logout-actions">
-              <button className="md-btn-cancel" onClick={() => setShowExitModal(false)}>Cancel</button>
-              <button className="md-btn-confirm" onClick={() => {
-                window.onbeforeunload = null;
-                // APAGAR MICROFONO Y AUDIO AL SALIR
-                setIsSessionActive(false);
-                setOrbState('idle');
-                if (recognitionRef.current) {
-                  recognitionRef.current.stop();
-                }
-                if (audioRef.current) {
-                  audioRef.current.pause();
-                }
-                if (window.speechSynthesis) {
-                  window.speechSynthesis.cancel();
-                }
-                router.push('/Panel');
-              }}>Exit Voice</button>
-            </div>
+      {/* MODAL DE CONFIRMACIÓN DE SALIDA */ }
+  {
+    showExitModal && (
+      <div className="md-logout-overlay">
+        <div className="md-logout-modal">
+          <h3>End Session?</h3>
+          <p>Your voice session is securely saved. Are you sure you want to leave the immersive interface?</p>
+          <div className="md-logout-actions">
+            <button className="md-btn-cancel" onClick={() => setShowExitModal(false)}>Cancel</button>
+            <button className="md-btn-confirm" onClick={() => {
+              window.onbeforeunload = null;
+              // APAGAR MICROFONO Y AUDIO AL SALIR
+              setIsSessionActive(false);
+              setOrbState('idle');
+              if (recognitionRef.current) {
+                recognitionRef.current.stop();
+              }
+              if (audioRef.current) {
+                audioRef.current.pause();
+              }
+              if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+              }
+              router.push('/Panel');
+            }}>Exit Voice</button>
           </div>
         </div>
-      )}
+      </div>
+    )
+  }
 
-      <style dangerouslySetInnerHTML={{
-        __html: `
+  <style dangerouslySetInnerHTML={{
+    __html: `
         /* ── Body background para que no haya bleed blanco ── */
         html, body {
           background-color: ${theme === 'light' ? '#f5f5f7' : '#0b0b0d'} !important;
@@ -1245,8 +1289,8 @@ export default function AXVoicePage() {
           position: relative;
           background-color: ${theme === 'light' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(18, 18, 22, 0.95)'};
           background-image: ${theme === 'light'
-            ? 'linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px)'
-            : 'linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px)'};
+        ? 'linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px)'
+        : 'linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px)'};
           background-size: 20px 20px, 20px 20px;
           border: 1px solid ${theme === 'light' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.1)'};
           border-radius: 20px;
@@ -1255,8 +1299,8 @@ export default function AXVoicePage() {
           width: 90%;
           text-align: center;
           box-shadow: ${theme === 'light'
-            ? '0 20px 50px rgba(0, 0, 0, 0.1)'
-            : '0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 40px rgba(255, 255, 255, 0.02)'};
+        ? '0 20px 50px rgba(0, 0, 0, 0.1)'
+        : '0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 40px rgba(255, 255, 255, 0.02)'};
           animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
