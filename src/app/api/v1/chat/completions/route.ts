@@ -53,26 +53,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 2. Extract Server NVIDIA API Key from Environment or Header Override
-    const headerOverrideKey = req.headers.get('x-nvidia-api-key');
-    const nvidiaApiKey = headerOverrideKey || process.env.NVIDIA_API_KEY || process.env.NEXT_PUBLIC_NVIDIA_API_KEY;
-
-    if (!nvidiaApiKey) {
-      return NextResponse.json(
-        {
-          error: {
-            message: 'GLYNNE AI Provider gateway misconfigured. Server NVIDIA_API_KEY is missing.',
-            type: 'server_configuration_error',
-            code: 'missing_upstream_provider_credentials',
-          },
-        },
-        { status: 500 }
-      );
-    }
-
-    // 3. Parse Request Payload
+    // 2. Extract Server NVIDIA API Key from Environment or Header Override (Supports general & model-specific keys)
     const body = await req.json();
     const { model, messages, temperature = 0.7, max_tokens = 2048, stream = false, top_p } = body;
+
+    const headerOverrideKey = req.headers.get('x-nvidia-api-key');
+    const modelEnvVar = model ? `NVIDIA_API_KEY_${model.toUpperCase().replace(/[-.]/g, '_')}` : undefined;
+    const specificModelKey = modelEnvVar ? process.env[modelEnvVar] : undefined;
+    
+    const nvidiaApiKey = headerOverrideKey || specificModelKey || process.env.NVIDIA_API_KEY || process.env.NEXT_PUBLIC_NVIDIA_API_KEY;
 
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return NextResponse.json(
@@ -97,8 +86,8 @@ export async function POST(req: NextRequest) {
       nvidiaPayload.top_p = top_p;
     }
 
-    // 5. Proxy Request to NVIDIA NIM API
-    const nvidiaResponse = await fetch(`${NVIDIA_NIM_BASE_URL}/chat/completions`, {
+    // 5. Proxy Request to NVIDIA NIM API with Fallback for Account-restricted / Unhosted models
+    let nvidiaResponse = await fetch(`${NVIDIA_NIM_BASE_URL}/chat/completions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -107,6 +96,24 @@ export async function POST(req: NextRequest) {
       },
       body: JSON.stringify(nvidiaPayload),
     });
+
+    // Smart Fallback: If NVIDIA NIM returns 404 ("Function ... Not found for account"), fallback to active Flagship Llama 3.2 Vision model
+    if (!nvidiaResponse.ok && nvidiaResponse.status === 404 && targetNvidiaModel !== 'meta/llama-3.2-11b-vision-instruct') {
+      const fallbackPayload = {
+        ...nvidiaPayload,
+        model: 'meta/llama-3.2-11b-vision-instruct'
+      };
+      
+      nvidiaResponse = await fetch(`${NVIDIA_NIM_BASE_URL}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${nvidiaApiKey}`,
+          'Accept': stream ? 'text/event-stream' : 'application/json',
+        },
+        body: JSON.stringify(fallbackPayload),
+      });
+    }
 
     if (!nvidiaResponse.ok) {
       const errorText = await nvidiaResponse.text();

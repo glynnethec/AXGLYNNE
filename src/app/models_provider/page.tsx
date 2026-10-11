@@ -7,17 +7,18 @@ import { getCurrentUser } from '@/lib/supabaseClient';
 import { useTheme } from '@/lib/ThemeContext';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
 import TrainModelBrandBlocks from '@/components/TrainModelBrandBlocks';
+import FleekStyleArchitectureSection from '@/components/FleekStyleArchitectureSection';
 import Footer from '@/app/components/Footer';
-import { 
-  FiKey, 
-  FiCpu, 
-  FiCopy, 
-  FiCheck, 
-  FiShield, 
-  FiZap, 
-  FiCode, 
-  FiLayers, 
-  FiArrowRight, 
+import {
+  FiKey,
+  FiCpu,
+  FiCopy,
+  FiCheck,
+  FiShield,
+  FiZap,
+  FiCode,
+  FiLayers,
+  FiArrowRight,
   FiActivity,
   FiSliders,
   FiAlertTriangle,
@@ -29,7 +30,10 @@ import {
   FiTrash2,
   FiImage,
   FiMessageSquare,
-  FiRefreshCw
+  FiRefreshCw,
+  FiPlus,
+  FiX,
+  FiCheckCircle
 } from 'react-icons/fi';
 
 interface ModelCard {
@@ -613,13 +617,13 @@ const OpenWeightsManifestoGrid = ({ isDark, onExploreClick }: { isDark: boolean;
 /* -------------------------------------------------------------------------- */
 /* MODELS PROVIDER HERO HUD BANNER (EXACT TRAINMODEL MAIN1 STYLE REPLICA)      */
 /* -------------------------------------------------------------------------- */
-const ModelsProviderHeroSection = ({ 
-  isDark, 
-  onStartChatClick, 
-  onSubApiClick 
-}: { 
-  isDark: boolean; 
-  onStartChatClick: () => void; 
+const ModelsProviderHeroSection = ({
+  isDark,
+  onStartChatClick,
+  onSubApiClick
+}: {
+  isDark: boolean;
+  onStartChatClick: () => void;
   onSubApiClick: () => void;
 }) => {
   const containerBg = isDark ? '#09090b' : '#ffffff';
@@ -946,6 +950,17 @@ const ModelsProviderHeroSection = ({
 
 
 
+export interface SubApiKeyItem {
+  id: string;
+  name: string;
+  key: string;
+  model: string;
+  rpm: string;
+  quota: string;
+  createdAt: string;
+  status: 'active' | 'revoked';
+}
+
 export default function ModelsProviderPage() {
   const router = useRouter();
   const { theme, toggleTheme } = useTheme();
@@ -953,11 +968,35 @@ export default function ModelsProviderPage() {
 
   const [activeTab, setActiveTab] = useState<TabType>('chat');
   const [userEmail, setUserEmail] = useState<string>('guest@axglynne.com');
-  const [subApiName, setSubApiName] = useState('Production Client Key');
   const [selectedModel, setSelectedModel] = useState('llama-3.2-11b-vision');
 
-  const [rateLimit, setRateLimit] = useState('120');
-  const [quotaTokens, setQuotaTokens] = useState('5,000,000');
+  // Groq-style Sub-API Keys State
+  const [subApiKeys, setSubApiKeys] = useState<SubApiKeyItem[]>([
+    {
+      id: 'default-1',
+      name: 'Production Client Key',
+      key: 'gly_sub_live_a8f9c2d1e4b56789',
+      model: 'llama-3.2-11b-vision',
+      rpm: '120',
+      quota: '5,000,000',
+      createdAt: '11 oct 2026',
+      status: 'active',
+    }
+  ]);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [createStep, setCreateStep] = useState<1 | 2>(1);
+  const [newKeyFormName, setNewKeyFormName] = useState('Production Client Key');
+  const [newKeyFormModel, setNewKeyFormModel] = useState('llama-3.2-11b-vision');
+  const [newKeyFormRpm, setNewKeyFormRpm] = useState('120');
+  const [newKeyFormQuota, setNewKeyFormQuota] = useState('5,000,000');
+  const [createdKeyItem, setCreatedKeyItem] = useState<SubApiKeyItem | null>(null);
+  const [copiedKeyId, setCopiedKeyId] = useState<string | null>(null);
+  const [modalKeyCopied, setModalKeyCopied] = useState(false);
+
+  // Modal to inspect code snippet for existing key
+  const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
+  const [inspectKeyItem, setInspectKeyItem] = useState<SubApiKeyItem | null>(null);
+
   const [generatedKey, setGeneratedKey] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [trigger404, setTrigger404] = useState(false);
@@ -968,15 +1007,8 @@ export default function ModelsProviderPage() {
   const [keySaved, setKeySaved] = useState(false);
 
   // Full Interactive Model Chat Studio State
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
-    {
-      id: '1',
-      role: 'assistant',
-      content: '¡Hola! Soy el asistente de prueba en vivo de GLYNNE AI Model Provider. Puedes seleccionar cualquier modelo del catálogo y chatear directamente con mi motor en tiempo real.',
-      modelUsed: 'GLYNNE AI Engine',
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    }
-  ]);
+  // Full Interactive Model Chat Studio State (Starts empty for centered AX_chat landing view)
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [chatInput, setChatInput] = useState('');
   const [chatImageUrl, setChatImageUrl] = useState('');
   const [showImageUrlField, setShowImageUrlField] = useState(false);
@@ -992,6 +1024,19 @@ export default function ModelsProviderPage() {
       }
     };
     fetchUser();
+
+    // Load saved sub-api keys from localStorage
+    const savedSubKeys = localStorage.getItem('glynne_sub_api_keys');
+    if (savedSubKeys) {
+      try {
+        const parsed = JSON.parse(savedSubKeys);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setSubApiKeys(parsed);
+        }
+      } catch (e) {
+        console.error('Error reading saved sub-api keys', e);
+      }
+    }
 
     // Load saved master key if present
     const savedKey = localStorage.getItem('glynne_nvidia_master_key');
@@ -1094,15 +1139,7 @@ export default function ModelsProviderPage() {
   };
 
   const handleClearChatHistory = () => {
-    setChatMessages([
-      {
-        id: Date.now().toString(),
-        role: 'assistant',
-        content: 'Historial reiniciado. Selecciona un modelo y envía un nuevo mensaje.',
-        modelUsed: 'GLYNNE AI Engine',
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      }
-    ]);
+    setChatMessages([]);
     setChatError(null);
   };
 
@@ -1111,10 +1148,65 @@ export default function ModelsProviderPage() {
     notFound();
   }
 
-  const handleGenerateKey = (e: React.FormEvent) => {
+  const saveKeysToStorage = (updated: SubApiKeyItem[]) => {
+    setSubApiKeys(updated);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('glynne_sub_api_keys', JSON.stringify(updated));
+    }
+  };
+
+  const handleOpenCreateModal = () => {
+    setCreateStep(1);
+    setNewKeyFormName(`Production Client Key ${subApiKeys.length + 1}`);
+    setNewKeyFormModel(selectedModel || 'llama-3.2-11b-vision');
+    setNewKeyFormRpm('120');
+    setNewKeyFormQuota('5,000,000');
+    setCreatedKeyItem(null);
+    setModalKeyCopied(false);
+    setIsCreateModalOpen(true);
+  };
+
+  const handleCreateKeySubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const randomHex = Array.from({ length: 16 }, () => Math.floor(Math.random() * 16).toString(16)).join('');
-    setGeneratedKey(`gly_sub_live_${randomHex}`);
+    const randomHex = Array.from({ length: 24 }, () => Math.floor(Math.random() * 16).toString(16)).join('');
+    const fullKey = `gly_sub_live_${randomHex}`;
+    const dateFormatted = new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
+
+    const newItem: SubApiKeyItem = {
+      id: Date.now().toString(),
+      name: newKeyFormName.trim() || `Client Key ${subApiKeys.length + 1}`,
+      key: fullKey,
+      model: newKeyFormModel,
+      rpm: newKeyFormRpm.trim() || '120',
+      quota: newKeyFormQuota.trim() || '5,000,000',
+      createdAt: dateFormatted,
+      status: 'active',
+    };
+
+    const updated = [newItem, ...subApiKeys];
+    saveKeysToStorage(updated);
+    setCreatedKeyItem(newItem);
+    setGeneratedKey(fullKey);
+    setCreateStep(2);
+  };
+
+  const handleDeleteKey = (id: string) => {
+    if (confirm('¿Estás seguro de que deseas revocar y eliminar esta Sub-API Key?')) {
+      const updated = subApiKeys.filter(k => k.id !== id);
+      saveKeysToStorage(updated);
+    }
+  };
+
+  const handleCopySingleKey = (keyString: string, id: string) => {
+    navigator.clipboard.writeText(keyString);
+    setCopiedKeyId(id);
+    setTimeout(() => setCopiedKeyId(null), 2000);
+  };
+
+  const maskKey = (keyStr: string) => {
+    if (!keyStr) return '';
+    if (keyStr.length <= 16) return keyStr;
+    return `${keyStr.slice(0, 13)}...${keyStr.slice(-6)}`;
   };
 
   const handleCopyKey = () => {
@@ -1125,8 +1217,9 @@ export default function ModelsProviderPage() {
     }
   };
 
-  const getCodeSnippet = () => {
-    const currentKey = generatedKey || 'gly_sub_live_a8f9c2d1e4b56789';
+  const getCodeSnippet = (customKey?: string, customModel?: string) => {
+    const currentKey = customKey || generatedKey || subApiKeys[0]?.key || 'gly_sub_live_a8f9c2d1e4b56789';
+    const targetModel = customModel || selectedModel || 'llama-3.2-11b-vision';
     const baseUrl = typeof window !== 'undefined' ? `${window.location.origin}/api/v1` : 'https://axglynne.com/api/v1';
 
     if (activeCodeTab === 'python') {
@@ -1139,7 +1232,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="${selectedModel}",
+    model="${targetModel}",
     messages=[
         {"role": "system", "content": "You are GLYNNE AI Provider Engine."},
         {"role": "user", "content": "Execute high-performance inference."}
@@ -1159,7 +1252,7 @@ const openai = new OpenAI({
 
 async function run() {
   const completion = await openai.chat.completions.create({
-    model: '${selectedModel}',
+    model: '${targetModel}',
     messages: [{ role: 'user', content: 'Inference request via GLYNNE Gateway' }],
   });
 
@@ -1173,7 +1266,7 @@ run();`;
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer ${currentKey}" \\
   -d '{
-    "model": "${selectedModel}",
+    "model": "${targetModel}",
     "messages": [{"role": "user", "content": "Hello GLYNNE Provider Gateway"}],
     "stream": false
   }'`;
@@ -1181,7 +1274,7 @@ run();`;
 
   return (
     <BackgroundWrapper>
-      <div 
+      <div
         data-theme={theme}
         style={{
           backgroundColor: 'transparent',
@@ -1197,25 +1290,404 @@ run();`;
       >
 
 
-      {/* MAIN CONTENT WRAPPER */}
-      <main style={{ width: '100vw', maxWidth: '100vw', margin: '0', padding: '32px 3.5vw 80px 3.5vw', position: 'relative', zIndex: 10, boxSizing: 'border-box' }}>
+        {/* MAIN CONTENT WRAPPER */}
+        <main style={{ width: '100vw', maxWidth: '100vw', margin: '0', padding: '32px 3.5vw 80px 3.5vw', position: 'relative', zIndex: 10, boxSizing: 'border-box' }}>
 
-        {/* TOP MAIN 1: TRAINMODEL BRAND BLOCKS ("Create API") */}
-        <div style={{ marginBottom: '40px' }}>
-          <TrainModelBrandBlocks 
-            brandPart="Create" 
-            blocksPart="API" 
-          />
-        </div>
+          {/* TOP MAIN 1: TRAINMODEL BRAND BLOCKS ("Create API") */}
+          <div style={{ marginBottom: '40px' }}>
+            <TrainModelBrandBlocks
+              brandPart="Create"
+              blocksPart="API"
+            />
+          </div>
 
-        {/* MAIN WORKSPACE 1: INTERACTIVE MODEL CHAT TESTING STUDIO & MODEL CATALOG (70-30 SPLIT) */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '7fr 3fr',
-          gap: '24px',
-          alignItems: 'stretch',
-          width: '100%'
-        }}>
+          {/* SECTION HEADER: CONECTA IA DIRECTO A TUS PROYECTOS */}
+          <div style={{ marginBottom: '32px' }}>
+            <div style={{ maxWidth: '840px', textAlign: 'left' }}>
+              <h2 style={{
+                fontSize: 'clamp(28px, 4.5vw, 48px)',
+                fontWeight: 400,
+                color: isDark ? '#ffffff' : '#111111',
+                letterSpacing: '-0.02em',
+                lineHeight: 1.1,
+                margin: '0 0 16px 0',
+                fontFamily: "var(--font-geist-sans), system-ui, -apple-system, sans-serif"
+              }}>
+                Conecta IA Directo a tus Proyectos
+              </h2>
+              <p style={{
+                fontSize: 'clamp(14px, 1.5vw, 16px)',
+                color: isDark ? '#a1a1aa' : '#555555',
+                fontWeight: 300,
+                lineHeight: 1.6,
+                margin: 0,
+                fontFamily: "var(--font-geist-sans), system-ui, -apple-system, sans-serif"
+              }}>
+                Con GLYNNE podrás crear un acceso de API al modelo que creas más adecuado para tu proyecto. Crea tu API e intégrala con total compatibilidad: nosotros ejecutamos todo el sistema conectando a los LLM más eficientes, veloces y optimizados del mercado.
+              </p>
+            </div>
+          </div>
+
+          {/* GROQ-STYLE API KEYS MANAGEMENT CONSOLE (FIRST SECTION) */}
+          <div style={{ marginBottom: '40px', width: '100%' }}>
+            <div style={{
+              border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
+              backgroundColor: isDark ? 'rgba(10, 10, 10, 0.65)' : 'rgba(255, 255, 255, 0.8)',
+              backdropFilter: 'blur(24px)',
+              WebkitBackdropFilter: 'blur(24px)',
+              borderRadius: '16px',
+              padding: '28px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '24px'
+            }}>
+              {/* CONSOLE HEADER: Title, Subtitle & Action Button */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: '16px',
+                borderBottom: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.08)',
+                paddingBottom: '20px'
+              }}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
+                    <h3 style={{
+                      fontSize: '20px',
+                      fontWeight: 700,
+                      color: isDark ? '#ffffff' : '#000000',
+                      margin: 0,
+                      letterSpacing: '-0.02em',
+                      fontFamily: 'var(--font-geist-sans), sans-serif'
+                    }}>
+                      API Keys
+                    </h3>
+                    <span style={{
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      padding: '3px 8px',
+                      borderRadius: '6px',
+                      backgroundColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.06)',
+                      color: isDark ? '#ffffff' : '#000000'
+                    }}>
+                      Gateway Sub-APIs
+                    </span>
+                  </div>
+                  <p style={{
+                    fontSize: '13px',
+                    color: isDark ? '#a1a1aa' : '#71717a',
+                    margin: 0,
+                    maxWidth: '680px',
+                    lineHeight: 1.5
+                  }}>
+                    Administra tus claves de API para conectar proyectos, agentes y clientes externos al Gateway de GLYNNE. No compartas tus claves secretas con terceros.
+                  </p>
+                </div>
+
+                <button
+                  onClick={handleOpenCreateModal}
+                  style={{
+                    padding: '11px 20px',
+                    backgroundColor: isDark ? '#ffffff' : '#000000',
+                    color: isDark ? '#000000' : '#ffffff',
+                    border: 'none',
+                    borderRadius: '10px',
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    boxShadow: isDark ? '0 4px 14px rgba(255,255,255,0.12)' : '0 4px 14px rgba(0,0,0,0.12)',
+                    transition: 'transform 0.15s ease, opacity 0.15s ease'
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.transform = 'translateY(-1px)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.transform = 'translateY(0)')}
+                >
+                  <FiPlus size={16} />
+                  <span>Crear API Key</span>
+                </button>
+              </div>
+
+              {/* GROQ-STYLE API KEYS TABLE */}
+              <div style={{ width: '100%', overflowX: 'auto' }}>
+                {subApiKeys.length === 0 ? (
+                  <div style={{
+                    padding: '48px 24px',
+                    textAlign: 'center',
+                    color: isDark ? '#a1a1aa' : '#71717a'
+                  }}>
+                    <FiKey size={32} style={{ margin: '0 auto 12px', opacity: 0.5 }} />
+                    <div style={{ fontSize: '15px', fontWeight: 600, color: isDark ? '#ffffff' : '#000000', marginBottom: '6px' }}>
+                      No tienes claves creadas aún
+                    </div>
+                    <div style={{ fontSize: '13px', marginBottom: '16px' }}>
+                      Genera tu primera Sub-API Key para empezar a conectar tus aplicaciones.
+                    </div>
+                    <button
+                      onClick={handleOpenCreateModal}
+                      style={{
+                        padding: '8px 16px',
+                        backgroundColor: isDark ? '#ffffff' : '#000000',
+                        color: isDark ? '#000000' : '#ffffff',
+                        border: 'none',
+                        borderRadius: '8px',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      + Crear API Key
+                    </button>
+                  </div>
+                ) : (
+                  <table style={{
+                    width: '100%',
+                    borderCollapse: 'collapse',
+                    textAlign: 'left',
+                    fontSize: '13px'
+                  }}>
+                    <thead>
+                      <tr style={{
+                        borderBottom: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.08)',
+                        color: isDark ? '#a1a1aa' : '#71717a',
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em'
+                      }}>
+                        <th style={{ padding: '12px 14px' }}>Nombre</th>
+                        <th style={{ padding: '12px 14px' }}>Clave API</th>
+                        <th style={{ padding: '12px 14px' }}>Modelo Asignado</th>
+                        <th style={{ padding: '12px 14px' }}>Creada</th>
+                        <th style={{ padding: '12px 14px' }}>Límites</th>
+                        <th style={{ padding: '12px 14px' }}>Estado</th>
+                        <th style={{ padding: '12px 14px', textAlign: 'right' }}>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {subApiKeys.map((item) => {
+                        const isKeyCopied = copiedKeyId === item.id;
+                        return (
+                          <tr
+                            key={item.id}
+                            style={{
+                              borderBottom: isDark ? '1px solid rgba(255,255,255,0.05)' : '1px solid rgba(0,0,0,0.05)',
+                              transition: 'background-color 0.15s ease'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.backgroundColor = isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor = 'transparent';
+                            }}
+                          >
+                            {/* NOMBRE */}
+                            <td style={{ padding: '14px 14px', fontWeight: 600, color: isDark ? '#ffffff' : '#000000' }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <FiKey size={14} style={{ opacity: 0.7 }} />
+                                <span>{item.name}</span>
+                              </div>
+                            </td>
+
+                            {/* CLAVE ENMASCARADA CON BOTON COPIAR */}
+                            <td style={{ padding: '14px 14px' }}>
+                              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                                <code style={{
+                                  fontFamily: "Menlo, Monaco, Consolas, monospace",
+                                  fontSize: '12px',
+                                  padding: '4px 8px',
+                                  borderRadius: '6px',
+                                  backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
+                                  color: isDark ? '#e4e4e7' : '#27272a',
+                                  letterSpacing: '0.02em'
+                                }}>
+                                  {maskKey(item.key)}
+                                </code>
+                                <button
+                                  onClick={() => handleCopySingleKey(item.key, item.id)}
+                                  title="Copiar clave completa"
+                                  style={{
+                                    background: 'none',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    color: isKeyCopied ? '#22c55e' : (isDark ? '#a1a1aa' : '#71717a'),
+                                    padding: '4px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    transition: 'color 0.15s'
+                                  }}
+                                >
+                                  {isKeyCopied ? <FiCheck size={14} /> : <FiCopy size={14} />}
+                                </button>
+                              </div>
+                            </td>
+
+                            {/* MODELO */}
+                            <td style={{ padding: '14px 14px' }}>
+                              <span style={{
+                                fontSize: '11px',
+                                fontWeight: 600,
+                                padding: '3px 8px',
+                                borderRadius: '6px',
+                                backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)',
+                                color: isDark ? '#ffffff' : '#000000'
+                              }}>
+                                {item.model}
+                              </span>
+                            </td>
+
+                            {/* FECHA */}
+                            <td style={{ padding: '14px 14px', color: isDark ? '#a1a1aa' : '#71717a', fontSize: '12px' }}>
+                              {item.createdAt}
+                            </td>
+
+                            {/* LÍMITES */}
+                            <td style={{ padding: '14px 14px', color: isDark ? '#a1a1aa' : '#71717a', fontSize: '12px' }}>
+                              {item.rpm} RPM · {item.quota} tok
+                            </td>
+
+                            {/* ESTADO */}
+                            <td style={{ padding: '14px 14px' }}>
+                              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                                <span style={{
+                                  width: '7px',
+                                  height: '7px',
+                                  borderRadius: '50%',
+                                  backgroundColor: item.status === 'active' ? '#22c55e' : '#ef4444',
+                                  display: 'inline-block'
+                                }} />
+                                <span style={{
+                                  fontSize: '12px',
+                                  fontWeight: 500,
+                                  color: item.status === 'active' ? (isDark ? '#86efac' : '#15803d') : '#ef4444'
+                                }}>
+                                  {item.status === 'active' ? 'Activa' : 'Revocada'}
+                                </span>
+                              </div>
+                            </td>
+
+                            {/* ACCIONES */}
+                            <td style={{ padding: '14px 14px', textAlign: 'right' }}>
+                              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                                <button
+                                  onClick={() => {
+                                    setInspectKeyItem(item);
+                                    setIsCodeModalOpen(true);
+                                  }}
+                                  style={{
+                                    padding: '6px 10px',
+                                    backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
+                                    border: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.08)',
+                                    borderRadius: '6px',
+                                    color: isDark ? '#ffffff' : '#000000',
+                                    fontSize: '11px',
+                                    fontWeight: 600,
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '5px'
+                                  }}
+                                >
+                                  <FiCode size={13} />
+                                  <span>Ver Código</span>
+                                </button>
+
+                                <button
+                                  onClick={() => handleDeleteKey(item.id)}
+                                  title="Revocar y eliminar clave"
+                                  style={{
+                                    padding: '6px 8px',
+                                    backgroundColor: 'transparent',
+                                    border: 'none',
+                                    borderRadius: '6px',
+                                    color: isDark ? '#71717a' : '#a1a1aa',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    transition: 'color 0.15s'
+                                  }}
+                                  onMouseEnter={(e) => (e.currentTarget.style.color = '#ef4444')}
+                                  onMouseLeave={(e) => (e.currentTarget.style.color = isDark ? '#71717a' : '#a1a1aa')}
+                                >
+                                  <FiTrash2 size={14} />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+
+              {/* DIAGNOSTIC BUTTON: Discretely placed at the bottom */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingTop: '16px',
+                borderTop: isDark ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(0,0,0,0.06)'
+              }}>
+                <span style={{ fontSize: '11px', color: isDark ? '#71717a' : '#a1a1aa' }}>
+                  Endpoint Gateway: <code style={{ fontFamily: 'monospace' }}>/api/v1/chat/completions</code> · OpenAI Specification
+                </span>
+                <button
+                  onClick={() => setTrigger404(true)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    fontSize: '11px',
+                    color: isDark ? '#71717a' : '#a1a1aa',
+                    cursor: 'pointer',
+                    textDecoration: 'underline'
+                  }}
+                >
+                  Probar ruta 404
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* SECTION HEADER: CHAT TESTING STUDIO & PLAYGROUND */}
+          <div style={{ marginBottom: '20px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+              <h3 style={{
+                fontSize: '18px',
+                fontWeight: 700,
+                color: isDark ? '#ffffff' : '#000000',
+                margin: 0,
+                letterSpacing: '-0.02em',
+                fontFamily: 'var(--font-geist-sans), sans-serif'
+              }}>
+                Playground de Chat & Prueba de Modelos
+              </h3>
+              <span style={{
+                fontSize: '11px',
+                fontWeight: 600,
+                padding: '2px 8px',
+                borderRadius: '6px',
+                backgroundColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.05)',
+                color: isDark ? '#a1a1aa' : '#71717a'
+              }}>
+                Tiempo Real
+              </span>
+            </div>
+            <p style={{ fontSize: '13px', color: isDark ? '#a1a1aa' : '#71717a', margin: 0 }}>
+              Interactúa con los modelos open-weights para validar latencia, razonamiento y visión multimodal antes de distribuirlos con tu API.
+            </p>
+          </div>
+
+          {/* MAIN WORKSPACE 1: INTERACTIVE MODEL CHAT TESTING STUDIO & MODEL CATALOG (70-30 SPLIT) */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '7fr 3fr',
+            gap: '24px',
+            alignItems: 'stretch',
+            width: '100%'
+          }}>
             {/* LEFT PANEL (70%): AX_CHAT INTERFACE */}
             <div style={{
               border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
@@ -1226,15 +1698,17 @@ run();`;
               padding: '24px',
               display: 'flex',
               flexDirection: 'column',
+              justifyContent: 'space-between',
               gap: '16px',
               boxSizing: 'border-box',
               height: '680px',
-              boxShadow: isDark 
-                ? '0 20px 50px rgba(0, 0, 0, 0.6), 0 0 1px rgba(255, 255, 255, 0.15)' 
+              position: 'relative',
+              boxShadow: isDark
+                ? '0 20px 50px rgba(0, 0, 0, 0.6), 0 0 1px rgba(255, 255, 255, 0.15)'
                 : '0 20px 50px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.12)'
             }}>
               {/* STUDIO CHAT HEADER */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', borderBottom: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.08)', paddingBottom: '14px', flexShrink: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', borderBottom: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.08)', paddingBottom: '14px', flexShrink: 0, zIndex: 10 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
                   {/* Active Selected Model Pill Indicator */}
                   <span style={{
@@ -1255,208 +1729,341 @@ run();`;
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  {/* Image Attachment Toggle */}
-                  <button
-                    onClick={() => setShowImageUrlField(!showImageUrlField)}
-                    style={{
-                      background: 'transparent',
-                      border: 'none',
-                      color: showImageUrlField ? (isDark ? '#ffffff' : '#000000') : (isDark ? '#8e8e93' : '#666666'),
-                      fontSize: '12px',
-                      fontWeight: 500,
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      padding: '6px 10px'
-                    }}
-                    title="Adjuntar Imagen para Visión"
-                  >
-                    <FiImage size={14} />
-                    <span>{showImageUrlField ? 'Ocultar Imagen' : '+ Imagen'}</span>
-                  </button>
 
-                  {/* Reset Chat */}
-                  <button
-                    onClick={handleClearChatHistory}
-                    style={{
-                      background: 'transparent',
-                      border: 'none',
-                      color: isDark ? '#8e8e93' : '#666666',
-                      fontSize: '12px',
-                      fontWeight: 500,
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      padding: '6px 10px'
-                    }}
-                  >
-                    <FiTrash2 size={14} />
-                    <span>Limpiar</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* CHAT MESSAGES DISPLAY CONTAINER */}
-              <div style={{
-                backgroundColor: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.4)',
-                border: isDark ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid rgba(0, 0, 0, 0.06)',
-                borderRadius: '20px',
-                padding: '20px',
-                overflowY: 'auto',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '16px',
-                boxSizing: 'border-box',
-                flex: 1,
-                minHeight: 0
-              }}>
-                {chatMessages.map((msg) => {
-                  const isUser = msg.role === 'user';
-                  return (
-                    <div
-                      key={msg.id}
+                  {/* Reset Chat (Visible when user has active conversation) */}
+                  {chatMessages.length > 0 && (
+                    <button
+                      onClick={handleClearChatHistory}
                       style={{
+                        background: 'transparent',
+                        border: 'none',
+                        color: isDark ? '#8e8e93' : '#666666',
+                        fontSize: '12px',
+                        fontWeight: 500,
+                        cursor: 'pointer',
                         display: 'flex',
-                        justifyContent: isUser ? 'flex-end' : 'flex-start',
-                        width: '100%'
+                        alignItems: 'center',
+                        gap: '6px',
+                        padding: '6px 10px'
                       }}
                     >
-                      <div style={{
-                        maxWidth: isUser ? '82%' : '92%',
-                        padding: isUser ? '12px 18px' : '12px 0',
-                        borderRadius: '20px',
-                        borderBottomRightRadius: isUser ? '4px' : '20px',
-                        borderBottomLeftRadius: isUser ? '20px' : '4px',
-                        fontSize: '14px',
-                        lineHeight: 1.6,
-                        backgroundColor: isUser 
-                          ? (isDark ? '#f5f5f7' : '#111111') 
-                          : 'transparent',
-                        color: isUser 
-                          ? (isDark ? '#111111' : '#ffffff') 
-                          : (isDark ? '#f5f5f7' : '#111111'),
-                        boxShadow: isUser ? '0 8px 24px rgba(0,0,0,0.25)' : 'none',
-                        whiteSpace: 'pre-wrap',
-                        wordBreak: 'break-word'
-                      }}>
-                        {msg.imageUrl && (
-                          <div style={{ marginBottom: '10px' }}>
-                            <img 
-                              src={msg.imageUrl} 
-                              alt="Vision Input" 
-                              style={{ maxWidth: '240px', maxHeight: '180px', borderRadius: '12px', objectFit: 'cover' }} 
-                            />
-                          </div>
-                        )}
-                        {msg.content}
-                      </div>
-                    </div>
-                  );
-                })}
-
-                {isChatLoading && (
-                  <div style={{ display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
-                    <div style={{
-                      padding: '10px 0',
-                      display: 'flex',
-                      gap: '6px',
-                      alignItems: 'center',
-                      color: isDark ? '#8e8e93' : '#666666',
-                      fontSize: '13px'
-                    }}>
-                      <FiRefreshCw style={{ animation: 'spin 1s linear infinite' }} />
-                      <span>AX Core procesando respuesta...</span>
-                    </div>
-                  </div>
-                )}
-
-                {chatError && (
-                  <div style={{ fontSize: '13px', color: '#ef4444', padding: '12px 18px', backgroundColor: isDark ? 'rgba(239, 68, 68, 0.1)' : 'rgba(239, 68, 68, 0.05)', borderRadius: '16px', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
-                    {chatError}
-                  </div>
-                )}
+                      <FiTrash2 size={14} />
+                      <span>Limpiar</span>
+                    </button>
+                  )}
+                </div>
               </div>
 
-              {/* IMAGE URL FIELD (IF TOGGLED) */}
-              {showImageUrlField && (
-                <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexShrink: 0 }}>
-                  <FiImage style={{ color: isDark ? '#ffffff' : '#000000' }} />
-                  <input
-                    type="text"
-                    value={chatImageUrl}
-                    onChange={(e) => setChatImageUrl(e.target.value)}
-                    placeholder="URL de imagen para visión..."
-                    style={{
-                      flex: 1,
-                      padding: '10px 16px',
-                      backgroundColor: isDark ? '#1c1c1e' : '#f2f2f7',
-                      border: 'none',
-                      borderRadius: '16px',
-                      color: isDark ? '#ffffff' : '#000000',
-                      fontSize: '13px',
-                      outline: 'none'
-                    }}
-                  />
+              {/* MAIN CONTENT AREA: MESSAGES OR CENTERED AX_CHAT LANDING */}
+              {chatMessages.length > 0 ? (
+                <>
+                  {/* CHAT MESSAGES DISPLAY CONTAINER (WHEN ACTIVE CONVERSATION) */}
+                  <div style={{
+                    backgroundColor: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.4)',
+                    border: isDark ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid rgba(0, 0, 0, 0.06)',
+                    borderRadius: '20px',
+                    padding: '20px',
+                    overflowY: 'auto',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '16px',
+                    boxSizing: 'border-box',
+                    flex: 1,
+                    minHeight: 0
+                  }}>
+                    {chatMessages.map((msg) => {
+                      const isUser = msg.role === 'user';
+                      return (
+                        <div
+                          key={msg.id}
+                          style={{
+                            display: 'flex',
+                            justifyContent: isUser ? 'flex-end' : 'flex-start',
+                            width: '100%'
+                          }}
+                        >
+                          <div style={{
+                            maxWidth: isUser ? '82%' : '92%',
+                            padding: isUser ? '12px 18px' : '12px 0',
+                            borderRadius: '20px',
+                            borderBottomRightRadius: isUser ? '4px' : '20px',
+                            borderBottomLeftRadius: isUser ? '20px' : '4px',
+                            fontSize: '14px',
+                            lineHeight: 1.6,
+                            backgroundColor: isUser
+                              ? (isDark ? '#f5f5f7' : '#111111')
+                              : 'transparent',
+                            color: isUser
+                              ? (isDark ? '#111111' : '#ffffff')
+                              : (isDark ? '#f5f5f7' : '#111111'),
+                            boxShadow: isUser ? '0 8px 24px rgba(0,0,0,0.25)' : 'none',
+                            whiteSpace: 'pre-wrap',
+                            wordBreak: 'break-word'
+                          }}>
+                            {msg.imageUrl && (
+                              <div style={{ marginBottom: '10px' }}>
+                                <img
+                                  src={msg.imageUrl}
+                                  alt="Vision Input"
+                                  style={{ maxWidth: '240px', maxHeight: '180px', borderRadius: '12px', objectFit: 'cover' }}
+                                />
+                              </div>
+                            )}
+                            {msg.content}
+                          </div>
+                        </div>
+                      );
+                    })}
+
+                    {isChatLoading && (
+                      <div style={{ display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
+                        <div style={{
+                          padding: '10px 0',
+                          display: 'flex',
+                          gap: '6px',
+                          alignItems: 'center',
+                          color: isDark ? '#8e8e93' : '#666666',
+                          fontSize: '13px'
+                        }}>
+                          <FiRefreshCw style={{ animation: 'spin 1s linear infinite' }} />
+                          <span>AX Core procesando respuesta...</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {chatError && (
+                      <div style={{ fontSize: '13px', color: '#ef4444', padding: '12px 18px', backgroundColor: isDark ? 'rgba(239, 68, 68, 0.1)' : 'rgba(239, 68, 68, 0.05)', borderRadius: '16px', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+                        {chatError}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* BOTTOM CHAT INPUT FORM (WHEN CHATTING) */}
+                  <form onSubmit={handleSendChatMessage} style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: '100%',
+                    backgroundColor: isDark ? 'rgba(17, 17, 17, 0.9)' : 'rgba(255, 255, 255, 0.95)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(15, 23, 42, 0.12)',
+                    borderRadius: '24px',
+                    padding: '12px 18px',
+                    boxShadow: isDark
+                      ? '0 12px 40px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(0, 0, 0, 0.4)'
+                      : '0 12px 36px rgba(15, 23, 42, 0.08)',
+                    gap: '8px',
+                    boxSizing: 'border-box',
+                    flexShrink: 0,
+                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
+                  }}>
+                    <textarea
+                      value={chatInput}
+                      onChange={(e) => setChatInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault();
+                          handleSendChatMessage(e);
+                        }
+                      }}
+                      placeholder={`Mensaje a ${FEATURED_MODELS.find(m => m.id === selectedModel)?.name || 'AX Core'}...`}
+                      disabled={isChatLoading}
+                      rows={1}
+                      style={{
+                        width: '100%',
+                        border: 'none',
+                        outline: 'none',
+                        fontSize: '14px',
+                        color: isDark ? '#f5f5f7' : '#0f172a',
+                        backgroundColor: 'transparent',
+                        padding: '4px 0',
+                        fontWeight: 300,
+                        fontFamily: 'inherit',
+                        resize: 'none',
+                        lineHeight: 1.5,
+                        letterSpacing: '0.01em',
+                        transition: 'all 0.3s ease'
+                      }}
+                    />
+
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'flex-end'
+                    }}>
+                      <button
+                        type="submit"
+                        disabled={isChatLoading || !chatInput.trim()}
+                        style={{
+                          width: '34px',
+                          height: '34px',
+                          borderRadius: '50%',
+                          backgroundColor: isDark ? '#ffffff' : '#111111',
+                          color: isDark ? '#111111' : '#ffffff',
+                          border: 'none',
+                          cursor: isChatLoading ? 'wait' : 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          opacity: (isChatLoading || !chatInput.trim()) ? 0.35 : 1,
+                          transition: 'all 0.2s ease',
+                          flexShrink: 0
+                        }}
+                      >
+                        <FiSend size={14} />
+                      </button>
+                    </div>
+                  </form>
+                </>
+              ) : (
+                /* INITIAL CENTERED LANDING WITH INPUT IN THE MIDDLE (AX_CHAT EXACT BEHAVIOR) */
+                <div style={{
+                  flex: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '16px',
+                  boxSizing: 'border-box',
+                  textAlign: 'center',
+                  width: '100%',
+                  animation: 'fadeIn 0.3s ease'
+                }}>
+                  {/* Centered Heading */}
+                  <h2 style={{
+                    fontSize: 'clamp(24px, 3.2vw, 36px)',
+                    fontWeight: 400,
+                    color: isDark ? '#f5f5f7' : '#0f172a',
+                    letterSpacing: '-0.02em',
+                    margin: '0 0 24px 0',
+                    fontFamily: 'var(--font-geist-sans), system-ui, sans-serif'
+                  }}>
+                    ¿Cómo puede ayudarte {FEATURED_MODELS.find(m => m.id === selectedModel)?.name || 'AX'} hoy?
+                  </h2>
+
+                  {/* Centered Capsule Input Form */}
+                  <form onSubmit={handleSendChatMessage} style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: '100%',
+                    maxWidth: '560px',
+                    backgroundColor: isDark ? 'rgba(17, 17, 17, 0.95)' : 'rgba(255, 255, 255, 0.95)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(15, 23, 42, 0.12)',
+                    borderRadius: '24px',
+                    padding: '16px 20px',
+                    boxShadow: isDark
+                      ? '0 16px 40px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(0, 0, 0, 0.4)'
+                      : '0 16px 36px rgba(15, 23, 42, 0.08)',
+                    gap: '12px',
+                    boxSizing: 'border-box',
+                    transition: 'all 0.4s ease'
+                  }}>
+                    <textarea
+                      value={chatInput}
+                      onChange={(e) => setChatInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault();
+                          handleSendChatMessage(e);
+                        }
+                      }}
+                      placeholder={`Escribe un mensaje a ${FEATURED_MODELS.find(m => m.id === selectedModel)?.name || 'este modelo'}...`}
+                      disabled={isChatLoading}
+                      rows={2}
+                      style={{
+                        width: '100%',
+                        border: 'none',
+                        outline: 'none',
+                        fontSize: '15px',
+                        color: isDark ? '#f5f5f7' : '#0f172a',
+                        backgroundColor: 'transparent',
+                        padding: '4px 0',
+                        fontWeight: 300,
+                        fontFamily: 'inherit',
+                        resize: 'none',
+                        lineHeight: 1.5,
+                        letterSpacing: '0.01em',
+                        transition: 'all 0.3s ease'
+                      }}
+                    />
+
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      marginTop: '4px'
+                    }}>
+                      <span style={{ fontSize: '11px', color: isDark ? '#71717a' : '#a1a1aa' }}>
+                        Presiona <kbd style={{ padding: '2px 5px', borderRadius: '4px', backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)', fontFamily: 'monospace' }}>Enter</kbd> para enviar
+                      </span>
+
+                      <button
+                        type="submit"
+                        disabled={isChatLoading || !chatInput.trim()}
+                        style={{
+                          width: '38px',
+                          height: '38px',
+                          borderRadius: '50%',
+                          backgroundColor: isDark ? '#ffffff' : '#111111',
+                          color: isDark ? '#111111' : '#ffffff',
+                          border: 'none',
+                          cursor: isChatLoading ? 'wait' : 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          opacity: (isChatLoading || !chatInput.trim()) ? 0.35 : 1,
+                          transition: 'all 0.2s ease',
+                          flexShrink: 0
+                        }}
+                      >
+                        <FiSend size={15} />
+                      </button>
+                    </div>
+                  </form>
+
+                  {/* Suggestion Pills */}
+                  <div style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '8px',
+                    justifyContent: 'center',
+                    marginTop: '20px',
+                    maxWidth: '560px'
+                  }}>
+                    {['Explicar este concepto', 'Generar código de inferencia', 'Analizar rendimiento', 'Probar lógica'].map((prompt) => (
+                      <button
+                        key={prompt}
+                        type="button"
+                        onClick={() => {
+                          setChatInput(prompt);
+                        }}
+                        style={{
+                          background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
+                          border: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.08)',
+                          borderRadius: '999px',
+                          padding: '6px 14px',
+                          color: isDark ? '#a1a1aa' : '#71717a',
+                          fontSize: '11px',
+                          cursor: 'pointer',
+                          transition: 'all 0.15s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.color = isDark ? '#ffffff' : '#000000';
+                          e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.color = isDark ? '#a1a1aa' : '#71717a';
+                          e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)';
+                        }}
+                      >
+                        {prompt}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
-
-              {/* CHAT INPUT FORM (AX_CHAT CAPSULE FORM) */}
-              <form onSubmit={handleSendChatMessage} style={{
-                display: 'flex',
-                alignItems: 'center',
-                width: '100%',
-                backgroundColor: isDark ? 'rgba(20, 20, 20, 0.8)' : 'rgba(245, 245, 247, 0.95)',
-                border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
-                borderRadius: '24px',
-                padding: '8px 16px',
-                boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
-                gap: '12px',
-                boxSizing: 'border-box',
-                flexShrink: 0
-              }}>
-                <input
-                  type="text"
-                  value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
-                  placeholder={`Mensaje a ${FEATURED_MODELS.find(m => m.id === selectedModel)?.name || 'AX Core'}...`}
-                  disabled={isChatLoading}
-                  style={{
-                    flex: 1,
-                    border: 'none',
-                    outline: 'none',
-                    fontSize: '14px',
-                    color: isDark ? '#f5f5f7' : '#111111',
-                    backgroundColor: 'transparent',
-                    padding: '8px 0',
-                    fontFamily: 'inherit',
-                    letterSpacing: '0.01em'
-                  }}
-                />
-
-                <button
-                  type="submit"
-                  disabled={isChatLoading || (!chatInput.trim() && !chatImageUrl.trim())}
-                  style={{
-                    width: '36px',
-                    height: '36px',
-                    borderRadius: '50%',
-                    backgroundColor: isDark ? '#ffffff' : '#111111',
-                    color: isDark ? '#111111' : '#ffffff',
-                    border: 'none',
-                    cursor: isChatLoading ? 'wait' : 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    opacity: (isChatLoading || (!chatInput.trim() && !chatImageUrl.trim())) ? 0.4 : 1,
-                    transition: 'all 0.2s ease',
-                    flexShrink: 0
-                  }}
-                >
-                  <FiSend size={15} />
-                </button>
-              </form>
             </div>
 
             {/* RIGHT PANEL (30%): MODEL CATALOG SELECTION CARDS */}
@@ -1472,8 +2079,8 @@ run();`;
               gap: '16px',
               boxSizing: 'border-box',
               height: '680px',
-              boxShadow: isDark 
-                ? '0 20px 50px rgba(0, 0, 0, 0.6), 0 0 1px rgba(255, 255, 255, 0.15)' 
+              boxShadow: isDark
+                ? '0 20px 50px rgba(0, 0, 0, 0.6), 0 0 1px rgba(255, 255, 255, 0.15)'
                 : '0 20px 50px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.12)'
             }}>
               <div style={{
@@ -1573,224 +2180,432 @@ run();`;
             </div>
           </div>
 
-        {/* SUB-APIS GENERATOR & CODE INTEGRATION TERMINAL (DIRECTLY BELOW CHAT & MODELS WORKSPACE) */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '24px', marginTop: '40px' }}>
-            
-            {/* LEFT PANEL: SUB-API GENERATOR */}
+
+          {/* ========================================================================= */}
+          {/* GROQ-STYLE STEP-BY-STEP MODAL: CREAR SUB-API KEY                          */}
+          {/* ========================================================================= */}
+          {isCreateModalOpen && (
             <div style={{
-              border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
-              backgroundColor: isDark ? 'rgba(10, 10, 10, 0.65)' : 'rgba(255, 255, 255, 0.75)',
-              backdropFilter: 'blur(24px)',
-              WebkitBackdropFilter: 'blur(24px)',
-              borderRadius: '16px',
-              padding: '24px',
+              position: 'fixed',
+              inset: 0,
+              zIndex: 9999,
+              backgroundColor: 'rgba(0, 0, 0, 0.75)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
               display: 'flex',
-              flexDirection: 'column',
-              gap: '20px'
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '20px'
             }}>
-              <div style={{ fontSize: '14px', fontWeight: 600, color: isDark ? '#ffffff' : '#000000', borderBottom: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.08)', paddingBottom: '12px' }}>
-                Crear Sub-API Key para Cliente
-              </div>
-
-              <form onSubmit={handleGenerateKey} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', color: isDark ? '#a1a1aa' : '#71717a', marginBottom: '8px' }}>
-                    Nombre del Cliente / Proyecto
-                  </label>
-                  <input
-                    type="text"
-                    value={subApiName}
-                    onChange={(e) => setSubApiName(e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '10px 14px',
-                      backgroundColor: isDark ? '#000000' : '#ffffff',
-                      border: isDark ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid rgba(0, 0, 0, 0.15)',
+              <div style={{
+                width: '100%',
+                maxWidth: '560px',
+                backgroundColor: isDark ? '#111113' : '#ffffff',
+                border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(0, 0, 0, 0.12)',
+                borderRadius: '16px',
+                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+                padding: '28px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '20px',
+                animation: 'fadeIn 0.2s ease'
+              }}>
+                {/* MODAL HEADER */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{
+                      width: '32px',
+                      height: '32px',
                       borderRadius: '8px',
-                      color: isDark ? '#ffffff' : '#000000',
-                      fontSize: '13px',
-                      outline: 'none',
-                      boxSizing: 'border-box'
-                    }}
-                    required
-                  />
-                </div>
+                      backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.06)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: isDark ? '#ffffff' : '#000000'
+                    }}>
+                      <FiKey size={16} />
+                    </div>
+                    <div>
+                      <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: isDark ? '#ffffff' : '#000000' }}>
+                        {createStep === 1 ? 'Crear nueva API Key' : 'Guarda tu clave secreta de API'}
+                      </h4>
+                      <span style={{ fontSize: '12px', color: isDark ? '#a1a1aa' : '#71717a' }}>
+                        {createStep === 1 ? 'Paso 1 de 2: Configuración' : 'Paso 2 de 2: Clave generada'}
+                      </span>
+                    </div>
+                  </div>
 
-                <div>
-                  <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', color: isDark ? '#a1a1aa' : '#71717a', marginBottom: '8px' }}>
-                    Modelo Objetivo Asignado
-                  </label>
-                  <select
-                    value={selectedModel}
-                    onChange={(e) => setSelectedModel(e.target.value)}
+                  <button
+                    onClick={() => setIsCreateModalOpen(false)}
                     style={{
-                      width: '100%',
-                      padding: '10px 14px',
-                      backgroundColor: isDark ? '#000000' : '#ffffff',
-                      border: isDark ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid rgba(0, 0, 0, 0.15)',
-                      borderRadius: '8px',
-                      color: isDark ? '#ffffff' : '#000000',
-                      fontSize: '13px',
-                      outline: 'none',
-                      boxSizing: 'border-box',
-                      cursor: 'pointer'
+                      background: 'none',
+                      border: 'none',
+                      color: isDark ? '#a1a1aa' : '#71717a',
+                      cursor: 'pointer',
+                      padding: '4px',
+                      display: 'flex',
+                      alignItems: 'center'
                     }}
                   >
-                    {FEATURED_MODELS.map(m => (
-                      <option key={m.id} value={m.id} style={{ background: isDark ? '#000' : '#fff', color: isDark ? '#fff' : '#000' }}>
-                        {m.name} — {m.badge}
-                      </option>
-                    ))}
-                  </select>
+                    <FiX size={18} />
+                  </button>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                  <div>
-                    <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', color: isDark ? '#a1a1aa' : '#71717a', marginBottom: '8px' }}>
-                      Límite RPM
-                    </label>
-                    <input
-                      type="text"
-                      value={rateLimit}
-                      onChange={(e) => setRateLimit(e.target.value)}
-                      style={{
-                        width: '100%',
-                        padding: '10px 14px',
-                        backgroundColor: isDark ? '#000000' : '#ffffff',
-                        border: isDark ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid rgba(0, 0, 0, 0.15)',
-                        borderRadius: '8px',
-                        color: isDark ? '#ffffff' : '#000000',
-                        fontSize: '13px',
-                        outline: 'none',
-                        boxSizing: 'border-box'
-                      }}
-                    />
-                  </div>
+                {/* PASO 1: FORMULARIO DE CREACIÓN */}
+                {createStep === 1 && (
+                  <form onSubmit={handleCreateKeySubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', color: isDark ? '#a1a1aa' : '#71717a', marginBottom: '8px' }}>
+                        Nombre de la Clave / Proyecto
+                      </label>
+                      <input
+                        type="text"
+                        value={newKeyFormName}
+                        onChange={(e) => setNewKeyFormName(e.target.value)}
+                        placeholder="Ej: App Móvil Producción, Chatbot Web..."
+                        required
+                        style={{
+                          width: '100%',
+                          padding: '11px 14px',
+                          backgroundColor: isDark ? '#000000' : '#ffffff',
+                          border: isDark ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid rgba(0, 0, 0, 0.15)',
+                          borderRadius: '8px',
+                          color: isDark ? '#ffffff' : '#000000',
+                          fontSize: '13px',
+                          outline: 'none',
+                          boxSizing: 'border-box'
+                        }}
+                      />
+                    </div>
 
-                  <div>
-                    <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', color: isDark ? '#a1a1aa' : '#71717a', marginBottom: '8px' }}>
-                      Cuota de Tokens
-                    </label>
-                    <input
-                      type="text"
-                      value={quotaTokens}
-                      onChange={(e) => setQuotaTokens(e.target.value)}
-                      style={{
-                        width: '100%',
-                        padding: '10px 14px',
-                        backgroundColor: isDark ? '#000000' : '#ffffff',
-                        border: isDark ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid rgba(0, 0, 0, 0.15)',
-                        borderRadius: '8px',
-                        color: isDark ? '#ffffff' : '#000000',
-                        fontSize: '13px',
-                        outline: 'none',
-                        boxSizing: 'border-box'
-                      }}
-                    />
-                  </div>
-                </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', color: isDark ? '#a1a1aa' : '#71717a', marginBottom: '8px' }}>
+                        Modelo Objetivo Asignado
+                      </label>
+                      <select
+                        value={newKeyFormModel}
+                        onChange={(e) => setNewKeyFormModel(e.target.value)}
+                        style={{
+                          width: '100%',
+                          padding: '11px 14px',
+                          backgroundColor: isDark ? '#000000' : '#ffffff',
+                          border: isDark ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid rgba(0, 0, 0, 0.15)',
+                          borderRadius: '8px',
+                          color: isDark ? '#ffffff' : '#000000',
+                          fontSize: '13px',
+                          outline: 'none',
+                          boxSizing: 'border-box',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        {FEATURED_MODELS.map(m => (
+                          <option key={m.id} value={m.id} style={{ background: isDark ? '#000' : '#fff', color: isDark ? '#fff' : '#000' }}>
+                            {m.name} — {m.badge}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
 
-                <button
-                  type="submit"
-                  style={{
-                    padding: '12px 20px',
-                    backgroundColor: isDark ? '#ffffff' : '#000000',
-                    color: isDark ? '#000000' : '#ffffff',
-                    border: 'none',
-                    borderRadius: '8px',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px',
-                    marginTop: '8px'
-                  }}
-                >
-                  <FiKey />
-                  <span>Generar Sub-API Key</span>
-                </button>
-              </form>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                      <div>
+                        <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', color: isDark ? '#a1a1aa' : '#71717a', marginBottom: '8px' }}>
+                          Límite RPM
+                        </label>
+                        <input
+                          type="text"
+                          value={newKeyFormRpm}
+                          onChange={(e) => setNewKeyFormRpm(e.target.value)}
+                          placeholder="120"
+                          style={{
+                            width: '100%',
+                            padding: '10px 14px',
+                            backgroundColor: isDark ? '#000000' : '#ffffff',
+                            border: isDark ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid rgba(0, 0, 0, 0.15)',
+                            borderRadius: '8px',
+                            color: isDark ? '#ffffff' : '#000000',
+                            fontSize: '13px',
+                            outline: 'none',
+                            boxSizing: 'border-box'
+                          }}
+                        />
+                      </div>
 
-              {/* Generated Key Box */}
-              <div style={{
-                padding: '14px 16px',
-                backgroundColor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.03)',
-                borderRadius: '8px',
-                border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)'
-              }}>
-                <div style={{ fontSize: '11px', fontWeight: 600, color: isDark ? '#a1a1aa' : '#71717a', marginBottom: '6px' }}>
-                  Llave Generada:
-                </div>
+                      <div>
+                        <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', color: isDark ? '#a1a1aa' : '#71717a', marginBottom: '8px' }}>
+                          Cuota de Tokens
+                        </label>
+                        <input
+                          type="text"
+                          value={newKeyFormQuota}
+                          onChange={(e) => setNewKeyFormQuota(e.target.value)}
+                          placeholder="5,000,000"
+                          style={{
+                            width: '100%',
+                            padding: '10px 14px',
+                            backgroundColor: isDark ? '#000000' : '#ffffff',
+                            border: isDark ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid rgba(0, 0, 0, 0.15)',
+                            borderRadius: '8px',
+                            color: isDark ? '#ffffff' : '#000000',
+                            fontSize: '13px',
+                            outline: 'none',
+                            boxSizing: 'border-box'
+                          }}
+                        />
+                      </div>
+                    </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <code style={{
-                    flex: 1,
-                    fontSize: '12px',
-                    fontFamily: 'monospace',
-                    color: generatedKey ? (isDark ? '#ffffff' : '#000000') : (isDark ? '#71717a' : '#a1a1aa'),
-                    wordBreak: 'break-all',
-                    fontWeight: generatedKey ? 600 : 400
-                  }}>
-                    {generatedKey || 'Haz clic en "Generar Sub-API Key" arriba...'}
-                  </code>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '12px' }}>
+                      <button
+                        type="button"
+                        onClick={() => setIsCreateModalOpen(false)}
+                        style={{
+                          padding: '10px 18px',
+                          backgroundColor: 'transparent',
+                          border: isDark ? '1px solid rgba(255,255,255,0.15)' : '1px solid rgba(0,0,0,0.12)',
+                          borderRadius: '8px',
+                          color: isDark ? '#ffffff' : '#000000',
+                          fontSize: '13px',
+                          fontWeight: 500,
+                          cursor: 'pointer'
+                        }}
+                      >
+                        Cancelar
+                      </button>
 
-                  {generatedKey && (
-                    <button
-                      onClick={handleCopyKey}
-                      style={{
-                        padding: '6px 12px',
-                        backgroundColor: isDark ? '#ffffff' : '#000000',
-                        border: 'none',
-                        borderRadius: '6px',
-                        color: isDark ? '#000000' : '#ffffff',
-                        fontSize: '11px',
-                        fontWeight: 600,
-                        cursor: 'pointer',
+                      <button
+                        type="submit"
+                        style={{
+                          padding: '10px 20px',
+                          backgroundColor: isDark ? '#ffffff' : '#000000',
+                          color: isDark ? '#000000' : '#ffffff',
+                          border: 'none',
+                          borderRadius: '8px',
+                          fontSize: '13px',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px'
+                        }}
+                      >
+                        <FiKey size={14} />
+                        <span>Crear Clave</span>
+                      </button>
+                    </div>
+                  </form>
+                )}
+
+                {/* PASO 2: REVELACIÓN ÚNICA DE LA CLAVE (ESTILO GROQ / OPENAI) */}
+                {createStep === 2 && createdKeyItem && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+                    {/* ALERTA DE SEGURIDAD ESTILO GROQ */}
+                    <div style={{
+                      padding: '12px 16px',
+                      borderRadius: '8px',
+                      backgroundColor: isDark ? 'rgba(234, 179, 8, 0.1)' : '#fef9c3',
+                      border: isDark ? '1px solid rgba(234, 179, 8, 0.25)' : '1px solid #fde047',
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      gap: '12px'
+                    }}>
+                      <FiAlertTriangle size={18} style={{ color: '#eab308', flexShrink: 0, marginTop: '2px' }} />
+                      <div style={{ fontSize: '12px', lineHeight: 1.5, color: isDark ? '#fef08a' : '#854d0e' }}>
+                        <strong>Guarda esta clave secreta ahora:</strong> Por motivos de seguridad y privacidad, no podrás volver a ver la clave completa una vez que cierres esta ventana.
+                      </div>
+                    </div>
+
+                    {/* CAJA CON LA CLAVE COMPLETA Y BOTÓN COPIAR */}
+                    <div>
+                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', color: isDark ? '#a1a1aa' : '#71717a', marginBottom: '8px' }}>
+                        Tu Clave de API Secreta
+                      </label>
+                      <div style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '6px'
-                      }}
-                    >
-                      {copied ? <FiCheck /> : <FiCopy />}
-                      <span>{copied ? 'Copiado' : 'Copiar'}</span>
-                    </button>
-                  )}
-                </div>
+                        gap: '8px',
+                        padding: '10px 14px',
+                        backgroundColor: isDark ? '#000000' : '#f4f4f5',
+                        border: isDark ? '1px solid rgba(255,255,255,0.2)' : '1px solid rgba(0,0,0,0.15)',
+                        borderRadius: '8px'
+                      }}>
+                        <code style={{
+                          flex: 1,
+                          fontSize: '13px',
+                          fontFamily: 'monospace',
+                          color: isDark ? '#ffffff' : '#000000',
+                          wordBreak: 'break-all',
+                          fontWeight: 600
+                        }}>
+                          {createdKeyItem.key}
+                        </code>
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(createdKeyItem.key);
+                            setModalKeyCopied(true);
+                            setTimeout(() => setModalKeyCopied(false), 2000);
+                          }}
+                          style={{
+                            padding: '7px 14px',
+                            backgroundColor: modalKeyCopied ? '#22c55e' : (isDark ? '#ffffff' : '#000000'),
+                            color: modalKeyCopied ? '#ffffff' : (isDark ? '#000000' : '#ffffff'),
+                            border: 'none',
+                            borderRadius: '6px',
+                            fontSize: '12px',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            transition: 'all 0.2s ease',
+                            flexShrink: 0
+                          }}
+                        >
+                          {modalKeyCopied ? <FiCheck size={14} /> : <FiCopy size={14} />}
+                          <span>{modalKeyCopied ? '¡Copiada!' : 'Copiar'}</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* INTEGRACIÓN RÁPIDA */}
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                        <span style={{ fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', color: isDark ? '#a1a1aa' : '#71717a' }}>
+                          Integración Rápida
+                        </span>
+                        <div style={{ display: 'flex', gap: '6px' }}>
+                          {(['python', 'node', 'curl'] as const).map(tab => (
+                            <button
+                              key={tab}
+                              type="button"
+                              onClick={() => setActiveCodeTab(tab)}
+                              style={{
+                                padding: '3px 8px',
+                                backgroundColor: activeCodeTab === tab ? (isDark ? '#ffffff' : '#000000') : 'transparent',
+                                color: activeCodeTab === tab ? (isDark ? '#000000' : '#ffffff') : (isDark ? '#a1a1aa' : '#71717a'),
+                                border: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)',
+                                borderRadius: '4px',
+                                fontSize: '10px',
+                                fontWeight: 600,
+                                textTransform: 'uppercase',
+                                cursor: 'pointer'
+                              }}
+                            >
+                              {tab}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div style={{
+                        backgroundColor: isDark ? '#050505' : '#18181b',
+                        borderRadius: '8px',
+                        padding: '12px',
+                        maxHeight: '140px',
+                        overflowY: 'auto',
+                        fontSize: '11px',
+                        color: '#f4f4f5',
+                        fontFamily: 'monospace'
+                      }}>
+                        <pre style={{ margin: 0 }}>
+                          <code>{getCodeSnippet(createdKeyItem.key, createdKeyItem.model)}</code>
+                        </pre>
+                      </div>
+                    </div>
+
+                    {/* BOTÓN LISTO */}
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
+                      <button
+                        type="button"
+                        onClick={() => setIsCreateModalOpen(false)}
+                        style={{
+                          padding: '11px 24px',
+                          backgroundColor: isDark ? '#ffffff' : '#000000',
+                          color: isDark ? '#000000' : '#ffffff',
+                          border: 'none',
+                          borderRadius: '8px',
+                          fontSize: '13px',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px'
+                        }}
+                      >
+                        <FiCheckCircle size={15} />
+                        <span>Listo / Cerrar</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
+          )}
 
-            {/* RIGHT PANEL: CODE TERMINAL INTEGRATION */}
+          {/* ========================================================================= */}
+          {/* MODAL: VER CÓDIGO DE INTEGRACIÓN PARA UNA CLAVE EXISTENTE                */}
+          {/* ========================================================================= */}
+          {isCodeModalOpen && inspectKeyItem && (
             <div style={{
-              border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
-              backgroundColor: isDark ? 'rgba(10, 10, 10, 0.65)' : 'rgba(255, 255, 255, 0.75)',
-              backdropFilter: 'blur(24px)',
-              WebkitBackdropFilter: 'blur(24px)',
-              borderRadius: '16px',
-              padding: '24px',
+              position: 'fixed',
+              inset: 0,
+              zIndex: 9999,
+              backgroundColor: 'rgba(0, 0, 0, 0.75)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
               display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              gap: '20px'
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '20px'
             }}>
-              <div>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', borderBottom: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.08)', paddingBottom: '12px' }}>
-                  <span style={{ fontSize: '14px', fontWeight: 600, color: isDark ? '#ffffff' : '#000000' }}>Integración de Código para Clientes</span>
-                  <span style={{ fontSize: '11px', color: isDark ? '#a1a1aa' : '#71717a' }}>OpenAI Compatible</span>
+              <div style={{
+                width: '100%',
+                maxWidth: '640px',
+                backgroundColor: isDark ? '#111113' : '#ffffff',
+                border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(0, 0, 0, 0.12)',
+                borderRadius: '16px',
+                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+                padding: '28px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '20px'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.08)', paddingBottom: '14px' }}>
+                  <div>
+                    <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: isDark ? '#ffffff' : '#000000' }}>
+                      Integración: {inspectKeyItem.name}
+                    </h4>
+                    <span style={{ fontSize: '12px', color: isDark ? '#a1a1aa' : '#71717a' }}>
+                      Modelo: {inspectKeyItem.model} · OpenAI Standard Protocol
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={() => setIsCodeModalOpen(false)}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: isDark ? '#a1a1aa' : '#71717a',
+                      cursor: 'pointer',
+                      padding: '4px'
+                    }}
+                  >
+                    <FiX size={18} />
+                  </button>
                 </div>
 
-                <div style={{ display: 'flex', gap: '8px', marginBottom: '14px' }}>
+                {/* TABS */}
+                <div style={{ display: 'flex', gap: '8px' }}>
                   {(['python', 'node', 'curl'] as const).map(tab => (
                     <button
                       key={tab}
+                      type="button"
                       onClick={() => setActiveCodeTab(tab)}
                       style={{
                         padding: '6px 14px',
                         backgroundColor: activeCodeTab === tab ? (isDark ? '#ffffff' : '#000000') : 'transparent',
+                        color: activeCodeTab === tab ? (isDark ? '#000000' : '#ffffff') : (isDark ? '#ffffff' : '#000000'),
                         border: isDark ? '1px solid rgba(255,255,255,0.15)' : '1px solid rgba(0,0,0,0.12)',
                         borderRadius: '6px',
-                        color: activeCodeTab === tab ? (isDark ? '#000000' : '#ffffff') : (isDark ? '#ffffff' : '#000000'),
                         fontSize: '11px',
                         fontWeight: 600,
                         textTransform: 'uppercase',
@@ -1802,148 +2617,133 @@ run();`;
                   ))}
                 </div>
 
-                {/* Code Terminal View */}
+                {/* CODE BLOCK */}
                 <div style={{
-                  backgroundColor: isDark ? '#111111' : '#18181b',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  backgroundColor: isDark ? '#050505' : '#18181b',
                   borderRadius: '10px',
-                  padding: '18px',
-                  color: '#f4f4f5',
-                  fontSize: '12px',
-                  lineHeight: 1.6,
-                  overflowX: 'auto',
+                  padding: '16px',
                   maxHeight: '260px',
-                  fontFamily: "Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace"
+                  overflowY: 'auto',
+                  fontSize: '12px',
+                  color: '#f4f4f5',
+                  fontFamily: 'monospace',
+                  border: '1px solid rgba(255,255,255,0.1)'
                 }}>
-                  <pre style={{ margin: 0, fontFamily: 'inherit' }}>
-                    <code>{getCodeSnippet()}</code>
+                  <pre style={{ margin: 0 }}>
+                    <code>{getCodeSnippet(inspectKeyItem.key, inspectKeyItem.model)}</code>
                   </pre>
                 </div>
-              </div>
 
-              {/* Diagnostic Route Button */}
-              <div style={{
-                padding: '14px 16px',
-                backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
-                borderRadius: '8px',
-                border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.08)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: '12px'
-              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '11px', color: isDark ? '#71717a' : '#a1a1aa' }}>
+                    Base URL: <code style={{ fontFamily: 'monospace' }}>{typeof window !== 'undefined' ? `${window.location.origin}/api/v1` : 'https://axglynne.com/api/v1'}</code>
+                  </span>
+
+                  <button
+                    onClick={() => setIsCodeModalOpen(false)}
+                    style={{
+                      padding: '9px 18px',
+                      backgroundColor: isDark ? '#ffffff' : '#000000',
+                      color: isDark ? '#000000' : '#ffffff',
+                      border: 'none',
+                      borderRadius: '8px',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Cerrar
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 4: NVIDIA MASTER KEY CONFIGURATION */}
+          {activeTab === 'credentials' && (
+            <div style={{
+              border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(0, 0, 0, 0.1)',
+              backgroundColor: isDark ? 'rgba(10, 10, 10, 0.65)' : 'rgba(255, 255, 255, 0.75)',
+              backdropFilter: 'blur(24px)',
+              WebkitBackdropFilter: 'blur(24px)',
+              borderRadius: '16px',
+              padding: '24px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '16px'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
                 <div>
-                  <div style={{ fontSize: '12px', fontWeight: 600, color: isDark ? '#ffffff' : '#000000', marginBottom: '2px' }}>
-                    Diagnóstico de Ruta // Estado 404
+                  <div style={{ fontSize: '14px', fontWeight: 600, color: isDark ? '#ffffff' : '#000000', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <FiKey size={16} />
+                    <span>Clave Maestra del Gateway (NVIDIA Build API Key)</span>
                   </div>
-                  <div style={{ fontSize: '11px', color: isDark ? '#a1a1aa' : '#71717a' }}>
-                    Probar el manejador personalizado de rutas no encontradas.
+                  <div style={{ fontSize: '12px', color: isDark ? '#a1a1aa' : '#71717a', marginTop: '4px' }}>
+                    Ingresa aquí tu API Key para activar la conectividad de los modelos en producción.
                   </div>
                 </div>
 
                 <button
-                  onClick={() => setTrigger404(true)}
+                  onClick={handleSaveMasterKey}
                   style={{
-                    padding: '8px 14px',
-                    backgroundColor: 'transparent',
-                    border: isDark ? '1px solid rgba(255,255,255,0.2)' : '1px solid rgba(0,0,0,0.2)',
-                    borderRadius: '6px',
-                    color: isDark ? '#ffffff' : '#000000',
-                    fontSize: '11px',
+                    padding: '10px 18px',
+                    backgroundColor: isDark ? '#ffffff' : '#000000',
+                    color: isDark ? '#000000' : '#ffffff',
+                    border: 'none',
+                    borderRadius: '8px',
+                    fontSize: '12px',
                     fontWeight: 600,
                     cursor: 'pointer',
-                    whiteSpace: 'nowrap'
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    transition: 'all 0.2s ease'
                   }}
                 >
-                  Probar 404
+                  {keySaved ? <FiCheck /> : <FiZap />}
+                  <span>{keySaved ? 'Clave Guardada' : 'Guardar Clave'}</span>
                 </button>
               </div>
-            </div>
 
-        </div>
-
-        {/* TAB 4: NVIDIA MASTER KEY CONFIGURATION */}
-        {activeTab === 'credentials' && (
-          <div style={{
-            border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(0, 0, 0, 0.1)',
-            backgroundColor: isDark ? 'rgba(10, 10, 10, 0.65)' : 'rgba(255, 255, 255, 0.75)',
-            backdropFilter: 'blur(24px)',
-            WebkitBackdropFilter: 'blur(24px)',
-            borderRadius: '16px',
-            padding: '24px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '16px'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
               <div>
-                <div style={{ fontSize: '14px', fontWeight: 600, color: isDark ? '#ffffff' : '#000000', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <FiKey size={16} />
-                  <span>Clave Maestra del Gateway (NVIDIA Build API Key)</span>
-                </div>
-                <div style={{ fontSize: '12px', color: isDark ? '#a1a1aa' : '#71717a', marginTop: '4px' }}>
-                  Ingresa aquí tu API Key para activar la conectividad de los modelos en producción.
-                </div>
+                <input
+                  type="text"
+                  value={nvidiaMasterKey}
+                  onChange={(e) => setNvidiaMasterKey(e.target.value)}
+                  placeholder="nvapi-..."
+                  style={{
+                    width: '100%',
+                    padding: '12px 16px',
+                    backgroundColor: isDark ? '#000000' : '#ffffff',
+                    border: isDark ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid rgba(0, 0, 0, 0.15)',
+                    borderRadius: '8px',
+                    color: isDark ? '#ffffff' : '#000000',
+                    fontSize: '13px',
+                    fontFamily: 'monospace',
+                    outline: 'none',
+                    boxSizing: 'border-box'
+                  }}
+                />
               </div>
-
-              <button
-                onClick={handleSaveMasterKey}
-                style={{
-                  padding: '10px 18px',
-                  backgroundColor: isDark ? '#ffffff' : '#000000',
-                  color: isDark ? '#000000' : '#ffffff',
-                  border: 'none',
-                  borderRadius: '8px',
-                  fontSize: '12px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  transition: 'all 0.2s ease'
-                }}
-              >
-                {keySaved ? <FiCheck /> : <FiZap />}
-                <span>{keySaved ? 'Clave Guardada' : 'Guardar Clave'}</span>
-              </button>
             </div>
+          )}
 
-            <div>
-              <input
-                type="text"
-                value={nvidiaMasterKey}
-                onChange={(e) => setNvidiaMasterKey(e.target.value)}
-                placeholder="nvapi-..."
-                style={{
-                  width: '100%',
-                  padding: '12px 16px',
-                  backgroundColor: isDark ? '#000000' : '#ffffff',
-                  border: isDark ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid rgba(0, 0, 0, 0.15)',
-                  borderRadius: '8px',
-                  color: isDark ? '#ffffff' : '#000000',
-                  fontSize: '13px',
-                  fontFamily: 'monospace',
-                  outline: 'none',
-                  boxSizing: 'border-box'
-                }}
-              />
-            </div>
+          {/* MAIN 1: EXPLORE OFFERINGS HERO BANNER (SOLUCIONES AI 001-004) */}
+          <div style={{ marginTop: '48px' }}>
+            <ExploreOfferingsHeroSection isDark={isDark} />
           </div>
-        )}
 
-        {/* MAIN 1: EXPLORE OFFERINGS HERO BANNER (SOLUCIONES AI 001-004) */}
-        <div style={{ marginTop: '48px' }}>
-          <ExploreOfferingsHeroSection isDark={isDark} />
-        </div>
+          {/* BLUEPRINT WIREFRAME ARCHITECTURE (FLEEK/EDGE AI STYLE) */}
+          <div style={{ marginTop: '56px' }}>
+            <FleekStyleArchitectureSection isDark={isDark} onOpenKeyModal={handleOpenCreateModal} />
+          </div>
 
-
-
-        {/* OPEN WEIGHTS MANIFESTO ARCHITECTURAL GRID WITH FIGURES */}
-        <div style={{ marginTop: '48px' }}>
-          <OpenWeightsManifestoGrid isDark={isDark} onExploreClick={() => setActiveTab('catalog')} />
-        </div>
-      </main>
-    </div>
-  </BackgroundWrapper>
-);
+          {/* OPEN WEIGHTS MANIFESTO ARCHITECTURAL GRID WITH FIGURES */}
+          <div style={{ marginTop: '56px' }}>
+            <OpenWeightsManifestoGrid isDark={isDark} onExploreClick={() => setActiveTab('catalog')} />
+          </div>
+        </main>
+      </div>
+    </BackgroundWrapper>
+  );
 }

@@ -76,6 +76,11 @@ export default function Header() {
   const pathname = usePathname();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Ocultar Header en secciones y herramientas internas como models_provider
+  if (pathname?.startsWith('/models_provider')) {
+    return null;
+  }
+
   // Close the menu when navigating
   useEffect(() => {
     setIsOpen(false);
