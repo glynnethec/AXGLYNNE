@@ -49,68 +49,89 @@ export default function AssemblyDashboard() {
 
   const platformTools = [
     { 
+      num: '001',
       name: 'Librarymodel', 
       label: 'Open-Source Weights Library', 
       tag: 'Mathematical Sovereignty & Offline Deployment',
+      badge: '100% SOBERANÍA',
       desc: 'Access and download full mathematical weights of open models (GGUF, FP16, EXL2) for local, offline, and air-gapped deployments. Ensure complete data sovereignty, zero data retention, and enterprise security without relying on external clouds.', 
       model: 'Open-Weights Repository', 
       details: 'Full quantized model weights (GGUF, FP16, EXL2) ready for local inference.',
-      icon: <FiDatabase size={16} />
+      metrics: { latency: '<10ms', security: 'Air-Gapped', status: 'Operational' },
+      icon: <FiDatabase size={15} />
     },
     { 
+      num: '002',
       name: 'Create_you_GLYNNE_model', 
       label: 'Create & Train Your Custom AI Model', 
       tag: 'QLoRA Fine-Tuning & Private Data',
+      badge: 'QLORA TUNING',
       desc: 'Train a model on your proprietary enterprise data, shaping its name, personality, and analytical criteria. We provide specialized weight retraining (QLoRA) to align the LLM’s cognitive core with your workflows: greater cost savings, optimized processing, and a tailored intelligent workforce.', 
       model: 'QLoRA / Unsloth Core', 
       details: 'Private model training protocols active.',
-      icon: <FiSliders size={16} />
+      metrics: { latency: 'Batch FP16', security: 'Private VPC', status: 'Ready' },
+      icon: <FiSliders size={15} />
     },
     { 
+      num: '003',
       name: 'models_provider', 
       label: 'AI Model APIs & Gateway', 
       tag: 'API Provider & Enterprise Gateway',
+      badge: 'GATEWAY & SUB-APIS',
       desc: 'If you have an existing project and need seamless, production-ready AI integration, we deliver enterprise LLM APIs engineered to power your operations. Ultra-low latency inference, GPU cluster elasticity, and dedicated Sub-API keys ready to plug directly into your codebase.', 
       model: 'vLLM / NVIDIA NIM Gateway', 
       details: 'Sub-10ms latency streaming and dedicated API key management ready.',
-      icon: <FiZap size={16} />
+      metrics: { latency: '<10ms / tok', security: 'Sub-API Key', status: 'High Throughput' },
+      icon: <FiZap size={15} />
     },
     { 
+      num: '004',
       name: 'AX_chat', 
       label: 'Chat with AX · Intelligent Assistant', 
       tag: 'Cognitive Conversational Core',
+      badge: 'FRONTIER REASONING',
       desc: 'Connect instantly with GLYNNE’s conversational engine. Solve complex inquiries, analyze enterprise data, and generate code or strategic blueprints in real-time powered by frontier reasoning and multimodal vision models.', 
       model: 'GPT OSS 120B OpenAI', 
       details: 'High-parameter natural language processing ready.',
-      icon: <FiMessageSquare size={16} />
+      metrics: { latency: 'Real-Time', security: 'Encrypted', status: 'Connected' },
+      icon: <FiMessageSquare size={15} />
     },
     { 
+      num: '005',
       name: 'AX_voice', 
       label: 'AX Voice · Real-Time Voice Synthesis', 
       tag: 'Neural Acoustic Modulation',
+      badge: 'VOX SYNTHESIS',
       desc: 'Experience ultra-natural, zero-latency voice conversations powered by artificial intelligence. Instant acoustic modulation and real-time comprehension built for contact centers, executive assistants, and next-generation voice interfaces.', 
       model: 'VOX-SYNTH V2.0', 
       details: 'Acoustic waveform modulation standing by.',
-      icon: <FiMic size={16} />
+      metrics: { latency: '<50ms Audio', security: 'Full Duplex', status: 'Streaming' },
+      icon: <FiMic size={15} />
     },
   ];
 
   // External navigation links that open in a new tab without altering the orb
   const externalLinks = [
     {
+      num: '006',
       title: 'Home · Main Portal',
+      badge: 'ROOT ROUTE',
       href: '/',
       desc: 'Explore our core platform, homepage, and comprehensive overview of AX GLYNNE services.',
       icon: <FiHome size={14} />
     },
     {
+      num: '007',
       title: 'About · Company',
+      badge: 'ARCHITECTURE',
       href: '/About',
       desc: 'Discover our architecture, technological mission, and the visionary team engineering GLYNNE.',
       icon: <FiInfo size={14} />
     },
     {
+      num: '008',
       title: 'Contact · Solutions',
+      badge: 'SOLUTIONS',
       href: '/contact',
       desc: 'Connect directly with our systems engineers and architects for deployments, custom quotes, and integrations.',
       icon: <FiMail size={14} />
@@ -178,15 +199,24 @@ export default function AssemblyDashboard() {
   const renderCenterCanvas = () => (
     <div className="md-center">
       <div className={`md-info-card ${isFading ? 'fading-out' : 'fading-in'}`}>
-        <div className="info-title">{currentToolData?.label}</div>
+        <div className="md-info-header-meta">
+          <span className="md-info-num">{currentToolData?.num || '001'}</span>
+          <span className="md-info-status-pill">
+            <span className="md-info-pulse-dot"></span>
+            CLUSTER ACTIVE
+          </span>
+          <span className="md-info-divider-slash">/</span>
+          <div className="info-title">{currentToolData?.label}</div>
+        </div>
         <Link href={`/${activeTool}`} className="md-start-btn">
-          Get Started <span>&rarr;</span>
+          <span>DEPLOY ENGINE</span>
+          <span className="md-start-btn-arrow">&rarr;</span>
         </Link>
       </div>
 
       <div className="md-3d-scene">
         <div className="md-sphere" style={{ overflow: 'visible', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <div style={{ width: '400px', height: '400px', transform: 'scale(1.2)' }}>
+          <div style={{ width: '400px', height: '400px', transform: 'scale(1.12)' }}>
             <LiquidOrb theme={theme} wireframe={theme === 'light'} customRotX={rotX} customRotY={rotY} customRotZ={rotZ} />
           </div>
         </div>
@@ -200,15 +230,44 @@ export default function AssemblyDashboard() {
         </div>
       </div>
 
-      {/* Explicación comercial y amplia de la herramienta debajo de la esfera */}
+      {/* Explicación comercial y técnica de la infraestructura debajo de la esfera */}
       {currentToolData?.desc && (
         <div className={`md-orb-explanation ${isFading ? 'fading-out' : 'fading-in'}`}>
+          <div className="md-orb-explanation-top">
+            <div className="md-orb-meta-left">
+              <span className="md-orb-spec-num">{currentToolData?.num || '001'}</span>
+              <span className="md-orb-spec-category">// INFRASTRUCTURE SPECIFICATION</span>
+            </div>
+            {currentToolData.badge && (
+              <span className="md-orb-badge">{currentToolData.badge}</span>
+            )}
+          </div>
           {currentToolData.tag && (
-            <span className="md-orb-explanation-tag">{currentToolData.tag}</span>
+            <div className="md-orb-title-row">
+              <span className="md-orb-explanation-tag">{currentToolData.tag}</span>
+            </div>
           )}
           <p className="md-orb-explanation-text">
             {currentToolData.desc}
           </p>
+          <div className="md-orb-metrics-bar">
+            <div className="md-orb-metric-item">
+              <span className="md-orb-metric-label">LATENCY</span>
+              <span className="md-orb-metric-val">{currentToolData?.metrics?.latency || '<10MS'}</span>
+            </div>
+            <div className="md-orb-metric-item">
+              <span className="md-orb-metric-label">SECURITY</span>
+              <span className="md-orb-metric-val">{currentToolData?.metrics?.security || 'AIR-GAPPED'}</span>
+            </div>
+            <div className="md-orb-metric-item">
+              <span className="md-orb-metric-label">ENGINE</span>
+              <span className="md-orb-metric-val">{currentToolData?.model}</span>
+            </div>
+            <div className="md-orb-metric-item">
+              <span className="md-orb-metric-label">STATUS</span>
+              <span className="md-orb-metric-val md-orb-status-live">● OPERATIONAL</span>
+            </div>
+          </div>
         </div>
       )}
     </div>
@@ -264,7 +323,6 @@ export default function AssemblyDashboard() {
             {history.map((step, index) => {
               const isCurrent = index === 0;
               const cellColor = theme === 'light' ? '15, 23, 42' : '255, 255, 255';
-              // In light mode boost opacity 5x so the hover cell animation is crisp and visible
               const opacityScale = theme === 'light' ? 5 : 1;
               return (
                 <g key={step.id} style={{ animation: 'cellFadeIn 0.8s ease forwards' }}>
@@ -288,7 +346,13 @@ export default function AssemblyDashboard() {
           {/* Top Toggle Bar */}
           <div className="md-sidebar-toggle-bar">
             {isSidebarOpen && (
-              <span className="md-sidebar-brand">AX Console</span>
+              <div className="md-sidebar-brand-group">
+                <span className="md-sidebar-brand">AX INFRASTRUCTURE</span>
+                <span className="md-sidebar-status-tag">
+                  <span className="md-status-pulse"></span>
+                  ONLINE
+                </span>
+              </div>
             )}
             <button 
               type="button" 
@@ -297,7 +361,7 @@ export default function AssemblyDashboard() {
               title={isSidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
               aria-label={isSidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
             >
-              {isSidebarOpen ? <FiChevronLeft size={16} /> : <FiChevronRight size={16} />}
+              {isSidebarOpen ? <FiChevronLeft size={15} /> : <FiChevronRight size={15} />}
             </button>
           </div>
 
@@ -338,8 +402,9 @@ export default function AssemblyDashboard() {
                         setIsFading(false);
                       }, 400);
                     }}
-                    title={`${tool.label} — ${tool.desc}`}
+                    title={`[${tool.num}] ${tool.label} — ${tool.desc}`}
                   >
+                    <span className="md-rail-num">{tool.num.replace('00', '0')}</span>
                     <span className="md-tool-icon">{tool.icon}</span>
                   </button>
                 ))}
@@ -355,7 +420,7 @@ export default function AssemblyDashboard() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="md-ext-rail-btn"
-                    title={`${link.title} — ${link.desc}`}
+                    title={`[${link.num}] ${link.title} — ${link.desc}`}
                   >
                     <span className="md-ext-rail-icon">{link.icon}</span>
                     <span className="md-ext-rail-indicator">↗</span>
@@ -370,7 +435,7 @@ export default function AssemblyDashboard() {
                   className="md-rail-signout-btn" 
                   title="Sign out"
                 >
-                  <FaSignOutAlt size={13} />
+                  <FaSignOutAlt size={12} />
                 </button>
               </div>
             </>
@@ -386,9 +451,12 @@ export default function AssemblyDashboard() {
                     ) : (
                       <div className="md-profile-avatar-placeholder-compact">AX</div>
                     )}
-                    <span className="md-profile-name-compact">
-                      {userProfile?.full_name || 'AX_user'}
-                    </span>
+                    <div className="md-profile-text-group">
+                      <span className="md-profile-name-compact">
+                        {userProfile?.full_name || 'AX_user'}
+                      </span>
+                      <span className="md-profile-role-badge">OPERATOR // SECURE</span>
+                    </div>
                   </div>
                   <div className="md-profile-actions">
                     <button
@@ -397,19 +465,19 @@ export default function AssemblyDashboard() {
                       className="md-theme-toggle-btn"
                     >
                       {theme === 'dark' ? (
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
                       ) : (
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
                       )}
-                      {theme === 'dark' ? 'Dark' : 'Light'}
+                      <span>{theme === 'dark' ? 'DARK' : 'LIGHT'}</span>
                     </button>
                     <button 
                       onClick={() => setShowLogoutModal(true)}
                       className="md-signout-btn"
                       title="Sign out"
                     >
-                      <FaSignOutAlt size={11} />
-                      Sign Out
+                      <FaSignOutAlt size={10} />
+                      <span>EXIT</span>
                     </button>
                   </div>
                 </div>
@@ -417,11 +485,14 @@ export default function AssemblyDashboard() {
 
               {/* Full Tools Section */}
               <div className="md-section">
-                <h3 className="md-title" style={{ marginBottom: '8px' }}>
-                  Tools <span style={{ fontSize: '11px', opacity: 0.6, fontWeight: 400 }}>[{platformTools.length}]</span>
-                </h3>
+                <div className="md-section-header">
+                  <h3 className="md-title">
+                    Infrastructure Engines
+                  </h3>
+                  <span className="md-section-badge">[05 UNITS]</span>
+                </div>
                 <p className="md-tools-desc">
-                  Access the AX Artificial Intelligence engine and centralized management tools for your enterprise operations.
+                  Select an enterprise AI workload to reorient the cognitive core or deploy dedicated model infrastructure.
                 </p>
                 <ul className="md-tools-list">
                   {platformTools.map(tool => (
@@ -445,10 +516,17 @@ export default function AssemblyDashboard() {
                           }, 400);
                         }}
                       >
-                        <span className="md-tool-icon">
-                          {tool.icon}
-                        </span>
-                        <span className="md-tool-label">{tool.label}</span>
+                        <div className="md-tool-btn-left">
+                          <span className="md-tool-num">{tool.num}</span>
+                          <span className="md-tool-icon">
+                            {tool.icon}
+                          </span>
+                          <div className="md-tool-content-group">
+                            <span className="md-tool-label">{tool.label}</span>
+                            <span className="md-tool-badge-pill">{tool.badge}</span>
+                          </div>
+                        </div>
+                        <span className="md-tool-arrow-indicator">&rarr;</span>
                       </button>
                     </li>
                   ))}
@@ -459,9 +537,9 @@ export default function AssemblyDashboard() {
               <div className="md-ext-section">
                 <div className="md-ext-header">
                   <span className="md-ext-title">
-                    Navigation & Portals
+                    Network Routing
                   </span>
-                  <span className="md-ext-badge">External ↗</span>
+                  <span className="md-ext-badge">[03 ROUTES] ↗</span>
                 </div>
                 <div className="md-ext-list">
                   {externalLinks.map(link => (
@@ -474,9 +552,11 @@ export default function AssemblyDashboard() {
                     >
                       <div className="md-ext-card-top">
                         <div className="md-ext-card-title-group">
+                          <span className="md-ext-num">{link.num}</span>
                           <span className="md-ext-icon">{link.icon}</span>
                           <span className="md-ext-name">{link.title}</span>
                         </div>
+                        <span className="md-ext-badge-pill">{link.badge}</span>
                         <FiArrowUpRight size={13} className="md-ext-arrow" />
                       </div>
                       <p className="md-ext-desc">{link.desc}</p>
@@ -491,7 +571,6 @@ export default function AssemblyDashboard() {
         {/* Center Canvas */}
         {!isMobile && renderCenterCanvas()}
 
-
       </div>
 
       </div>
@@ -500,14 +579,15 @@ export default function AssemblyDashboard() {
       {showLogoutModal && (
         <div className="md-logout-overlay">
           <div className="md-logout-modal">
+            <div className="md-modal-header-tag">// SECURITY DISCONNECT PROTOCOL</div>
             <h3>System Disconnect</h3>
             <p>Are you sure you want to log out and terminate this secure session?</p>
             <div className="md-logout-actions">
-              <button className="md-btn-cancel" onClick={() => setShowLogoutModal(false)}>Cancel</button>
+              <button className="md-btn-cancel" onClick={() => setShowLogoutModal(false)}>CANCEL</button>
               <button className="md-btn-confirm" onClick={async () => {
                 await signOut();
                 window.location.href = '/';
-              }}>Confirm Disconnect</button>
+              }}>CONFIRM DISCONNECT</button>
             </div>
           </div>
         </div>

@@ -1115,7 +1115,8 @@ export default function ModelsProviderPage() {
         headers['X-NVIDIA-API-KEY'] = nvidiaMasterKey;
       }
 
-      const res = await fetch('/api/v1/chat/completions', {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://ax-zyxe.onrender.com';
+      const res = await fetch(`${backendUrl}/api/v1/chat/completions`, {
         method: 'POST',
         headers,
         body: JSON.stringify({
@@ -1230,7 +1231,8 @@ export default function ModelsProviderPage() {
   const getCodeSnippet = (customKey?: string, customModel?: string) => {
     const currentKey = customKey || generatedKey || subApiKeys[0]?.key || 'gly_sub_live_a8f9c2d1e4b56789';
     const targetModel = customModel || selectedModel || 'llama-3.2-11b-vision';
-    const baseUrl = typeof window !== 'undefined' ? `${window.location.origin}/api/v1` : 'https://axglynne.com/api/v1';
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://ax-zyxe.onrender.com';
+    const baseUrl = `${backendUrl}/api/v1`;
 
     if (activeCodeTab === 'python') {
       return `from openai import OpenAI
@@ -2648,7 +2650,7 @@ run();`;
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontSize: '11px', color: isDark ? '#71717a' : '#a1a1aa' }}>
-                    Base URL: <code style={{ fontFamily: 'monospace' }}>{typeof window !== 'undefined' ? `${window.location.origin}/api/v1` : 'https://axglynne.com/api/v1'}</code>
+                    Base URL: <code style={{ fontFamily: 'monospace' }}>{`${process.env.NEXT_PUBLIC_BACKEND_URL || 'https://ax-zyxe.onrender.com'}/api/v1`}</code>
                   </span>
 
                   <button
