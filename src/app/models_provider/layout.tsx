@@ -41,6 +41,10 @@ export const metadata: Metadata = {
     title: 'AXGLYNNE Models Provider | Unified AI API & Sub-API Gateway',
     description: 'Empower your enterprise projects with unified Sub-APIs connecting over 80+ open-source AI models.',
   },
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function ModelsProviderLayout({ children }: { children: React.ReactNode }) {

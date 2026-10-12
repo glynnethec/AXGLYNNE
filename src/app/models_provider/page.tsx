@@ -1016,15 +1016,25 @@ export default function ModelsProviderPage() {
   const [isChatLoading, setIsChatLoading] = useState(false);
   const [chatError, setChatError] = useState<string | null>(null);
 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS
   useEffect(() => {
-    const fetchUser = async () => {
+    const checkAuth = async () => {
       const user = await getCurrentUser();
-      if (user?.email) {
-        setUserEmail(user.email);
+      if (!user) {
+        router.replace('/login');
+      } else {
+        setIsAuthenticated(true);
+        if (user.email) {
+          setUserEmail(user.email);
+        }
       }
     };
-    fetchUser();
+    checkAuth();
+  }, [router]);
 
+  useEffect(() => {
     // Load saved sub-api keys from localStorage
     const savedSubKeys = localStorage.getItem('glynne_sub_api_keys');
     if (savedSubKeys) {
@@ -1271,6 +1281,8 @@ run();`;
     "stream": false
   }'`;
   };
+
+  if (!isAuthenticated) return null;
 
   return (
     <BackgroundWrapper>

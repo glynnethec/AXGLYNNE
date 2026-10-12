@@ -180,6 +180,8 @@ export default function AXChatPage() {
     }
   };
 
+  if (!userProfile) return null;
+
   return (
     <div data-theme={theme}>
       <BackgroundWrapper theme={theme}>

@@ -43,6 +43,10 @@ export const metadata: Metadata = {
     title: 'Open-Weights AI Model Library | AXGLYNNE',
     description: 'Catalog of open-weights models, GGUF adapters, and offline air-gapped runtimes for private enterprise data centers.',
   },
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function LibraryModelLayout({ children }: { children: React.ReactNode }) {
