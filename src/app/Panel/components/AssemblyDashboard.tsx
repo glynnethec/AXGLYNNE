@@ -15,7 +15,7 @@ import {
   FiHome,
   FiInfo,
   FiMail,
-  FiArrowUpRight
+  FiArrowRight
 } from 'react-icons/fi';
 import PanelFooter from './PanelFooter';
 import LiquidOrb from '@/app/AX_chat/components/LiquidOrb';
@@ -40,6 +40,8 @@ export default function AssemblyDashboard() {
   const [activeForm, setActiveForm] = useState('cube');
   const [activeTool, setActiveTool] = useState('Librarymodel');
   const [isFading, setIsFading] = useState(false);
+  const [isLoadingTool, setIsLoadingTool] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(100);
   const [currentDate, setCurrentDate] = useState('');
   const [userProfile, setUserProfile] = useState<any>(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -196,6 +198,42 @@ export default function AssemblyDashboard() {
 
   const currentToolData = platformTools.find(t => t.name === activeTool);
 
+  const handleSelectTool = (toolName: string) => {
+    if (activeTool === toolName) {
+      window.location.href = `/${toolName}`;
+      return;
+    }
+    if (isLoadingTool || isFading) return;
+
+    setIsLoadingTool(true);
+    setIsFading(true);
+    setLoadingProgress(0);
+
+    // Giro orbital dinámico de 360 grados de la esfera
+    setRotY(prev => prev + 360);
+    setRotX(prev => prev + (Math.random() > 0.5 ? 90 : -90));
+    setRotZ(prev => prev + (Math.random() > 0.5 ? 45 : -45));
+
+    // Animación de llenado de la barra de carga
+    let currentP = 0;
+    const interval = setInterval(() => {
+      currentP += Math.floor(Math.random() * 16) + 12;
+      if (currentP >= 100) {
+        currentP = 100;
+        clearInterval(interval);
+      }
+      setLoadingProgress(currentP);
+    }, 45);
+
+    setTimeout(() => {
+      setActiveTool(toolName);
+      setIsFading(false);
+      setTimeout(() => {
+        setIsLoadingTool(false);
+      }, 350);
+    }, 550);
+  };
+
   const renderCenterCanvas = () => (
     <div className="md-center">
       <div className={`md-info-card ${isFading ? 'fading-out' : 'fading-in'}`}>
@@ -208,10 +246,6 @@ export default function AssemblyDashboard() {
           <span className="md-info-divider-slash">/</span>
           <div className="info-title">{currentToolData?.label}</div>
         </div>
-        <Link href={`/${activeTool}`} className="md-start-btn">
-          <span>DEPLOY ENGINE</span>
-          <span className="md-start-btn-arrow">&rarr;</span>
-        </Link>
       </div>
 
       <div className="md-3d-scene">
@@ -230,46 +264,41 @@ export default function AssemblyDashboard() {
         </div>
       </div>
 
-      {/* Explicación comercial y técnica de la infraestructura debajo de la esfera */}
-      {currentToolData?.desc && (
-        <div className={`md-orb-explanation ${isFading ? 'fading-out' : 'fading-in'}`}>
-          <div className="md-orb-explanation-top">
-            <div className="md-orb-meta-left">
-              <span className="md-orb-spec-num">{currentToolData?.num || '001'}</span>
-              <span className="md-orb-spec-category">// INFRASTRUCTURE SPECIFICATION</span>
-            </div>
-            {currentToolData.badge && (
-              <span className="md-orb-badge">{currentToolData.badge}</span>
-            )}
+      {/* Componente sutil animado de barra de carga y telemetría debajo de la esfera */}
+      <div className="md-orb-loading-dock">
+        <div className="md-orb-loading-header">
+          <div className="md-orb-loading-status-group">
+            <span className={`md-orb-loading-dot ${isLoadingTool ? 'active' : ''}`}></span>
+            <span className="md-orb-loading-text">
+              {isLoadingTool
+                ? `SYNCHRONIZING ENGINE // [${currentToolData?.num || '001'}]`
+                : `CLUSTER SYNCHRONIZED // ${currentToolData?.badge || 'OPERATIONAL'}`}
+            </span>
           </div>
-          {currentToolData.tag && (
-            <div className="md-orb-title-row">
-              <span className="md-orb-explanation-tag">{currentToolData.tag}</span>
-            </div>
-          )}
-          <p className="md-orb-explanation-text">
-            {currentToolData.desc}
-          </p>
-          <div className="md-orb-metrics-bar">
-            <div className="md-orb-metric-item">
-              <span className="md-orb-metric-label">LATENCY</span>
-              <span className="md-orb-metric-val">{currentToolData?.metrics?.latency || '<10MS'}</span>
-            </div>
-            <div className="md-orb-metric-item">
-              <span className="md-orb-metric-label">SECURITY</span>
-              <span className="md-orb-metric-val">{currentToolData?.metrics?.security || 'AIR-GAPPED'}</span>
-            </div>
-            <div className="md-orb-metric-item">
-              <span className="md-orb-metric-label">ENGINE</span>
-              <span className="md-orb-metric-val">{currentToolData?.model}</span>
-            </div>
-            <div className="md-orb-metric-item">
-              <span className="md-orb-metric-label">STATUS</span>
-              <span className="md-orb-metric-val md-orb-status-live">● OPERATIONAL</span>
-            </div>
-          </div>
+          <span className={`md-orb-loading-percent ${isLoadingTool ? 'active' : ''}`}>
+            {isLoadingTool ? `[ ${loadingProgress}% ]` : '[ 100% READY ]'}
+          </span>
         </div>
-      )}
+
+        <div className={`md-orb-progress-track ${!isLoadingTool ? 'idle' : ''}`}>
+          <div
+            className="md-orb-progress-fill"
+            style={{ width: `${isLoadingTool ? loadingProgress : 100}%` }}
+          ></div>
+        </div>
+
+        <div className="md-orb-loading-meta">
+          <span className="md-orb-loading-meta-item">
+            TOOL: <span className="md-orb-loading-meta-val">{currentToolData?.name || 'CORE'}</span>
+          </span>
+          <span className="md-orb-loading-meta-item">
+            ORB SPIN: <span className="md-orb-loading-meta-val">{isLoadingTool ? 'ROTATING 360°' : 'STANDBY'}</span>
+          </span>
+          <span className="md-orb-loading-meta-item">
+            LATENCY: <span className="md-orb-loading-meta-val">{currentToolData?.metrics?.latency || '<10MS'}</span>
+          </span>
+        </div>
+      </div>
     </div>
   );
 
@@ -387,21 +416,7 @@ export default function AssemblyDashboard() {
                   <button 
                     key={tool.name}
                     className={`md-tool-rail-btn ${activeTool === tool.name && !isFading ? 'active' : ''}`}
-                    onClick={() => {
-                      if (activeTool === tool.name) {
-                        window.location.href = `/${tool.name}`;
-                        return;
-                      }
-                      if (isFading) return;
-                      setIsFading(true);
-                      setRotX(prev => prev + (Math.random() > 0.5 ? 120 : -120));
-                      setRotY(prev => prev + (Math.random() > 0.5 ? 120 : -120));
-                      setRotZ(prev => prev + (Math.random() > 0.5 ? 120 : -120));
-                      setTimeout(() => {
-                        setActiveTool(tool.name);
-                        setIsFading(false);
-                      }, 400);
-                    }}
+                    onClick={() => handleSelectTool(tool.name)}
                     title={`[${tool.num}] ${tool.label} — ${tool.desc}`}
                   >
                     <span className="md-rail-num">{tool.num.replace('00', '0')}</span>
@@ -409,22 +424,20 @@ export default function AssemblyDashboard() {
                   </button>
                 ))}
 
-                {/* Separador sutil para los 3 botones de navegación externa */}
+                {/* Separador sutil para los 3 botones de navegación */}
                 <div className="md-rail-nav-separator"></div>
 
-                {/* 3 Botones de navegación externa (nueva pestaña, no alteran orb) */}
+                {/* 3 Botones de navegación (misma página) */}
                 {externalLinks.map(link => (
-                  <a
+                  <Link
                     key={link.title}
                     href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     className="md-ext-rail-btn"
                     title={`[${link.num}] ${link.title} — ${link.desc}`}
                   >
                     <span className="md-ext-rail-icon">{link.icon}</span>
-                    <span className="md-ext-rail-indicator">↗</span>
-                  </a>
+                    <span className="md-ext-rail-indicator">→</span>
+                  </Link>
                 ))}
               </div>
 
@@ -499,22 +512,7 @@ export default function AssemblyDashboard() {
                     <li key={tool.name} className="md-tool-item">
                       <button 
                         className={`md-tool-btn ${activeTool === tool.name && !isFading ? 'active' : ''}`} 
-                        onClick={() => {
-                          if (activeTool === tool.name) {
-                            window.location.href = `/${tool.name}`;
-                            return;
-                          }
-                          if (isFading) return;
-                          setIsFading(true);
-                          setRotX(prev => prev + (Math.random() > 0.5 ? 120 : -120));
-                          setRotY(prev => prev + (Math.random() > 0.5 ? 120 : -120));
-                          setRotZ(prev => prev + (Math.random() > 0.5 ? 120 : -120));
-
-                          setTimeout(() => {
-                            setActiveTool(tool.name);
-                            setIsFading(false);
-                          }, 400);
-                        }}
+                        onClick={() => handleSelectTool(tool.name)}
                       >
                         <div className="md-tool-btn-left">
                           <span className="md-tool-num">{tool.num}</span>
@@ -533,21 +531,19 @@ export default function AssemblyDashboard() {
                 </ul>
               </div>
 
-              {/* External Navigation Section (Home, About, Contact) */}
+              {/* Navigation Section (Home, About, Contact) */}
               <div className="md-ext-section">
                 <div className="md-ext-header">
                   <span className="md-ext-title">
                     Network Routing
                   </span>
-                  <span className="md-ext-badge">[03 ROUTES] ↗</span>
+                  <span className="md-ext-badge">[03 ROUTES] →</span>
                 </div>
                 <div className="md-ext-list">
                   {externalLinks.map(link => (
-                    <a
+                    <Link
                       key={link.title}
                       href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
                       className="md-ext-card-btn"
                     >
                       <div className="md-ext-card-top">
@@ -557,10 +553,10 @@ export default function AssemblyDashboard() {
                           <span className="md-ext-name">{link.title}</span>
                         </div>
                         <span className="md-ext-badge-pill">{link.badge}</span>
-                        <FiArrowUpRight size={13} className="md-ext-arrow" />
+                        <FiArrowRight size={13} className="md-ext-arrow" />
                       </div>
                       <p className="md-ext-desc">{link.desc}</p>
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -570,6 +566,80 @@ export default function AssemblyDashboard() {
 
         {/* Center Canvas */}
         {!isMobile && renderCenterCanvas()}
+
+        {/* Right Specification Container (Mirror of Left Sidebar) */}
+        {!isMobile && currentToolData && (
+          <div className={`md-right ${isFading ? 'fading-out' : 'fading-in'}`}>
+            <div className="md-right-content">
+              {/* Header Bar */}
+              <div className="md-right-header">
+                <div className="md-right-brand-group">
+                  <span className="md-right-num">{currentToolData.num}</span>
+                  <span className="md-right-category">// SPECIFICATION</span>
+                </div>
+                {currentToolData.badge && (
+                  <span className="md-right-badge">{currentToolData.badge}</span>
+                )}
+              </div>
+
+              {/* Tool Title & Tag */}
+              <div className="md-right-title-section">
+                <div className="md-right-icon-wrapper">
+                  {currentToolData.icon}
+                </div>
+                <div className="md-right-title-group">
+                  <h3 className="md-right-tool-label">{currentToolData.label}</h3>
+                  <span className="md-right-tool-tag">{currentToolData.tag}</span>
+                </div>
+              </div>
+
+              {/* Commercial & Technical Description */}
+              <div className="md-right-desc-section">
+                <div className="md-right-section-title">OVERVIEW & ARCHITECTURE</div>
+                <p className="md-right-desc-text">
+                  {currentToolData.desc}
+                </p>
+                {currentToolData.details && (
+                  <div className="md-right-details-box">
+                    <span className="md-right-details-tag">RUNTIME CONFIG</span>
+                    <p className="md-right-details-text">{currentToolData.details}</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Infrastructure Micro-Metrics */}
+              <div className="md-right-metrics-section">
+                <div className="md-right-section-title">CLUSTER METRICS</div>
+                <div className="md-right-metrics-list">
+                  <div className="md-right-metric-card">
+                    <span className="md-right-metric-label">LATENCY</span>
+                    <span className="md-right-metric-val">{currentToolData.metrics?.latency || '<10MS'}</span>
+                  </div>
+                  <div className="md-right-metric-card">
+                    <span className="md-right-metric-label">SECURITY</span>
+                    <span className="md-right-metric-val">{currentToolData.metrics?.security || 'AIR-GAPPED'}</span>
+                  </div>
+                  <div className="md-right-metric-card">
+                    <span className="md-right-metric-label">ENGINE</span>
+                    <span className="md-right-metric-val">{currentToolData.model}</span>
+                  </div>
+                  <div className="md-right-metric-card">
+                    <span className="md-right-metric-label">STATUS</span>
+                    <span className="md-right-metric-val md-right-status-live">● OPERATIONAL</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Action Footer */}
+            <div className="md-right-action-footer">
+              <Link href={`/${activeTool}`} className="md-right-deploy-btn">
+                <span>DEPLOY ENGINE</span>
+                <FiArrowRight size={14} />
+              </Link>
+            </div>
+          </div>
+        )}
 
       </div>
 
