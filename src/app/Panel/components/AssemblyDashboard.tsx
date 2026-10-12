@@ -4,6 +4,19 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { supabase, signOut } from '@/lib/supabaseClient';
 import { FaSignOutAlt } from 'react-icons/fa';
+import { 
+  FiMessageSquare, 
+  FiMic, 
+  FiZap, 
+  FiSliders, 
+  FiDatabase, 
+  FiChevronRight,
+  FiChevronLeft,
+  FiHome,
+  FiInfo,
+  FiMail,
+  FiArrowUpRight
+} from 'react-icons/fi';
 import PanelFooter from './PanelFooter';
 import LiquidOrb from '@/app/AX_chat/components/LiquidOrb';
 import { useTheme } from '@/lib/ThemeContext';
@@ -25,35 +38,86 @@ export default function AssemblyDashboard() {
   const [shadowDensity, setShadowDensity] = useState(60);
   
   const [activeForm, setActiveForm] = useState('cube');
-  const [activeTool, setActiveTool] = useState('AX_chat');
+  const [activeTool, setActiveTool] = useState('Librarymodel');
   const [isFading, setIsFading] = useState(false);
-  const [activeLight, setActiveLight] = useState('Spot');
   const [currentDate, setCurrentDate] = useState('');
   const [userProfile, setUserProfile] = useState<any>(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
   const platformTools = [
-    { name: 'AX_chat', label: 'Chat with AX', desc: 'Intelligent conversational interfaces.', model: 'GPT OSS 120B OpenAI', details: 'High-parameter natural language processing ready.' },
-    { name: 'AX_voice', label: 'AX Voice', desc: 'Real-time vocal synthesis and analysis.', model: 'VOX-SYNTH V2.0', details: 'Acoustic waveform modulation standing by.' },
-    { name: 'Create_you_GLYNNE_model', label: 'Create AI Model', desc: 'Custom QLoRA fine-tuning and synthetic dataset studio.', model: 'QLoRA / Unsloth Core', details: 'Private model training protocols active.' },
-    { name: 'Librarymodel', label: 'Open-Source Model Library', desc: 'Explore and download complete open-source model weights for offline, air-gapped deployment.', model: 'Open-Weights Repository', details: 'Full quantized model weights (GGUF, FP16, EXL2) ready for local inference.' },
+    { 
+      name: 'Librarymodel', 
+      label: 'Open-Source Weights Library', 
+      tag: 'Mathematical Sovereignty & Offline Deployment',
+      desc: 'Access and download full mathematical weights of open models (GGUF, FP16, EXL2) for local, offline, and air-gapped deployments. Ensure complete data sovereignty, zero data retention, and enterprise security without relying on external clouds.', 
+      model: 'Open-Weights Repository', 
+      details: 'Full quantized model weights (GGUF, FP16, EXL2) ready for local inference.',
+      icon: <FiDatabase size={16} />
+    },
+    { 
+      name: 'Create_you_GLYNNE_model', 
+      label: 'Create & Train Your Custom AI Model', 
+      tag: 'QLoRA Fine-Tuning & Private Data',
+      desc: 'Train a model on your proprietary enterprise data, shaping its name, personality, and analytical criteria. We provide specialized weight retraining (QLoRA) to align the LLM’s cognitive core with your workflows: greater cost savings, optimized processing, and a tailored intelligent workforce.', 
+      model: 'QLoRA / Unsloth Core', 
+      details: 'Private model training protocols active.',
+      icon: <FiSliders size={16} />
+    },
+    { 
+      name: 'models_provider', 
+      label: 'AI Model APIs & Gateway', 
+      tag: 'API Provider & Enterprise Gateway',
+      desc: 'If you have an existing project and need seamless, production-ready AI integration, we deliver enterprise LLM APIs engineered to power your operations. Ultra-low latency inference, GPU cluster elasticity, and dedicated Sub-API keys ready to plug directly into your codebase.', 
+      model: 'vLLM / NVIDIA NIM Gateway', 
+      details: 'Sub-10ms latency streaming and dedicated API key management ready.',
+      icon: <FiZap size={16} />
+    },
+    { 
+      name: 'AX_chat', 
+      label: 'Chat with AX · Intelligent Assistant', 
+      tag: 'Cognitive Conversational Core',
+      desc: 'Connect instantly with GLYNNE’s conversational engine. Solve complex inquiries, analyze enterprise data, and generate code or strategic blueprints in real-time powered by frontier reasoning and multimodal vision models.', 
+      model: 'GPT OSS 120B OpenAI', 
+      details: 'High-parameter natural language processing ready.',
+      icon: <FiMessageSquare size={16} />
+    },
+    { 
+      name: 'AX_voice', 
+      label: 'AX Voice · Real-Time Voice Synthesis', 
+      tag: 'Neural Acoustic Modulation',
+      desc: 'Experience ultra-natural, zero-latency voice conversations powered by artificial intelligence. Instant acoustic modulation and real-time comprehension built for contact centers, executive assistants, and next-generation voice interfaces.', 
+      model: 'VOX-SYNTH V2.0', 
+      details: 'Acoustic waveform modulation standing by.',
+      icon: <FiMic size={16} />
+    },
   ];
 
-  const aiPhrases = [
-    "Analyzing neural network",
-    "Optimizing central node",
-    "Processing Glynne data",
-    "Synthesizing parameters",
-    "Calibrating spatial vision",
-    "Securing encrypted network",
-    "Awaiting new directive",
-    "Restructuring AI model",
-    "Synchronizing Glynne systems",
-    "Evaluating quantum load"
+  // External navigation links that open in a new tab without altering the orb
+  const externalLinks = [
+    {
+      title: 'Home · Main Portal',
+      href: '/',
+      desc: 'Explore our core platform, homepage, and comprehensive overview of AX GLYNNE services.',
+      icon: <FiHome size={14} />
+    },
+    {
+      title: 'About · Company',
+      href: '/About',
+      desc: 'Discover our architecture, technological mission, and the visionary team engineering GLYNNE.',
+      icon: <FiInfo size={14} />
+    },
+    {
+      title: 'Contact · Solutions',
+      href: '/contact',
+      desc: 'Connect directly with our systems engineers and architects for deployments, custom quotes, and integrations.',
+      icon: <FiMail size={14} />
+    }
   ];
-  const activePhrase = aiPhrases[Math.floor(Math.abs(rotY) / 20) % aiPhrases.length];
+
+
 
   const [history, setHistory] = useState<HoverStep[]>([]);
   const stepIdRef = useRef(0);
@@ -109,12 +173,14 @@ export default function AssemblyDashboard() {
     };
   }, [theme]);
 
+  const currentToolData = platformTools.find(t => t.name === activeTool);
+
   const renderCenterCanvas = () => (
     <div className="md-center">
       <div className={`md-info-card ${isFading ? 'fading-out' : 'fading-in'}`}>
-        <div className="info-title">{platformTools.find(t => t.name === activeTool)?.label}</div>
+        <div className="info-title">{currentToolData?.label}</div>
         <Link href={`/${activeTool}`} className="md-start-btn">
-          Start <span>&rarr;</span>
+          Get Started <span>&rarr;</span>
         </Link>
       </div>
 
@@ -133,13 +199,18 @@ export default function AssemblyDashboard() {
           <div className="md-marker-line"></div>
         </div>
       </div>
-      
-      <div className="md-rotation-value">
-        <span className="value">{activePhrase}</span>
-        <div className="md-loading-bar-container" key={activePhrase}>
-          <div className="md-loading-bar-fill"></div>
+
+      {/* Explicación comercial y amplia de la herramienta debajo de la esfera */}
+      {currentToolData?.desc && (
+        <div className={`md-orb-explanation ${isFading ? 'fading-out' : 'fading-in'}`}>
+          {currentToolData.tag && (
+            <span className="md-orb-explanation-tag">{currentToolData.tag}</span>
+          )}
+          <p className="md-orb-explanation-text">
+            {currentToolData.desc}
+          </p>
         </div>
-      </div>
+      )}
     </div>
   );
 
@@ -173,7 +244,7 @@ export default function AssemblyDashboard() {
   };
 
   return (
-    <div data-theme={theme} style={{ background: theme === 'light' ? '#f5f5f7' : '#000', minHeight: '100vh', width: '100%' }}>
+    <div data-theme={theme} style={{ background: theme === 'light' ? '#f5f5f7' : '#000', minHeight: '100vh', width: '100vw', maxWidth: '100vw', overflowX: 'hidden' }}>
       <div className="md-container" style={{ '--brightness-filter': `brightness(${0.5 + brightness / 100})` } as React.CSSProperties}
            onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
       
@@ -212,195 +283,218 @@ export default function AssemblyDashboard() {
 
       {/* Main Layout */}
       <div className="md-main">
-        {/* Left Sidebar */}
-        <div className="md-left">
-          
-          {/* Detailed Profile Card */}
-          {userProfile ? (
-            <div className="md-profile-card">
-              <div className="md-profile-banner">
-                <div className="md-date-overlay">{currentDate.split(' 20')[0]}</div>
-              </div>
-              <div className="md-profile-content">
-                {userProfile.avatar_url ? (
-                  <img src={userProfile.avatar_url} alt="Profile" className="md-profile-avatar-lg" />
-                ) : (
-                  <div className="md-profile-avatar-placeholder">AX</div>
-                )}
-                <div className="md-profile-name-lg">{userProfile.full_name || 'AX_user'}</div>
-                <div className="md-profile-title">System Architect & Visionary</div>
-                <div className="md-profile-email-lg">{userProfile.email}</div>
-                
-                <div className="md-profile-quote">
-                  "Building the future, one node at a time. The system is living, and you are its architect."
-                </div>
+        {/* Left Sidebar (Collapsible in width 'w', constant 'h') */}
+        <div className={`md-left ${isSidebarOpen ? 'is-expanded' : 'is-collapsed'}`}>
+          {/* Top Toggle Bar */}
+          <div className="md-sidebar-toggle-bar">
+            {isSidebarOpen && (
+              <span className="md-sidebar-brand">AX Console</span>
+            )}
+            <button 
+              type="button" 
+              className="md-sidebar-toggle-btn"
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              title={isSidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+              aria-label={isSidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+            >
+              {isSidebarOpen ? <FiChevronLeft size={16} /> : <FiChevronRight size={16} />}
+            </button>
+          </div>
 
-                <div className="md-profile-stats">
-                  <div className="stat">
-                    <span>Access Level</span>
-                    <strong>ROOT</strong>
+          {/* VISTA CERRADA EN W (Rail compacto de iconos coherentes, altura constante) */}
+          {!isSidebarOpen ? (
+            <>
+              {/* Mini Profile Indicator */}
+              <div 
+                className="md-profile-mini" 
+                title={`${userProfile?.full_name || 'AX_user'} · ${userProfile?.email || 'Authenticated'}`}
+              >
+                {userProfile?.avatar_url ? (
+                  <img src={userProfile.avatar_url} alt="Profile" className="md-profile-avatar-sm" />
+                ) : (
+                  <div className="md-profile-avatar-placeholder-sm">AX</div>
+                )}
+                <span className="md-status-dot"></span>
+              </div>
+
+              {/* Tools Icon Rail */}
+              <div className="md-tools-rail">
+                {platformTools.map(tool => (
+                  <button 
+                    key={tool.name}
+                    className={`md-tool-rail-btn ${activeTool === tool.name && !isFading ? 'active' : ''}`}
+                    onClick={() => {
+                      if (activeTool === tool.name) {
+                        window.location.href = `/${tool.name}`;
+                        return;
+                      }
+                      if (isFading) return;
+                      setIsFading(true);
+                      setRotX(prev => prev + (Math.random() > 0.5 ? 120 : -120));
+                      setRotY(prev => prev + (Math.random() > 0.5 ? 120 : -120));
+                      setRotZ(prev => prev + (Math.random() > 0.5 ? 120 : -120));
+                      setTimeout(() => {
+                        setActiveTool(tool.name);
+                        setIsFading(false);
+                      }, 400);
+                    }}
+                    title={`${tool.label} — ${tool.desc}`}
+                  >
+                    <span className="md-tool-icon">{tool.icon}</span>
+                  </button>
+                ))}
+
+                {/* Separador sutil para los 3 botones de navegación externa */}
+                <div className="md-rail-nav-separator"></div>
+
+                {/* 3 Botones de navegación externa (nueva pestaña, no alteran orb) */}
+                {externalLinks.map(link => (
+                  <a
+                    key={link.title}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="md-ext-rail-btn"
+                    title={`${link.title} — ${link.desc}`}
+                  >
+                    <span className="md-ext-rail-icon">{link.icon}</span>
+                    <span className="md-ext-rail-indicator">↗</span>
+                  </a>
+                ))}
+              </div>
+
+              {/* Bottom Rail Sign Out */}
+              <div className="md-sidebar-bottom-rail">
+                <button 
+                  onClick={() => setShowLogoutModal(true)} 
+                  className="md-rail-signout-btn" 
+                  title="Sign out"
+                >
+                  <FaSignOutAlt size={13} />
+                </button>
+              </div>
+            </>
+          ) : (
+            /* VISTA ABIERTA EN W (Contenido completo como actualmente se ve) */
+            <div className="md-sidebar-expanded-content">
+              {/* Compact Profile Card (Solo foto, nombre y botones) */}
+              <div className="md-profile-card">
+                <div className="md-profile-compact">
+                  <div className="md-profile-user-info">
+                    {userProfile?.avatar_url ? (
+                      <img src={userProfile.avatar_url} alt="Profile" className="md-profile-avatar-compact" />
+                    ) : (
+                      <div className="md-profile-avatar-placeholder-compact">AX</div>
+                    )}
+                    <span className="md-profile-name-compact">
+                      {userProfile?.full_name || 'AX_user'}
+                    </span>
                   </div>
-                  <div className="stat">
-                    <span>Theme</span>
+                  <div className="md-profile-actions">
                     <button
                       onClick={toggleTheme}
-                      title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                      title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
                       className="md-theme-toggle-btn"
                     >
                       {theme === 'dark' ? (
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
                       ) : (
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
                       )}
-                      {theme === 'dark' ? 'DARK' : 'LIGHT'}
+                      {theme === 'dark' ? 'Dark' : 'Light'}
                     </button>
-                  </div>
-                  <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
                     <button 
                       onClick={() => setShowLogoutModal(true)}
                       className="md-signout-btn"
                       title="Sign out"
                     >
-                      <FaSignOutAlt size={12} />
-                      SIGN OUT
+                      <FaSignOutAlt size={11} />
+                      Sign Out
                     </button>
                   </div>
                 </div>
               </div>
-            </div>
-          ) : (
-            <div className="md-date-placeholder" style={{marginBottom: '40px'}}>
-              <div className="md-date">{currentDate.split(' 20')[0] || 'Sat \u2014 19 January'}</div>
-              <div className="md-year">{currentDate.split(' ').pop() || '2019'}</div>
-            </div>
-          )}
 
-          {!isMobile && (
-            <div className="md-section system-core-section">
-              <h3 className="md-title">System Core</h3>
-              <div className="md-mini-card">
-                <div className="md-mini-card-row md-mini-card-top-row">
-                  <span>PLATFORM</span>
-                  <span className="md-highlight">GLYNNE</span>
+              {/* Full Tools Section */}
+              <div className="md-section">
+                <h3 className="md-title" style={{ marginBottom: '8px' }}>
+                  Tools <span style={{ fontSize: '11px', opacity: 0.6, fontWeight: 400 }}>[{platformTools.length}]</span>
+                </h3>
+                <p className="md-tools-desc">
+                  Access the AX Artificial Intelligence engine and centralized management tools for your enterprise operations.
+                </p>
+                <ul className="md-tools-list">
+                  {platformTools.map(tool => (
+                    <li key={tool.name} className="md-tool-item">
+                      <button 
+                        className={`md-tool-btn ${activeTool === tool.name && !isFading ? 'active' : ''}`} 
+                        onClick={() => {
+                          if (activeTool === tool.name) {
+                            window.location.href = `/${tool.name}`;
+                            return;
+                          }
+                          if (isFading) return;
+                          setIsFading(true);
+                          setRotX(prev => prev + (Math.random() > 0.5 ? 120 : -120));
+                          setRotY(prev => prev + (Math.random() > 0.5 ? 120 : -120));
+                          setRotZ(prev => prev + (Math.random() > 0.5 ? 120 : -120));
+
+                          setTimeout(() => {
+                            setActiveTool(tool.name);
+                            setIsFading(false);
+                          }, 400);
+                        }}
+                      >
+                        <span className="md-tool-icon">
+                          {tool.icon}
+                        </span>
+                        <span className="md-tool-label">{tool.label}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* External Navigation Section (Home, About, Contact) */}
+              <div className="md-ext-section">
+                <div className="md-ext-header">
+                  <span className="md-ext-title">
+                    Navigation & Portals
+                  </span>
+                  <span className="md-ext-badge">External ↗</span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '16px 0' }}>
-                  <img src="/logos/GLYNNE.svg" alt="GLYNNE Logo" className="md-glynne-logo" />
-                </div>
-                <div className="md-mini-card-bottom-row">
-                  <a href="https://axglynne.com/privacy-policy" target="_blank" rel="noopener noreferrer" className="md-policies-link">
-                    Policies
-                  </a>
+                <div className="md-ext-list">
+                  {externalLinks.map(link => (
+                    <a
+                      key={link.title}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="md-ext-card-btn"
+                    >
+                      <div className="md-ext-card-top">
+                        <div className="md-ext-card-title-group">
+                          <span className="md-ext-icon">{link.icon}</span>
+                          <span className="md-ext-name">{link.title}</span>
+                        </div>
+                        <FiArrowUpRight size={13} className="md-ext-arrow" />
+                      </div>
+                      <p className="md-ext-desc">{link.desc}</p>
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
           )}
-
-          {isMobile && renderCenterCanvas()}
-
-          <div className="md-section">
-            <h3 className="md-title" style={{ marginBottom: '8px' }}>Tools</h3>
-            <p className="md-tools-desc">
-              Access the AX Artificial Intelligence engine and centralized management tools for your enterprise operations.
-            </p>
-            <ul className="md-tools-list">
-              {platformTools.map(tool => (
-                <li key={tool.name} className="md-tool-item">
-                  <button 
-                    className={`md-tool-btn ${activeTool === tool.name && !isFading ? 'active' : ''}`} 
-                    onClick={() => {
-                      if (activeTool === tool.name || isFading) return;
-                      setIsFading(true);
-                      
-                      // Add a random 120 degree rotation on all axes for a fluid spin effect
-                      setRotX(prev => prev + (Math.random() > 0.5 ? 120 : -120));
-                      setRotY(prev => prev + (Math.random() > 0.5 ? 120 : -120));
-                      setRotZ(prev => prev + (Math.random() > 0.5 ? 120 : -120));
-
-                      setTimeout(() => {
-                        setActiveTool(tool.name);
-                        setIsFading(false);
-                      }, 400); // Wait for the vanish animation to complete
-                    }}
-                  >
-                    <span className="md-tool-icon">
-                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-                    </span>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textAlign: 'left' }}>
-                      <span className="md-tool-label">{tool.label}</span>
-                      <span className="md-tool-desc-text" style={{ fontSize: '10px', opacity: 0.65, fontWeight: 400, marginTop: '2px', lineHeight: 1.3 }}>{tool.desc}</span>
-                    </div>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
 
         {/* Center Canvas */}
         {!isMobile && renderCenterCanvas()}
 
-        {/* Right Sidebar */}
-        <div className="md-right">
-
-          <div className="md-section">
-            <h3 className="md-title">Lightning</h3>
-            <div className="md-lighting-grid">
-              <a href="https://axglynne.com" target="_blank" rel="noopener noreferrer" className={`md-light-btn ${activeLight === 'Spot' ? 'active' : ''}`} onClick={() => setActiveLight('Spot')}>
-                <div className="icon-wrapper black"><div className="spot-icon"></div></div>
-                <span className="light-label">Spot</span>
-                <span className="light-subtext">Visit our landing page</span>
-              </a>
-              <a href="https://axglynne.com/About" target="_blank" rel="noopener noreferrer" className={`md-light-btn ${activeLight === 'Area' ? 'active' : ''}`} onClick={() => setActiveLight('Area')}>
-                <div className="icon-wrapper dotted"><div className="area-icon"></div></div>
-                <span className="light-label">Area</span>
-                <span className="light-subtext">Discover what GLYNNE specializes in</span>
-              </a>
-              <a href="https://axglynne.com/Servex_solution" target="_blank" rel="noopener noreferrer" className={`md-light-btn ${activeLight === 'Target' ? 'active' : ''}`} onClick={() => setActiveLight('Target')}>
-                <div className="icon-wrapper"><div className="target-icon">&#x2199;</div></div>
-                <span className="light-label">Target</span>
-                <span className="light-subtext">See how we modernize your company with GLYNNE</span>
-              </a>
-              <a href="https://axglynne.com/terms-of-service" target="_blank" rel="noopener noreferrer" className={`md-light-btn ${activeLight === 'Sun' ? 'active' : ''}`} onClick={() => setActiveLight('Sun')}>
-                <div className="icon-wrapper"><div className="sun-icon"></div></div>
-                <span className="light-label">Sun</span>
-                <span className="light-subtext">Read our terms of service</span>
-              </a>
-            </div>
-          </div>
-
-          <div className="md-section">
-            <h3 className="md-title">System Console</h3>
-            <div className="md-terminal">
-              <div className="md-term-header">
-                <div className="term-dots">
-                  <span className="dot red"></span>
-                  <span className="dot yellow"></span>
-                  <span className="dot green"></span>
-                </div>
-                <span className="term-title">AX_SYS_LOG</span>
-              </div>
-              <div className="md-term-body">
-                <p><span className="prompt">{'>'}</span> SYSTEM_BOOT_SEQ_INITIALIZED</p>
-                <p><span className="prompt">{'>'}</span> NEURAL_NETWORK: <span className="text-green">ONLINE</span></p>
-                <p><span className="prompt">{'>'}</span> ENCRYPTION: AES-256 SECURED</p>
-                <p><span className="prompt">{'>'}</span> STATUS: <span className="text-green">ACTIVE</span></p>
-                <p><span className="prompt">{'>'}</span> AWAITING_DIRECTIVES<span className="cursor-blink">_</span></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
       </div>
 
-      {/* Global Panel Footer (Temporarily Removed) */}
-      {/* 
-      <div style={{ background: '#000', width: '100%', display: 'flex', justifyContent: 'center' }}>
-        <div style={{ width: '100%', maxWidth: '1200px' }}>
-          <PanelFooter />
-        </div>
-      </div> 
-      */}
+      </div>
 
       {/* Logout Confirmation Modal */}
       {showLogoutModal && (

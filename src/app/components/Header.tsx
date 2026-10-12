@@ -76,11 +76,6 @@ export default function Header() {
   const pathname = usePathname();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Ocultar Header en secciones y herramientas internas como models_provider
-  if (pathname?.startsWith('/models_provider')) {
-    return null;
-  }
-
   // Close the menu when navigating
   useEffect(() => {
     setIsOpen(false);
@@ -141,7 +136,7 @@ export default function Header() {
     setOpenMobileAccordion(openMobileAccordion === catId ? null : catId);
   };
 
-  if (pathname === '/AX_chat' || pathname === '/Panel') {
+  if (pathname === '/AX_chat' || pathname === '/Panel' || pathname?.startsWith('/models_provider')) {
     return null;
   }
 
