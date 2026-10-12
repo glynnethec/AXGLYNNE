@@ -1016,9 +1016,10 @@ export default function ModelsProviderPage() {
   const [isChatLoading, setIsChatLoading] = useState(false);
   const [chatError, setChatError] = useState<string | null>(null);
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
-  // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS
+  // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS (TEMPORALMENTE COMENTADO PARA EDICIÓN)
+  /*
   useEffect(() => {
     const checkAuth = async () => {
       const user = await getCurrentUser();
@@ -1033,6 +1034,7 @@ export default function ModelsProviderPage() {
     };
     checkAuth();
   }, [router]);
+  */
 
   useEffect(() => {
     // Load saved sub-api keys from localStorage

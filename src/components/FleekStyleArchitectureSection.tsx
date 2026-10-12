@@ -49,59 +49,142 @@ export default function FleekStyleArchitectureSection({
         paddingBottom: '72px',
         borderBottom: `1px solid ${borderLine}`
       }}>
-        {/* Left: Exploded 3D Isometric GPU Hardware Architecture SVG (Monochrome) */}
+        {/* Left: Exploded 3D Isometric GPU Hardware Architecture SVG (Monochrome CAD/Blueprint) */}
         <div style={{
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
+          width: '100%'
         }}>
-          <svg width="380" height="320" viewBox="0 0 380 320" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Top Heatsink Layer (Layer 1) */}
-            <g transform="translate(40, 20)">
-              <polygon points="110,10 190,50 110,90 30,50" fill={isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)'} stroke={borderLine} strokeWidth="1" />
-              <polygon points="110,18 190,58 110,98 30,58" fill={isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)'} stroke={borderLine} strokeWidth="0.8" />
-              <line x1="50" y1="52" x2="130" y2="12" stroke={borderLine} strokeWidth="0.8" />
-              <line x1="70" y1="62" x2="150" y2="22" stroke={borderLine} strokeWidth="0.8" />
-              <line x1="90" y1="72" x2="170" y2="32" stroke={borderLine} strokeWidth="0.8" />
-              <line x1="190" y1="50" x2="230" y2="30" stroke={graphicStroke} strokeWidth="0.8" />
-              <text x="235" y="33" fill={subtextColor} fontSize="10" letterSpacing="0.08em" fontFamily={monoFont} fontWeight="500">SXM COOLING FIN</text>
+          <svg width="100%" height="340" viewBox="0 0 540 350" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ maxWidth: '520px', display: 'block' }}>
+            {/* Precision Blueprint Corner Crosshairs */}
+            <path d="M14 16 H20 M17 13 V19" stroke={borderLine} strokeWidth="1" strokeLinecap="round" />
+            <path d="M520 16 H526 M523 13 V19" stroke={borderLine} strokeWidth="1" strokeLinecap="round" />
+            <path d="M14 334 H20 M17 331 V337" stroke={borderLine} strokeWidth="1" strokeLinecap="round" />
+            <path d="M520 334 H526 M523 331 V337" stroke={borderLine} strokeWidth="1" strokeLinecap="round" />
+
+            {/* Central Vertical Assembly Axis */}
+            <line x1="270" y1="12" x2="270" y2="318" stroke={borderLine} strokeWidth="1" strokeDasharray="2 4" opacity="0.4" />
+            <line x1="198" y1="52" x2="174" y2="262" stroke={borderLine} strokeWidth="0.8" strokeDasharray="2 4" opacity="0.25" />
+            <line x1="342" y1="52" x2="366" y2="262" stroke={borderLine} strokeWidth="0.8" strokeDasharray="2 4" opacity="0.25" />
+
+            {/* ========================================================================= */}
+            {/* LAYER 1 (TOP): SXM COOLING FIN / VAPOR CHAMBER                           */}
+            {/* ========================================================================= */}
+            <g id="layer-1-cooling-fin">
+              {/* Top Face */}
+              <polygon points="270,16 342,52 270,88 198,52" fill={isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)'} stroke={graphicStroke} strokeWidth="1.2" />
+              {/* Fin Slats / Parallel Cooling Channels */}
+              <line x1="216" y1="43" x2="288" y2="79" stroke={borderLine} strokeWidth="0.9" />
+              <line x1="234" y1="34" x2="306" y2="70" stroke={borderLine} strokeWidth="0.9" />
+              <line x1="252" y1="25" x2="324" y2="61" stroke={borderLine} strokeWidth="0.9" />
+              {/* Beveled Edge / Fin Thickness */}
+              <polygon points="198,52 270,88 270,94 198,58" fill={isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)'} stroke={borderLine} strokeWidth="0.9" />
+              <polygon points="270,88 342,52 342,58 270,94" fill={isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)'} stroke={borderLine} strokeWidth="0.9" />
+              {/* Leader Callout: Top-Right */}
+              <circle cx="342" cy="52" r="2.5" fill={textColor} />
+              <line x1="342" y1="52" x2="380" y2="38" stroke={graphicStroke} strokeWidth="1" />
+              <line x1="380" y1="38" x2="400" y2="38" stroke={graphicStroke} strokeWidth="1" />
+              <text x="406" y="36" textAnchor="start" fill={textColor} fontSize="9" letterSpacing="0.08em" fontFamily={monoFont} fontWeight="600">SXM COOLING FIN</text>
+              <text x="406" y="47" textAnchor="start" fill={subtextColor} fontSize="7" letterSpacing="0.08em" fontFamily={monoFont}>VAPOR CHAMBER // 700W</text>
             </g>
 
-            {/* Central Die / Heatspreader with Lightning Logo (Layer 2) */}
-            <g transform="translate(40, 95)">
-              <polygon points="110,10 200,55 110,100 20,55" fill={isDark ? '#141414' : '#f4f4f5'} stroke={isDark ? '#ffffff' : '#000000'} strokeWidth="1.5" />
-              <polygon points="110,15 200,60 110,105 20,60" fill="none" stroke={borderLine} strokeWidth="0.8" />
-              <path d="M106 45 L118 45 L110 57 L119 57 L102 72 L106 59 L98 59 Z" fill={graphicStroke} stroke={graphicStroke} strokeWidth="0.5" />
-              <line x1="20" y1="55" x2="-10" y2="40" stroke={borderLine} strokeWidth="0.8" />
-              <text x="-35" y="38" fill={subtextColor} fontSize="10" letterSpacing="0.08em" fontFamily={monoFont} fontWeight="500">SILICON DIE</text>
+            {/* ========================================================================= */}
+            {/* LAYER 2: SILICON COMPUTING DIE & TENSOR CORES                             */}
+            {/* ========================================================================= */}
+            <g id="layer-2-silicon-die">
+              {/* Top Face */}
+              <polygon points="270,88 336,122 270,156 204,122" fill={isDark ? '#141416' : '#f4f4f5'} stroke={textColor} strokeWidth="1.5" />
+              {/* Thickness */}
+              <polygon points="204,122 270,156 270,161 204,127" fill={isDark ? '#0c0c0e' : '#e4e4e7'} stroke={borderLine} strokeWidth="0.9" />
+              <polygon points="270,156 336,122 336,127 270,161" fill={isDark ? '#101012' : '#d4d4d8'} stroke={borderLine} strokeWidth="0.9" />
+              {/* Silicon Wafer Photolithography / Tensor Sub-Quadrants */}
+              <polygon points="270,105 304,122 270,139 236,122" fill={isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'} stroke={borderLine} strokeWidth="1" />
+              <line x1="253" y1="113.5" x2="287" y2="130.5" stroke={borderLine} strokeWidth="0.8" />
+              <line x1="287" y1="113.5" x2="253" y2="130.5" stroke={borderLine} strokeWidth="0.8" />
+              {/* Central Processor Core Monolith */}
+              <polygon points="270,116 282,122 270,128 258,122" fill={textColor} />
+              {/* Leader Callout: Left */}
+              <circle cx="204" cy="122" r="2.5" fill={textColor} />
+              <line x1="204" y1="122" x2="160" y2="110" stroke={graphicStroke} strokeWidth="1" />
+              <line x1="160" y1="110" x2="140" y2="110" stroke={graphicStroke} strokeWidth="1" />
+              <text x="134" y="108" textAnchor="end" fill={textColor} fontSize="9" letterSpacing="0.08em" fontFamily={monoFont} fontWeight="600">SILICON DIE</text>
+              <text x="134" y="119" textAnchor="end" fill={subtextColor} fontSize="7" letterSpacing="0.08em" fontFamily={monoFont}>TSMC 4N // TENSOR CORE</text>
             </g>
 
-            {/* GPU Accelerators & VRAM HBM3e Chiplets (Layer 3 - Monochrome) */}
-            <g transform="translate(40, 160)">
-              <polygon points="40,40 65,52 40,65 15,52" fill={graphicFill2} stroke={graphicStroke} strokeWidth="1" />
-              <polygon points="70,55 95,67 70,80 45,67" fill={graphicFill3} stroke={graphicStroke} strokeWidth="1" />
-              <polygon points="40,70 65,82 40,95 15,82" fill={graphicFill1} stroke={graphicStroke} strokeWidth="0.8" />
-              <polygon points="110,10 220,65 110,120 0,65" fill={isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)'} stroke={borderLine} strokeWidth="1" strokeDasharray="3 3" />
+            {/* ========================================================================= */}
+            {/* LAYER 3: HBM3e HIGH-BANDWIDTH MEMORY & INTERPOSER MESH                    */}
+            {/* ========================================================================= */}
+            <g id="layer-3-hbm3e-interposer">
+              {/* Interposer Footprint */}
+              <polygon points="270,152 354,192 270,232 186,192" fill={isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)'} stroke={borderLine} strokeWidth="1" strokeDasharray="3 3" />
+              
+              {/* 4 Discrete Symmetrical 3D HBM3e Memory Chiplets */}
+              {/* Top-Left Chiplet */}
+              <polygon points="220,171 234,178 220,185 206,178" fill={graphicFill2} stroke={graphicStroke} strokeWidth="1" />
+              <polygon points="206,178 220,185 220,190 206,183" fill={graphicFill1} stroke={graphicStroke} strokeWidth="0.8" />
+              <polygon points="220,185 234,178 234,183 220,190" fill={graphicFill3} stroke={graphicStroke} strokeWidth="0.8" />
+              
+              {/* Bottom-Left Chiplet */}
+              <polygon points="236,201 250,208 236,215 222,208" fill={graphicFill2} stroke={graphicStroke} strokeWidth="1" />
+              <polygon points="222,208 236,215 236,220 222,213" fill={graphicFill1} stroke={graphicStroke} strokeWidth="0.8" />
+              <polygon points="236,215 250,208 250,213 236,220" fill={graphicFill3} stroke={graphicStroke} strokeWidth="0.8" />
+
+              {/* Top-Right Chiplet */}
+              <polygon points="320,171 334,178 320,185 306,178" fill={graphicFill2} stroke={graphicStroke} strokeWidth="1" />
+              <polygon points="306,178 320,185 320,190 306,183" fill={graphicFill1} stroke={graphicStroke} strokeWidth="0.8" />
+              <polygon points="320,185 334,178 334,183 320,190" fill={graphicFill3} stroke={graphicStroke} strokeWidth="0.8" />
+
+              {/* Bottom-Right Chiplet */}
+              <polygon points="304,201 318,208 304,215 290,208" fill={graphicFill2} stroke={graphicStroke} strokeWidth="1" />
+              <polygon points="290,208 304,215 304,220 290,213" fill={graphicFill1} stroke={graphicStroke} strokeWidth="0.8" />
+              <polygon points="304,215 318,208 318,213 304,220" fill={graphicFill3} stroke={graphicStroke} strokeWidth="0.8" />
+
+              {/* Micro BGA Solder Bump Array in Center */}
               {[
-                { cx: 110, cy: 60 }, { cx: 130, cy: 70 }, { cx: 150, cy: 80 }, { cx: 170, cy: 90 },
-                { cx: 90, cy: 70 }, { cx: 110, cy: 80 }, { cx: 130, cy: 90 }, { cx: 150, cy: 100 },
-                { cx: 70, cy: 80 }, { cx: 90, cy: 90 }, { cx: 110, cy: 100 }
-              ].map((pt, i) => (
-                <circle key={i} cx={pt.cx} cy={pt.cy} r="2" fill={isDark ? '#ffffff' : '#000000'} opacity="0.6" />
+                { x: 270, y: 180 }, { x: 260, y: 185 }, { x: 280, y: 185 },
+                { x: 270, y: 190 }, { x: 260, y: 195 }, { x: 280, y: 195 },
+                { x: 270, y: 200 }, { x: 270, y: 206 }
+              ].map((pt, idx) => (
+                <circle key={idx} cx={pt.x} cy={pt.y} r="1.5" fill={textColor} opacity="0.75" />
               ))}
-              <line x1="220" y1="65" x2="255" y2="75" stroke={borderLine} strokeWidth="0.8" />
-              <text x="260" y="78" fill={subtextColor} fontSize="10" letterSpacing="0.08em" fontFamily={monoFont} fontWeight="500">HBM3e / 141GB</text>
+
+              {/* Leader Callout: Right */}
+              <circle cx="354" cy="192" r="2.5" fill={textColor} />
+              <line x1="354" y1="192" x2="388" y2="182" stroke={graphicStroke} strokeWidth="1" />
+              <line x1="388" y1="182" x2="404" y2="182" stroke={graphicStroke} strokeWidth="1" />
+              <text x="410" y="180" textAnchor="start" fill={textColor} fontSize="9" letterSpacing="0.08em" fontFamily={monoFont} fontWeight="600">HBM3e / 141GB</text>
+              <text x="410" y="191" textAnchor="start" fill={subtextColor} fontSize="7" letterSpacing="0.08em" fontFamily={monoFont}>3.35 TB/s BANDWIDTH</text>
             </g>
 
-            {/* Bottom PCB Carrier Base (Layer 4) */}
-            <g transform="translate(40, 210)">
-              <polygon points="110,10 230,70 110,130 -10,70" fill={isDark ? '#080808' : '#e4e4e7'} stroke={borderLine} strokeWidth="1.2" />
-              <path d="M-10 70 L-10 78 L110 138 L230 78 L230 70" fill={isDark ? '#111111' : '#d4d4d8'} stroke={borderLine} strokeWidth="1" />
-              <line x1="110" y1="130" x2="110" y2="138" stroke={borderLine} strokeWidth="1" />
-              <text x="110" y="155" textAnchor="middle" fill={subtextColor} fontSize="10" letterSpacing="0.08em" fontFamily={monoFont} fontWeight="500">
-                // ARCHITECTURE: SXM5 DUAL INFERENCE BUS //
-              </text>
+            {/* ========================================================================= */}
+            {/* LAYER 4 (BOTTOM): SXM5 CARRIER BASE PCB & NVLINK 900 GB/s BUS             */}
+            {/* ========================================================================= */}
+            <g id="layer-4-carrier-base">
+              {/* Board Top Surface */}
+              <polygon points="270,214 366,262 270,310 174,262" fill={isDark ? '#080808' : '#e4e4e7'} stroke={borderLine} strokeWidth="1.2" />
+              {/* Edge Thickness */}
+              <polygon points="174,262 270,310 270,319 174,271" fill={isDark ? '#111111' : '#d4d4d8'} stroke={borderLine} strokeWidth="1" />
+              <polygon points="270,310 366,262 366,271 270,319" fill={isDark ? '#0a0a0c' : '#cccccc'} stroke={borderLine} strokeWidth="1" />
+              {/* Gold Edge Connector Pins */}
+              <line x1="198" y1="274" x2="198" y2="280" stroke={textColor} strokeWidth="1.2" opacity="0.7" />
+              <line x1="222" y1="286" x2="222" y2="292" stroke={textColor} strokeWidth="1.2" opacity="0.7" />
+              <line x1="246" y1="298" x2="246" y2="304" stroke={textColor} strokeWidth="1.2" opacity="0.7" />
+              <line x1="294" y1="298" x2="294" y2="304" stroke={textColor} strokeWidth="1.2" opacity="0.7" />
+              <line x1="318" y1="286" x2="318" y2="292" stroke={textColor} strokeWidth="1.2" opacity="0.7" />
+              <line x1="342" y1="274" x2="342" y2="280" stroke={textColor} strokeWidth="1.2" opacity="0.7" />
+              {/* Leader Callout: Bottom-Left */}
+              <circle cx="174" cy="262" r="2.5" fill={textColor} />
+              <line x1="174" y1="262" x2="145" y2="252" stroke={graphicStroke} strokeWidth="1" />
+              <line x1="145" y1="252" x2="130" y2="252" stroke={graphicStroke} strokeWidth="1" />
+              <text x="124" y="250" textAnchor="end" fill={textColor} fontSize="9" letterSpacing="0.08em" fontFamily={monoFont} fontWeight="600">SXM5 CARRIER BASE</text>
+              <text x="124" y="261" textAnchor="end" fill={subtextColor} fontSize="7" letterSpacing="0.08em" fontFamily={monoFont}>900 GB/s NVLINK MESH</text>
             </g>
+
+            {/* Bottom Architecture Inscription */}
+            <text x="270" y="338" textAnchor="middle" fill={subtextColor} fontSize="8.5" letterSpacing="0.1em" fontFamily={monoFont} fontWeight="500">
+              // ARCHITECTURE: SXM5 NVLINK 900 GB/s DUAL MESH //
+            </text>
           </svg>
         </div>
 

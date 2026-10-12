@@ -30,29 +30,57 @@ export default function GridAnalyticsSection() {
         </svg>
       ),
       diagram: (
-        <svg width="100%" height="180" viewBox="0 0 240 180" fill="none" style={{ display: 'block' }}>
-          {/* Isometric Grid Background */}
-          <path d="M0 40 L240 40 M0 80 L240 80 M0 120 L240 120 M0 160 L240 160" stroke={svgFaint} strokeDasharray="2 4" strokeWidth="1" />
-          <path d="M30 0 L210 180 M90 0 L240 150 M0 30 L180 180" stroke={svgFaint} strokeDasharray="2 4" strokeWidth="1" />
-          
-          {/* 3D Isometric Staircase Blocks for Parameters (3B, 7B, 14B) */}
-          {/* Block 1 (3B) */}
-          <path d="M30 145 L65 125 L100 145 L65 165 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
-          <path d="M30 145 L30 160 L65 180 L65 165 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
-          <path d="M65 165 L65 180 L100 160 L100 145 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
-          <text x="54" y="152" fill={textColor} fontSize="10" fontFamily="monospace" fontWeight="600">3B</text>
+        <svg width="100%" height="170" viewBox="0 0 240 170" fill="none" style={{ display: 'block' }}>
+          {/* Subtle Technical Grid & Crosshairs */}
+          <path d="M12 12 H18 M15 9 V15" stroke={svgFaint} strokeWidth="1" strokeLinecap="round" />
+          <path d="M222 12 H228 M225 9 V15" stroke={svgFaint} strokeWidth="1" strokeLinecap="round" />
+          <path d="M24 24 L216 24 M24 148 L216 148" stroke={svgFaint} strokeDasharray="2 4" strokeWidth="0.8" />
 
-          {/* Block 2 (7B) */}
-          <path d="M80 115 L120 92 L160 115 L120 138 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
-          <path d="M80 115 L80 140 L120 163 L120 138 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
-          <path d="M120 138 L120 163 L160 140 L160 115 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
-          <text x="110" y="122" fill={textColor} fontSize="10" fontFamily="monospace" fontWeight="600">7B</text>
+          {/* Unified Isometric Baseline & Hardware Memory Bus */}
+          <line x1="28" y1="128" x2="212" y2="128" stroke={svgFaint} strokeWidth="1" />
+          <line x1="28" y1="128" x2="212" y2="128" stroke={svgStroke} strokeWidth="1" strokeDasharray="2 5" opacity="0.6" />
+          <circle cx="56" cy="128" r="2.5" fill={textColor} />
+          <circle cx="120" cy="128" r="2.5" fill={textColor} />
+          <circle cx="184" cy="128" r="2.5" fill={textColor} />
 
-          {/* Block 3 (14B) */}
-          <path d="M140 70 L185 45 L230 70 L185 95 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
-          <path d="M140 70 L140 105 L185 130 L185 95 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
-          <path d="M185 95 L185 130 L230 105 L230 70 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
-          <text x="172" y="77" fill={textColor} fontSize="10" fontFamily="monospace" fontWeight="600">14B</text>
+          {/* BLOCK 1: 3B (Edge / Mobile Tier) - Centered at X=56 */}
+          <line x1="56" y1="84" x2="56" y2="128" stroke={svgFaint} strokeDasharray="2 3" strokeWidth="0.8" />
+          {/* Top Face */}
+          <path d="M56 80 L74 89 L56 98 L38 89 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
+          {/* Left Face */}
+          <path d="M38 89 L56 98 L56 128 L38 119 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
+          {/* Right Face */}
+          <path d="M56 98 L74 89 L74 119 L56 128 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
+          <text x="56" y="92.5" textAnchor="middle" fill={textColor} fontSize="9.5" fontFamily="'SF Mono', monospace" fontWeight="700">3B</text>
+          <text x="56" y="140" textAnchor="middle" fill={subtextColor} fontSize="7" fontFamily="'SF Mono', monospace" letterSpacing="0.08em">EDGE</text>
+
+          {/* BLOCK 2: 7B (Desktop Tier) - Centered at X=120 */}
+          <line x1="120" y1="58" x2="120" y2="128" stroke={svgFaint} strokeDasharray="2 3" strokeWidth="0.8" />
+          {/* Top Face */}
+          <path d="M120 50 L142 61 L120 72 L98 61 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
+          {/* Left Face */}
+          <path d="M98 61 L120 72 L120 128 L98 117 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
+          {/* Right Face */}
+          <path d="M120 72 L142 61 L142 117 L120 128 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
+          <text x="120" y="65" textAnchor="middle" fill={textColor} fontSize="10.5" fontFamily="'SF Mono', monospace" fontWeight="700">7B</text>
+          <text x="120" y="140" textAnchor="middle" fill={subtextColor} fontSize="7" fontFamily="'SF Mono', monospace" letterSpacing="0.08em">DESKTOP</text>
+
+          {/* BLOCK 3: 14B (Workstation Tier) - Centered at X=184 */}
+          <line x1="184" y1="32" x2="184" y2="128" stroke={svgFaint} strokeDasharray="2 3" strokeWidth="0.8" />
+          {/* Top Face */}
+          <path d="M184 22 L210 35 L184 48 L158 35 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
+          {/* Left Face */}
+          <path d="M158 35 L184 48 L184 128 L158 115 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
+          {/* Right Face */}
+          <path d="M184 48 L210 35 L210 115 L184 128 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
+          <text x="184" y="39" textAnchor="middle" fill={textColor} fontSize="11" fontFamily="'SF Mono', monospace" fontWeight="700">14B</text>
+          <text x="184" y="140" textAnchor="middle" fill={subtextColor} fontSize="7" fontFamily="'SF Mono', monospace" letterSpacing="0.08em">STATION</text>
+
+          {/* Centered Bottom Status Pill */}
+          <rect x="46" y="152" width="148" height="15" rx="3" fill={diagramBg} stroke={diagramBorder} />
+          <text x="120" y="162.5" textAnchor="middle" fill={subtextColor} fontSize="7.5" fontFamily="'SF Mono', monospace" letterSpacing="0.1em">
+            GGUF Q4_K_M // ZERO-TOKEN COST
+          </text>
         </svg>
       )
     },
@@ -67,20 +95,66 @@ export default function GridAnalyticsSection() {
         </svg>
       ),
       diagram: (
-        <svg width="100%" height="180" viewBox="0 0 240 180" fill="none" style={{ display: 'block' }}>
-          {/* Isometric 3D Donut Arc */}
-          <ellipse cx="120" cy="110" rx="90" ry="45" stroke={svgStroke} strokeWidth="1.2" fill="none" />
-          <ellipse cx="120" cy="110" rx="60" ry="30" stroke={svgStroke} strokeWidth="1.2" fill="none" />
-          
-          {/* Shaded Arc Segment */}
-          <path d="M30 110 C30 85, 70 65, 120 65 C170 65, 210 85, 210 110 L180 110 C180 95, 150 80, 120 80 C90 80, 60 95, 60 110 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1" />
-          
-          {/* Active Highlight Segment */}
-          <path d="M195 98 L210 110 L210 125 L195 113 Z" fill={textColor} stroke={textColor} />
+        <svg width="100%" height="170" viewBox="0 0 240 170" fill="none" style={{ display: 'block' }}>
+          {/* Crosshairs & Alignment Marks */}
+          <path d="M12 12 H18 M15 9 V15" stroke={svgFaint} strokeWidth="1" strokeLinecap="round" />
+          <path d="M222 12 H228 M225 9 V15" stroke={svgFaint} strokeWidth="1" strokeLinecap="round" />
+          <line x1="28" y1="74" x2="212" y2="74" stroke={svgFaint} strokeDasharray="2 4" strokeWidth="0.8" />
+          <line x1="120" y1="14" x2="120" y2="134" stroke={svgFaint} strokeDasharray="2 4" strokeWidth="0.8" />
 
-          {/* Center Benchmark Score */}
-          <text x="120" y="108" textAnchor="middle" fill={subtextColor} fontSize="8" fontFamily="monospace" letterSpacing="0.08em">OPEN BENCHMARK</text>
-          <text x="120" y="128" textAnchor="middle" fill={textColor} fontSize="20" fontFamily="sans-serif" fontWeight="700">94.8%</text>
+          {/* Outer Calibrated Reticle Ring (R=56) */}
+          <circle cx="120" cy="74" r="56" stroke={svgFaint} strokeWidth="1" strokeDasharray="3 5" />
+          
+          {/* Precision Cardinal Ticks */}
+          <line x1="120" y1="15" x2="120" y2="21" stroke={svgStroke} strokeWidth="1.2" />
+          <line x1="120" y1="127" x2="120" y2="133" stroke={svgStroke} strokeWidth="1.2" />
+          <line x1="61" y1="74" x2="67" y2="74" stroke={svgStroke} strokeWidth="1.2" />
+          <line x1="173" y1="74" x2="179" y2="74" stroke={svgStroke} strokeWidth="1.2" />
+
+          {/* Model Orbit Nodes */}
+          <circle cx="78" cy="38" r="2.5" fill={textColor} />
+          <text x="73" y="34" textAnchor="end" fill={subtextColor} fontSize="6.5" fontFamily="'SF Mono', monospace">LLAMA 3.2</text>
+          
+          <circle cx="162" cy="38" r="2.5" fill={textColor} />
+          <text x="167" y="34" textAnchor="start" fill={subtextColor} fontSize="6.5" fontFamily="'SF Mono', monospace">QWEN 2.5</text>
+          
+          <circle cx="168" cy="104" r="2.5" fill={textColor} />
+          <text x="173" y="108" textAnchor="start" fill={subtextColor} fontSize="6.5" fontFamily="'SF Mono', monospace">PHI 3.5</text>
+
+          {/* Gauge Background Track (R=45) */}
+          <circle cx="120" cy="74" r="45" stroke={svgFaint} strokeWidth="4" />
+          
+          {/* Active 94.8% Gauge Arc (Circumference ≈ 282.7, 94.8% ≈ 268) */}
+          <circle
+            cx="120"
+            cy="74"
+            r="45"
+            stroke={textColor}
+            strokeWidth="4"
+            strokeDasharray="268 283"
+            strokeLinecap="round"
+            transform="rotate(-90 120 74)"
+          />
+
+          {/* Inner Decorative Dial Face (R=34) */}
+          <circle cx="120" cy="74" r="34" fill={svgFill} stroke={diagramBorder} strokeWidth="1" />
+
+          {/* Center Benchmark Telemetry */}
+          <text x="120" y="63" textAnchor="middle" fill={subtextColor} fontSize="7" fontFamily="'SF Mono', monospace" letterSpacing="0.12em">
+            OPEN BENCHMARK
+          </text>
+          <text x="120" y="83" textAnchor="middle" fill={textColor} fontSize="20" fontFamily="system-ui, -apple-system, sans-serif" fontWeight="700" letterSpacing="-0.03em">
+            94.8%
+          </text>
+          <text x="120" y="94" textAnchor="middle" fill={subtextColor} fontSize="6.5" fontFamily="'SF Mono', monospace" letterSpacing="0.08em">
+            MMLU-PRO // MATH-500
+          </text>
+
+          {/* Bottom Telemetry Pill */}
+          <rect x="44" y="152" width="152" height="15" rx="3" fill={diagramBg} stroke={diagramBorder} />
+          <text x="120" y="162.5" textAnchor="middle" fill={subtextColor} fontSize="7.5" fontFamily="'SF Mono', monospace" letterSpacing="0.1em">
+            FOUNDATION REASONING STACK
+          </text>
         </svg>
       )
     },
@@ -95,22 +169,55 @@ export default function GridAnalyticsSection() {
         </svg>
       ),
       diagram: (
-        <svg width="100%" height="180" viewBox="0 0 240 180" fill="none" style={{ display: 'block' }}>
-          {/* 3D Isometric Wireframe Box Mesh */}
-          <path d="M30 140 L90 80 L150 120 L210 50" stroke={svgFaint} strokeDasharray="3 3" strokeWidth="1" />
-          <path d="M30 110 L90 50 L150 90 L210 20" stroke={svgFaint} strokeDasharray="3 3" strokeWidth="1" />
+        <svg width="100%" height="170" viewBox="0 0 240 170" fill="none" style={{ display: 'block' }}>
+          {/* Crosshairs & Alignment Marks */}
+          <path d="M12 12 H18 M15 9 V15" stroke={svgFaint} strokeWidth="1" strokeLinecap="round" />
+          <path d="M222 12 H228 M225 9 V15" stroke={svgFaint} strokeWidth="1" strokeLinecap="round" />
+
+          {/* Coordinate Frame & Technical Grid */}
+          <path d="M26 38 L214 38 M26 112 L214 112" stroke={svgFaint} strokeDasharray="2 4" strokeWidth="0.8" />
           
-          {/* Vertical Grid Pillars */}
-          <line x1="90" y1="50" x2="90" y2="150" stroke={svgFaint} strokeDasharray="2 3" />
-          <line x1="150" y1="40" x2="150" y2="160" stroke={textColor} strokeWidth="1.2" />
+          {/* Floating Dimension Brackets */}
+          <path d="M38 48 H32 V96 H38" stroke={svgFaint} strokeWidth="1.2" fill="none" />
+          <text x="24" y="74" textAnchor="middle" fill={subtextColor} fontSize="6.5" fontFamily="'SF Mono', monospace" transform="rotate(-90 24 74)">
+            100% WEIGHTS
+          </text>
 
-          {/* Isometric Planes */}
-          <path d="M50 160 L110 100 L170 140 L110 200 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1" />
-          <path d="M90 130 L150 70 L210 110 L150 170 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1" />
+          <path d="M202 48 H208 V96 H202" stroke={svgFaint} strokeWidth="1.2" fill="none" />
+          <text x="216" y="74" textAnchor="middle" fill={subtextColor} fontSize="6.5" fontFamily="'SF Mono', monospace" transform="rotate(90 216 74)">
+            AIR-GAPPED
+          </text>
 
-          {/* Highlight Node */}
-          <circle cx="150" cy="100" r="5" fill={textColor} />
-          <text x="120" y="165" textAnchor="middle" fill={subtextColor} fontSize="8" fontFamily="monospace">GGUF / SAFETENSORS</text>
+          {/* Central Isometric Tensor Matrix Cube - Centered at X=120 */}
+          {/* Top Face */}
+          <path d="M120 34 L154 50 L120 66 L86 50 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
+          {/* Internal Top Lattice */}
+          <line x1="103" y1="42" x2="137" y2="58" stroke={svgFaint} strokeWidth="0.8" />
+          <line x1="137" y1="42" x2="103" y2="58" stroke={svgFaint} strokeWidth="0.8" />
+          
+          {/* Left Face */}
+          <path d="M86 50 L120 66 L120 104 L86 88 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
+          <line x1="86" y1="63" x2="120" y2="79" stroke={svgFaint} strokeWidth="0.8" />
+          <line x1="86" y1="76" x2="120" y2="92" stroke={svgFaint} strokeWidth="0.8" />
+
+          {/* Right Face */}
+          <path d="M120 66 L154 50 L154 88 L120 104 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
+          <line x1="120" y1="79" x2="154" y2="63" stroke={svgFaint} strokeWidth="0.8" />
+          <line x1="120" y1="92" x2="154" y2="76" stroke={svgFaint} strokeWidth="0.8" />
+
+          {/* Export Stream / Downward Vector */}
+          <line x1="120" y1="104" x2="120" y2="134" stroke={textColor} strokeWidth="1.6" />
+          <path d="M115 127 L120 134 L125 127" stroke={textColor} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+          
+          {/* Telemetry Dots flanking stream */}
+          <circle cx="104" cy="119" r="1.5" fill={svgStroke} />
+          <circle cx="136" cy="119" r="1.5" fill={svgStroke} />
+
+          {/* Centered Export File Format Badge */}
+          <rect x="46" y="152" width="148" height="15" rx="3" fill={diagramBg} stroke={diagramBorder} />
+          <text x="120" y="162.5" textAnchor="middle" fill={textColor} fontSize="7.5" fontFamily="'SF Mono', monospace" fontWeight="600" letterSpacing="0.1em">
+            GGUF / SAFETENSORS
+          </text>
         </svg>
       )
     },
@@ -125,19 +232,80 @@ export default function GridAnalyticsSection() {
         </svg>
       ),
       diagram: (
-        <svg width="100%" height="180" viewBox="0 0 240 180" fill="none" style={{ display: 'block' }}>
-          {/* 3D Isometric Bounding Blocks */}
-          <path d="M40 90 L100 55 L160 90 L100 125 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1" />
-          
-          {/* Large Capacity Box */}
-          <path d="M90 110 L170 65 L230 100 L150 145 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
-          <path d="M90 110 L90 145 L150 180 L150 145 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
-          <path d="M150 145 L150 180 L230 135 L230 100 Z" fill={svgFill} stroke={svgStroke} strokeWidth="1.2" />
+        <svg width="100%" height="170" viewBox="0 0 240 170" fill="none" style={{ display: 'block' }}>
+          {/* Crosshairs & Alignment Marks */}
+          <path d="M12 12 H18 M15 9 V15" stroke={svgFaint} strokeWidth="1" strokeLinecap="round" />
+          <path d="M222 12 H228 M225 9 V15" stroke={svgFaint} strokeWidth="1" strokeLinecap="round" />
 
-          {/* Labels on Box */}
-          <text x="105" y="125" fill={textColor} fontSize="10" fontFamily="monospace" fontWeight="700">RETRAIN STUDIO</text>
-          <text x="105" y="138" fill={subtextColor} fontSize="8" fontFamily="monospace">QLORA: READY</text>
-          <text x="45" y="165" fill={subtextColor} fontSize="8" fontFamily="monospace">FINE-TUNED</text>
+          {/* Centered Studio HUD Console Frame (X=120) */}
+          <rect x="22" y="22" width="196" height="116" rx="6" fill={svgFill} stroke={diagramBorder} strokeWidth="1" />
+          
+          {/* Console Header Bar */}
+          <rect x="22" y="22" width="196" height="22" rx="6" fill={diagramBg} />
+          <line x1="22" y1="44" x2="218" y2="44" stroke={diagramBorder} strokeWidth="1" />
+          
+          {/* Status Indicator Dot & Header Text */}
+          <circle cx="35" cy="33" r="3" fill="#22c55e" />
+          <text x="44" y="36" fill={textColor} fontSize="7.5" fontFamily="'SF Mono', monospace" fontWeight="700" letterSpacing="0.08em">
+            RETRAIN STUDIO
+          </text>
+          <text x="206" y="36" textAnchor="end" fill={subtextColor} fontSize="7" fontFamily="'SF Mono', monospace">
+            QLORA v2.4
+          </text>
+
+          {/* Left Pane: Training Loss Convergence Graph */}
+          <line x1="34" y1="120" x2="114" y2="120" stroke={svgFaint} strokeWidth="0.8" />
+          <line x1="34" y1="56" x2="34" y2="120" stroke={svgFaint} strokeWidth="0.8" />
+          <line x1="34" y1="78" x2="114" y2="78" stroke={svgFaint} strokeDasharray="2 3" strokeWidth="0.6" />
+          <line x1="34" y1="99" x2="114" y2="99" stroke={svgFaint} strokeDasharray="2 3" strokeWidth="0.6" />
+
+          {/* Loss Convergence Curve */}
+          <path
+            d="M36 66 C48 70, 62 108, 112 114"
+            stroke={textColor}
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            fill="none"
+          />
+          <circle cx="112" cy="114" r="2.5" fill={textColor} />
+          
+          <text x="36" y="53" fill={subtextColor} fontSize="6.5" fontFamily="'SF Mono', monospace">
+            LOSS: 0.124
+          </text>
+          <text x="114" y="128" textAnchor="end" fill={subtextColor} fontSize="6" fontFamily="'SF Mono', monospace">
+            EPOCH 3
+          </text>
+
+          {/* Pane Divider Line */}
+          <line x1="122" y1="48" x2="122" y2="132" stroke={diagramBorder} strokeWidth="1" />
+
+          {/* Right Pane: Adapter Telemetry & Parameters */}
+          <text x="130" y="60" fill={subtextColor} fontSize="6.5" fontFamily="'SF Mono', monospace" letterSpacing="0.06em">
+            TARGET:
+          </text>
+          <text x="130" y="71" fill={textColor} fontSize="7.5" fontFamily="'SF Mono', monospace" fontWeight="600">
+            ALL-LINEAR
+          </text>
+
+          <text x="130" y="84" fill={subtextColor} fontSize="6.5" fontFamily="'SF Mono', monospace" letterSpacing="0.06em">
+            LORA RANK:
+          </text>
+          <text x="130" y="95" fill={textColor} fontSize="7.5" fontFamily="'SF Mono', monospace" fontWeight="600">
+            r = 64 / a = 128
+          </text>
+
+          <text x="130" y="108" fill={subtextColor} fontSize="6.5" fontFamily="'SF Mono', monospace" letterSpacing="0.06em">
+            STATUS:
+          </text>
+          <text x="130" y="120" fill="#22c55e" fontSize="7.5" fontFamily="'SF Mono', monospace" fontWeight="600">
+            ● CONVERGED
+          </text>
+
+          {/* Bottom Telemetry Badge */}
+          <rect x="42" y="152" width="156" height="15" rx="3" fill={diagramBg} stroke={diagramBorder} />
+          <text x="120" y="162.5" textAnchor="middle" fill={textColor} fontSize="7.5" fontFamily="'SF Mono', monospace" fontWeight="600" letterSpacing="0.1em">
+            QLORA: READY // FINE-TUNED
+          </text>
         </svg>
       )
     }
