@@ -55,9 +55,8 @@
   z-index: 10;
   flex: 1;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  gap: 24px;
   width: 100%;
   max-width: 100%;
   height: 100%;
@@ -66,6 +65,8 @@
 
 /* ── SIDEBAR (LEFT COLLAPSIBLE IN WIDTH, 95% HEIGHT) ─────────────────────── */
 .md-left {
+  position: relative;
+  z-index: 40;
   height: 95% !important;
   max-height: 95% !important;
   display: flex;
@@ -97,10 +98,10 @@
 }
 
 .md-left.is-expanded {
-  width: 380px;
-  min-width: 380px;
-  max-width: 380px;
-  padding: 18px;
+  width: 360px;
+  min-width: 360px;
+  max-width: 360px;
+  padding: 16px 14px;
 }
 
 .md-left:hover {
@@ -852,14 +853,19 @@
 
 /* ── CENTER STAGE (3D ORB & INTERACTIVE DISPLAY) ─────────────────────────── */
 .md-center {
-  flex: 1;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 680px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  position: relative;
-  height: 100%;
-  min-height: 520px;
+  pointer-events: none;
+  z-index: 20;
 }
 
 /* ── TOP FLOATING COMMAND BAR (BLACKBOX.AI STYLE) ────────────────────────── */
@@ -879,6 +885,7 @@
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
   transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: auto !important;
 }
 
 .md-info-card.fading-out {
@@ -986,6 +993,7 @@
   align-items: center;
   justify-content: center;
   transform: translateY(-48px);
+  pointer-events: auto !important;
 }
 
 .md-sphere {
@@ -1043,7 +1051,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-width: 680px;
+  max-width: 640px;
   width: 92%;
   text-align: left;
   padding: 16px 20px;
@@ -1054,6 +1062,7 @@
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: auto !important;
 }
 
 .md-orb-explanation.fading-out {
@@ -1661,9 +1670,14 @@
   }
 
   .md-center {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
     width: 100% !important;
     min-height: auto !important;
     padding: 10px 0 !important;
+    pointer-events: auto !important;
   }
 
   .md-info-card {
