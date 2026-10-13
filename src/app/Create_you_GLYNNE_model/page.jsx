@@ -466,6 +466,16 @@ export default function CreateYourGlynneModelPage() {
         })
       });
 
+      if (!res.ok) {
+        const errorText = await res.text().catch(() => '');
+        let errMsg = `Server returned status ${res.status}`;
+        try {
+          const jsonErr = JSON.parse(errorText);
+          errMsg = jsonErr.detail || jsonErr.message || errMsg;
+        } catch (e) {}
+        throw new Error(errMsg);
+      }
+
       const data = await res.json();
       if (data.status === 'started') {
         // Started in background
@@ -473,10 +483,11 @@ export default function CreateYourGlynneModelPage() {
         alert(data.message);
       }
     } catch (err) {
+      console.error('Error starting training:', err);
       setTrainingState(prev => ({
         ...prev,
         status: 'error',
-        error_message: 'Could not connect to GLYNNE_LOGIC_2026 server on Render (https://ax-zyxe.onrender.com).'
+        error_message: `Connection error: ${err.message || 'GLYNNE_LOGIC_2026 server unreachable'}. Note: If Render is waking from sleep, please wait ~30 seconds and retry.`
       }));
     }
   };
