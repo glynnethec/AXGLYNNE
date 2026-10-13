@@ -168,12 +168,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html
-      lang="en"
+      lang="es"
+      translate="no"
       data-theme="dark"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased notranslate`}
     >
-      <body className="min-h-full flex flex-col">
+      <head>
+        <meta name="google" content="notranslate" />
+      </head>
+      <body className="min-h-full flex flex-col notranslate" translate="no">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
