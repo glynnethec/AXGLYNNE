@@ -9,6 +9,7 @@ import BackgroundWrapper from '@/components/BackgroundWrapper';
 import TrainModelBrandBlocks from '@/components/TrainModelBrandBlocks';
 import FleekStyleArchitectureSection from '@/components/FleekStyleArchitectureSection';
 import NvidiaH100HardwareSection from '@/components/NvidiaH100HardwareSection';
+import QuickstartDocumentationSection from '@/components/QuickstartDocumentationSection';
 import Footer from '@/app/components/Footer';
 import {
   FiKey,
@@ -2876,6 +2877,17 @@ run();`;
           {/* MAIN 1: EXPLORE OFFERINGS HERO BANNER (SOLUCIONES AI 001-004) */}
           <div style={{ marginTop: '48px' }}>
             <ExploreOfferingsHeroSection isDark={isDark} />
+          </div>
+
+          {/* QUICKSTART & SDK RUNTIME INTEGRATION (DE CERO A INFERENCIA EN 3 LÍNEAS) */}
+          <div style={{ marginTop: '56px' }}>
+            <QuickstartDocumentationSection
+              isDark={isDark}
+              apiKey={subApiKeys[0]?.key || generatedKey}
+              selectedModel={selectedModel}
+              onOpenKeyModal={handleOpenCreateModal}
+              onSelectTab={(tab) => setActiveTab(tab as any)}
+            />
           </div>
 
           {/* NVIDIA H100 SXM5 HARDWARE BLUEPRINT RECREATION (EXACT ARCHITECTURAL SCHEMATIC) */}
