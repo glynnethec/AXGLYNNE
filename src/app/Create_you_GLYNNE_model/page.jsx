@@ -147,7 +147,7 @@ const TUTORIAL_STEPS = [
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         <p style={{ margin: 0 }}>This studio allows you to adapt open-source foundation LLMs (Qwen 2.5, Llama 3.2, Phi 3.5) with your company’s proprietary data in minutes.</p>
         <div style={{ padding: '12px', backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.15)', fontSize: '11px' }}>
-          <strong style={{ color: '#ffffff', display: 'block', marginBottom: '4px' }}>⚡ What is QLoRA Fine-Tuning?</strong>
+          <strong style={{ color: '#ffffff', display: 'block', marginBottom: '4px' }}>What is QLoRA Fine-Tuning?</strong>
           Instead of retraining billions of parameters from scratch, QLoRA freezes the base model weights in 4-bit precision and trains a lightweight <strong>Adapter Matrix</strong>. This achieves enterprise precision using minimal GPU VRAM.
         </div>
         <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)' }}>
@@ -182,7 +182,7 @@ const TUTORIAL_STEPS = [
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         <p style={{ margin: 0 }}>In the middle column (<strong>TRAINING DATASET & PROMPTS</strong>), you supply the exact Q&A examples your model will master:</p>
         <div style={{ padding: '12px', backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.15)', fontSize: '11px' }}>
-          <strong style={{ color: '#ffffff', display: 'block', marginBottom: '4px' }}>✨ Don't have a dataset? Use Synthetic GROQ Generation!</strong>
+          <strong style={{ color: '#ffffff', display: 'block', marginBottom: '4px' }}>Don't have a dataset? Use Synthetic GROQ Generation!</strong>
           Type a prompt (e.g. <em>"Generate 10 customer service responses for e-commerce returns"</em>) and click <strong>Generate Synthetic Dataset with GROQ</strong>. The system auto-builds high-quality training pairs instantly!
         </div>
         <ul style={{ margin: 0, paddingLeft: '18px', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '11px' }}>
@@ -201,7 +201,7 @@ const TUTORIAL_STEPS = [
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         <p style={{ margin: 0 }}>In the right column (<strong>TRAINING MONITOR & CONSOLE</strong>), you trigger the training pipeline on our H100 GPU cluster:</p>
         <ul style={{ margin: 0, paddingLeft: '18px', display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '11px', lineHeight: 1.5 }}>
-          <li>Click <strong>⚡ START FINE-TUNING MODEL NOW</strong> to transmit your dataset and hyperparameter payload to the <code>GLYNNE_LOGIC_2026</code> backend.</li>
+          <li>Click <strong>START FINE-TUNING MODEL NOW</strong> to transmit your dataset and hyperparameter payload to the <code>GLYNNE_LOGIC_2026</code> backend.</li>
           <li><strong>Real-Time Diagnostic Logs:</strong> Watch memory allocation, Unsloth kernel compilation, step progress, and loss metrics.</li>
           <li><strong>Loss Trajectory:</strong> As training progresses, loss will decrease, indicating your model is learning your specific domain tone.</li>
         </ul>
@@ -217,7 +217,7 @@ const TUTORIAL_STEPS = [
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         <p style={{ margin: 0 }}>Once training completes, your custom model is live and ready for testing:</p>
         <div style={{ padding: '12px', backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.15)', fontSize: '11px' }}>
-          <strong style={{ color: '#ffffff', display: 'block', marginBottom: '4px' }}>💬 Test Chat Sandbox:</strong>
+          <strong style={{ color: '#ffffff', display: 'block', marginBottom: '4px' }}>Test Chat Sandbox:</strong>
           Use the chat prompt box in the right column to test queries live against your newly trained QLoRA model.
         </div>
         <p style={{ fontSize: '11px', margin: 0 }}>
@@ -241,7 +241,7 @@ export default function CreateYourGlynneModelPage() {
   const [showTutorialModal, setShowTutorialModal] = useState(false);
   const [tutorialStep, setTutorialStep] = useState(0);
 
-  // 🛡️ INTERCEPTAR NAVEGACIÓN (BOTÓN ATRÁS DEL NAVEGADOR & REFRESH)
+  // INTERCEPTAR NAVEGACIÓN (BOTÓN ATRÁS DEL NAVEGADOR & REFRESH)
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       e.preventDefault();
@@ -1227,8 +1227,8 @@ export default function CreateYourGlynneModelPage() {
                     width: '6px',
                     height: '6px',
                     borderRadius: '50%',
-                    backgroundColor: '#10b981',
-                    boxShadow: '0 0 8px #10b981'
+                    backgroundColor: theme === 'light' ? '#0f172a' : '#ffffff',
+                    boxShadow: theme === 'light' ? '0 0 6px rgba(15, 23, 42, 0.3)' : '0 0 8px rgba(255, 255, 255, 0.4)'
                   }} />
                   <span style={{
                     fontSize: '11px',
@@ -1322,9 +1322,9 @@ export default function CreateYourGlynneModelPage() {
                       padding: '2px 5px',
                       borderRadius: '3px',
                       fontFamily: "'SF Mono', Monaco, monospace",
-                      backgroundColor: 'rgba(16, 185, 129, 0.15)',
-                      color: '#10b981',
-                      border: '1px solid rgba(16, 185, 129, 0.3)'
+                      backgroundColor: theme === 'light' ? 'rgba(15, 23, 42, 0.08)' : 'rgba(255, 255, 255, 0.12)',
+                      color: theme === 'light' ? '#0f172a' : '#ffffff',
+                      border: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.15)' : '1px solid rgba(255, 255, 255, 0.2)'
                     }}>
                       ACTIVO
                     </span>
@@ -1380,7 +1380,7 @@ export default function CreateYourGlynneModelPage() {
                   fontSize: '9px',
                   fontWeight: 700,
                   fontFamily: "'SF Mono', Monaco, monospace",
-                  color: '#6366f1'
+                  color: theme === 'light' ? '#64748b' : '#94a3b8'
                 }}>
                   {dataset.length} EJEMPLOS CARGADOS
                 </span>
@@ -1415,7 +1415,7 @@ export default function CreateYourGlynneModelPage() {
                       : (theme === 'light' ? '#64748b' : 'rgba(255, 255, 255, 0.7)')
                   }}
                 >
-                  🎭 Personalidad
+                  Personalidad
                 </button>
                 <button
                   type="button"
@@ -1437,7 +1437,7 @@ export default function CreateYourGlynneModelPage() {
                       : (theme === 'light' ? '#64748b' : 'rgba(255, 255, 255, 0.7)')
                   }}
                 >
-                  🏢 Conocimiento
+                  Conocimiento
                 </button>
                 <button
                   type="button"
@@ -1459,7 +1459,7 @@ export default function CreateYourGlynneModelPage() {
                       : (theme === 'light' ? '#64748b' : 'rgba(255, 255, 255, 0.7)')
                   }}
                 >
-                  📋 Buffer ({dataset.length})
+                  Buffer ({dataset.length})
                 </button>
               </div>
 
@@ -1851,9 +1851,9 @@ export default function CreateYourGlynneModelPage() {
                     transition: 'all 0.2s ease',
                     backgroundColor: isGeneratingDataset
                       ? (theme === 'light' ? '#94a3b8' : '#334155')
-                      : (theme === 'light' ? 'rgba(99, 102, 241, 0.12)' : 'rgba(99, 102, 241, 0.2)'),
-                    color: theme === 'light' ? '#4f46e5' : '#818cf8',
-                    border: theme === 'light' ? '1px solid rgba(99, 102, 241, 0.3)' : '1px solid rgba(99, 102, 241, 0.4)'
+                      : (theme === 'light' ? 'rgba(15, 23, 42, 0.06)' : 'rgba(255, 255, 255, 0.08)'),
+                    color: theme === 'light' ? '#0f172a' : '#ffffff',
+                    border: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.2)' : '1px solid rgba(255, 255, 255, 0.2)'
                   }}
                 >
                   {isGeneratingDataset ? (
@@ -2756,7 +2756,7 @@ export default function CreateYourGlynneModelPage() {
                     cursor: 'pointer'
                   }}
                 >
-                  ✓ Accept Dataset & Start Fine-Tuning
+                  Accept Dataset & Start Fine-Tuning
                 </button>
               </div>
             </div>
@@ -2925,7 +2925,7 @@ export default function CreateYourGlynneModelPage() {
                       fontFamily: 'inherit'
                     }}
                   >
-                    ✓ ENTER STUDIO NOW
+                    ENTER STUDIO NOW
                   </button>
                 )}
               </div>
