@@ -3,7 +3,7 @@
 import React from 'react';
 import Header from '@/app/components/Header';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
-import TrainModelBrandBlocks from '@/components/TrainModelBrandBlocks';
+import JigsawShowcaseSection from '@/components/JigsawShowcaseSection';
 import TrainModelRadarBanner from '@/components/TrainModelRadarBanner';
 import TrainModelHeroSection from '@/components/TrainModelHeroSection';
 import TrainModelGridManifesto from '@/components/TrainModelGridManifesto';
@@ -42,9 +42,9 @@ export default function TrainModelPage() {
           flexDirection: 'column',
           alignItems: 'center'
         }}>
-          {/* 1.ª Sección: BrandBlocks Blueprint (Technical Blueprint) */}
-          <div className="section-wrapper" style={{ paddingTop: '80px' }}>
-            <TrainModelBrandBlocks />
+          {/* Editorial & Vector Architecture Section (Jigsaw Design) */}
+          <div style={{ width: '100vw', maxWidth: '100vw', boxSizing: 'border-box', paddingTop: '80px' }}>
+            <JigsawShowcaseSection />
           </div>
 
           {/* 2.ª Sección: Tactical Radar Banner */}

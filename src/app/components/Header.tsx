@@ -12,14 +12,11 @@ import {
   FaBuilding,
   FaShieldAlt,
   FaBrain,
-  FaMicrochip,
   FaComments,
   FaMicrophone,
-  FaHdd,
   FaBolt,
   FaBriefcase,
   FaLock,
-  FaChartLine,
   FaBook
 } from 'react-icons/fa';
 import { supabaseGoogle } from '@/lib/supabaseClient';
@@ -47,25 +44,11 @@ const NAV_CATEGORIES: NavCategory[] = [
     icon: <FaRobot size={13} />,
     items: [
       {
-        href: '/models_provider',
-        label: 'Model APIs for Development',
-        badge: 'FREE INTEGRATION',
-        desc: 'Connect open-source models (Llama, DeepSeek, NVIDIA NIM) to your dev applications without paying high commercial API fees while building.',
-        icon: <FaMicrochip size={14} />
-      },
-      {
         href: '/TrainModel',
         label: 'Custom QLoRA Fine-Tuning',
         badge: 'COMPUTE SAVINGS',
         desc: 'Adapt open-weights models with proprietary business knowledge, reducing compute expenses by up to 90% through efficient fine-tuning.',
         icon: <FaBrain size={14} />
-      },
-      {
-        href: '/Librarymodel',
-        label: 'Open Source Offline Models',
-        badge: '100% LOCAL',
-        desc: 'Download and run open-source models directly on local hardware privately, securely, and completely offline.',
-        icon: <FaHdd size={14} />
       },
       {
         href: '/AX_chat',
@@ -114,13 +97,6 @@ const NAV_CATEGORIES: NavCategory[] = [
         label: 'Platform Overview',
         desc: 'Discover how GLYNNE unites frontier AI research and operational engineering to transform modern enterprises.',
         icon: <FaBolt size={14} />
-      },
-      {
-        href: '/precios',
-        label: 'Transparent Plans & Pricing',
-        badge: 'FLEXIBLE',
-        desc: 'Clear, predictable pricing structured to scale with your project growth, with zero hidden fees and measurable ROI.',
-        icon: <FaChartLine size={14} />
       }
     ]
   },
