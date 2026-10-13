@@ -8,11 +8,13 @@ import {
 interface FleekStyleArchitectureSectionProps {
   isDark: boolean;
   onOpenKeyModal?: () => void;
+  hideHardwareSection?: boolean;
 }
 
 export default function FleekStyleArchitectureSection({
   isDark,
-  onOpenKeyModal
+  onOpenKeyModal,
+  hideHardwareSection = false
 }: FleekStyleArchitectureSectionProps) {
   // STRICT MONOCHROME TOKENS - NO COLORS, PURE BLACK, WHITE & GRAYS
   const textColor = isDark ? '#ffffff' : '#111111';
@@ -41,7 +43,8 @@ export default function FleekStyleArchitectureSection({
       {/* ========================================================================= */}
       {/* 02. ISOMETRIC HARDWARE STACK SCHEMATIC & "GIVING AI AN EDGE"             */}
       {/* ========================================================================= */}
-      <section style={{
+      {!hideHardwareSection && (
+        <section style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
         gap: '48px',
@@ -261,6 +264,7 @@ export default function FleekStyleArchitectureSection({
           </div>
         </div>
       </section>
+      )}
 
       {/* Blueprint Stepper Indicator 02 -> 03 */}
       <div style={{ display: 'flex', justifyContent: 'center', margin: '36px 0' }}>

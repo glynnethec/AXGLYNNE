@@ -3,11 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, notFound } from 'next/navigation';
-import { getCurrentUser } from '@/lib/supabaseClient';
+import { getCurrentUser, supabaseGoogle } from '@/lib/supabaseClient';
 import { useTheme } from '@/lib/ThemeContext';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
 import TrainModelBrandBlocks from '@/components/TrainModelBrandBlocks';
 import FleekStyleArchitectureSection from '@/components/FleekStyleArchitectureSection';
+import NvidiaH100HardwareSection from '@/components/NvidiaH100HardwareSection';
 import Footer from '@/app/components/Footer';
 import {
   FiKey,
@@ -957,6 +958,7 @@ export interface SubApiKeyItem {
   model: string;
   rpm: string;
   quota: string;
+  tokensUsed?: number;
   createdAt: string;
   status: 'active' | 'revoked';
 }
@@ -1036,8 +1038,51 @@ export default function ModelsProviderPage() {
   }, [router]);
   */
 
-  useEffect(() => {
-    // Load saved sub-api keys from localStorage
+  const [isLoadingDbKeys, setIsLoadingDbKeys] = useState(false);
+  const [currentUserObj, setCurrentUserObj] = useState<any>(null);
+
+  const fetchKeysFromSupabase = async () => {
+    try {
+      setIsLoadingDbKeys(true);
+      const user = await getCurrentUser();
+      if (user) {
+        setCurrentUserObj(user);
+        if (user.email) setUserEmail(user.email);
+        setIsAuthenticated(true);
+
+        const { data, error } = await supabaseGoogle
+          .from('sub_api_keys')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (!error && data && data.length > 0) {
+          const formatted: SubApiKeyItem[] = data.map((row: any) => ({
+            id: String(row.id),
+            name: row.name || 'Client Key',
+            key: row.api_key || '',
+            model: row.default_model || 'llama-3.2-11b-vision',
+            rpm: String(row.rate_limit_rpm ?? 120),
+            quota: Number(row.monthly_quota ?? 5000000).toLocaleString('en-US'),
+            tokensUsed: Number(row.tokens_used ?? 0),
+            createdAt: row.created_at
+              ? new Date(row.created_at).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })
+              : 'Reciente',
+            status: row.status === 'revoked' ? 'revoked' : 'active',
+          }));
+          setSubApiKeys(formatted);
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('glynne_sub_api_keys', JSON.stringify(formatted));
+          }
+          return;
+        }
+      }
+    } catch (err) {
+      console.warn('Aviso cargando sub-api keys de Supabase:', err);
+    } finally {
+      setIsLoadingDbKeys(false);
+    }
+
+    // Fallback a localStorage
     const savedSubKeys = localStorage.getItem('glynne_sub_api_keys');
     if (savedSubKeys) {
       try {
@@ -1049,6 +1094,10 @@ export default function ModelsProviderPage() {
         console.error('Error reading saved sub-api keys', e);
       }
     }
+  };
+
+  useEffect(() => {
+    fetchKeysFromSupabase();
 
     // Load saved master key if present
     const savedKey = localStorage.getItem('glynne_nvidia_master_key');
@@ -1179,19 +1228,57 @@ export default function ModelsProviderPage() {
     setIsCreateModalOpen(true);
   };
 
-  const handleCreateKeySubmit = (e: React.FormEvent) => {
+  const handleCreateKeySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const randomHex = Array.from({ length: 24 }, () => Math.floor(Math.random() * 16).toString(16)).join('');
     const fullKey = `gly_sub_live_${randomHex}`;
     const dateFormatted = new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
 
+    let finalId = Date.now().toString();
+    const parsedQuota = parseInt(newKeyFormQuota.replace(/,/g, '')) || 5000000;
+    const parsedRpm = parseInt(newKeyFormRpm.trim()) || 120;
+
+    // Guardar en Supabase vinculado a auth.user
+    try {
+      const user = currentUserObj || await getCurrentUser();
+      const insertPayload: any = {
+        name: newKeyFormName.trim() || `Client Key ${subApiKeys.length + 1}`,
+        api_key: fullKey,
+        key_prefix: maskKey(fullKey),
+        default_model: newKeyFormModel,
+        rate_limit_rpm: parsedRpm,
+        monthly_quota: parsedQuota,
+        tokens_used: 0,
+        status: 'active'
+      };
+
+      if (user?.id) {
+        insertPayload.user_id = user.id;
+      }
+
+      const { data, error } = await supabaseGoogle
+        .from('sub_api_keys')
+        .insert(insertPayload)
+        .select()
+        .single();
+
+      if (!error && data?.id) {
+        finalId = String(data.id);
+      } else if (error) {
+        console.warn('Supabase insert notice:', error.message);
+      }
+    } catch (err) {
+      console.warn('Aviso guardando sub-api key en Supabase:', err);
+    }
+
     const newItem: SubApiKeyItem = {
-      id: Date.now().toString(),
+      id: finalId,
       name: newKeyFormName.trim() || `Client Key ${subApiKeys.length + 1}`,
       key: fullKey,
       model: newKeyFormModel,
       rpm: newKeyFormRpm.trim() || '120',
       quota: newKeyFormQuota.trim() || '5,000,000',
+      tokensUsed: 0,
       createdAt: dateFormatted,
       status: 'active',
     };
@@ -1203,8 +1290,20 @@ export default function ModelsProviderPage() {
     setCreateStep(2);
   };
 
-  const handleDeleteKey = (id: string) => {
+  const handleDeleteKey = async (id: string) => {
     if (confirm('¿Estás seguro de que deseas revocar y eliminar esta Sub-API Key?')) {
+      try {
+        const numId = parseInt(id);
+        if (!isNaN(numId)) {
+          await supabaseGoogle
+            .from('sub_api_keys')
+            .delete()
+            .eq('id', numId);
+        }
+      } catch (err) {
+        console.warn('Aviso eliminando sub-api key en Supabase:', err);
+      }
+
       const updated = subApiKeys.filter(k => k.id !== id);
       saveKeysToStorage(updated);
     }
@@ -1389,6 +1488,29 @@ run();`;
                     }}>
                       Gateway Sub-APIs
                     </span>
+                    <button
+                      onClick={fetchKeysFromSupabase}
+                      disabled={isLoadingDbKeys}
+                      title="Sincronizar con base de datos de Supabase"
+                      style={{
+                        background: 'none',
+                        border: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        padding: '3px 8px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        color: isDark ? '#a1a1aa' : '#71717a',
+                        fontSize: '11px',
+                        gap: '5px',
+                        transition: 'opacity 0.2s'
+                      }}
+                    >
+                      <FiRefreshCw size={11} style={{ animation: isLoadingDbKeys ? 'spin 1s linear infinite' : 'none' }} />
+                      <span style={{ fontSize: '10px', fontWeight: 500 }}>
+                        {isLoadingDbKeys ? 'Sincronizando...' : 'Supabase Sync'}
+                      </span>
+                    </button>
                   </div>
                   <p style={{
                     fontSize: '13px',
@@ -1559,9 +1681,16 @@ run();`;
                               {item.createdAt}
                             </td>
 
-                            {/* LÍMITES */}
+                            {/* LÍMITES Y CONSUMO SUPABASE */}
                             <td style={{ padding: '14px 14px', color: isDark ? '#a1a1aa' : '#71717a', fontSize: '12px' }}>
-                              {item.rpm} RPM · {item.quota} tok
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                                <span>{item.rpm} RPM · {item.quota} tok</span>
+                                {item.tokensUsed !== undefined && item.tokensUsed > 0 && (
+                                  <span style={{ fontSize: '11px', color: isDark ? '#38bdf8' : '#0284c7', fontWeight: 500 }}>
+                                    Usados: {item.tokensUsed.toLocaleString('en-US')} tok
+                                  </span>
+                                )}
+                              </div>
                             </td>
 
                             {/* ESTADO */}
@@ -2749,9 +2878,14 @@ run();`;
             <ExploreOfferingsHeroSection isDark={isDark} />
           </div>
 
+          {/* NVIDIA H100 SXM5 HARDWARE BLUEPRINT RECREATION (EXACT ARCHITECTURAL SCHEMATIC) */}
+          <div style={{ marginTop: '56px' }}>
+            <NvidiaH100HardwareSection isDark={isDark} />
+          </div>
+
           {/* BLUEPRINT WIREFRAME ARCHITECTURE (FLEEK/EDGE AI STYLE) */}
           <div style={{ marginTop: '56px' }}>
-            <FleekStyleArchitectureSection isDark={isDark} onOpenKeyModal={handleOpenCreateModal} />
+            <FleekStyleArchitectureSection isDark={isDark} hideHardwareSection={true} onOpenKeyModal={handleOpenCreateModal} />
           </div>
 
           {/* OPEN WEIGHTS MANIFESTO ARCHITECTURAL GRID WITH FIGURES */}
