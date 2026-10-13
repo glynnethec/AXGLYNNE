@@ -39,7 +39,7 @@ export default function HeroSection() {
           letterSpacing: '-0.02em',
           maxWidth: '1100px'
         }}>
-          AI engineering, model training, and autonomous ecosystems
+          The bridge between advanced AI and your business operations
         </h1>
 
         {/* Paragraph */}
@@ -53,7 +53,7 @@ export default function HeroSection() {
           letterSpacing: '0.01em',
           maxWidth: '900px'
         }}>
-          At GLYNNE, we don't build traditional software or sell generic tools: we design specialized AI architectures. We train, fine-tune, and align models using your company's operational data to orchestrate intelligent ecosystems that transform your business processes with complete precision and control.
+          We build AI technology with a clear purpose: eliminating operational friction. We provide the models that power decisions, the tools your team interacts with, and the autonomous workflows that keep your business moving forward without relying on manual processes.
         </p>
 
         {/* Text Links */}

@@ -137,6 +137,17 @@ const getPath = (fromCol: number, fromY: number, toCol: number, toY: number) => 
   return `M ${x1} ${fromY} C ${midX} ${fromY}, ${midX} ${toY}, ${x2} ${toY}`;
 };
 
+const DIAL_TICKS = Array.from({ length: 16 }).map((_, i) => {
+  const angle = (i * 22.5 - 135) * (Math.PI / 180);
+  return {
+    x1: Math.round((20 + 11 * Math.cos(angle)) * 100) / 100,
+    y1: Math.round((20 + 11 * Math.sin(angle)) * 100) / 100,
+    x2: Math.round((20 + 16 * Math.cos(angle)) * 100) / 100,
+    y2: Math.round((20 + 16 * Math.sin(angle)) * 100) / 100,
+    active: i < 11
+  };
+});
+
 export default function WorkflowDiagram() {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
@@ -331,26 +342,18 @@ export default function WorkflowDiagram() {
                   {node.type === 'dial' && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%' }}>
                       <svg width="34" height="34" viewBox="0 0 40 40" fill="none">
-                        {Array.from({ length: 16 }).map((_, i) => {
-                          const angle = (i * 22.5 - 135) * (Math.PI / 180);
-                          const x1 = 20 + 11 * Math.cos(angle);
-                          const y1 = 20 + 11 * Math.sin(angle);
-                          const x2 = 20 + 16 * Math.cos(angle);
-                          const y2 = 20 + 16 * Math.sin(angle);
-                          const active = i < 11;
-                          return (
-                            <line
-                              key={i}
-                              x1={x1}
-                              y1={y1}
-                              x2={x2}
-                              y2={y2}
-                              stroke={active ? textColor : subtextColor}
-                              strokeWidth="1.5"
-                              opacity={active ? 1 : 0.25}
-                            />
-                          );
-                        })}
+                        {DIAL_TICKS.map((tick, i) => (
+                          <line
+                            key={i}
+                            x1={tick.x1}
+                            y1={tick.y1}
+                            x2={tick.x2}
+                            y2={tick.y2}
+                            stroke={tick.active ? textColor : subtextColor}
+                            strokeWidth="1.5"
+                            opacity={tick.active ? 1 : 0.25}
+                          />
+                        ))}
                         <circle cx="20" cy="20" r="4" fill="none" stroke={textColor} strokeWidth="1" />
                       </svg>
                       <div style={{ fontSize: '9px', fontFamily: 'monospace', color: subtextColor, lineHeight: 1.3 }}>

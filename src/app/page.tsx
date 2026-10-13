@@ -4,6 +4,9 @@ import SplashScreen from '@/components/SplashScreen';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
 import HeroSection from '@/components/HeroSection';
 import LinPromptSection from '@/components/LinPromptSection';
+import StudioShowcaseSection from '@/components/StudioShowcaseSection';
+import HomeNvidiaInfraSection from '@/components/HomeNvidiaInfraSection';
+import GraphitePlatformSection from '@/components/GraphitePlatformSection';
 import HomeAuditSection from '@/components/HomeAuditSection';
 import ClientLogosSection from '@/components/ClientLogosSection';
 import HomeTaskAuditSection from '@/components/HomeTaskAuditSection';
@@ -33,6 +36,15 @@ export default function Home() {
         }}>
           <LinPromptSection hideCard={true} hideOrbCard={true} lang="en" />
         </div>
+
+        {/* 2.5 ARCHITECTURAL STUDIO SHOWCASE SECTION */}
+        <StudioShowcaseSection />
+
+        {/* NVIDIA DIRECT COMPUTE & ACCELERATED INFRASTRUCTURE (APIs & FINE-TUNING) */}
+        <HomeNvidiaInfraSection />
+
+        {/* GRAPHITE PLATFORM SHOWCASE SECTION */}
+        <GraphitePlatformSection />
 
         {/* 3. HOW DOES IT WORK? */}
         <div style={{

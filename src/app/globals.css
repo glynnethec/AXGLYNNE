@@ -334,36 +334,44 @@ h1, h2, h3 {
   margin-left: 12px;
 }
 
-/* Header */
 .fixed-header {
   position: fixed;
-  top: 24px;
+  top: 18px;
   left: 50%;
+  transform: translate(-50%, 0);
   width: 92%;
-  max-width: 1180px;
-  height: 60px;
+  max-width: 1200px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px 0 32px;
-  z-index: 100;
-  background: #ffffff;
+  padding: 0 16px 0 24px;
+  z-index: 9999;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 999px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-  transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.header-hidden {
+.fixed-header.header-hidden {
   opacity: 0;
   pointer-events: none;
-  transform: translate(-50%, -20px);
+  transform: translate(-50%, -24px);
 }
 
-.header-visible {
+.fixed-header.header-visible {
   opacity: 1;
   pointer-events: auto;
   transform: translate(-50%, 0);
+}
+
+.fixed-header.scrolled {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.08);
 }
 
 .header-logo {

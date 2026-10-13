@@ -1,63 +1,59 @@
 import React from 'react';
 import { 
-  SiGooglegemini, SiLangchain, SiScikitlearn, SiPytorch, SiHuggingface, SiMeta,
-  SiPython, SiJavascript, SiTypescript, SiNextdotjs, SiReact, SiNodedotjs, SiFastapi,
-  SiSupabase, SiPostgresql, SiMysql, SiRedis,
-  SiVercel, SiRender, SiDocker, SiGithub
+  SiNvidia, SiPytorch, SiHuggingface, SiMeta, SiDeepseek, SiMistralai,
+  SiOllama, SiAnthropic, SiGooglegemini, SiLangchain, SiTensorflow,
+  SiQdrant, SiPostgresql, SiWeightsandbiases, SiMlflow, SiPolars,
+  SiScikitlearn, SiRay, SiFastapi
 } from 'react-icons/si';
-import { TbBrain, TbRobot, TbApi, TbPlug } from 'react-icons/tb';
-import { FaAws, FaDatabase, FaNetworkWired } from 'react-icons/fa';
+import { TbBrain, TbRobot, TbCpu, TbLayersIntersect } from 'react-icons/tb';
+import { FaNetworkWired } from 'react-icons/fa';
 import { useTheme } from '@/lib/ThemeContext';
 
 const techCategories = [
   {
-    title: '🧠 AI / LLM',
+    title: '⚡ Hardware & Aceleración',
     techs: [
-      { name: 'OpenAI / ChatGPT', Icon: TbBrain, url: 'https://openai.com' },
-      { name: 'Google Gemini', Icon: SiGooglegemini, url: 'https://gemini.google.com' },
-      { name: 'Groq', Icon: TbBrain, url: 'https://groq.com' },
+      { name: 'NVIDIA (CUDA & NIM)', Icon: SiNvidia, url: 'https://www.nvidia.com' },
+      { name: 'PyTorch', Icon: SiPytorch, url: 'https://pytorch.org' },
+      { name: 'vLLM Inference', Icon: TbCpu, url: 'https://vllm.ai' },
+      { name: 'Unsloth Fast QLoRA', Icon: TbBrain, url: 'https://unsloth.ai' },
+      { name: 'TensorFlow', Icon: SiTensorflow, url: 'https://www.tensorflow.org' },
+      { name: 'Groq LPU', Icon: TbBrain, url: 'https://groq.com' },
+      { name: 'Ray Distributed AI', Icon: SiRay, url: 'https://www.ray.io' }
+    ]
+  },
+  {
+    title: '🧠 Modelos & Pesos Abiertos',
+    techs: [
+      { name: 'Hugging Face', Icon: SiHuggingface, url: 'https://huggingface.co' },
+      { name: 'Meta Llama', Icon: SiMeta, url: 'https://llama.meta.com' },
+      { name: 'DeepSeek AI', Icon: SiDeepseek, url: 'https://www.deepseek.com' },
+      { name: 'Mistral AI', Icon: SiMistralai, url: 'https://mistral.ai' },
+      { name: 'Ollama (Local Models)', Icon: SiOllama, url: 'https://ollama.com' },
+      { name: 'Anthropic Claude', Icon: SiAnthropic, url: 'https://www.anthropic.com' },
+      { name: 'Google Gemini', Icon: SiGooglegemini, url: 'https://gemini.google.com' }
+    ]
+  },
+  {
+    title: '🤖 Agentes & Orquestación',
+    techs: [
       { name: 'LangChain', Icon: SiLangchain, url: 'https://www.langchain.com' },
       { name: 'LangGraph', Icon: FaNetworkWired, url: 'https://www.langchain.com/langgraph' },
-      { name: 'scikit-learn', Icon: SiScikitlearn, url: 'https://scikit-learn.org' },
-      { name: 'PyTorch', Icon: SiPytorch, url: 'https://pytorch.org' },
-      { name: 'Hugging Face', Icon: SiHuggingface, url: 'https://huggingface.co' },
-      { name: 'CrewAI', Icon: TbRobot, url: 'https://www.crewai.com' },
-      { name: 'Llama', Icon: SiMeta, url: 'https://llama.meta.com' }
+      { name: 'Model Context Protocol (MCP)', Icon: SiAnthropic, url: 'https://modelcontextprotocol.io' },
+      { name: 'CrewAI Multi-Agent', Icon: TbRobot, url: 'https://www.crewai.com' },
+      { name: 'LlamaIndex', Icon: TbLayersIntersect, url: 'https://www.llamaindex.ai' },
+      { name: 'FastAPI AI Gateways', Icon: SiFastapi, url: 'https://fastapi.tiangolo.com' }
     ]
   },
   {
-    title: '⚙️ Desarrollo',
+    title: '📊 Embeddings & Vector Stores',
     techs: [
-      { name: 'Python', Icon: SiPython, url: 'https://www.python.org' },
-      { name: 'JavaScript', Icon: SiJavascript, url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript' },
-      { name: 'TypeScript', Icon: SiTypescript, url: 'https://www.typescriptlang.org' },
-      { name: 'Next.js', Icon: SiNextdotjs, url: 'https://nextjs.org' },
-      { name: 'React', Icon: SiReact, url: 'https://react.dev' },
-      { name: 'Node.js', Icon: SiNodedotjs, url: 'https://nodejs.org' },
-      { name: 'FastAPI', Icon: SiFastapi, url: 'https://fastapi.tiangolo.com' },
-      { name: 'Pydantic', Icon: SiPython, url: 'https://docs.pydantic.dev' },
-      { name: 'REST APIs', Icon: TbApi, url: 'https://aws.amazon.com/what-is/restful-api/' },
-      { name: 'WebSockets', Icon: TbPlug, url: 'https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API' }
-    ]
-  },
-  {
-    title: '🗄️ Datos / Backend',
-    techs: [
-      { name: 'Supabase', Icon: SiSupabase, url: 'https://supabase.com' },
-      { name: 'PostgreSQL', Icon: SiPostgresql, url: 'https://www.postgresql.org' },
-      { name: 'SQL', Icon: FaDatabase, url: 'https://en.wikipedia.org/wiki/SQL' },
-      { name: 'MySQL', Icon: SiMysql, url: 'https://www.mysql.com' },
-      { name: 'Redis', Icon: SiRedis, url: 'https://redis.io' }
-    ]
-  },
-  {
-    title: '☁️ Infraestructura / Deployment',
-    techs: [
-      { name: 'AWS', Icon: FaAws, url: 'https://aws.amazon.com' },
-      { name: 'Vercel', Icon: SiVercel, url: 'https://vercel.com' },
-      { name: 'Render', Icon: SiRender, url: 'https://render.com' },
-      { name: 'Docker', Icon: SiDocker, url: 'https://www.docker.com' },
-      { name: 'GitHub', Icon: SiGithub, url: 'https://github.com' }
+      { name: 'Qdrant Vector DB', Icon: SiQdrant, url: 'https://qdrant.tech' },
+      { name: 'pgvector / Postgres', Icon: SiPostgresql, url: 'https://github.com/pgvector/pgvector' },
+      { name: 'Weights & Biases', Icon: SiWeightsandbiases, url: 'https://wandb.ai' },
+      { name: 'MLflow Model Registry', Icon: SiMlflow, url: 'https://mlflow.org' },
+      { name: 'Polars Data Engine', Icon: SiPolars, url: 'https://pola.rs' },
+      { name: 'scikit-learn', Icon: SiScikitlearn, url: 'https://scikit-learn.org' }
     ]
   }
 ];
@@ -230,7 +226,7 @@ export default function TechLogos() {
             margin: 0,
             letterSpacing: '-0.03em'
           }}>
-            Our Tech Stack
+            Our AI Tech Stack
           </h2>
           
           <div style={{ maxWidth: '500px' }}>
@@ -240,7 +236,7 @@ export default function TechLogos() {
               color: isDark ? '#ffffff' : '#111111',
               marginBottom: '1rem'
             }}>
-              The AI Ecosystem
+              Frontier Intelligence & Compute
             </h4>
             <p className="tech-desc" style={{ 
               fontSize: '1rem', 
@@ -248,7 +244,7 @@ export default function TechLogos() {
               color: isDark ? '#a1a1aa' : '#333333',
               margin: 0 
             }}>
-              From responsive frontend interfaces to powerful AI agents and scalable data architectures, we leverage the most advanced technologies to build intelligent, high-performance applications that adapt to your business needs.
+              Desde aceleración en hardware NVIDIA y kernels de entrenamiento QLoRA, hasta orquestación de agentes autónomos y bases vectoriales de alta velocidad. Implementamos el estándar técnico más avanzado de inteligencia artificial para entornos corporativos.
             </p>
           </div>
         </div>

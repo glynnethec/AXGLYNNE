@@ -4,14 +4,33 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
-import { FaUser, FaChevronDown, FaCubes, FaRobot, FaBuilding, FaShieldAlt, FaSun, FaMoon } from 'react-icons/fa';
-import { supabaseGoogle, signOut } from '@/lib/supabaseClient';
+import {
+  FaUser,
+  FaChevronDown,
+  FaCubes,
+  FaRobot,
+  FaBuilding,
+  FaShieldAlt,
+  FaBrain,
+  FaMicrochip,
+  FaComments,
+  FaMicrophone,
+  FaHdd,
+  FaBolt,
+  FaBriefcase,
+  FaLock,
+  FaChartLine,
+  FaBook
+} from 'react-icons/fa';
+import { supabaseGoogle } from '@/lib/supabaseClient';
 import { useTheme } from '@/lib/ThemeContext';
 
 interface NavItem {
   href: string;
   label: string;
   desc: string;
+  badge?: string;
+  icon?: React.ReactNode;
 }
 
 interface NavCategory {
@@ -23,62 +42,167 @@ interface NavCategory {
 
 const NAV_CATEGORIES: NavCategory[] = [
   {
-    id: 'platform',
-    label: 'Plataforma & Soluciones',
-    icon: <FaCubes size={13} />,
+    id: 'ai-tools',
+    label: 'AI Tools',
+    icon: <FaRobot size={13} />,
     items: [
-      { href: '/', label: 'Inicio / Visión General', desc: 'Descubre cómo transformamos y automatizamos tu empresa con IA' },
-      { href: '/Servex_solution', label: 'Soluciones para Empresas', desc: 'Mira ejemplos reales y casos de éxito donde aplicamos nuestra tecnología' },
-      { href: '/Industries', label: 'IA por Sector Industrial', desc: 'Explora cómo adaptamos la automatización a tu industria (Salud, Finanzas, Legal y más)' },
-      { href: '/ia_vailable', label: 'Catálogo de Modelos de IA', desc: 'Conoce la lista de inteligencia artificial lista para conectar en tu negocio' }
+      {
+        href: '/models_provider',
+        label: 'Model APIs for Development',
+        badge: 'FREE INTEGRATION',
+        desc: 'Connect open-source models (Llama, DeepSeek, NVIDIA NIM) to your dev applications without paying high commercial API fees while building.',
+        icon: <FaMicrochip size={14} />
+      },
+      {
+        href: '/TrainModel',
+        label: 'Custom QLoRA Fine-Tuning',
+        badge: 'COMPUTE SAVINGS',
+        desc: 'Adapt open-weights models with proprietary business knowledge, reducing compute expenses by up to 90% through efficient fine-tuning.',
+        icon: <FaBrain size={14} />
+      },
+      {
+        href: '/Librarymodel',
+        label: 'Open Source Offline Models',
+        badge: '100% LOCAL',
+        desc: 'Download and run open-source models directly on local hardware privately, securely, and completely offline.',
+        icon: <FaHdd size={14} />
+      },
+      {
+        href: '/AX_chat',
+        label: 'AX Conversational Assistant',
+        badge: 'LIVE DEMO',
+        desc: 'Test our real-time conversational chat: inspect reasoning, query operational data, and interact immediately.',
+        icon: <FaComments size={14} />
+      },
+      {
+        href: '/AX_voice',
+        label: 'Live Real-Time Voice Agent',
+        badge: 'NATURAL VOICE',
+        desc: 'Ultra-low latency spoken dialogues with natural tone to test voice interactions directly with autonomous AI.',
+        icon: <FaMicrophone size={14} />
+      },
+      {
+        href: '/ia_vailable',
+        label: 'Model Catalog & Benchmarks',
+        badge: 'BENCHMARK',
+        desc: 'Compare technical specs, throughput, latency, and resource footprint across all available models for your project.',
+        icon: <FaCubes size={14} />
+      }
     ]
   },
   {
-    id: 'ai-systems',
-    label: 'Sistemas de IA',
-    icon: <FaRobot size={13} />,
+    id: 'solutions',
+    label: 'Solutions & Cases',
+    icon: <FaCubes size={13} />,
     items: [
-      { href: '/AX_chat', label: 'Asistente de Chat (AX)', desc: 'Prueba nuestro chat inteligente capaz de responder y analizar información al instante' },
-      { href: '/AX_voice', label: 'Asistente de Voz Interactivo', desc: 'Experimenta conversaciones de voz fluidas directamente con nuestra IA' },
-      { href: '/ia_vailable', label: 'Pesos & Modelos Open-Source', desc: 'Catálogo de modelos open-weights para despliegue offline y data 100% blindada' },
-      { href: '/TrainModel', label: 'Entrena tu Modelo de IA', desc: 'Construye y ajusta tu propia arquitectura IA reduciendo al extremo tus costos' }
+      {
+        href: '/Servex_solution',
+        label: 'Enterprise AI Solutions',
+        badge: 'HIGH IMPACT',
+        desc: 'Transform manual processes into high-efficiency automated pipelines that multiply team productivity.',
+        icon: <FaBriefcase size={14} />
+      },
+      {
+        href: '/Industries',
+        label: 'Industry-Tailored AI',
+        badge: 'TAILORED',
+        desc: 'Custom strategies and solutions tailored for your industry: Healthcare, Finance, Legal, Commerce, and Smart Manufacturing.',
+        icon: <FaBuilding size={14} />
+      },
+      {
+        href: '/',
+        label: 'Platform Overview',
+        desc: 'Discover how GLYNNE unites frontier AI research and operational engineering to transform modern enterprises.',
+        icon: <FaBolt size={14} />
+      },
+      {
+        href: '/precios',
+        label: 'Transparent Plans & Pricing',
+        badge: 'FLEXIBLE',
+        desc: 'Clear, predictable pricing structured to scale with your project growth, with zero hidden fees and measurable ROI.',
+        icon: <FaChartLine size={14} />
+      }
     ]
   },
   {
     id: 'company',
-    label: 'Empresa & Visión',
+    label: 'Company & Vision',
     icon: <FaBuilding size={13} />,
     items: [
-      { href: '/About', label: 'Acerca de GLYNNE', desc: 'Conoce nuestra historia, filosofía y cómo construimos software inteligente' },
-      { href: '/contact', label: 'Hablar con un Especialista', desc: 'Ponte en contacto con nuestro equipo para diseñar la solución ideal para tu empresa' }
+      {
+        href: '/About',
+        label: 'About Us & Our Mission',
+        desc: 'Meet the team of AI scientists and engineers exploring the frontier of machine intelligence and neural modeling.',
+        icon: <FaBuilding size={14} />
+      },
+      {
+        href: '/contact',
+        label: 'Discuss Your Project',
+        badge: 'DIRECT CONTACT',
+        desc: 'Book a discovery session with our specialists to design the AI solution that will elevate your business.',
+        icon: <FaComments size={14} />
+      },
+      {
+        href: '/CEO_GLYNNE',
+        label: 'Leadership & Strategic Vision',
+        desc: 'Learn about the architectural vision and innovation philosophy of founder and chief architect Alexander Quiroga.',
+        icon: <FaUser size={14} />
+      },
+      {
+        href: '/docs',
+        label: 'Documentation & Quickstart',
+        badge: 'DEV HUB',
+        desc: 'Quickstart guides, endpoints, and code examples to integrate our full suite of tools in minutes.',
+        icon: <FaBook size={14} />
+      }
     ]
   },
   {
     id: 'access-legal',
-    label: 'Acceso & Legal',
+    label: 'Access & Security',
     icon: <FaShieldAlt size={13} />,
     items: [
-      { href: '/login', label: 'Iniciar Sesión / Panel de Cliente', desc: 'Ingresa a tu cuenta para gestionar tus servicios y proyectos de IA' },
-      { href: '/terms-of-service', label: 'Términos del Servicio', desc: 'Consulta las condiciones de uso y licencias de nuestra plataforma' },
-      { href: '/privacy-policy', label: 'Política de Privacidad y Datos', desc: 'Infórmate sobre cómo protegemos y cuidamos la información de tu empresa' }
+      {
+        href: '/login',
+        label: 'Log In / Control Console',
+        badge: 'YOUR WORKSPACE',
+        desc: 'Access your private administration console to monitor models, access keys, and active projects.',
+        icon: <FaLock size={14} />
+      },
+      {
+        href: '/terms-of-service',
+        label: 'Terms of Service',
+        desc: 'Total transparency: review our terms of use, licensing, and enterprise service level agreements with complete peace of mind.',
+        icon: <FaShieldAlt size={14} />
+      },
+      {
+        href: '/privacy-policy',
+        label: 'Privacy & Data Shielding',
+        badge: '100% SECURE',
+        desc: 'Your data is strictly yours. Enterprise-grade protection, rigorous encryption, and guaranteed confidentiality.',
+        icon: <FaShieldAlt size={14} />
+      }
     ]
   }
 ];
 
 export default function Header() {
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   const isDark = theme === 'dark';
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<string>('platform');
-  const [openMobileAccordion, setOpenMobileAccordion] = useState<string | null>('platform');
+  const [activeTab, setActiveTab] = useState<string>('ai-tools');
+  const [openMobileAccordion, setOpenMobileAccordion] = useState<string | null>('ai-tools');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const pathname = usePathname();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Close the menu when navigating
   useEffect(() => {
-    setIsOpen(false);
+    const timer = setTimeout(() => {
+      setIsOpen(false);
+    }, 0);
+    return () => clearTimeout(timer);
   }, [pathname]);
 
   // Auth listener
@@ -125,7 +249,7 @@ export default function Header() {
     if (typeof window !== 'undefined' && window.innerWidth <= 900) return;
     timeoutRef.current = setTimeout(() => {
       setIsOpen(false);
-    }, 200);
+    }, 350);
   };
 
   const toggleMobileMenu = () => {
@@ -145,6 +269,22 @@ export default function Header() {
   return (
     <>
       <style>{`
+        .fixed-header {
+          transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+        }
+
+        .fixed-header.header-hidden {
+          opacity: 0 !important;
+          pointer-events: none !important;
+          transform: translate(-50%, -24px) !important;
+        }
+
+        .fixed-header.header-visible {
+          opacity: 1 !important;
+          pointer-events: auto !important;
+          transform: translate(-50%, 0) !important;
+        }
+
         .glynne-mega-dropdown {
           position: fixed;
           top: 0;
@@ -193,8 +333,8 @@ export default function Header() {
 
         .subnav-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-          gap: 16px;
+          grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+          gap: 14px;
           width: 100%;
           max-width: 1100px;
         }
@@ -202,35 +342,93 @@ export default function Header() {
         .subnav-card-link {
           display: flex;
           flex-direction: column;
-          padding: 14px 18px;
+          padding: 13px 16px;
           border-radius: 14px;
           background: rgba(0,0,0,0.02);
-          border: 1px solid rgba(0,0,0,0.03);
+          border: 1px solid rgba(0,0,0,0.04);
           text-decoration: none;
-          transition: all 0.2s ease;
+          transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+          position: relative;
         }
 
         .subnav-card-link:hover {
           background: rgba(0,0,0,0.05);
-          border-color: rgba(0,0,0,0.08);
-          transform: translateY(-1px);
+          border-color: rgba(0,0,0,0.09);
+          transform: translateY(-2px);
+          box-shadow: 0 10px 24px rgba(0,0,0,0.05);
         }
 
-        .subnav-card-title {
-          font-size: 14px;
-          font-weight: 600;
-          color: #111;
-          margin-bottom: 4px;
+        .subnav-card-header {
           display: flex;
           align-items: center;
           justify-content: space-between;
+          margin-bottom: 6px;
+        }
+
+        .subnav-card-title-group {
+          display: flex;
+          align-items: center;
+          gap: 9px;
+        }
+
+        .subnav-card-icon-box {
+          width: 28px;
+          height: 28px;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(0,0,0,0.04);
+          color: #111111;
+          font-size: 13px;
+          flex-shrink: 0;
+          transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .subnav-card-link:hover .subnav-card-icon-box {
+          background: rgba(0,0,0,0.08);
+          transform: scale(1.08);
+        }
+
+        .subnav-card-title {
+          font-size: 13.5px;
+          font-weight: 600;
+          color: #111;
+          display: flex;
+          align-items: center;
+          letter-spacing: -0.01em;
+        }
+
+        .subnav-card-badge {
+          font-size: 9px;
+          font-weight: 700;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+          padding: 2px 7px;
+          border-radius: 999px;
+          background: rgba(0, 0, 0, 0.05);
+          color: #333333;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          white-space: nowrap;
+        }
+
+        .subnav-card-arrow {
+          font-size: 12px;
+          opacity: 0.35;
+          transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .subnav-card-link:hover .subnav-card-arrow {
+          transform: translateX(3px);
+          opacity: 0.8;
         }
 
         .subnav-card-desc {
-          font-size: 12px;
-          color: #777;
-          font-weight: 300;
-          line-height: 1.4;
+          font-size: 11.5px;
+          color: #555555;
+          font-weight: 400;
+          line-height: 1.45;
+          margin-left: 37px;
         }
 
         .mobile-menu-btn {
@@ -271,6 +469,9 @@ export default function Header() {
             grid-template-columns: 1fr !important;
             gap: 10px;
           }
+          .subnav-card-desc {
+            margin-left: 0;
+          }
         }
 
         [data-theme="dark"] .glynne-mega-dropdown {
@@ -290,13 +491,23 @@ export default function Header() {
         }
 
         [data-theme="dark"] .subnav-card-link {
-          background: rgba(255, 255, 255, 0.04);
+          background: rgba(255, 255, 255, 0.035);
           border-color: rgba(255, 255, 255, 0.06);
         }
 
         [data-theme="dark"] .subnav-card-link:hover {
-          background: rgba(255, 255, 255, 0.08);
+          background: rgba(255, 255, 255, 0.075);
           border-color: rgba(255, 255, 255, 0.12);
+          box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+        }
+
+        [data-theme="dark"] .subnav-card-icon-box {
+          background: rgba(255, 255, 255, 0.08);
+          color: #ffffff;
+        }
+
+        [data-theme="dark"] .subnav-card-link:hover .subnav-card-icon-box {
+          background: rgba(255, 255, 255, 0.14);
         }
 
         [data-theme="dark"] .subnav-card-title {
@@ -304,7 +515,13 @@ export default function Header() {
         }
 
         [data-theme="dark"] .subnav-card-desc {
-          color: #a1a1aa;
+          color: #cbd5e1;
+        }
+
+        [data-theme="dark"] .subnav-card-badge {
+          background: rgba(255, 255, 255, 0.1);
+          color: #f4f4f5;
+          border-color: rgba(255, 255, 255, 0.16);
         }
 
         [data-theme="dark"] .mobile-menu-btn {
@@ -322,22 +539,35 @@ export default function Header() {
         onMouseLeave={handleMouseLeaveHeader}
       >
         <BackgroundWrapper>
-          <div className="mega-dropdown-content" style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '100px 24px 40px 24px', width: '100%' }}>
+          <div className="mega-dropdown-content" style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '118px 24px 44px 24px', width: '100%' }}>
 
             {/* Sub-items View - Desktop */}
             <div className="desktop-nav-categories" style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
               <div className="subnav-grid">
                 {currentCategory.items.map(item => (
                   <Link
-                    key={item.href}
+                    key={item.href + item.label}
                     href={item.href}
                     className={`subnav-card-link ${pathname === item.href ? 'active' : ''}`}
                     onClick={() => setIsOpen(false)}
                   >
-                    <span className="subnav-card-title">
-                      {item.label}
-                      <span style={{ fontSize: '12px', opacity: 0.4 }}>→</span>
-                    </span>
+                    <div className="subnav-card-header">
+                      <div className="subnav-card-title-group">
+                        {item.icon && (
+                          <div className="subnav-card-icon-box">
+                            {item.icon}
+                          </div>
+                        )}
+                        <span className="subnav-card-title">
+                          {item.label}
+                        </span>
+                      </div>
+                      {item.badge ? (
+                        <span className="subnav-card-badge">{item.badge}</span>
+                      ) : (
+                        <span className="subnav-card-arrow">→</span>
+                      )}
+                    </div>
                     <span className="subnav-card-desc">{item.desc}</span>
                   </Link>
                 ))}
@@ -371,24 +601,43 @@ export default function Header() {
                   </button>
 
                   {openMobileAccordion === cat.id && (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '8px', paddingLeft: '8px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '8px', paddingLeft: '4px' }}>
                       {cat.items.map(item => (
                         <Link
-                          key={item.href}
+                          key={item.href + item.label}
                           href={item.href}
                           style={{
-                            padding: '10px 14px',
-                            borderRadius: '10px',
+                            padding: '12px 14px',
+                            borderRadius: '12px',
                             backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
                             border: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.04)',
                             textDecoration: 'none',
                             display: 'flex',
-                            flexDirection: 'column'
+                            flexDirection: 'column',
+                            gap: '4px'
                           }}
                           onClick={() => setIsOpen(false)}
                         >
-                          <span style={{ fontSize: '14px', fontWeight: 500, color: isDark ? '#ffffff' : '#111111' }}>{item.label}</span>
-                          <span style={{ fontSize: '11px', color: isDark ? '#a1a1aa' : '#777777' }}>{item.desc}</span>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <span style={{ fontSize: '13.5px', fontWeight: 600, color: isDark ? '#ffffff' : '#111111', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              {item.icon && <span style={{ opacity: 0.85, display: 'flex', alignItems: 'center' }}>{item.icon}</span>}
+                              {item.label}
+                            </span>
+                            {item.badge && (
+                              <span style={{
+                                fontSize: '8.5px',
+                                fontWeight: 700,
+                                textTransform: 'uppercase',
+                                padding: '2px 6px',
+                                borderRadius: '999px',
+                                background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
+                                color: isDark ? '#d4d4d8' : '#444444'
+                              }}>
+                                {item.badge}
+                              </span>
+                            )}
+                          </div>
+                          <span style={{ fontSize: '11px', color: isDark ? '#a1a1aa' : '#666666', lineHeight: 1.4 }}>{item.desc}</span>
                         </Link>
                       ))}
                     </div>
@@ -403,7 +652,7 @@ export default function Header() {
 
       {/* Dynamic Floating Navbar Header */}
       <header
-        className={`fixed-header ${isScrolled ? "header-visible" : "header-hidden"}`}
+        className={`fixed-header ${(isScrolled || isOpen) ? "header-visible" : "header-hidden"} ${isScrolled ? "scrolled" : ""}`}
         style={{
           zIndex: 9999,
           backgroundColor: isDark ? 'rgba(15, 15, 18, 0.92)' : '#ffffff',

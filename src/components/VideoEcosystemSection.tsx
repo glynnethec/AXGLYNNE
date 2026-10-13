@@ -1,7 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import TechLogos from './TechLogos';
 import { useTheme } from '@/lib/ThemeContext';
 
@@ -50,7 +48,7 @@ export default function VideoEcosystemSection() {
           padding: '6px 16px',
           marginBottom: '32px'
         }}>
-          <span style={{ fontSize: '11px', fontWeight: 500, color: isDark ? '#ffffff' : '#1d1d1f', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Infrastructure Ecosystem</span>
+          <span style={{ fontSize: '11px', fontWeight: 500, color: isDark ? '#ffffff' : '#1d1d1f', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Enterprise AI Infrastructure</span>
         </div>
 
         <h2 style={{
@@ -61,7 +59,7 @@ export default function VideoEcosystemSection() {
           margin: '0 0 12px 0',
           textAlign: 'center'
         }}>
-          The GLYNNE Integration Stack
+          The GLYNNE AI Architecture
         </h2>
         <p style={{
           fontSize: '13px',
@@ -73,7 +71,7 @@ export default function VideoEcosystemSection() {
           maxWidth: '600px',
           lineHeight: 1.6
         }}>
-          From secure API gateways to deterministic orchestration runtimes and traceable vector stores, GLYNNE integrates enterprise-grade technologies to sit reliably between legacy corporate software and autonomous reasoning engines.
+          Desde clusters acelerados por NVIDIA y modelos de pesos abiertos reentrenados, hasta orquestación MCP determinista y pipelines de inferencia de baja latencia. GLYNNE opera en la vanguardia técnica de la inteligencia artificial corporativa.
         </p>
 
         </div>
