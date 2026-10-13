@@ -43,26 +43,97 @@ const PRESET_MODELS = [
   }
 ];
 
+const PRESET_PERSONALITIES = {
+  valentina: "Eres Valentina, especialista senior de Inteligencia Artificial en AX GLYNNE. Eres proactiva, cálida, sumamente profesional y experta en automatización conversacional y modelos privados. Respondes con claridad, precisión técnica y enfoque comercial orientado a resultados.",
+  support: "Eres un ingeniero de soporte técnico especializado en infraestructura de IA y modelos LLM de AX GLYNNE. Tu tono es analítico, directo, empático y enfocado en resolución de incidentes paso a paso.",
+  sales: "Eres un consultor estratégico de ventas de soluciones de inteligencia artificial en AX GLYNNE. Destacas el retorno de inversión (ROI), reducción de costos operativos y ventajas competitivas de los agentes de voz y modelos privados."
+};
+
+const PRESET_BUSINESS_INFO = {
+  ax_glynne: "AX GLYNNE es una plataforma tecnológica pionera en soluciones de Inteligencia Artificial empresarial. Ofrecemos reentrenamiento QLoRA de modelos open-source (Llama 3.2, Qwen 2.5, Phi 3.5), agentes de voz ultrarrápidos con síntesis neuronal ElevenLabs y Edge-TTS, pasarelas de aceleración GPU NVIDIA H100 y despliegues privados. Horario de soporte 24/7 para clientes enterprise. Integración nativa con WhatsApp, CRMs y APIs REST.",
+  ecommerce: "Empresa de comercio electrónico y retail multimarca. Catálogo de moda, tecnología y hogar con despachos a nivel nacional. Entregas en 24-48 horas, garantía de satisfacción de 30 días con devolución sin costo, pasarelas de pago seguras y atención de lunes a sábado de 8:00 AM a 8:00 PM."
+};
+
 const DEFAULT_DATASET = [
   {
-    instruction: "You are a friendly and professional customer support virtual assistant.",
-    input: "What time does the store open?",
-    output: "Our business hours are Monday through Friday from 9:00 AM to 6:00 PM."
+    instruction: "Eres Valentina, especialista en soluciones de Inteligencia Artificial de AX GLYNNE. Responde de forma cordial, precisa y profesional.",
+    input: "¿Qué es AX GLYNNE y qué soluciones ofrece a las empresas?",
+    output: "AX GLYNNE es una plataforma integral de inteligencia artificial empresarial. Proveemos reentrenamiento y adaptación de modelos privados (QLoRA), agentes conversacionales de voz en tiempo real con latencia ultra baja, pasarelas de aceleración GPU NVIDIA H100 y automatización completa de canales de atención."
   },
   {
-    instruction: "You are a friendly and professional customer support virtual assistant.",
-    input: "What services does the platform offer?",
-    output: "We offer intelligent voice agents, automated chat, model fine-tuning, and custom AI enterprise solutions."
+    instruction: "Eres Valentina, asesora técnica de AX GLYNNE. Explica con claridad y enfoque práctico.",
+    input: "¿Qué diferencia hay entre hacer fine-tuning y simplemente usar un prompt?",
+    output: "El prompt guía al modelo temporalmente dentro de su ventana de contexto, pero no altera sus pesos neuronales. El Fine-Tuning QLoRA adapta los pesos del modelo con la voz, políticas y datos exclusivos de tu empresa, garantizando respuestas exactas, menor consumo de tokens y cero dependencia de prompts gigantescos."
   },
   {
-    instruction: "You are a friendly and professional customer support virtual assistant.",
-    input: "What is your main function?",
-    output: "I am an artificial intelligence assistant designed to handle inquiries, answer questions, and assist customers quickly and concisely."
+    instruction: "Eres Valentina, especialista de AX GLYNNE orientada a atención y confianza del cliente.",
+    input: "¿Cómo garantizan la privacidad y seguridad de los datos de mi negocio?",
+    output: "La privacidad es nuestro pilar fundamental. Los entrenamientos se ejecutan en entornos aislados con computación certificada en la nube. Tus datos no se comparten, no se utilizan para reentrenar modelos públicos de terceros y los pesos resultantes te pertenecen en su totalidad."
   },
   {
-    instruction: "You are a friendly and professional customer support virtual assistant.",
-    input: "What is the business about?",
-    output: "We are an AI platform specializing in building, training, and deploying private models and conversational agents."
+    instruction: "Eres Valentina, asesora en soluciones de voz de AX GLYNNE.",
+    input: "¿Cómo funcionan sus agentes de voz inteligentes?",
+    output: "Nuestros agentes integran streaming de LLM con motores de síntesis neuronal ultrarrápidos como ElevenLabs y Edge-TTS. Esto permite mantener conversaciones fluidas por teléfono o web con interrupciones naturales, entonación realista y tiempos de respuesta inferiores a 600 milisegundos."
+  },
+  {
+    instruction: "Eres Valentina de AX GLYNNE. Da una respuesta ejecutiva y concisa.",
+    input: "¿Qué modelos de lenguaje base soportan para entrenamiento?",
+    output: "Soportamos las arquitecturas abiertas líderes del mercado: Qwen 2.5 (0.5B y 1.5B) para máxima velocidad, Llama 3.2 (1B) de Meta para seguimiento estructurado de instrucciones, y Phi 3.5 Mini (3.8B) de Microsoft para razonamiento analítico avanzado."
+  },
+  {
+    instruction: "Eres Valentina de AX GLYNNE. Brinda orientación comercial clara.",
+    input: "¿Tienen planes adaptados para pequeñas y medianas empresas?",
+    output: "Totalmente. Ofrecemos esquemas escalables desde soluciones ágiles para PyMEs que buscan automatizar atención al cliente y ventas, hasta clústeres dedicados con infraestructura de alta concurrencia para corporativos."
+  },
+  {
+    instruction: "Eres Valentina, soporte técnico y de integración de AX GLYNNE.",
+    input: "¿El modelo entrenado se puede integrar con nuestro CRM o WhatsApp?",
+    output: "Sí. A través de nuestras APIs REST y Webhooks puedes conectar el agente directamente con WhatsApp Business, Salesforce, HubSpot, Shopify o bases de datos internas para consultar inventarios y registrar pedidos en tiempo real."
+  },
+  {
+    instruction: "Eres Valentina, experta en despliegue de modelos de AX GLYNNE.",
+    input: "¿En qué formato puedo descargar mi modelo tras el fine-tuning?",
+    output: "Al finalizar el proceso puedes exportar tu modelo en formato cuantizado .GGUF (Q4_K_M o F16) listo para ejecutarse localmente en Ollama o LM Studio, o mantenerlo hospedado en nuestros servidores para inferencia directa vía API."
+  },
+  {
+    instruction: "Eres Valentina de AX GLYNNE. Responde a objeciones o dudas sobre alucinaciones de IA.",
+    input: "¿Qué pasa si el cliente hace una pregunta que no está en la base de datos?",
+    output: "Configuramos el modelo con directivas de contención estricta: si la información solicitada no forma parte de su base de conocimiento autorizada, el asistente lo reconoce con amabilidad y deriva la conversación a un agente humano sin inventar respuestas."
+  },
+  {
+    instruction: "Eres Valentina de AX GLYNNE. Responde con entusiasmo y enfoque consultivo.",
+    input: "Hola, buenos días, ¿cómo puedo empezar a implementar un asistente en mi empresa?",
+    output: "¡Hola! Muy buenos días. El primer paso es preparar la información básica de tu negocio (preguntas frecuentes, productos, políticas) o utilizar nuestro generador sintético. Luego seleccionamos el modelo base ideal y en cuestión de minutos realizamos el reentrenamiento para pruebas."
+  },
+  {
+    instruction: "Eres Valentina, consultora de tiempos y eficiencia en AX GLYNNE.",
+    input: "¿Cuánto tiempo toma reentrenar un modelo personalizado?",
+    output: "Gracias a la aceleración con aceleradores GPU NVIDIA H100 y optimizaciones Unsloth QLoRA, el ciclo de entrenamiento completo toma habitualmente entre 3 y 8 minutos dependiendo del volumen de tu dataset."
+  },
+  {
+    instruction: "Eres Valentina de AX GLYNNE. Responde consultas técnicas sobre latencia.",
+    input: "¿Cuál es la velocidad de respuesta en producción?",
+    output: "Nuestra infraestructura optimizada ofrece una latencia de primer token (TTFT) inferior a 250 milisegundos en chat y streaming continuo, asegurando una experiencia interactiva sin pausas molestas."
+  },
+  {
+    instruction: "Eres Valentina de AX GLYNNE. Explica el soporte post-lanzamiento.",
+    input: "¿Qué soporte o mantenimiento ofrecen tras el despliegue?",
+    output: "Ofrecemos soporte técnico continuo, analítica de conversaciones, monitoreo de métricas de precisión y reentrenamientos periódicos conforme tu negocio actualiza catálogos, promociones o servicios."
+  },
+  {
+    instruction: "Eres Valentina de AX GLYNNE. Asesora sobre disponibilidad multilingüe.",
+    input: "¿El agente puede responder en inglés y otros idiomas además de español?",
+    output: "Sí. Las arquitecturas base como Qwen 2.5 y Llama 3.2 cuentan con capacidades multilingües nativas de alto rendimiento, lo que permite atender clientes en español, inglés, portugués y otros idiomas con fluidez y coherencia tonal."
+  },
+  {
+    instruction: "Eres Valentina de AX GLYNNE. Facilita la agenda de demostraciones.",
+    input: "¿Puedo probar una demostración en vivo antes de contratar?",
+    output: "¡Por supuesto! Puedes interactuar ahora mismo en el sandbox de pruebas de esta plataforma o coordinar con nuestro equipo una sesión técnica en vivo con casos de uso de tu propia industria."
+  },
+  {
+    instruction: "Eres Valentina de AX GLYNNE. Cierre cálido y profesional.",
+    input: "Muchas gracias por toda la información, ha sido muy claro.",
+    output: "¡Con muchísimo gusto! Estamos aquí para ayudarte a transformar la comunicación de tu empresa con inteligencia artificial de última generación. Cuando desees comenzar, cuentas con todo nuestro respaldo."
   }
 ];
 
@@ -283,13 +354,14 @@ export default function CreateYourGlynneModelPage() {
   const [dataset, setDataset] = useState(DEFAULT_DATASET);
 
   // GROQ Agent Generator state
-  const [personalityText, setPersonalityText] = useState('');
+  const [personalityText, setPersonalityText] = useState(PRESET_PERSONALITIES.valentina);
   const [personalityFile, setPersonalityFile] = useState(null);
-  const [businessText, setBusinessText] = useState('');
+  const [businessText, setBusinessText] = useState(PRESET_BUSINESS_INFO.ax_glynne);
   const [businessFile, setBusinessFile] = useState(null);
   const [isGeneratingDataset, setIsGeneratingDataset] = useState(false);
   const [numDatasetExamples, setNumDatasetExamples] = useState(25);
   const [datasetViewMode, setDatasetViewMode] = useState('generator'); // 'generator' | 'editor'
+  const [activeKnowledgeTab, setActiveKnowledgeTab] = useState('persona'); // 'persona' | 'business' | 'dataset'
 
   const [trainingState, setTrainingState] = useState({
     status: 'idle',
@@ -1127,376 +1199,727 @@ export default function CreateYourGlynneModelPage() {
         {/* Main Layout - 3 Columns (GLYNNE Panel Style) */}
         <div className="md-main" style={{ display: 'flex', flexDirection: isSmallScreen ? 'column' : 'row', gap: '16px', height: isSmallScreen ? 'auto' : 'calc(100vh - 75px)', overflow: isSmallScreen ? 'visible' : 'hidden', paddingBottom: isSmallScreen ? '50px' : '0' }}>
 
-          {/* COLUMN 1 (LEFT): MODEL ARCHITECTURE & DATASET CONFIGURATION */}
-          <div className="md-left" style={{ width: isSmallScreen ? '100%' : '380px', height: isSmallScreen ? 'auto' : '100%', display: 'flex', flexDirection: 'column', gap: '16px', overflowY: isSmallScreen ? 'visible' : 'auto', paddingRight: isSmallScreen ? '0' : '6px' }}>
-
-            {/* Section 1: Base Model Architecture (Carousel) */}
+          {/* COLUMN 1 (LEFT): MODEL ARCHITECTURE & KNOWLEDGE STUDIO */}
+          <div
+            className="md-left"
+            style={{
+              width: isSmallScreen ? '100%' : '440px',
+              minWidth: isSmallScreen ? '100%' : '420px',
+              height: isSmallScreen ? 'auto' : '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '14px',
+              padding: '16px',
+              overflowY: 'auto',
+              borderRadius: '12px',
+              backgroundColor: theme === 'light' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(9, 9, 11, 0.96)',
+              border: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.12)' : '1px solid rgba(255, 255, 255, 0.12)',
+              boxShadow: theme === 'light' ? '0 10px 30px rgba(15, 23, 42, 0.05)' : '0 20px 50px rgba(0, 0, 0, 0.6)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)'
+            }}
+          >
+            {/* ── STEP 1: BASE ARCHITECTURE SELECTION ── */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div className="md-title" style={{ margin: 0, fontSize: '11px', fontWeight: 700, letterSpacing: '0.04em' }}>
-                  1. BASE ARCHITECTURE (OPEN MODELS)
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{
+                    width: '6px',
+                    height: '6px',
+                    borderRadius: '50%',
+                    backgroundColor: '#10b981',
+                    boxShadow: '0 0 8px #10b981'
+                  }} />
+                  <span style={{
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    letterSpacing: '0.06em',
+                    textTransform: 'uppercase',
+                    fontFamily: "'SF Mono', Monaco, monospace",
+                    color: theme === 'light' ? '#0f172a' : '#ffffff'
+                  }}>
+                    01 // ARQUITECTURA BASE
+                  </span>
                 </div>
-                <span style={{ fontSize: '10px', fontWeight: 700, opacity: 0.6, fontFamily: 'monospace' }}>
-                  {modelIndex + 1} / {PRESET_MODELS.length}
+                <span style={{
+                  fontSize: '9px',
+                  fontWeight: 700,
+                  padding: '2px 8px',
+                  borderRadius: '4px',
+                  fontFamily: "'SF Mono', Monaco, monospace",
+                  letterSpacing: '0.04em',
+                  backgroundColor: theme === 'light' ? 'rgba(15, 23, 42, 0.08)' : 'rgba(255, 255, 255, 0.1)',
+                  color: theme === 'light' ? '#0f172a' : '#ffffff'
+                }}>
+                  QLoRA 4-BIT NF4
                 </span>
               </div>
-              <p style={{ margin: '2px 0 6px 0', fontSize: '10.5px', opacity: 0.75, lineHeight: 1.45, fontWeight: 400 }}>
-                Explore and select the open-source foundational model that will serve as the base architecture for QLoRA fine-tuning.
-              </p>
 
+              {/* Horizontal Model Selector Pills */}
               <div style={{
-                position: 'relative',
-                padding: '14px 16px',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(4, 1fr)',
+                gap: '4px',
+                padding: '3px',
                 borderRadius: '8px',
-                backgroundColor: theme === 'light' ? '#ffffff' : 'rgba(255, 255, 255, 0.04)',
-                border: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.15)' : '1px solid rgba(255, 255, 255, 0.12)',
-                boxShadow: theme === 'light' ? '0 4px 16px rgba(15, 23, 42, 0.06)' : '0 6px 20px rgba(0, 0, 0, 0.3)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '10px',
-                transition: 'all 0.3s ease'
+                backgroundColor: theme === 'light' ? 'rgba(15, 23, 42, 0.05)' : 'rgba(0, 0, 0, 0.4)',
+                border: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.08)' : '1px solid rgba(255, 255, 255, 0.06)'
               }}>
-                {/* Carousel Controls (Previous / Next) */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2px' }}>
-                  <button
-                    type="button"
-                    onClick={handlePrevModel}
-                    title="Previous model"
-                    style={{
-                      background: 'transparent',
-                      border: theme === 'light' ? '1px solid rgba(15,23,42,0.2)' : '1px solid rgba(255,255,255,0.2)',
-                      borderRadius: '50%',
-                      width: '26px',
-                      height: '26px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: theme === 'light' ? '#0f172a' : '#ffffff',
-                      cursor: 'pointer',
-                      fontSize: '14px',
-                      fontWeight: 'bold',
-                      transition: 'all 0.2s ease',
-                      lineHeight: 1
-                    }}
-                  >
-                    ‹
-                  </button>
-
-                  <span
-                    onClick={() => setSelectedModel(PRESET_MODELS[modelIndex].id)}
-                    style={{
-                      fontSize: '9px',
-                      fontWeight: 700,
-                      padding: '3px 10px',
-                      borderRadius: '12px',
-                      letterSpacing: '0.04em',
-                      textTransform: 'uppercase',
-                      cursor: 'pointer',
-                      backgroundColor: selectedModel === PRESET_MODELS[modelIndex].id
-                        ? (theme === 'light' ? '#0f172a' : '#ffffff')
-                        : (theme === 'light' ? 'rgba(15,23,42,0.08)' : 'rgba(255,255,255,0.1)'),
-                      color: selectedModel === PRESET_MODELS[modelIndex].id
-                        ? (theme === 'light' ? '#ffffff' : '#000000')
-                        : (theme === 'light' ? '#0f172a' : '#ffffff')
-                    }}
-                  >
-                    {selectedModel === PRESET_MODELS[modelIndex].id ? '✓ MODEL SELECTED' : 'USE THIS MODEL'}
-                  </span>
-
-                  <button
-                    type="button"
-                    onClick={handleNextModel}
-                    title="Next model"
-                    style={{
-                      background: 'transparent',
-                      border: theme === 'light' ? '1px solid rgba(15,23,42,0.2)' : '1px solid rgba(255,255,255,0.2)',
-                      borderRadius: '50%',
-                      width: '26px',
-                      height: '26px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: theme === 'light' ? '#0f172a' : '#ffffff',
-                      cursor: 'pointer',
-                      fontSize: '14px',
-                      fontWeight: 'bold',
-                      transition: 'all 0.2s ease',
-                      lineHeight: 1
-                    }}
-                  >
-                    ›
-                  </button>
-                </div>
-
-                {/* Visible Model Card */}
-                <div
-                  onClick={() => setSelectedModel(PRESET_MODELS[modelIndex].id)}
-                  style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: '6px' }}
-                >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontWeight: 700, fontSize: '11.5px', color: theme === 'light' ? '#0f172a' : '#ffffff' }}>
-                      {PRESET_MODELS[modelIndex].name}
-                    </span>
-                    <span style={{
-                      fontSize: '8.5px',
-                      fontWeight: 600,
-                      padding: '2px 6px',
-                      borderRadius: '3px',
-                      backgroundColor: theme === 'light' ? 'rgba(15,23,42,0.08)' : 'rgba(255,255,255,0.12)',
-                      color: theme === 'light' ? '#0f172a' : '#ffffff'
-                    }}>
-                      {PRESET_MODELS[modelIndex].speed}
-                    </span>
-                  </div>
-
-                  <div style={{ fontSize: '9.5px', opacity: 0.8, lineHeight: 1.4, minHeight: '26px', margin: '2px 0' }}>
-                    {PRESET_MODELS[modelIndex].desc}
-                  </div>
-
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '8.5px', opacity: 0.6, fontFamily: 'monospace', paddingTop: '6px', borderTop: theme === 'light' ? '1px solid rgba(15,23,42,0.08)' : '1px solid rgba(255,255,255,0.08)' }}>
-                    <span>{PRESET_MODELS[modelIndex].provider}</span>
-                    <span>Size: {PRESET_MODELS[modelIndex].size}</span>
-                  </div>
-                </div>
-
-                {/* Carousel Indicator Dots */}
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '6px', marginTop: '4px' }}>
-                  {PRESET_MODELS.map((m, idx) => (
-                    <span
+                {PRESET_MODELS.map((m, idx) => {
+                  const isSelected = selectedModel === m.id;
+                  const shortName = idx === 0 ? 'Qwen 0.5B' : idx === 1 ? 'Qwen 1.5B' : idx === 2 ? 'Llama 1B' : 'Phi 3.5';
+                  return (
+                    <button
                       key={m.id}
+                      type="button"
                       onClick={() => {
                         setModelIndex(idx);
                         setSelectedModel(m.id);
                       }}
                       style={{
-                        width: modelIndex === idx ? '16px' : '6px',
-                        height: '6px',
-                        borderRadius: '3px',
-                        backgroundColor: modelIndex === idx
-                          ? (theme === 'light' ? '#0f172a' : '#ffffff')
-                          : (theme === 'light' ? 'rgba(15,23,42,0.25)' : 'rgba(255,255,255,0.2)'),
+                        padding: '6px 4px',
+                        borderRadius: '6px',
+                        fontSize: '9.5px',
+                        fontWeight: isSelected ? 700 : 500,
+                        border: 'none',
                         cursor: 'pointer',
-                        transition: 'all 0.3s ease'
+                        textAlign: 'center',
+                        transition: 'all 0.2s ease',
+                        fontFamily: "'SF Mono', Monaco, monospace",
+                        backgroundColor: isSelected
+                          ? (theme === 'light' ? '#0f172a' : '#ffffff')
+                          : 'transparent',
+                        color: isSelected
+                          ? (theme === 'light' ? '#ffffff' : '#000000')
+                          : (theme === 'light' ? '#64748b' : 'rgba(255, 255, 255, 0.7)'),
+                        boxShadow: isSelected ? '0 2px 8px rgba(0,0,0,0.2)' : 'none'
                       }}
-                    />
-                  ))}
+                    >
+                      {shortName}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Active Model Detailed Card */}
+              <div style={{
+                padding: '12px 14px',
+                borderRadius: '8px',
+                backgroundColor: theme === 'light' ? '#ffffff' : 'rgba(255, 255, 255, 0.03)',
+                border: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.12)' : '1px solid rgba(255, 255, 255, 0.08)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ fontSize: '12px', fontWeight: 700, color: theme === 'light' ? '#0f172a' : '#ffffff' }}>
+                      {PRESET_MODELS[modelIndex].name}
+                    </span>
+                    <span style={{
+                      fontSize: '8px',
+                      fontWeight: 700,
+                      padding: '2px 5px',
+                      borderRadius: '3px',
+                      fontFamily: "'SF Mono', Monaco, monospace",
+                      backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                      color: '#10b981',
+                      border: '1px solid rgba(16, 185, 129, 0.3)'
+                    }}>
+                      ACTIVO
+                    </span>
+                  </div>
+                  <span style={{
+                    fontSize: '9px',
+                    fontWeight: 600,
+                    padding: '2px 6px',
+                    borderRadius: '4px',
+                    fontFamily: "'SF Mono', Monaco, monospace",
+                    backgroundColor: theme === 'light' ? 'rgba(15, 23, 42, 0.06)' : 'rgba(255, 255, 255, 0.08)',
+                    color: theme === 'light' ? '#0f172a' : '#cbd5e1'
+                  }}>
+                    {PRESET_MODELS[modelIndex].speed}
+                  </span>
+                </div>
+
+                <div style={{ fontSize: '10px', opacity: 0.8, lineHeight: 1.45 }}>
+                  {PRESET_MODELS[modelIndex].desc}
+                </div>
+
+                <div style={{
+                  display: 'flex',
+                  gap: '6px',
+                  paddingTop: '6px',
+                  borderTop: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.06)' : '1px solid rgba(255, 255, 255, 0.06)',
+                  fontSize: '9px',
+                  fontFamily: "'SF Mono', Monaco, monospace"
+                }}>
+                  <span style={{ opacity: 0.6 }}>{PRESET_MODELS[modelIndex].provider}</span>
+                  <span style={{ opacity: 0.3 }}>•</span>
+                  <span style={{ opacity: 0.6 }}>VRAM: {PRESET_MODELS[modelIndex].size}</span>
+                  <span style={{ opacity: 0.3 }}>•</span>
+                  <span style={{ opacity: 0.6 }}>LoRA r=16</span>
                 </div>
               </div>
             </div>
 
-            {/* Section 2: Knowledge & GROQ Agent Configuration */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1, minHeight: 0 }}>
-
-              {/* Section 2 Header */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '2px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div className="md-title" style={{ margin: 0, fontSize: '11px', fontWeight: 700, letterSpacing: '0.04em' }}>
-                    2. KNOWLEDGE & AGENT CONFIGURATION (GROQ)
-                  </div>
-                  <span style={{ fontSize: '9px', fontWeight: 700, opacity: 0.6, fontFamily: 'monospace' }}>
-                    AUTO SYNTHESIS ACTIVE
-                  </span>
-                </div>
-                <p style={{ margin: 0, fontSize: '10.5px', opacity: 0.75, lineHeight: 1.45, fontWeight: 400 }}>
-                  Enter personality details (Section A) and business knowledge (Section B). GROQ agents will automatically synthesize training instructions.
-                </p>
+            {/* ── STEP 2: KNOWLEDGE & DATASET STUDIO ── */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1, minHeight: 0 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                  fontFamily: "'SF Mono', Monaco, monospace",
+                  color: theme === 'light' ? '#0f172a' : '#ffffff'
+                }}>
+                  02 // ESTUDIO DE DATOS & GROQ
+                </span>
+                <span style={{
+                  fontSize: '9px',
+                  fontWeight: 700,
+                  fontFamily: "'SF Mono', Monaco, monospace",
+                  color: '#6366f1'
+                }}>
+                  {dataset.length} EJEMPLOS CARGADOS
+                </span>
               </div>
 
-              {/* AUTOMATIC GENERATOR WITH GROQ AGENTS */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', flex: 1, overflowY: 'auto', paddingRight: '4px' }}>
-
-                {/* Block A: Agent Personality and Role */}
-                <div className="md-mini-card" style={{ padding: '12px 14px', borderRadius: '6px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.05em', color: theme === 'light' ? '#0f172a' : '#ffffff' }}>
-                    SECTION A: AGENT PERSONALITY, NAME & ROLE
-                  </div>
-                  <textarea
-                    rows={3}
-                    placeholder="Describe agent name, tone of voice, personality, response style (e.g. Sophia, professional yet friendly tone)..."
-                    value={personalityText}
-                    onChange={(e) => setPersonalityText(e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '10px 12px',
-                      borderRadius: '6px',
-                      fontSize: '11px',
-                      lineHeight: '1.45',
-                      backgroundColor: theme === 'light' ? '#ffffff' : 'rgba(0, 0, 0, 0.4)',
-                      color: theme === 'light' ? '#0f172a' : '#ffffff',
-                      border: theme === 'light' ? '1px solid rgba(15,23,42,0.15)' : '1px solid rgba(255,255,255,0.1)',
-                      resize: 'vertical'
-                    }}
-                  />
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px' }}>
-                    <label style={{
-                      fontSize: '10px',
-                      fontWeight: 600,
-                      padding: '5px 12px',
-                      borderRadius: '4px',
-                      backgroundColor: theme === 'light' ? 'rgba(15, 23, 42, 0.08)' : 'rgba(255, 255, 255, 0.1)',
-                      color: theme === 'light' ? '#0f172a' : '#ffffff',
-                      cursor: 'pointer',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '6px'
-                    }}>
-                      Upload file (.pdf, .md, .txt)
-                      <input
-                        type="file"
-                        accept=".pdf,.md,.txt,.json"
-                        onChange={(e) => setPersonalityFile(e.target.files[0] || null)}
-                        style={{ display: 'none' }}
-                      />
-                    </label>
-                    {personalityFile && (
-                      <span style={{ fontSize: '10px', color: theme === 'light' ? '#0f172a' : '#ffffff', fontWeight: 600, fontFamily: 'monospace' }}>
-                        [File: {personalityFile.name}]
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Block B: Business Information and Knowledge Base */}
-                <div className="md-mini-card" style={{ padding: '12px 14px', borderRadius: '6px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.05em', color: theme === 'light' ? '#0f172a' : '#ffffff' }}>
-                    SECTION B: BUSINESS KNOWLEDGE & INFORMATION
-                  </div>
-                  <textarea
-                    rows={4}
-                    placeholder="Write or paste all company details here: products, pricing, hours, warranty, services, support, policies..."
-                    value={businessText}
-                    onChange={(e) => setBusinessText(e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '10px 12px',
-                      borderRadius: '6px',
-                      fontSize: '11px',
-                      lineHeight: '1.45',
-                      backgroundColor: theme === 'light' ? '#ffffff' : 'rgba(0, 0, 0, 0.4)',
-                      color: theme === 'light' ? '#0f172a' : '#ffffff',
-                      border: theme === 'light' ? '1px solid rgba(15,23,42,0.15)' : '1px solid rgba(255,255,255,0.1)',
-                      resize: 'vertical'
-                    }}
-                  />
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px' }}>
-                    <label style={{
-                      fontSize: '10px',
-                      fontWeight: 600,
-                      padding: '5px 12px',
-                      borderRadius: '4px',
-                      backgroundColor: theme === 'light' ? 'rgba(15, 23, 42, 0.08)' : 'rgba(255, 255, 255, 0.1)',
-                      color: theme === 'light' ? '#0f172a' : '#ffffff',
-                      cursor: 'pointer',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '6px'
-                    }}>
-                      Upload file (.pdf, .md, .txt)
-                      <input
-                        type="file"
-                        accept=".pdf,.md,.txt,.json"
-                        onChange={(e) => setBusinessFile(e.target.files[0] || null)}
-                        style={{ display: 'none' }}
-                      />
-                    </label>
-                    {businessFile && (
-                      <span style={{ fontSize: '10px', color: theme === 'light' ? '#0f172a' : '#ffffff', fontWeight: 600, fontFamily: 'monospace' }}>
-                        [File: {businessFile.name}]
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Example count selector */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '4px 2px', margin: '2px 0' }}>
-                  <span style={{ fontSize: '10px', opacity: 0.8, fontWeight: 600 }}>Pairs to generate:</span>
-                  <select
-                    value={numDatasetExamples}
-                    onChange={(e) => setNumDatasetExamples(Number(e.target.value))}
-                    style={{
-                      padding: '4px 8px',
-                      borderRadius: '4px',
-                      fontSize: '10px',
-                      backgroundColor: theme === 'light' ? '#ffffff' : 'rgba(0, 0, 0, 0.4)',
-                      color: theme === 'light' ? '#0f172a' : '#ffffff',
-                      border: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.2)' : '1px solid rgba(255, 255, 255, 0.2)'
-                    }}
-                  >
-                    <option value={15}>15 QA Pairs (Fast)</option>
-                    <option value={25}>25 QA Pairs (Recommended)</option>
-                    <option value={40}>40 QA Pairs (Extensive)</option>
-                  </select>
-                </div>
-
-                {/* GROQ Agent Launch Button */}
+              {/* Segmented Workspace Tabs */}
+              <div style={{
+                display: 'flex',
+                gap: '4px',
+                padding: '3px',
+                borderRadius: '8px',
+                backgroundColor: theme === 'light' ? 'rgba(15, 23, 42, 0.05)' : 'rgba(0, 0, 0, 0.4)',
+                border: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.08)' : '1px solid rgba(255, 255, 255, 0.06)'
+              }}>
                 <button
+                  type="button"
+                  onClick={() => setActiveKnowledgeTab('persona')}
+                  style={{
+                    flex: 1,
+                    padding: '6px 8px',
+                    borderRadius: '6px',
+                    fontSize: '10px',
+                    fontWeight: activeKnowledgeTab === 'persona' ? 700 : 500,
+                    border: 'none',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    backgroundColor: activeKnowledgeTab === 'persona'
+                      ? (theme === 'light' ? '#0f172a' : '#ffffff')
+                      : 'transparent',
+                    color: activeKnowledgeTab === 'persona'
+                      ? (theme === 'light' ? '#ffffff' : '#000000')
+                      : (theme === 'light' ? '#64748b' : 'rgba(255, 255, 255, 0.7)')
+                  }}
+                >
+                  🎭 Personalidad
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveKnowledgeTab('business')}
+                  style={{
+                    flex: 1,
+                    padding: '6px 8px',
+                    borderRadius: '6px',
+                    fontSize: '10px',
+                    fontWeight: activeKnowledgeTab === 'business' ? 700 : 500,
+                    border: 'none',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    backgroundColor: activeKnowledgeTab === 'business'
+                      ? (theme === 'light' ? '#0f172a' : '#ffffff')
+                      : 'transparent',
+                    color: activeKnowledgeTab === 'business'
+                      ? (theme === 'light' ? '#ffffff' : '#000000')
+                      : (theme === 'light' ? '#64748b' : 'rgba(255, 255, 255, 0.7)')
+                  }}
+                >
+                  🏢 Conocimiento
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveKnowledgeTab('dataset')}
+                  style={{
+                    flex: 1,
+                    padding: '6px 8px',
+                    borderRadius: '6px',
+                    fontSize: '10px',
+                    fontWeight: activeKnowledgeTab === 'dataset' ? 700 : 500,
+                    border: 'none',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    backgroundColor: activeKnowledgeTab === 'dataset'
+                      ? (theme === 'light' ? '#0f172a' : '#ffffff')
+                      : 'transparent',
+                    color: activeKnowledgeTab === 'dataset'
+                      ? (theme === 'light' ? '#ffffff' : '#000000')
+                      : (theme === 'light' ? '#64748b' : 'rgba(255, 255, 255, 0.7)')
+                  }}
+                >
+                  📋 Buffer ({dataset.length})
+                </button>
+              </div>
+
+              {/* Tab Content Container */}
+              <div style={{
+                flex: 1,
+                minHeight: '210px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px',
+                borderRadius: '8px',
+                padding: '12px',
+                backgroundColor: theme === 'light' ? '#ffffff' : 'rgba(255, 255, 255, 0.03)',
+                border: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.12)' : '1px solid rgba(255, 255, 255, 0.08)',
+                overflowY: 'auto'
+              }}>
+                {/* ── TAB 1: PERSONALIDAD ── */}
+                {activeKnowledgeTab === 'persona' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', height: '100%' }}>
+                    {/* Presets row */}
+                    <div style={{ display: 'flex', gap: '4px', alignItems: 'center', flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: '9px', opacity: 0.6, fontFamily: 'monospace', textTransform: 'uppercase' }}>Plantilla:</span>
+                      <button
+                        type="button"
+                        onClick={() => setPersonalityText(PRESET_PERSONALITIES.valentina)}
+                        style={{
+                          fontSize: '9px',
+                          padding: '2px 7px',
+                          borderRadius: '4px',
+                          border: theme === 'light' ? '1px solid rgba(15,23,42,0.15)' : '1px solid rgba(255,255,255,0.15)',
+                          backgroundColor: 'transparent',
+                          color: theme === 'light' ? '#0f172a' : '#ffffff',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        Valentina (Senior)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setPersonalityText(PRESET_PERSONALITIES.support)}
+                        style={{
+                          fontSize: '9px',
+                          padding: '2px 7px',
+                          borderRadius: '4px',
+                          border: theme === 'light' ? '1px solid rgba(15,23,42,0.15)' : '1px solid rgba(255,255,255,0.15)',
+                          backgroundColor: 'transparent',
+                          color: theme === 'light' ? '#0f172a' : '#ffffff',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        Soporte Técnico
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setPersonalityText(PRESET_PERSONALITIES.sales)}
+                        style={{
+                          fontSize: '9px',
+                          padding: '2px 7px',
+                          borderRadius: '4px',
+                          border: theme === 'light' ? '1px solid rgba(15,23,42,0.15)' : '1px solid rgba(255,255,255,0.15)',
+                          backgroundColor: 'transparent',
+                          color: theme === 'light' ? '#0f172a' : '#ffffff',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        Ventas & ROI
+                      </button>
+                    </div>
+
+                    <textarea
+                      rows={4}
+                      value={personalityText}
+                      onChange={(e) => setPersonalityText(e.target.value)}
+                      placeholder="Define el nombre, rol, tono y estilo de respuesta del agente..."
+                      style={{
+                        width: '100%',
+                        flex: 1,
+                        minHeight: '90px',
+                        padding: '10px',
+                        borderRadius: '6px',
+                        fontSize: '11px',
+                        lineHeight: 1.5,
+                        backgroundColor: theme === 'light' ? 'rgba(15, 23, 42, 0.03)' : 'rgba(0, 0, 0, 0.4)',
+                        color: theme === 'light' ? '#0f172a' : '#ffffff',
+                        border: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.15)' : '1px solid rgba(255, 255, 255, 0.1)',
+                        resize: 'none',
+                        outline: 'none',
+                        fontFamily: 'inherit'
+                      }}
+                    />
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <label style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        fontSize: '10px',
+                        padding: '4px 10px',
+                        borderRadius: '5px',
+                        border: theme === 'light' ? '1px solid rgba(15,23,42,0.15)' : '1px solid rgba(255,255,255,0.15)',
+                        backgroundColor: 'transparent',
+                        color: theme === 'light' ? '#0f172a' : '#ffffff',
+                        cursor: 'pointer'
+                      }}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" /></svg>
+                        {personalityFile ? personalityFile.name : 'Adjuntar archivo (.pdf, .txt, .md)'}
+                        <input
+                          type="file"
+                          accept=".pdf,.md,.txt,.json"
+                          onChange={(e) => setPersonalityFile(e.target.files[0] || null)}
+                          style={{ display: 'none' }}
+                        />
+                      </label>
+                      {personalityFile && (
+                        <button
+                          type="button"
+                          onClick={() => setPersonalityFile(null)}
+                          style={{ fontSize: '9px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer' }}
+                        >
+                          Quitar
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* ── TAB 2: NEGOCIO ── */}
+                {activeKnowledgeTab === 'business' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', height: '100%' }}>
+                    {/* Presets row */}
+                    <div style={{ display: 'flex', gap: '4px', alignItems: 'center', flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: '9px', opacity: 0.6, fontFamily: 'monospace', textTransform: 'uppercase' }}>Plantilla:</span>
+                      <button
+                        type="button"
+                        onClick={() => setBusinessText(PRESET_BUSINESS_INFO.ax_glynne)}
+                        style={{
+                          fontSize: '9px',
+                          padding: '2px 7px',
+                          borderRadius: '4px',
+                          border: theme === 'light' ? '1px solid rgba(15,23,42,0.15)' : '1px solid rgba(255,255,255,0.15)',
+                          backgroundColor: 'transparent',
+                          color: theme === 'light' ? '#0f172a' : '#ffffff',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        Info AX GLYNNE
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setBusinessText(PRESET_BUSINESS_INFO.ecommerce)}
+                        style={{
+                          fontSize: '9px',
+                          padding: '2px 7px',
+                          borderRadius: '4px',
+                          border: theme === 'light' ? '1px solid rgba(15,23,42,0.15)' : '1px solid rgba(255,255,255,0.15)',
+                          backgroundColor: 'transparent',
+                          color: theme === 'light' ? '#0f172a' : '#ffffff',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        E-Commerce / Retail
+                      </button>
+                    </div>
+
+                    <textarea
+                      rows={4}
+                      value={businessText}
+                      onChange={(e) => setBusinessText(e.target.value)}
+                      placeholder="Escribe o pega aquí la información de tu negocio: productos, precios, políticas, garantías, soporte..."
+                      style={{
+                        width: '100%',
+                        flex: 1,
+                        minHeight: '90px',
+                        padding: '10px',
+                        borderRadius: '6px',
+                        fontSize: '11px',
+                        lineHeight: 1.5,
+                        backgroundColor: theme === 'light' ? 'rgba(15, 23, 42, 0.03)' : 'rgba(0, 0, 0, 0.4)',
+                        color: theme === 'light' ? '#0f172a' : '#ffffff',
+                        border: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.15)' : '1px solid rgba(255, 255, 255, 0.1)',
+                        resize: 'none',
+                        outline: 'none',
+                        fontFamily: 'inherit'
+                      }}
+                    />
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <label style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        fontSize: '10px',
+                        padding: '4px 10px',
+                        borderRadius: '5px',
+                        border: theme === 'light' ? '1px solid rgba(15,23,42,0.15)' : '1px solid rgba(255,255,255,0.15)',
+                        backgroundColor: 'transparent',
+                        color: theme === 'light' ? '#0f172a' : '#ffffff',
+                        cursor: 'pointer'
+                      }}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" /></svg>
+                        {businessFile ? businessFile.name : 'Adjuntar archivo (.pdf, .txt, .md)'}
+                        <input
+                          type="file"
+                          accept=".pdf,.md,.txt,.json"
+                          onChange={(e) => setBusinessFile(e.target.files[0] || null)}
+                          style={{ display: 'none' }}
+                        />
+                      </label>
+                      {businessFile && (
+                        <button
+                          type="button"
+                          onClick={() => setBusinessFile(null)}
+                          style={{ fontSize: '9px', background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer' }}
+                        >
+                          Quitar
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* ── TAB 3: BUFFER DE DATASET ── */}
+                {activeKnowledgeTab === 'dataset' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', height: '100%' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '9.5px', fontWeight: 700, fontFamily: 'monospace', opacity: 0.7 }}>
+                        {dataset.length} PARES Q&A EN MEMORIA
+                      </span>
+                      <div style={{ display: 'flex', gap: '4px' }}>
+                        <button
+                          type="button"
+                          onClick={handleAddRow}
+                          style={{
+                            fontSize: '9px',
+                            padding: '2px 6px',
+                            borderRadius: '4px',
+                            border: theme === 'light' ? '1px solid rgba(15,23,42,0.15)' : '1px solid rgba(255,255,255,0.15)',
+                            backgroundColor: 'transparent',
+                            color: theme === 'light' ? '#0f172a' : '#ffffff',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          + Agregar
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setShowJsonModal(true)}
+                          style={{
+                            fontSize: '9px',
+                            padding: '2px 6px',
+                            borderRadius: '4px',
+                            border: theme === 'light' ? '1px solid rgba(15,23,42,0.15)' : '1px solid rgba(255,255,255,0.15)',
+                            backgroundColor: 'transparent',
+                            color: theme === 'light' ? '#0f172a' : '#ffffff',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          JSON
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setShowDatasetPreviewModal(true)}
+                          style={{
+                            fontSize: '9px',
+                            padding: '2px 6px',
+                            borderRadius: '4px',
+                            backgroundColor: theme === 'light' ? '#0f172a' : '#ffffff',
+                            color: theme === 'light' ? '#ffffff' : '#000000',
+                            border: 'none',
+                            cursor: 'pointer',
+                            fontWeight: 700
+                          }}
+                        >
+                          Ver Todo
+                        </button>
+                      </div>
+                    </div>
+
+                    <div style={{
+                      flex: 1,
+                      maxHeight: '130px',
+                      overflowY: 'auto',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '6px',
+                      paddingRight: '2px'
+                    }}>
+                      {dataset.map((item, idx) => (
+                        <div
+                          key={`qa-mini-${idx}`}
+                          style={{
+                            padding: '6px 8px',
+                            borderRadius: '5px',
+                            backgroundColor: theme === 'light' ? 'rgba(15, 23, 42, 0.03)' : 'rgba(0, 0, 0, 0.3)',
+                            border: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.08)' : '1px solid rgba(255, 255, 255, 0.06)',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'flex-start',
+                            gap: '6px'
+                          }}
+                        >
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', overflow: 'hidden' }}>
+                            <span style={{ fontSize: '10px', fontWeight: 600, color: theme === 'light' ? '#0f172a' : '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                              #{idx + 1}: "{item.input}"
+                            </span>
+                            <span style={{ fontSize: '9px', opacity: 0.7, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                              {item.output}
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveRow(idx)}
+                            style={{
+                              background: 'none',
+                              border: 'none',
+                              color: '#ef4444',
+                              cursor: 'pointer',
+                              padding: '2px',
+                              opacity: 0.7
+                            }}
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* GROQ Generator Controls Bar */}
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px',
+                padding: '10px 12px',
+                borderRadius: '8px',
+                backgroundColor: theme === 'light' ? '#ffffff' : 'rgba(255, 255, 255, 0.03)',
+                border: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.12)' : '1px solid rgba(255, 255, 255, 0.08)'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '10px', fontWeight: 600, opacity: 0.8 }}>Pares a generar con GROQ:</span>
+                  <div style={{ display: 'flex', gap: '4px' }}>
+                    {[15, 25, 40].map((num) => (
+                      <button
+                        key={num}
+                        type="button"
+                        onClick={() => setNumDatasetExamples(num)}
+                        style={{
+                          padding: '3px 8px',
+                          borderRadius: '4px',
+                          fontSize: '9px',
+                          fontFamily: "'SF Mono', Monaco, monospace",
+                          fontWeight: numDatasetExamples === num ? 700 : 500,
+                          border: 'none',
+                          cursor: 'pointer',
+                          backgroundColor: numDatasetExamples === num
+                            ? (theme === 'light' ? '#0f172a' : '#ffffff')
+                            : (theme === 'light' ? 'rgba(15,23,42,0.06)' : 'rgba(255,255,255,0.08)'),
+                          color: numDatasetExamples === num
+                            ? (theme === 'light' ? '#ffffff' : '#000000')
+                            : (theme === 'light' ? '#0f172a' : '#ffffff')
+                        }}
+                      >
+                        {num}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <button
+                  type="button"
                   onClick={handleGenerateDatasetWithGroq}
                   disabled={isGeneratingDataset}
-                  className="md-tool-btn active"
                   style={{
-                    justifyContent: 'center',
-                    padding: '12px',
+                    width: '100%',
+                    padding: '10px',
                     borderRadius: '6px',
-                    backgroundColor: isGeneratingDataset ? (theme === 'light' ? '#64748b' : '#334155') : (theme === 'light' ? '#0f172a' : '#ffffff'),
-                    color: theme === 'light' ? '#ffffff' : '#000000',
+                    border: 'none',
                     fontWeight: 700,
-                    fontSize: '11px',
-                    letterSpacing: '0.05em',
+                    fontSize: '10.5px',
+                    letterSpacing: '0.04em',
                     textTransform: 'uppercase',
                     cursor: isGeneratingDataset ? 'not-allowed' : 'pointer',
-                    marginTop: '4px'
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    transition: 'all 0.2s ease',
+                    backgroundColor: isGeneratingDataset
+                      ? (theme === 'light' ? '#94a3b8' : '#334155')
+                      : (theme === 'light' ? 'rgba(99, 102, 241, 0.12)' : 'rgba(99, 102, 241, 0.2)'),
+                    color: theme === 'light' ? '#4f46e5' : '#818cf8',
+                    border: theme === 'light' ? '1px solid rgba(99, 102, 241, 0.3)' : '1px solid rgba(99, 102, 241, 0.4)'
                   }}
                 >
                   {isGeneratingDataset ? (
-                    <span key="groq-btn-loading" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                    <>
                       <span style={{ display: 'inline-block', width: '10px', height: '10px', border: '2px solid currentColor', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
-                      GROQ AGENTS ANALYZING & SYNTHESIZING DATASET...
-                    </span>
+                      Sintetizando dataset con agentes Groq...
+                    </>
                   ) : (
-                    <span key="groq-btn-idle">GENERATE SMART DATASET WITH GROQ</span>
+                    <>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>
+                      Generar Dataset Sintético con GROQ
+                    </>
                   )}
                 </button>
               </div>
             </div>
 
-            {/* Action Buttons (Clear + Launch) */}
-            <div style={{ display: 'flex', gap: '8px', marginTop: 'auto' }}>
+            {/* ── ACTION FOOTER: RESET & START FINE-TUNING ── */}
+            <div style={{
+              display: 'flex',
+              gap: '8px',
+              paddingTop: '8px',
+              borderTop: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.08)' : '1px solid rgba(255, 255, 255, 0.08)',
+              marginTop: 'auto'
+            }}>
               <button
+                type="button"
                 onClick={handleResetAll}
-                title="Reset settings, chat, and logs"
+                title="Reiniciar configuraciones, chat y terminal"
                 style={{
-                  padding: '12px',
-                  borderRadius: '4px',
+                  padding: '11px 14px',
+                  borderRadius: '6px',
                   backgroundColor: 'transparent',
                   color: theme === 'light' ? '#0f172a' : '#ffffff',
-                  border: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.25)' : '1px solid rgba(255, 255, 255, 0.25)',
-                  fontSize: '11px',
+                  border: theme === 'light' ? '1px solid rgba(15, 23, 42, 0.2)' : '1px solid rgba(255, 255, 255, 0.2)',
+                  fontSize: '10.5px',
                   fontWeight: 700,
                   cursor: 'pointer',
                   textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
+                  letterSpacing: '0.04em',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '6px'
+                  gap: '6px',
+                  transition: 'all 0.2s ease'
                 }}
               >
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                CLEAR
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                Limpiar
               </button>
 
               <button
+                type="button"
                 onClick={handleStartTraining}
                 disabled={trainingState.status === 'running'}
-                className="md-start-btn"
                 style={{
                   flex: 1,
-                  padding: '12px',
-                  borderRadius: '4px',
-                  backgroundColor: trainingState.status === 'running' ? '#6B7280' : theme === 'light' ? '#0f172a' : '#ffffff',
-                  color: theme === 'light' ? '#ffffff' : '#000000',
+                  padding: '11px 16px',
+                  borderRadius: '6px',
+                  backgroundColor: trainingState.status === 'running'
+                    ? (theme === 'light' ? '#94a3b8' : '#334155')
+                    : (theme === 'light' ? '#0f172a' : '#ffffff'),
+                  color: trainingState.status === 'running'
+                    ? '#ffffff'
+                    : (theme === 'light' ? '#ffffff' : '#000000'),
                   fontSize: '11px',
-                  fontWeight: 700,
+                  fontWeight: 800,
                   letterSpacing: '0.05em',
                   textTransform: 'uppercase',
                   border: 'none',
@@ -1504,16 +1927,21 @@ export default function CreateYourGlynneModelPage() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '8px'
+                  gap: '8px',
+                  boxShadow: trainingState.status === 'running' ? 'none' : '0 4px 16px rgba(0, 0, 0, 0.25)',
+                  transition: 'all 0.2s ease'
                 }}
               >
                 {trainingState.status === 'running' ? (
-                  <span key="train-btn-running" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                  <>
                     <span style={{ display: 'inline-block', width: '12px', height: '12px', border: '2px solid #fff', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
-                    TRAINING...
-                  </span>
+                    Entrenando en Modal GPU...
+                  </>
                 ) : (
-                  <span key="train-btn-idle">START GLYNNE FINE-TUNING</span>
+                  <>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
+                    Iniciar Fine-Tuning GLYNNE
+                  </>
                 )}
               </button>
             </div>
