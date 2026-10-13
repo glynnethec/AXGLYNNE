@@ -422,7 +422,7 @@ main().catch(console.error);`
                 return (
                   <button
                     key={tab.id}
-                    onClick={() => setActiveLang(tab.id as any)}
+                    onClick={() => setActiveLang(tab.id as 'python' | 'colab' | 'curl' | 'node')}
                     style={{
                       padding: '4px 10px',
                       fontSize: '11px',

@@ -18,12 +18,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://axglynne.com'),
   title: {
-    template: '%s | AXGLYNNE Frontier AI & Data Science Labs',
-    default: 'AXGLYNNE | Frontier AI Research, Open Weights, Data Science & MCP Agents',
+    template: '%s | AXGLYNNE',
+    default: 'AXGLYNNE | Frontier AI Research & Models',
   },
-  description: 'Frontier AI research and development organization: Open-weights model fine-tuning (QLoRA 4-bit/8-bit, Unsloth), custom model indoctrination, specialized MCP autonomous agent architectures, ML/DL modeling, advanced RAG pipelines, and data science.',
+  description: 'Frontier AI research organization: Open-weights model fine-tuning (QLoRA, Unsloth), autonomous MCP agents, RAG pipelines, and data science.',
   keywords: [
-    // Global Frontier AI & Research Intent Keywords
     'Frontier Artificial Intelligence Research',
     'Open-Weights Intelligence',
     'Open Source Model Fine-Tuning',
@@ -44,13 +43,6 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: 'https://axglynne.com',
-    languages: {
-      'en-US': 'https://axglynne.com',
-      'es-ES': 'https://axglynne.com',
-      'es-MX': 'https://axglynne.com',
-      'es-CO': 'https://axglynne.com',
-      'x-default': 'https://axglynne.com',
-    },
   },
   robots: {
     index: true,
@@ -64,18 +56,26 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'AXGLYNNE | Frontier AI Research, Open Weights & Data Science Labs',
-    description: 'Pioneering research in frontier AI, open-weights model training (QLoRA 4-bit/8-bit), specialized MCP autonomous agent architectures, ML/DL modeling, and advanced data science.',
+    title: 'AXGLYNNE | Frontier AI Research & Models',
+    description: 'Frontier AI research: Open-weights fine-tuning (QLoRA, Unsloth), autonomous MCP agents, RAG pipelines, and enterprise data science.',
     url: 'https://axglynne.com',
-    siteName: 'AXGLYNNE Frontier AI Labs',
+    siteName: 'AXGLYNNE',
     locale: 'en_US',
-    alternateLocale: ['es_US', 'es_ES', 'es_MX', 'es_CO'],
     type: 'website',
+    images: [
+      {
+        url: '/logos/GLYNNE.svg',
+        width: 1200,
+        height: 630,
+        alt: 'AXGLYNNE Frontier AI Labs',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AXGLYNNE | Frontier AI Research, Open Weights & MCP Agent Systems',
-    description: 'Frontier AI research, open-weights model training (QLoRA 4-bit/8-bit), custom model indoctrination, specialized MCP agent architectures, ML/DL modeling, data science engineering, and public developer tools.',
+    title: 'AXGLYNNE | Frontier AI Research & Models',
+    description: 'Frontier AI research: Open-weights fine-tuning (QLoRA, Unsloth), autonomous MCP agents, RAG pipelines, and enterprise data science.',
+    images: ['/logos/GLYNNE.svg'],
   },
 };
 
@@ -84,15 +84,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "ResearchOrganization",
+        "@type": "Organization",
         "name": "AXGLYNNE",
         "legalName": "GLYNNE S.A.S.",
-        "alternateName": ["AXGLYNNE Frontier AI Labs", "AXGLYNNE Open-Weights AI Research", "AXGLYNNE Data Science & Neural Engineering"],
-        "disambiguatingDescription": "AXGLYNNE (GLYNNE S.A.S.) is a pioneer technology and innovation organization specializing in frontier Artificial Intelligence research, Data Science, open-weights model fine-tuning and indoctrination (QLoRA 4-bit/8-bit, Unsloth), Model Context Protocol (MCP) specialized agent workflows, ML/DL modeling, and RAG systems founded by Alexander Quiroga.",
+        "alternateName": [
+          "AXGLYNNE Frontier AI Labs",
+          "AXGLYNNE Open-Weights AI Research",
+          "AXGLYNNE Data Science & Neural Engineering"
+        ],
+        "description": "Frontier AI research and development organization specializing in open-weights model fine-tuning (QLoRA 4-bit/8-bit, Unsloth), autonomous MCP agent systems, RAG pipelines, and data science.",
         "url": "https://axglynne.com",
-        "inLanguage": ["en", "es"],
-        "description": "Pioneer technology research organization specializing in Frontier Artificial Intelligence, Data Science, and Autonomous Systems: AI process optimization research, open-weights model re-training and indoctrination (QLoRA 4-bit/8-bit, PEFT, Unsloth), Model Context Protocol (MCP) specialized autonomous agent architectures, advanced RAG pipeline engineering, data science optimization, AI model curation, and public developer tools.",
-        "areaServed": ["US", "LATAM", "ES", "Global"],
         "founder": {
           "@type": "Person",
           "name": "Alexander Quiroga",
@@ -120,43 +121,43 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         "name": "AXGLYNNE Primary Site Navigation Sitelinks",
         "itemListElement": [
           {
-            "@type": "SiteNavigationElement",
+            "@type": "ListItem",
             "position": 1,
             "name": "AXGLYNNE | Frontier AI Research & Data Science",
             "url": "https://axglynne.com"
           },
           {
-            "@type": "SiteNavigationElement",
+            "@type": "ListItem",
             "position": 2,
-            "name": "Model Re-training & Indoctrination Studio (TrainModel)",
+            "name": "Model Fine-Tuning & Indoctrination Studio",
             "url": "https://axglynne.com/TrainModel"
           },
           {
-            "@type": "SiteNavigationElement",
+            "@type": "ListItem",
             "position": 3,
             "name": "About AXGLYNNE & Technological Vision",
             "url": "https://axglynne.com/About"
           },
           {
-            "@type": "SiteNavigationElement",
+            "@type": "ListItem",
             "position": 4,
             "name": "AI Model Catalog & Directory",
             "url": "https://axglynne.com/ia_vailable"
           },
           {
-            "@type": "SiteNavigationElement",
+            "@type": "ListItem",
             "position": 5,
             "name": "AI Solutions & SERVEX Case Study",
             "url": "https://axglynne.com/Servex_solution"
           },
           {
-            "@type": "SiteNavigationElement",
+            "@type": "ListItem",
             "position": 6,
             "name": "AI Process Research Methodology",
             "url": "https://axglynne.com/Methodology"
           },
           {
-            "@type": "SiteNavigationElement",
+            "@type": "ListItem",
             "position": 7,
             "name": "Contact & Technical Research Consultation",
             "url": "https://axglynne.com/contact"

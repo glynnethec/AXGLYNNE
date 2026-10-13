@@ -39,43 +39,63 @@
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
-
-  <!-- Rutas Secundarias -->
+  <url>
+    <loc>https://axglynne.com/Industries</loc>
+    <lastmod>2026-10-13T00:00:00.000Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
   <url>
     <loc>https://axglynne.com/Methodology</loc>
-    <lastmod>2026-10-08T00:00:00.000Z</lastmod>
+    <lastmod>2026-10-13T00:00:00.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
   </url>
   <url>
     <loc>https://axglynne.com/CEO_GLYNNE</loc>
-    <lastmod>2026-10-08T00:00:00.000Z</lastmod>
+    <lastmod>2026-10-13T00:00:00.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.65</priority>
   </url>
   <url>
     <loc>https://axglynne.com/contact</loc>
-    <lastmod>2026-10-08T00:00:00.000Z</lastmod>
+    <lastmod>2026-10-13T00:00:00.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.60</priority>
   </url>
-
-  <!-- Políticas y Documentos Legales (Baja Prioridad para evitar Sitelinks irrelevantes) -->
+  <url>
+    <loc>https://axglynne.com/Librarymodel</loc>
+    <lastmod>2026-10-13T00:00:00.000Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.55</priority>
+  </url>
+  <url>
+    <loc>https://axglynne.com/models_provider</loc>
+    <lastmod>2026-10-13T00:00:00.000Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.55</priority>
+  </url>
+  <url>
+    <loc>https://axglynne.com/servex_espesification</loc>
+    <lastmod>2026-10-13T00:00:00.000Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.50</priority>
+  </url>
+  <url>
+    <loc>https://axglynne.com/cookie-policy</loc>
+    <lastmod>2026-10-13T00:00:00.000Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.20</priority>
+  </url>
   <url>
     <loc>https://axglynne.com/privacy-policy</loc>
-    <lastmod>2026-10-08T00:00:00.000Z</lastmod>
+    <lastmod>2026-10-13T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.20</priority>
   </url>
   <url>
     <loc>https://axglynne.com/terms-of-service</loc>
-    <lastmod>2026-10-08T00:00:00.000Z</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.20</priority>
-  </url>
-  <url>
-    <loc>https://axglynne.com/cookie-policy</loc>
-    <lastmod>2026-10-08T00:00:00.000Z</lastmod>
+    <lastmod>2026-10-13T00:00:00.000Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.20</priority>
   </url>

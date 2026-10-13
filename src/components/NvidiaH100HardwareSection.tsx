@@ -229,7 +229,7 @@ export default function NvidiaH100HardwareSection({ isDark }: NvidiaH100Hardware
               fontWeight: 500,
               textAlign: 'center'
             }}>
-              // ARCHITECTURE: SXM5 NVLINK 900 GB/s DUAL MESH //
+              {"// ARCHITECTURE: SXM5 NVLINK 900 GB/s DUAL MESH //"}
             </div>
           </div>
         </div>

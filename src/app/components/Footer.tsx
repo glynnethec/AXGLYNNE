@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { FaTwitter, FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
 import "./Footer.css";
 
@@ -48,7 +49,7 @@ export default function Footer() {
         {/* Brand Section */}
         <div className="footer-brand">
           <div className="footer-logo-container">
-            <img src="/logos/GLYNNE.svg" alt="AXGLYNNE Enterprise AI Platform Footer Logo" className="footer-logo" />
+            <Image src="/logos/GLYNNE.svg" alt="AXGLYNNE Enterprise AI Platform Footer Logo" width={48} height={48} className="footer-logo" />
           </div>
           <p className="footer-desc">
             Empowering the future through next-generation infrastructure and advanced solutions. 

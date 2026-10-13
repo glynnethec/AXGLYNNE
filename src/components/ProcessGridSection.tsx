@@ -172,7 +172,7 @@ export default function ProcessGridSection() {
         {/* HEADER SECTION */}
         <div className="pixel-process-header">
           <div style={{ fontSize: '11px', letterSpacing: '0.12em', color: '#aaaaaa', textTransform: 'uppercase', marginBottom: '8px' }}>
-            /// INTEGRATION AND DEPLOYMENT STEPS
+            {"/// INTEGRATION AND DEPLOYMENT STEPS"}
           </div>
           <div className="pixel-process-badge">
             Open Source Implementation Guide

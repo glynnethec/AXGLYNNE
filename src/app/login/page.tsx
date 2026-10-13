@@ -154,7 +154,7 @@ export default function LoginPage() {
           
           <div className="card-top-section">
             <div className="panel-title-bar">
-              <span className="bar-prefix">///</span>
+              <span className="bar-prefix">{"///"}</span>
               <span className="bar-label">SYSTEM_AUTH_BOOT_SEQ</span>
             </div>
 

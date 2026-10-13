@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+import Image from 'next/image';
 import SplashScreen from '@/components/SplashScreen';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
 import HeroSection from '@/components/HeroSection';
@@ -172,8 +174,8 @@ export default function Home() {
 
             {/* Outline Button */}
             <div className="banner-button-container" style={{ display: 'flex', gap: '16px' }}>
-              <button
-                onClick={() => window.location.href = '/contact'}
+              <Link
+                href="/contact"
                 style={{
                   padding: '16px 32px',
                   borderRadius: '999px',
@@ -185,13 +187,15 @@ export default function Home() {
                   letterSpacing: '0.1em',
                   textTransform: 'uppercase',
                   cursor: 'pointer',
+                  display: 'inline-block',
+                  textDecoration: 'none',
                   transition: 'all 0.3s ease'
                 }}
                 onMouseOver={(e) => { e.currentTarget.style.opacity = '0.85'; }}
                 onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
               >
                 Discuss Your System
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -207,11 +211,14 @@ export default function Home() {
             display: 'flex',
             alignItems: 'center'
           }}>
-            <img
+            <Image
               src="/logos/GLYNNE.svg"
               alt="AXGLYNNE Enterprise AI Emblem"
+              width={500}
+              height={500}
               style={{
                 height: '100%',
+                width: 'auto',
                 objectFit: 'contain',
                 maxWidth: '100vw',
                 filter: isDark ? 'brightness(0) invert(1)' : 'brightness(0)'

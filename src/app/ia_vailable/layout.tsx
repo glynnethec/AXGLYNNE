@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://axglynne.com'),
-  title: 'AI Model Directory & Open-Source Weights Catalog',
-  description: 'Explore our comprehensive AI model directory: GPT-4o, Claude 3.5 Sonnet, Llama 3.3 70B, Qwen 3.6, Phi 3.5, Mistral, and ultra-fast accelerated inference engines ready for integration and custom fine-tuning.',
+  title: 'AI Models Directory & Benchmarks',
+  description: 'Explore frontier AI models: Llama 3.3, Qwen 2.5, DeepSeek R1, GPT-4o, and ultra-fast inference engines ready for deployment.',
   keywords: [
     'AI Model Directory',
     'Available AI Models Catalog',
@@ -22,27 +22,28 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: 'https://axglynne.com/ia_vailable',
-    languages: {
-      'en-US': 'https://axglynne.com/ia_vailable',
-      'es-ES': 'https://axglynne.com/ia_vailable',
-      'es-MX': 'https://axglynne.com/ia_vailable',
-      'es-CO': 'https://axglynne.com/ia_vailable',
-      'x-default': 'https://axglynne.com/ia_vailable',
-    },
   },
   openGraph: {
-    title: 'AI Model Directory & Open-Source Weights Catalog | AXGLYNNE',
-    description: 'Structured catalog of language, vision, voice, and accelerated inference systems. Compare speeds, context windows, and model specifications.',
+    title: 'AI Models Directory & Benchmarks | AXGLYNNE',
+    description: 'Structured catalog of language, vision, voice, and accelerated inference systems with benchmark comparisons.',
     url: 'https://axglynne.com/ia_vailable',
-    siteName: 'AXGLYNNE AI Model Directory',
+    siteName: 'AXGLYNNE',
     locale: 'en_US',
-    alternateLocale: ['es_US', 'es_ES', 'es_MX', 'es_CO'],
     type: 'website',
+    images: [
+      {
+        url: '/logos/GLYNNE.svg',
+        width: 1200,
+        height: 630,
+        alt: 'AXGLYNNE AI Model Catalog',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AI Model Directory & Open Source Library | AXGLYNNE',
-    description: 'Explore state-of-the-art AI models (Llama, Claude, GPT, Qwen, Whisper) available for high-speed inference and custom fine-tuning.',
+    title: 'AI Models Directory & Benchmarks | AXGLYNNE',
+    description: 'Explore state-of-the-art AI models available for high-speed inference and custom fine-tuning.',
+    images: ['/logos/GLYNNE.svg'],
   },
 };
 
@@ -52,9 +53,9 @@ export default function IaAvailableLayout({ children }: { children: React.ReactN
     "@type": "DataCatalog",
     "name": "AXGLYNNE AI Model Catalog",
     "url": "https://axglynne.com/ia_vailable",
-    "description": "Structured directory and catalog of Artificial Intelligence models (Elite, Production, Open-Source, and Preview) available for integration and accelerated high-speed inference.",
+    "description": "Structured directory and catalog of Artificial Intelligence models available for integration and accelerated high-speed inference.",
     "provider": {
-      "@type": "ResearchOrganization",
+      "@type": "Organization",
       "name": "AXGLYNNE",
       "legalName": "GLYNNE S.A.S.",
       "url": "https://axglynne.com"

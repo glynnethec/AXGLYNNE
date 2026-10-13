@@ -1,15 +1,14 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import AutonomousAuditSection from '@/components/AutonomousAuditSection';
 import SolutionsGsapAnimation from './SolutionsGsapAnimation';
 import FlowDiagram from './FlowDiagram';
 import { useTheme } from '@/lib/ThemeContext';
 
 export default function ServexCaseStudy() {
-  const router = useRouter();
   const { theme } = useTheme();
   const isDark = theme === 'dark';
   return (
@@ -137,9 +136,12 @@ export default function ServexCaseStudy() {
                     This cognitive ecosystem is not limited to a single task. The platform deploys this exact flow of intelligent auditing, extraction, and standardization simultaneously for each of the catalogs and systems, automating the corporate processes of every company on a massive scale without human intervention.
                   </p>
                   <div style={{ margin: '24px auto 16px auto', width: '100%', maxWidth: '1100px', boxShadow: 'none' }}>
-                    <img 
+                    <Image 
                       src="/SERVEX/modulos.png" 
                       alt="Módulos de Servex" 
+                      width={1100}
+                      height={583}
+                      sizes="(max-width: 1200px) 100vw, 1100px"
                       style={{ 
                         width: '100%', 
                         height: 'auto', 
@@ -190,6 +192,26 @@ export default function ServexCaseStudy() {
               <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: isDark ? '#a1a1aa' : '#86868b', lineHeight: 1.6, fontWeight: 300, letterSpacing: '0.01em', margin: 0 }}>
                 The platform features an automated continuous deployment cycle connected to the cloud (with Vercel) and routed through dedicated company domains (like servexcopilot.com). This configuration guarantees high availability, immediate deployments of new features without downtime, and elastic scaling capacity to absorb higher volumes of catalogs as Servex expands its supplier network.
               </p>
+              <div style={{ marginTop: '32px' }}>
+                <Link 
+                  href="/servex_espesification"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '12px 24px',
+                    borderRadius: '9999px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    textDecoration: 'none',
+                    border: isDark ? '1px solid rgba(255,255,255,0.2)' : '1px solid rgba(0,0,0,0.15)',
+                    color: isDark ? '#ffffff' : '#111111',
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  View Full Technical Specification ↗
+                </Link>
+              </div>
             </div>
 
           </div>

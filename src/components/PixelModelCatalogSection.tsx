@@ -190,7 +190,7 @@ export default function PixelModelCatalogSection() {
             <div className="pixel-sec-header">
               {sec.badgeText && (
                 <div style={{ fontSize: '11px', letterSpacing: '0.12em', color: '#aaaaaa', textTransform: 'uppercase', marginBottom: '6px' }}>
-                  /// {sec.badgeText}
+                  {`/// ${sec.badgeText}`}
                 </div>
               )}
               <div className="pixel-sec-badge">

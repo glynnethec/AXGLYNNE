@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { getCurrentUser } from '@/lib/supabaseClient';
 import { useTheme } from '@/lib/ThemeContext';
@@ -800,9 +801,11 @@ export default function CreateYourGlynneModelPage() {
               justifyContent: 'center',
               backdropFilter: 'blur(10px)'
             }}>
-              <img
+              <Image
                 src="/logos/GLYNNE.svg"
                 alt="GLYNNE Logo"
+                width={28}
+                height={28}
                 style={{
                   width: isSmallScreen ? '20px' : '28px',
                   height: isSmallScreen ? '20px' : '28px',

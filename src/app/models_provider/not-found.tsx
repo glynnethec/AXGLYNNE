@@ -105,7 +105,7 @@ export default function ModelsProviderNotFound() {
           </Link>
 
           <div style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.12em', color: isDark ? '#ffffff' : '#111111' }}>
-            /// GLYNNE MODELS PROVIDER STUDIO
+            {"/// GLYNNE MODELS PROVIDER STUDIO"}
           </div>
 
           <div style={{
@@ -175,7 +175,7 @@ export default function ModelsProviderNotFound() {
             letterSpacing: '0.08em'
           }}>
             <FiAlertTriangle size={13} />
-            <span>/// ERR_PROVIDER_ENDPOINT_NOT_FOUND // 404</span>
+            <span>{"/// ERR_PROVIDER_ENDPOINT_NOT_FOUND // 404"}</span>
           </div>
 
           {/* Giant 404 */}

@@ -118,17 +118,12 @@ export default function AXVoicePage() {
     }
   }, [language]);
 
-  // Ensure modal always appears on fresh entry into AX_voice
-  useEffect(() => {
-    setLanguage(null);
-  }, []);
-
   const handleSelectLanguage = (lang: 'es' | 'en') => {
     setLanguage(lang);
     if (typeof window !== 'undefined') {
       try {
         sessionStorage.setItem('ax_voice_language', lang);
-      } catch (e) { }
+      } catch { }
     }
   };
 
@@ -789,13 +784,16 @@ export default function AXVoicePage() {
   // 🚀 Activar sesión y micrófono inmediatamente al seleccionar el idioma (sin saludo inicial para ahorrar tokens)
   useEffect(() => {
     if (userId && !isSessionActive && language !== null) {
-      setIsSessionActive(true);
-      setOrbState('listening');
-      isProcessingRef.current = false;
-      try {
-        if (recognitionRef.current) recognitionRef.current.lang = language === 'en' ? 'en-US' : 'es-CO';
-        recognitionRef.current?.start();
-      } catch (e) { }
+      const timer = setTimeout(() => {
+        setIsSessionActive(true);
+        setOrbState('listening');
+        isProcessingRef.current = false;
+        try {
+          if (recognitionRef.current) recognitionRef.current.lang = language === 'en' ? 'en-US' : 'es-CO';
+          recognitionRef.current?.start();
+        } catch { }
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, [userId, isSessionActive, language]);
 

@@ -1,7 +1,7 @@
 import React from 'react';
+import Image from 'next/image';
 import './ChatSidebar.css';
 import BackButton from './BackButton';
-import { useTheme } from '@/lib/ThemeContext';
 
 interface ChatSidebarProps {
   isOpen: boolean;
@@ -15,7 +15,6 @@ interface ChatSidebarProps {
 }
 
 export default function ChatSidebar({ isOpen, setIsOpen, userProfile, chatList, onNewChat, onSelectChat, currentChatId, onExit }: ChatSidebarProps) {
-  const { theme } = useTheme();
 
 
   return (
@@ -73,7 +72,7 @@ export default function ChatSidebar({ isOpen, setIsOpen, userProfile, chatList, 
         <div className="ax-sidebar-footer">
           <button className="ax-sidebar-profile">
             {userProfile?.avatar_url ? (
-              <img src={userProfile.avatar_url} alt="Profile" style={{ width: 28, height: 28, borderRadius: 4 }} />
+              <Image src={userProfile.avatar_url} alt="Profile" width={28} height={28} unoptimized style={{ width: 28, height: 28, borderRadius: 4, objectFit: 'cover' }} />
             ) : (
               <div className="ax-sidebar-avatar">
                 {userProfile?.full_name ? userProfile.full_name.charAt(0).toUpperCase() : 'A'}

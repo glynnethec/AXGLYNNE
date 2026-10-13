@@ -51,7 +51,6 @@ export default function LiquidOrb({
     if (!ctx) return;
 
     let animationFrame = 0;
-    let time = 0;
     let smoothedVolume = 0;
     const mountTime = Date.now();
 
@@ -149,7 +148,7 @@ export default function LiquidOrb({
       const now = Date.now();
       
       // Permanent random activity to animate cells without sound
-      let rawVolume = 20 + Math.random() * 40;
+      const rawVolume = 20 + Math.random() * 40;
 
       // Smooth the volume to prevent high-frequency flickering
       smoothedVolume = smoothedVolume * 0.85 + rawVolume * 0.15;

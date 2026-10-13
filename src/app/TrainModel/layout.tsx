@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://axglynne.com'),
-  title: 'LLM Fine-Tuning & Model Re-Training Studio (QLoRA / LoRA)',
-  description: 'Accessible development environment to re-train, align, and indoctrinate open-source AI models (Qwen 2.5, Llama 3.2, Phi 3.5) using QLoRA 4-bit/8-bit and Unsloth acceleration. Fine-tune custom LLMs in minutes.',
+  title: 'LLM Fine-Tuning & Model Studio',
+  description: 'Fine-tune open-source AI models (Qwen 2.5, Llama 3.2, Phi 3.5) with QLoRA 4-bit/8-bit and Unsloth acceleration in minutes.',
   keywords: [
     'LLM Fine-Tuning Studio',
     'Open Source Model Re-Training',
@@ -22,27 +22,28 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: 'https://axglynne.com/TrainModel',
-    languages: {
-      'en-US': 'https://axglynne.com/TrainModel',
-      'es-ES': 'https://axglynne.com/TrainModel',
-      'es-MX': 'https://axglynne.com/TrainModel',
-      'es-CO': 'https://axglynne.com/TrainModel',
-      'x-default': 'https://axglynne.com/TrainModel',
-    },
   },
   openGraph: {
-    title: 'LLM Fine-Tuning & Model Re-Training Studio | QLoRA Platform',
-    description: 'Interactive self-serve playground to re-train open-source AI models on custom datasets with QLoRA 4-bit, quantization, and real-time inference testing.',
+    title: 'LLM Fine-Tuning & Model Studio | AXGLYNNE',
+    description: 'Interactive playground to fine-tune open-source AI models with QLoRA 4-bit, quantization, and fast inference testing.',
     url: 'https://axglynne.com/TrainModel',
-    siteName: 'AXGLYNNE AI Trainer Studio',
+    siteName: 'AXGLYNNE',
     locale: 'en_US',
-    alternateLocale: ['es_US', 'es_ES', 'es_MX', 'es_CO'],
     type: 'website',
+    images: [
+      {
+        url: '/logos/GLYNNE.svg',
+        width: 1200,
+        height: 630,
+        alt: 'AXGLYNNE Model Fine-Tuning Studio',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Self-Serve LLM Fine-Tuning Platform | Re-train Custom AI Models',
-    description: 'Re-train and align open-source AI models (Llama, Qwen, Phi) effortlessly with QLoRA 4-bit/8-bit and custom JSONL datasets.',
+    title: 'LLM Fine-Tuning & Model Studio | AXGLYNNE',
+    description: 'Fine-tune open-source AI models effortlessly with QLoRA 4-bit/8-bit and custom JSONL datasets.',
+    images: ['/logos/GLYNNE.svg'],
   },
 };
 

@@ -1,15 +1,12 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import GsapCanvasSection from '@/components/GsapCanvasSection';
 import PcCardSection from '@/components/PcCardSection';
 import { useTheme } from '@/lib/ThemeContext';
 
 export default function AboutManifesto() {
-  const router = useRouter();
   const { theme } = useTheme();
   const isDark = theme === 'dark';
 
@@ -359,10 +356,13 @@ export default function AboutManifesto() {
             {/* Subtle Logo Background */}
             <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '110%', height: '110%', backgroundImage: 'url(/logos/GLYNNE.svg)', backgroundSize: 'contain', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', opacity: 0.08, filter: isDark ? 'brightness(0) invert(1)' : 'brightness(0)', zIndex: 0 }} />
 
-            <img
+            <Image
               src="/AlexanderCEO.png"
               alt="Alexander Quiroga - Founder & CEO"
-              style={{ width: '100%', display: 'block', filter: isDark ? 'grayscale(100%) brightness(0.9) contrast(1.1)' : 'grayscale(100%) brightness(1.15) contrast(0.95)', position: 'relative', zIndex: 1 }}
+              width={400}
+              height={400}
+              sizes="(max-width: 768px) 100vw, 400px"
+              style={{ width: '100%', height: 'auto', display: 'block', filter: isDark ? 'grayscale(100%) brightness(0.9) contrast(1.1)' : 'grayscale(100%) brightness(1.15) contrast(0.95)', position: 'relative', zIndex: 1 }}
             />
 
             {/* Name Overlay acting as a masking frame */}

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from 'next/navigation';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
 import {
@@ -640,10 +641,13 @@ export default function Header() {
         {/* 1. Left: Logo */}
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Link href="/" style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-            <img
+            <Image
               src="/logos/GLYNNE.svg"
               alt="AXGLYNNE Enterprise AI Platform Logo"
+              width={32}
+              height={32}
               className="header-logo"
+              priority
             />
           </Link>
         </div>

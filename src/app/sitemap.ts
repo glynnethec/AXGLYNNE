@@ -10,9 +10,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { route: '/About', priority: 0.90, changeFrequency: 'weekly' as const },
     { route: '/ia_vailable', priority: 0.85, changeFrequency: 'daily' as const },
     { route: '/Servex_solution', priority: 0.80, changeFrequency: 'weekly' as const },
+    { route: '/Industries', priority: 0.75, changeFrequency: 'weekly' as const },
     { route: '/Methodology', priority: 0.70, changeFrequency: 'monthly' as const },
     { route: '/CEO_GLYNNE', priority: 0.65, changeFrequency: 'monthly' as const },
     { route: '/contact', priority: 0.60, changeFrequency: 'monthly' as const },
+    { route: '/Librarymodel', priority: 0.55, changeFrequency: 'weekly' as const },
+    { route: '/models_provider', priority: 0.55, changeFrequency: 'weekly' as const },
+    { route: '/servex_espesification', priority: 0.50, changeFrequency: 'monthly' as const },
     { route: '/cookie-policy', priority: 0.20, changeFrequency: 'yearly' as const },
     { route: '/privacy-policy', priority: 0.20, changeFrequency: 'yearly' as const },
     { route: '/terms-of-service', priority: 0.20, changeFrequency: 'yearly' as const }

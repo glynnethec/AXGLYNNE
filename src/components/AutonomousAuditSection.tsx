@@ -61,21 +61,23 @@ function TypewriterCode() {
     return () => clearTimeout(timeoutId);
   }, [visibleChars, totalChars]);
 
-  let charsLeft = visibleChars;
+  const renderedTokens: React.ReactNode[] = [];
+  let remainingChars = visibleChars;
+  for (let i = 0; i < CODE_TOKENS.length; i++) {
+    if (remainingChars <= 0) break;
+    const token = CODE_TOKENS[i];
+    const textToShow = token.t.slice(0, remainingChars);
+    remainingChars -= token.t.length;
+    renderedTokens.push(
+      <span key={i} style={{ color: token.c }}>
+        {textToShow}
+      </span>
+    );
+  }
 
   return (
     <pre className="notranslate" translate="no" style={{ margin: 0, whiteSpace: 'pre-wrap', lineHeight: 1.6 }}>
-      {CODE_TOKENS.map((token, index) => {
-        if (charsLeft <= 0) return null;
-        const textToShow = token.t.slice(0, charsLeft);
-        charsLeft -= token.t.length;
-        
-        return (
-          <span key={index} style={{ color: token.c }}>
-            {textToShow}
-          </span>
-        );
-      })}
+      {renderedTokens}
       <span style={{ 
         display: 'inline-block', 
         width: '6px', 

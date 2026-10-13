@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import Link from 'next/link';
 import { useTheme } from '@/lib/ThemeContext';
-import { useRouter } from 'next/navigation';
 
 const THIRD_CODE_TOKENS = [
   { t: "---\n", c: "#999999" },
@@ -105,8 +105,8 @@ export default function HomeThirdAuditSection() {
             </p>
 
             <div style={{ display: 'flex', gap: '16px', marginTop: '24px', flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center' }}>
-              <span
-                onClick={() => window.location.href = '/About'}
+              <Link
+                href="/About"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -114,6 +114,7 @@ export default function HomeThirdAuditSection() {
                   color: isDark ? '#ffffff' : '#111111',
                   fontSize: '14px',
                   fontWeight: 500,
+                  textDecoration: 'none',
                   cursor: 'pointer',
                   letterSpacing: '0.01em',
                   transition: 'opacity 0.2s ease',
@@ -122,7 +123,7 @@ export default function HomeThirdAuditSection() {
                 onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
               >
                 Discover our vision & team <span style={{ fontSize: '15px' }}>→</span>
-              </span>
+              </Link>
             </div>
           </div>
 

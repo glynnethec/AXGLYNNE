@@ -186,7 +186,7 @@ export default function FleekStyleArchitectureSection({
 
             {/* Bottom Architecture Inscription */}
             <text x="270" y="338" textAnchor="middle" fill={subtextColor} fontSize="8.5" letterSpacing="0.1em" fontFamily={monoFont} fontWeight="500">
-              // ARCHITECTURE: SXM5 NVLINK 900 GB/s DUAL MESH //
+              {"// ARCHITECTURE: SXM5 NVLINK 900 GB/s DUAL MESH //"}
             </text>
           </svg>
         </div>
@@ -335,7 +335,7 @@ export default function FleekStyleArchitectureSection({
             alignItems: 'center',
             justifyContent: 'center'
           }}>
-            /////////////////////////////// THE PROMISE ///////////////////////////////
+            {"/////////////////////////////// THE PROMISE ///////////////////////////////"}
           </div>
 
           {/* Manifesto Lines */}
@@ -647,7 +647,7 @@ export default function FleekStyleArchitectureSection({
         color: subtextColor
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ color: textColor }}>//</span>
+          <span style={{ color: textColor }}>{"//"}</span>
           <span style={{ fontWeight: 600, color: textColor }}>AXGLYNNE AI PROVIDER</span>
           <span>·</span>
           <span>ENTERPRISE INFERENCE CORE</span>

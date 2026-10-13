@@ -47,7 +47,7 @@ function SecondAuditTaskCards() {
         <button
           key={task.id}
           className="second-audit-card"
-          onClick={() => window.location.href = task.path}
+          onClick={() => router.push(task.path)}
           style={{
             backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.4)',
             border: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.06)',

@@ -7,12 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: [
         '/Panel',
-        '/login',
-        '/AX_chat',
-        '/AX_voice',
-        '/models_provider',
-        '/Create_you_GLYNNE_model',
-        '/Librarymodel',
         '/api/'
       ],
     },

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { FaTwitter, FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
 import "./PanelFooter.css";
 
@@ -12,7 +13,7 @@ export default function PanelFooter() {
         {/* Brand Section */}
         <div className="panel-footer-brand">
           <div className="panel-footer-logo-container">
-            <img src="/logos/GLYNNE.svg" alt="GLYNNE Logo" className="panel-footer-logo" />
+            <Image src="/logos/GLYNNE.svg" alt="GLYNNE Logo" width={48} height={48} className="panel-footer-logo" />
           </div>
           <p className="panel-footer-desc">
             Empowering the future through next-generation infrastructure and advanced solutions. 

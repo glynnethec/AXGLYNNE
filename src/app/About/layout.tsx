@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://axglynne.com'),
-  title: 'About AXGLYNNE | Frontier AI Research & Data Science Labs',
-  description: 'Discover AXGLYNNE (GLYNNE S.A.S.): Frontier Artificial Intelligence research, open-weights model re-training and indoctrination (QLoRA 4-bit/8-bit, Unsloth), specialized MCP agent architectures, advanced RAG, and data science.',
+  title: 'About Us & Technological Vision',
+  description: 'Learn about AXGLYNNE: Pioneer organization in frontier AI research, open-weights model fine-tuning, autonomous MCP agents, and data science.',
   keywords: [
     'About AXGLYNNE',
     'AXGLYNNE Frontier AI Labs',
@@ -19,27 +19,28 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: 'https://axglynne.com/About',
-    languages: {
-      'en-US': 'https://axglynne.com/About',
-      'es-ES': 'https://axglynne.com/About',
-      'es-MX': 'https://axglynne.com/About',
-      'es-CO': 'https://axglynne.com/About',
-      'x-default': 'https://axglynne.com/About',
-    },
   },
   openGraph: {
-    title: 'About AXGLYNNE | AI Research, Data Science & Neural Engineering',
-    description: 'Pioneer technology research organization: Custom model indoctrination (QLoRA, Unsloth), specialized autonomous MCP agent architectures, advanced RAG pipelines, and public developer tools.',
+    title: 'About Us & Technological Vision | AXGLYNNE',
+    description: 'Pioneer research organization: Custom model indoctrination (QLoRA, Unsloth), autonomous MCP agents, and advanced data science.',
     url: 'https://axglynne.com/About',
-    siteName: 'AXGLYNNE Frontier AI Labs',
+    siteName: 'AXGLYNNE',
     locale: 'en_US',
-    alternateLocale: ['es_US', 'es_ES', 'es_MX', 'es_CO'],
     type: 'website',
+    images: [
+      {
+        url: '/logos/GLYNNE.svg',
+        width: 1200,
+        height: 630,
+        alt: 'About AXGLYNNE',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'About AXGLYNNE | AI Research & Data Science Engineering',
-    description: 'Discover AXGLYNNE: AI process optimization research, custom model indoctrination (QLoRA, Unsloth), MCP agent protocols, and public AI developer tools.',
+    title: 'About Us & Technological Vision | AXGLYNNE',
+    description: 'Learn about AXGLYNNE: Frontier AI research, model fine-tuning (QLoRA, Unsloth), MCP agents, and developer tools.',
+    images: ['/logos/GLYNNE.svg'],
   },
 };
 
@@ -48,7 +49,7 @@ export default function AboutLayout({ children }: { children: React.ReactNode })
     "@context": "https://schema.org",
     "@type": "AboutPage",
     "mainEntity": {
-      "@type": "ResearchOrganization",
+      "@type": "Organization",
       "name": "AXGLYNNE",
       "legalName": "GLYNNE S.A.S.",
       "alternateName": ["AXGLYNNE Frontier AI Labs", "AXGLYNNE Data Science & AI Engineering"],

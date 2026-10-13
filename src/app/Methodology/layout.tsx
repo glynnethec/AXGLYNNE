@@ -2,11 +2,8 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://axglynne.com'),
-  title: {
-    template: '%s | AXGLYNNE Frontier AI & Data Science Labs',
-    default: 'AI Process Optimization & Research Methodology',
-  },
-  description: 'AI research and development methodology: AI process optimization, open-weights model re-training and indoctrination (QLoRA/Unsloth), specialized MCP agent architectures, RAG pipelines, and data science engineering.',
+  title: 'AI Research & Engineering Workflow',
+  description: 'Scientific AI methodology: Model indoctrination (QLoRA, Unsloth), specialized MCP agent architectures, and enterprise data science engineering.',
   keywords: [
     'AI Process Optimization Research',
     'Open-Weights Model Re-Training',
@@ -21,27 +18,28 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: 'https://axglynne.com/Methodology',
-    languages: {
-      'en-US': 'https://axglynne.com/Methodology',
-      'es-ES': 'https://axglynne.com/Methodology',
-      'es-MX': 'https://axglynne.com/Methodology',
-      'es-CO': 'https://axglynne.com/Methodology',
-      'x-default': 'https://axglynne.com/Methodology',
-    },
   },
   openGraph: {
-    title: 'Research Methodology, Data Science & MCP Agent Protocols | AXGLYNNE',
-    description: 'Deterministic step-by-step methodology: AI process optimization research, custom model indoctrination (QLoRA/Unsloth), specialized MCP agent workflows, and data science.',
+    title: 'AI Research & Engineering Workflow | AXGLYNNE',
+    description: 'Deterministic methodology: AI process optimization, custom model indoctrination (QLoRA/Unsloth), specialized MCP agent workflows, and data science.',
     url: 'https://axglynne.com/Methodology',
-    siteName: 'AXGLYNNE Frontier AI Labs',
+    siteName: 'AXGLYNNE',
     locale: 'en_US',
-    alternateLocale: ['es_US', 'es_ES', 'es_MX', 'es_CO'],
     type: 'website',
+    images: [
+      {
+        url: '/logos/GLYNNE.svg',
+        width: 1200,
+        height: 630,
+        alt: 'AXGLYNNE Methodology',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AI Process Optimization Research & Data Science Methodology | AXGLYNNE',
-    description: 'Scientific workflow: AI process optimization, custom model indoctrination, specialized MCP agent architectures, advanced RAG, and data science engineering.',
+    title: 'AI Research & Engineering Workflow | AXGLYNNE',
+    description: 'Scientific workflow: Model indoctrination, specialized MCP agent architectures, and data science engineering.',
+    images: ['/logos/GLYNNE.svg'],
   },
 };
 
@@ -52,9 +50,8 @@ export default function MethodologyLayout({ children }: { children: React.ReactN
     "name": "AXGLYNNE AI Process Optimization & Research Methodology",
     "description": "Deterministic step-by-step scientific methodology for AI process optimization research: Data science ingestion, open-weights model re-training and indoctrination (QLoRA/Unsloth), specialized MCP agent process development, RAG pipelines, and high-precision inference.",
     "url": "https://axglynne.com/Methodology",
-    "inLanguage": ["en", "es"],
     "author": {
-      "@type": "ResearchOrganization",
+      "@type": "Organization",
       "name": "AXGLYNNE",
       "legalName": "GLYNNE S.A.S.",
       "alternateName": ["AXGLYNNE Frontier AI Labs", "AXGLYNNE Data Science & AI Engineering"],

@@ -1098,13 +1098,18 @@ export default function ModelsProviderPage() {
   };
 
   useEffect(() => {
-    fetchKeysFromSupabase();
-
-    // Load saved master key if present
-    const savedKey = localStorage.getItem('glynne_nvidia_master_key');
-    if (savedKey) {
-      setNvidiaMasterKey(savedKey);
-    }
+    let isMounted = true;
+    const init = async () => {
+      await fetchKeysFromSupabase();
+      if (isMounted && typeof window !== 'undefined') {
+        const savedKey = localStorage.getItem('glynne_nvidia_master_key');
+        if (savedKey) {
+          setNvidiaMasterKey(savedKey);
+        }
+      }
+    };
+    init();
+    return () => { isMounted = false; };
   }, []);
 
   const handleSaveMasterKey = () => {

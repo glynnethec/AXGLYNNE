@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { supabase, signOut } from '@/lib/supabaseClient';
 import { FaSignOutAlt } from 'react-icons/fa';
 import { 
@@ -30,6 +31,7 @@ type HoverStep = {
 };
 
 export default function AssemblyDashboard() {
+  const router = useRouter();
   const [rotX, setRotX] = useState(-20);
   const [rotY, setRotY] = useState(35);
   const [rotZ, setRotZ] = useState(0);
@@ -42,7 +44,12 @@ export default function AssemblyDashboard() {
   const [isFading, setIsFading] = useState(false);
   const [isLoadingTool, setIsLoadingTool] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(100);
-  const [currentDate, setCurrentDate] = useState('');
+  const [currentDate] = useState(() => {
+    const date = new Date();
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    return `${days[date.getDay()]} \u2014 ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+  });
   const [userProfile, setUserProfile] = useState<any>(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -147,11 +154,6 @@ export default function AssemblyDashboard() {
   const lastCellRef = useRef({ x: -1, y: -1 });
 
   useEffect(() => {
-    const date = new Date();
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    setCurrentDate(`${days[date.getDay()]} \u2014 ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`);
-    
     // Fetch Supabase session for mini profile
     const getSession = async () => {
       const { data } = await supabase.auth.getSession();
@@ -200,7 +202,7 @@ export default function AssemblyDashboard() {
 
   const handleSelectTool = (toolName: string) => {
     if (activeTool === toolName) {
-      window.location.href = `/${toolName}`;
+      router.push(`/${toolName}`);
       return;
     }
     if (isLoadingTool || isFading) return;
@@ -575,7 +577,7 @@ export default function AssemblyDashboard() {
               <div className="md-right-header">
                 <div className="md-right-brand-group">
                   <span className="md-right-num">{currentToolData.num}</span>
-                  <span className="md-right-category">// SPECIFICATION</span>
+                  <span className="md-right-category">{"// SPECIFICATION"}</span>
                 </div>
                 {currentToolData.badge && (
                   <span className="md-right-badge">{currentToolData.badge}</span>
@@ -649,14 +651,14 @@ export default function AssemblyDashboard() {
       {showLogoutModal && (
         <div className="md-logout-overlay">
           <div className="md-logout-modal">
-            <div className="md-modal-header-tag">// SECURITY DISCONNECT PROTOCOL</div>
+            <div className="md-modal-header-tag">{"// SECURITY DISCONNECT PROTOCOL"}</div>
             <h3>System Disconnect</h3>
             <p>Are you sure you want to log out and terminate this secure session?</p>
             <div className="md-logout-actions">
               <button className="md-btn-cancel" onClick={() => setShowLogoutModal(false)}>CANCEL</button>
               <button className="md-btn-confirm" onClick={async () => {
                 await signOut();
-                window.location.href = '/';
+                router.push('/');
               }}>CONFIRM DISCONNECT</button>
             </div>
           </div>

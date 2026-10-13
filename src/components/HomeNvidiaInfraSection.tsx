@@ -102,6 +102,7 @@ export default function HomeNvidiaInfraSection() {
                 src="/images/nvidia_logo_transparent.png"
                 alt="NVIDIA Vector Logo"
                 fill
+                sizes="130px"
                 style={{ objectFit: 'contain' }}
                 priority
               />

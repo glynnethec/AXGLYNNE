@@ -2,11 +2,8 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://axglynne.com'),
-  title: {
-    template: '%s | AXGLYNNE Frontier AI & Data Science Labs',
-    default: 'Contact & AI Research Consultation',
-  },
-  description: 'Contact AXGLYNNE engineering & research team: Schedule a consultation for open-weights model fine-tuning (QLoRA, Unsloth), MCP agent protocols, advanced RAG, and private AI deployment.',
+  title: 'Contact AI Engineering & Research',
+  description: 'Contact AXGLYNNE AI research and engineering team for private model fine-tuning, MCP agent workflows, and technical consultations.',
   keywords: [
     'Contact AXGLYNNE',
     'AI Research Consultation',
@@ -19,27 +16,28 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: 'https://axglynne.com/contact',
-    languages: {
-      'en-US': 'https://axglynne.com/contact',
-      'es-ES': 'https://axglynne.com/contact',
-      'es-MX': 'https://axglynne.com/contact',
-      'es-CO': 'https://axglynne.com/contact',
-      'x-default': 'https://axglynne.com/contact',
-    },
   },
   openGraph: {
-    title: 'Contact & AI Research Consultation | AXGLYNNE Frontier AI Labs',
-    description: 'Speak directly with our AI research and engineering team: Consultation on open-weights model indoctrination, MCP agent systems, RAG pipelines, and private AI infrastructure.',
+    title: 'Contact AI Engineering & Research | AXGLYNNE',
+    description: 'Speak directly with our AI research and engineering team: Consultation on open-weights models, MCP agent systems, and private deployment.',
     url: 'https://axglynne.com/contact',
-    siteName: 'AXGLYNNE Frontier AI Labs',
+    siteName: 'AXGLYNNE',
     locale: 'en_US',
-    alternateLocale: ['es_US', 'es_ES', 'es_MX', 'es_CO'],
     type: 'website',
+    images: [
+      {
+        url: '/logos/GLYNNE.svg',
+        width: 1200,
+        height: 630,
+        alt: 'AXGLYNNE Contact',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Contact AXGLYNNE | AI Research & Private Platform Consultation',
-    description: 'Schedule a technical research consultation for custom LLM fine-tuning, MCP agent integration, data science engineering, and private AI deployment.',
+    title: 'Contact AI Engineering & Research | AXGLYNNE',
+    description: 'Schedule a technical research consultation for custom LLM fine-tuning, MCP agent integration, and private deployment.',
+    images: ['/logos/GLYNNE.svg'],
   },
 };
 
@@ -48,11 +46,10 @@ export default function ContactLayout({ children }: { children: React.ReactNode 
     "@context": "https://schema.org",
     "@type": "ContactPage",
     "name": "AXGLYNNE Contact & Technical Research Consultation",
-    "description": "Official contact page for AI research consultation, open-weights model re-training (QLoRA), MCP agent architectures, and private AI deployment.",
+    "description": "Official contact page for AI research consultation, open-weights model fine-tuning (QLoRA), MCP agent architectures, and private deployment.",
     "url": "https://axglynne.com/contact",
-    "inLanguage": ["en", "es"],
     "mainEntity": {
-      "@type": "ResearchOrganization",
+      "@type": "Organization",
       "name": "AXGLYNNE",
       "legalName": "GLYNNE S.A.S.",
       "alternateName": ["AXGLYNNE Frontier AI Labs", "AXGLYNNE Open-Weights AI Research"],

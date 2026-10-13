@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://axglynne.com'),
-  title: 'AI Solutions & SERVEX Case Study',
-  description: 'AI infrastructure & research for SERVEX: Automated XML matrix conversion (CET Designer), structured data pipelines, and autonomous execution of BPO QA processes.',
+  title: 'Enterprise AI Solutions & SERVEX',
+  description: 'Enterprise AI infrastructure for SERVEX: Automated XML matrix conversion (CET Designer), structured data pipelines, and autonomous execution.',
   keywords: [
     'Automated XML Catalog Processing',
     'CET Designer XML Matrix Converter',
@@ -17,27 +17,28 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: 'https://axglynne.com/Servex_solution',
-    languages: {
-      'en-US': 'https://axglynne.com/Servex_solution',
-      'es-ES': 'https://axglynne.com/Servex_solution',
-      'es-MX': 'https://axglynne.com/Servex_solution',
-      'es-CO': 'https://axglynne.com/Servex_solution',
-      'x-default': 'https://axglynne.com/Servex_solution',
-    },
   },
   openGraph: {
-    title: 'AI Solutions & Complex XML Matrix Automation | SERVEX Infrastructure',
-    description: 'AI research infrastructure for automated conversion of complex XML catalogs (CET Designer), data matrices, and autonomous execution of corporate workflows.',
+    title: 'Enterprise AI Solutions & SERVEX | AXGLYNNE',
+    description: 'AI research infrastructure for automated conversion of complex XML catalogs (CET Designer) and autonomous execution of corporate workflows.',
     url: 'https://axglynne.com/Servex_solution',
-    siteName: 'AXGLYNNE Frontier AI Solutions',
+    siteName: 'AXGLYNNE',
     locale: 'en_US',
-    alternateLocale: ['es_US', 'es_ES', 'es_MX', 'es_CO'],
     type: 'website',
+    images: [
+      {
+        url: '/logos/GLYNNE.svg',
+        width: 1200,
+        height: 630,
+        alt: 'AXGLYNNE Solutions SERVEX',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AI Solutions & Complex XML Catalog Automation | SERVEX Infrastructure',
-    description: 'Enterprise AI ecosystem for SERVEX: Automated XML matrix converters (CET Designer), structured data pipelines, and autonomous execution of complex analysis.',
+    title: 'Enterprise AI Solutions & SERVEX | AXGLYNNE',
+    description: 'Enterprise AI ecosystem for SERVEX: Automated XML matrix converters (CET Designer) and structured pipelines.',
+    images: ['/logos/GLYNNE.svg'],
   },
 };
 
@@ -49,16 +50,15 @@ export default function SolutionsLayout({ children }: { children: React.ReactNod
     "name": "Enterprise AI Solutions & XML Matrix Conversion",
     "description": "Engineering solution developed for SERVEX: AI model integration for reading, converting, and autonomously updating highly complex XML catalogs (CET Designer), transforming schemas into structured data and executing automated analytics without manual user intervention.",
     "url": "https://axglynne.com/Servex_solution",
-    "inLanguage": ["en", "es"],
     "author": {
-      "@type": "ResearchOrganization",
+      "@type": "Organization",
       "name": "AXGLYNNE",
       "legalName": "GLYNNE S.A.S.",
       "alternateName": ["AXGLYNNE Frontier AI Labs", "AXGLYNNE Custom AI Labs"],
       "url": "https://axglynne.com"
     },
     "publisher": {
-      "@type": "ResearchOrganization",
+      "@type": "Organization",
       "name": "AXGLYNNE",
       "legalName": "GLYNNE S.A.S.",
       "url": "https://axglynne.com"

@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import TaskAuditSection from '@/components/TaskAuditSection';
 import { useTheme } from '@/lib/ThemeContext';
@@ -60,7 +61,14 @@ export default function PcCardSolutions() {
           </p>
         </div>
         <div className="mobile-img-wrapper" style={{ flex: '1.5 1 400px', display: 'flex', justifyContent: 'center' }}>
-          <img src="/SERVEX/logo.png" alt="Servex Logo" style={{ width: '85%', maxWidth: '480px', objectFit: 'contain', filter: isDark ? 'brightness(0) invert(1) opacity(0.9)' : 'grayscale(100%) brightness(0.2) opacity(0.85) drop-shadow(0 24px 48px rgba(0,0,0,0.12))' }} />
+          <Image
+            src="/SERVEX/logo.png"
+            alt="Servex Logo"
+            width={480}
+            height={69}
+            sizes="(max-width: 768px) 85vw, 480px"
+            style={{ width: '85%', maxWidth: '480px', height: 'auto', objectFit: 'contain', filter: isDark ? 'brightness(0) invert(1) opacity(0.9)' : 'grayscale(100%) brightness(0.2) opacity(0.85) drop-shadow(0 24px 48px rgba(0,0,0,0.12))' }}
+          />
         </div>
       </div>
 
@@ -145,7 +153,14 @@ export default function PcCardSolutions() {
       {/* Independent Card Inserted */}
       <div className="responsive-solutions-width mobile-stack-reverse" style={{ position: 'relative', zIndex: 10, width: '60vw', minHeight: '75vh', boxSizing: 'border-box', margin: '80px auto 0', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '60px', padding: '0', backgroundColor: 'transparent' }}>
         <div className="mobile-img-wrapper" style={{ flex: '1.5 1 400px', display: 'flex', justifyContent: 'center' }}>
-          <img src="/SERVEX/mockup.png" alt="Servex Mockup" style={{ width: '85%', maxWidth: '480px', objectFit: 'contain', filter: isDark ? 'grayscale(100%) brightness(1.2) drop-shadow(0 24px 48px rgba(0,0,0,0.5))' : 'grayscale(100%) brightness(0.3) drop-shadow(0 24px 48px rgba(0,0,0,0.12))' }} />
+          <Image
+            src="/SERVEX/mockup.png"
+            alt="Servex Mockup"
+            width={480}
+            height={446}
+            sizes="(max-width: 768px) 85vw, 480px"
+            style={{ width: '85%', maxWidth: '480px', height: 'auto', objectFit: 'contain', filter: isDark ? 'grayscale(100%) brightness(1.2) drop-shadow(0 24px 48px rgba(0,0,0,0.5))' : 'grayscale(100%) brightness(0.3) drop-shadow(0 24px 48px rgba(0,0,0,0.12))' }}
+          />
         </div>
         <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
           <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: isDark ? '#ffffff' : '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>

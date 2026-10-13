@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCurrentUser } from '@/lib/supabaseClient';
-import Header from '@/app/components/Header';
 import AssemblyDashboard from './components/AssemblyDashboard';
 
 export default function PanelPage() {

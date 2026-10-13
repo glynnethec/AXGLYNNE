@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useTheme } from '@/lib/ThemeContext';
 
@@ -93,7 +94,14 @@ export default function PcCardSection() {
           </div>
         </div>
         <div className="mobile-pccard-img-wrapper" style={{ flex: '1.5 1 400px', display: 'flex', justifyContent: 'center' }}>
-          <img src="/pc.png" alt="Glynne Architecture" style={{ width: '100%', maxWidth: '600px', objectFit: 'contain', filter: isDark ? 'grayscale(100%) brightness(1.2) drop-shadow(0 24px 48px rgba(0,0,0,0.5))' : 'grayscale(100%) brightness(0.2) drop-shadow(0 24px 48px rgba(0,0,0,0.12))' }} />
+          <Image
+            src="/pc.png"
+            alt="Glynne Architecture"
+            width={600}
+            height={355}
+            sizes="(max-width: 768px) 100vw, 600px"
+            style={{ width: '100%', maxWidth: '600px', height: 'auto', objectFit: 'contain', filter: isDark ? 'grayscale(100%) brightness(1.2) drop-shadow(0 24px 48px rgba(0,0,0,0.5))' : 'grayscale(100%) brightness(0.2) drop-shadow(0 24px 48px rgba(0,0,0,0.12))' }}
+          />
         </div>
       </div>
     </div>

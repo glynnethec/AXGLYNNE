@@ -2,11 +2,8 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://axglynne.com'),
-  title: {
-    template: '%s | AXGLYNNE Frontier AI & Data Science Labs',
-    default: 'AI Process Optimization Across Enterprise Sectors',
-  },
-  description: 'Frontier AI solutions & research tailored for key enterprise sectors: AI process optimization, custom model indoctrination, specialized MCP agent protocols, and complex data science matrices.',
+  title: 'Enterprise AI Across Industries',
+  description: 'Frontier AI solutions for enterprise: Custom model fine-tuning, autonomous MCP agent workflows, and data science across key industries.',
   keywords: [
     'AI for Enterprise Sectors',
     'AI Process Optimization',
@@ -19,27 +16,28 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: 'https://axglynne.com/Industries',
-    languages: {
-      'en-US': 'https://axglynne.com/Industries',
-      'es-ES': 'https://axglynne.com/Industries',
-      'es-MX': 'https://axglynne.com/Industries',
-      'es-CO': 'https://axglynne.com/Industries',
-      'x-default': 'https://axglynne.com/Industries',
-    },
   },
   openGraph: {
-    title: 'Industries & Complex AI Process Optimization | AXGLYNNE',
-    description: 'Custom AI research solutions optimizing enterprise operations, complex data matrices, open-weights model deployment, and autonomous agent systems.',
+    title: 'Enterprise AI Across Industries | AXGLYNNE',
+    description: 'Custom AI research solutions optimizing enterprise operations, complex data matrices, and open-weights models across key sectors.',
     url: 'https://axglynne.com/Industries',
-    siteName: 'AXGLYNNE Frontier AI Labs',
+    siteName: 'AXGLYNNE',
     locale: 'en_US',
-    alternateLocale: ['es_US', 'es_ES', 'es_MX', 'es_CO'],
     type: 'website',
+    images: [
+      {
+        url: '/logos/GLYNNE.svg',
+        width: 1200,
+        height: 630,
+        alt: 'AXGLYNNE Industries',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Industries & Enterprise AI Optimization | AXGLYNNE',
-    description: 'Custom AI research solutions optimizing enterprise operations, complex data matrices, and open-weights model deployment across key sectors.',
+    title: 'Enterprise AI Across Industries | AXGLYNNE',
+    description: 'Custom AI research solutions optimizing enterprise operations, complex data matrices, and open-weights models.',
+    images: ['/logos/GLYNNE.svg'],
   },
 };
 
@@ -49,7 +47,7 @@ export default function IndustriesLayout({ children }: { children: React.ReactNo
     "@type": "Service",
     "serviceType": "Frontier AI Research & Process Optimization",
     "provider": {
-      "@type": "ResearchOrganization",
+      "@type": "Organization",
       "name": "AXGLYNNE",
       "legalName": "GLYNNE S.A.S.",
       "alternateName": ["AXGLYNNE Frontier AI Labs", "AXGLYNNE Data Science & AI Engineering"],

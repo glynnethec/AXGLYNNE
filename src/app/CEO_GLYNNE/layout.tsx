@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://axglynne.com'),
-  title: 'Alexander Quiroga | CEO & Lead AI Engineering Researcher',
-  description: 'Alexander Quiroga is CEO, Software Architect, and Lead AI Engineering Researcher at AXGLYNNE. Specialized in frontier AI research, open-weights LLM fine-tuning (QLoRA, Unsloth), MCP agent protocols, and neural architectures.',
+  title: 'Alexander Quiroga | CEO & Lead AI',
+  description: 'Alexander Quiroga is CEO and Lead AI Researcher at AXGLYNNE, specializing in open-weights fine-tuning, MCP agent protocols, and neural systems.',
   keywords: [
     'Alexander Quiroga',
     'CEO AXGLYNNE',
@@ -17,28 +17,27 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: 'https://axglynne.com/CEO_GLYNNE',
-    languages: {
-      'en-US': 'https://axglynne.com/CEO_GLYNNE',
-      'es-ES': 'https://axglynne.com/CEO_GLYNNE',
-      'es-MX': 'https://axglynne.com/CEO_GLYNNE',
-      'es-CO': 'https://axglynne.com/CEO_GLYNNE',
-      'x-default': 'https://axglynne.com/CEO_GLYNNE',
-    },
   },
   openGraph: {
-    title: 'Alexander Quiroga - CEO, Software Architect & Lead AI Researcher | AXGLYNNE',
-    description: 'Alexander Quiroga leads frontier AI research, open-weights model fine-tuning, MCP agent protocols, and data science engineering at AXGLYNNE.',
+    title: 'Alexander Quiroga | CEO & Lead AI | AXGLYNNE',
+    description: 'Alexander Quiroga leads frontier AI research, open-weights model fine-tuning, MCP protocols, and neural engineering at AXGLYNNE.',
     url: 'https://axglynne.com/CEO_GLYNNE',
     type: 'profile',
-    siteName: 'AXGLYNNE Frontier AI Labs',
+    siteName: 'AXGLYNNE',
     locale: 'en_US',
-    alternateLocale: ['es_US', 'es_ES', 'es_MX', 'es_CO'],
-    images: ['/AlexanderCEO.png'],
+    images: [
+      {
+        url: '/AlexanderCEO.png',
+        width: 800,
+        height: 800,
+        alt: 'Alexander Quiroga CEO AXGLYNNE',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Alexander Quiroga | CEO & Lead AI Researcher | AXGLYNNE',
-    description: 'CEO, Software Architect & Lead AI Researcher at AXGLYNNE. Specialized in LLM fine-tuning, open weights, MCP architectures, and autonomous AI systems.',
+    title: 'Alexander Quiroga | CEO & Lead AI | AXGLYNNE',
+    description: 'CEO, Software Architect & Lead AI Researcher at AXGLYNNE. Specialized in LLM fine-tuning, open weights, and MCP architectures.',
     images: ['/AlexanderCEO.png'],
   },
 };
@@ -54,7 +53,7 @@ export default function AlexanderLayout({
     "name": "Alexander Quiroga",
     "jobTitle": "CEO, Software Architect & Lead AI Engineering Researcher",
     "worksFor": {
-      "@type": "ResearchOrganization",
+      "@type": "Organization",
       "name": "AXGLYNNE",
       "legalName": "GLYNNE S.A.S.",
       "alternateName": ["AXGLYNNE Frontier AI Labs", "AXGLYNNE Data Science & AI Engineering"],

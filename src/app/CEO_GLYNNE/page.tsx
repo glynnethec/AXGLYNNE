@@ -4,6 +4,7 @@ import React from 'react';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
 import Footer from '@/app/components/Footer';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function AlexanderQuirogaProfile() {
   return (
@@ -40,9 +41,12 @@ export default function AlexanderQuirogaProfile() {
           {/* Profile Header */}
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '40px', marginBottom: '60px', flexWrap: 'wrap' }}>
             <div style={{ flex: '0 0 200px', width: '200px', height: '200px', borderRadius: '50%', overflow: 'hidden', border: '1px solid rgba(0,0,0,0.1)' }}>
-              <img
+              <Image
                 src="/AlexanderCEO.png"
                 alt="Alexander Quiroga"
+                width={200}
+                height={200}
+                priority
                 style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(100%)' }}
               />
             </div>

@@ -1,32 +1,44 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
+
+const emptySubscribe = () => () => {};
 
 export default function SplashScreen() {
-  const [showSplash, setShowSplash] = useState(true);
+  const isClient = useSyncExternalStore(emptySubscribe, () => true, () => false);
+  const alreadySeen = useSyncExternalStore(
+    emptySubscribe,
+    () => {
+      try {
+        return typeof window !== 'undefined' && sessionStorage.getItem('hasSeenSplash') === 'true';
+      } catch {
+        return false;
+      }
+    },
+    () => true
+  );
   const [fadeSplash, setFadeSplash] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    if (sessionStorage.getItem('hasSeenSplash')) {
-      setShowSplash(false);
-      return;
-    }
+    if (alreadySeen) return;
 
-    sessionStorage.setItem('hasSeenSplash', 'true');
+    try {
+      sessionStorage.setItem('hasSeenSplash', 'true');
+    } catch {
+      // ignore storage quota errors
+    }
     
     // Start fading out the splash after 2.5 seconds
     const fadeTimer = setTimeout(() => setFadeSplash(true), 2500);
     // Remove from DOM after 3.3 seconds (allows CSS transition to finish)
-    const removeTimer = setTimeout(() => setShowSplash(false), 3300);
+    const removeTimer = setTimeout(() => setDismissed(true), 3300);
     
     return () => { clearTimeout(fadeTimer); clearTimeout(removeTimer); };
-  }, []);
+  }, [alreadySeen]);
 
   // Prevent hydration mismatch by not rendering anything on the server
-  if (!mounted) return null;
-  if (!showSplash) return null;
+  if (!isClient || alreadySeen || dismissed) return null;
 
   return (
     <div className={`splash-screen ${fadeSplash ? 'splash-fade-out' : ''}`}>
