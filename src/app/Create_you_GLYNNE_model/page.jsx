@@ -414,17 +414,23 @@ export default function CreateYourGlynneModelPage() {
         body: formData,
       });
 
-      const data = await res.json();
+      let data;
+      try {
+        data = await res.json();
+      } catch (jsonErr) {
+        throw new Error(`Servidor devolvió respuesta no válida (HTTP ${res.status})`);
+      }
+
       if (res.ok && data.status === 'success' && Array.isArray(data.dataset)) {
         setDataset(data.dataset);
         setDatasetViewMode('editor');
         setShowDatasetPreviewModal(true);
       } else {
-        alert(`Error generating dataset with GROQ: ${data.detail || data.message || 'Invalid server response.'}`);
+        alert(`Error generando dataset con GROQ: ${data.detail || data.message || 'Respuesta inválida del servidor.'}`);
       }
     } catch (err) {
       console.error(err);
-      alert('Could not connect to GLYNNE_LOGIC_2026 server to generate dataset.');
+      alert('No se pudo conectar con el servidor GLYNNE_LOGIC_2026 para generar el dataset.');
     } finally {
       setIsGeneratingDataset(false);
     }
@@ -1049,7 +1055,8 @@ export default function CreateYourGlynneModelPage() {
 
       {/* Container matching Panel */}
       <div
-        className="md-container"
+        className="md-container notranslate"
+        translate="no"
         style={{
           position: isSmallScreen ? 'relative' : 'absolute',
           top: 0,
@@ -1182,16 +1189,11 @@ export default function CreateYourGlynneModelPage() {
               title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
             >
               {theme === 'dark' ? (
-                <>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
-                  <span>LIGHT</span>
-                </>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
               ) : (
-                <>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1z" /></svg>
-                  <span>DARK</span>
-                </>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1z" /></svg>
               )}
+              <span>{theme === 'dark' ? 'LIGHT' : 'DARK'}</span>
             </button>
           </div>
         </div>
@@ -1857,16 +1859,13 @@ export default function CreateYourGlynneModelPage() {
                   }}
                 >
                   {isGeneratingDataset ? (
-                    <>
-                      <span style={{ display: 'inline-block', width: '10px', height: '10px', border: '2px solid currentColor', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
-                      Sintetizando dataset con agentes Groq...
-                    </>
+                    <span style={{ display: 'inline-block', width: '10px', height: '10px', border: '2px solid currentColor', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
                   ) : (
-                    <>
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>
-                      Generar Dataset Sintético con GROQ
-                    </>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>
                   )}
+                  <span>
+                    {isGeneratingDataset ? 'Sintetizando dataset con agentes Groq...' : 'Generar Dataset Sintético con GROQ'}
+                  </span>
                 </button>
               </div>
             </div>
@@ -1933,16 +1932,13 @@ export default function CreateYourGlynneModelPage() {
                 }}
               >
                 {trainingState.status === 'running' ? (
-                  <>
-                    <span style={{ display: 'inline-block', width: '12px', height: '12px', border: '2px solid #fff', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
-                    Entrenando en Modal GPU...
-                  </>
+                  <span style={{ display: 'inline-block', width: '12px', height: '12px', border: '2px solid #fff', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
                 ) : (
-                  <>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
-                    Iniciar Fine-Tuning GLYNNE
-                  </>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
                 )}
+                <span>
+                  {trainingState.status === 'running' ? 'Entrenando en Modal GPU...' : 'Iniciar Fine-Tuning GLYNNE'}
+                </span>
               </button>
             </div>
           </div>
