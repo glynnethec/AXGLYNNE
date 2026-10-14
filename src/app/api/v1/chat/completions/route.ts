@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getBackendUrl } from '@/lib/backendFetch';
+import { getBackendUrl } from '@/lib/backendUrl';
 
 // Handle CORS Preflight (OPTIONS)
 export async function OPTIONS() {

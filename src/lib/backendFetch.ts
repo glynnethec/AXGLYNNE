@@ -1,13 +1,10 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
 import { getAuthToken } from './supabaseClient';
+import { getBackendUrl } from './backendUrl';
 
-export function getBackendUrl(): string {
-  const envUrl = process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_API_URL;
-  if (envUrl && envUrl.trim().length > 0) {
-    return envUrl.replace(/\/+$/, '');
-  }
-  return 'https://ax-zyxe.onrender.com';
-}
+export { getBackendUrl };
 
 export interface BackendFetchOptions extends RequestInit {
   skipAuth?: boolean;
