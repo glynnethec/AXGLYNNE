@@ -29,6 +29,10 @@ export default function GravityBackground({ children, theme = 'dark' }: { childr
     const mountTime = Date.now();
 
     const render = () => {
+      if (typeof document !== 'undefined' && document.hidden) {
+        animationFrame = requestAnimationFrame(render);
+        return;
+      }
       const dpr = window.devicePixelRatio || 1;
       const rect = canvas.getBoundingClientRect();
       canvas.width = rect.width * dpr;

@@ -104,6 +104,17 @@ export function subscribeToAuthState(callback) {
   return subscription;
 }
 
+// 🔑 Obtener access_token JWT de la sesión activa
+export async function getAuthToken() {
+  try {
+    const { data: { session }, error } = await supabaseGoogle.auth.getSession();
+    if (error || !session) return null;
+    return session.access_token || null;
+  } catch (err) {
+    return null;
+  }
+}
+
 // 🚪 Logout (Google)
 export async function signOut() {
   const { error } = await supabaseGoogle.auth.signOut();

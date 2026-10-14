@@ -69,6 +69,10 @@ export default function LiquidOrb({
     const resolution = 250;
 
     const render = () => {
+      if (typeof document !== 'undefined' && document.hidden) {
+        animationFrame = requestAnimationFrame(render);
+        return;
+      }
       const dpr = window.devicePixelRatio || 1;
       const rect = canvas.getBoundingClientRect();
       canvas.width = rect.width * dpr;

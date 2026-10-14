@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCurrentUser, fetchChatList, fetchChatMessages, createChatHistory, updateChatHistory } from '@/lib/supabaseClient';
+import { backendFetch, usePageAbort } from '@/lib/backendFetch';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
 import MessageList from './components/MessageList';
 import ChatInput from './components/ChatInput';
@@ -24,6 +25,7 @@ export default function AXChatPage() {
   const [currentChatId, setCurrentChatId] = useState<number | null>(null);
 
   const router = useRouter();
+  const pageSignal = usePageAbort();
 
   // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS
   useEffect(() => {
@@ -121,13 +123,13 @@ export default function AXChatPage() {
     setIsTyping(true);
 
     // 🚀 Start AI request immediately in parallel to prevent delays
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://ax-zyxe.onrender.com';
-    const aiRequest = fetch(`${apiUrl}/api/chat`, {
+    const aiRequest = backendFetch('/api/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ messages: newMessages }),
+      signal: pageSignal,
     });
 
     // 💾 Manejar base de datos
@@ -170,7 +172,11 @@ export default function AXChatPage() {
           content: "System Error: AX Intelligence Core is currently offline or unreachable."
         }]);
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.name === 'AbortError') {
+        // Petición cancelada intencionalmente por navegación a otra página
+        return;
+      }
       setMessages(prev => [...prev, {
         role: 'ai',
         content: "Network Error: Could not connect to AX Core."

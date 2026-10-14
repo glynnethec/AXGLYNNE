@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCurrentUser } from '@/lib/supabaseClient';
+import { backendFetch, usePageAbort } from '@/lib/backendFetch';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
 import VoiceOrb from './components/VoiceOrb';
 import { useTheme } from '@/lib/ThemeContext';
@@ -18,6 +19,8 @@ declare global {
 export default function AXVoicePage() {
   const router = useRouter();
   const { theme } = useTheme();
+  const pageSignal = usePageAbort();
+  const isMountedRef = useRef(true);
 
   const [orbState, setOrbState] = useState<'idle' | 'listening' | 'thinking' | 'speaking'>('idle');
   const [transcript, setTranscript] = useState('');
@@ -472,6 +475,7 @@ export default function AXVoicePage() {
     }
 
     return () => {
+      isMountedRef.current = false;
       if (typeof window !== 'undefined') {
         window.removeEventListener('visibilitychange', handleVisibilityChange);
         window.removeEventListener('pagehide', stopAllAudioAndMic);
@@ -526,10 +530,9 @@ export default function AXVoicePage() {
     const newMessages = [...messagesRef.current, { role: 'user', content: currentText }];
     setMessages(newMessages);
 
-    // Fetch al backend enviando el motor activo garantizando coincidencia
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://ax-zyxe.onrender.com';
+    // Fetch al backend enviando el motor activo garantizando coincidencia y cancelación al salir
     try {
-      const res = await fetch(`${apiUrl}/api/voice_chat`, {
+      const res = await backendFetch('/api/voice_chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -537,9 +540,16 @@ export default function AXVoicePage() {
           use_mock_tts: currentEngine === 'edge',
           user_id: userId,
           language: languageRef.current || 'es'
-        })
+        }),
+        signal: pageSignal
       });
       const data = await res.json();
+
+      // Si el usuario navegó a otra página o cerró la sesión, abortar inmediatamente
+      if (!isMountedRef.current || !isSessionActiveRef.current) {
+        isProcessingRef.current = false;
+        return;
+      }
 
       // Cancelar temporizador y apagar la muletilla inmediatamente al llegar la respuesta real
       if (fillerTimerRef.current) {
@@ -587,7 +597,12 @@ export default function AXVoicePage() {
         // Fallback en caso de error en TTS backend
         speakResponseFallback(reply);
       }
-    } catch (err) {
+    } catch (err: any) {
+      if (err?.name === 'AbortError') {
+        // Operación cancelada limpiamente al abandonar la página
+        isProcessingRef.current = false;
+        return;
+      }
       console.error('Error fetching voice_chat:', err);
       isProcessingRef.current = false;
       if (fillerTimerRef.current) {

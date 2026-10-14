@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, notFound } from 'next/navigation';
-import { getCurrentUser, supabaseGoogle } from '@/lib/supabaseClient';
+import { getCurrentUser, supabaseGoogle, getAuthToken } from '@/lib/supabaseClient';
+import { getBackendUrl } from '@/lib/backendFetch';
 import { useTheme } from '@/lib/ThemeContext';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
 import TrainModelBrandBlocks from '@/components/TrainModelBrandBlocks';
@@ -1163,16 +1164,21 @@ export default function ModelsProviderPage() {
 
     try {
       const apiKeyToUse = generatedKey || 'gly_sub_live_demo_key_99';
+      const userToken = await getAuthToken();
       const headers: Record<string, string> = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKeyToUse}`,
       };
 
+      if (userToken) {
+        headers['X-Glynne-User-Token'] = userToken;
+      }
+
       if (nvidiaMasterKey) {
         headers['X-NVIDIA-API-KEY'] = nvidiaMasterKey;
       }
 
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://ax-zyxe.onrender.com';
+      const backendUrl = getBackendUrl();
       const res = await fetch(`${backendUrl}/api/v1/chat/completions`, {
         method: 'POST',
         headers,

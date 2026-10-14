@@ -4,7 +4,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { getCurrentUser } from '@/lib/supabaseClient';
+import { getCurrentUser, getAuthToken } from '@/lib/supabaseClient';
+import { backendFetch, cancelTrainingOnExit, getBackendUrl } from '@/lib/backendFetch';
 import { useTheme } from '@/lib/ThemeContext';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
 import '@/app/Panel/components/AssemblyDashboard.css';
@@ -242,13 +243,27 @@ export default function CreateYourGlynneModelPage() {
   const [showTutorialModal, setShowTutorialModal] = useState(false);
   const [tutorialStep, setTutorialStep] = useState(0);
 
+  // Ref para rastrear el estado del entrenamiento en callbacks nativos de navegación
+  const trainingStatusRef = useRef('idle');
+
   // INTERCEPTAR NAVEGACIÓN (BOTÓN ATRÁS DEL NAVEGADOR & REFRESH)
   useEffect(() => {
     const handleBeforeUnload = (e) => {
-      e.preventDefault();
-      e.returnValue = '';
+      if (trainingStatusRef.current === 'running') {
+        e.preventDefault();
+        e.returnValue = 'A fine-tuning process is currently running. Leaving will cancel it.';
+        cancelTrainingOnExit();
+      }
     };
+
+    const handlePageHide = () => {
+      if (trainingStatusRef.current === 'running') {
+        cancelTrainingOnExit();
+      }
+    };
+
     window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('pagehide', handlePageHide);
 
     window.history.pushState(null, '', window.location.href);
     const handlePopState = () => {
@@ -259,7 +274,11 @@ export default function CreateYourGlynneModelPage() {
 
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('pagehide', handlePageHide);
       window.removeEventListener('popstate', handlePopState);
+      if (trainingStatusRef.current === 'running') {
+        cancelTrainingOnExit();
+      }
     };
   }, []);
 
@@ -371,6 +390,11 @@ export default function CreateYourGlynneModelPage() {
     error_message: null,
     download_command: null
   });
+
+  useEffect(() => {
+    trainingStatusRef.current = trainingState.status;
+  }, [trainingState.status]);
+
   const [copied, setCopied] = useState(false);
   const [jsonInput, setJsonInput] = useState('');
   const [showJsonModal, setShowJsonModal] = useState(false);
@@ -397,7 +421,6 @@ export default function CreateYourGlynneModelPage() {
 
     setIsGeneratingDataset(true);
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://ax-zyxe.onrender.com';
       const formData = new FormData();
       formData.append('personality_text', personalityText);
       formData.append('business_text', businessText);
@@ -410,7 +433,7 @@ export default function CreateYourGlynneModelPage() {
         formData.append('business_file', businessFile);
       }
 
-      const res = await fetch(`${backendUrl}/api/train/generate_dataset`, {
+      const res = await backendFetch('/api/train/generate_dataset', {
         method: 'POST',
         body: formData,
       });
@@ -447,11 +470,11 @@ export default function CreateYourGlynneModelPage() {
   useEffect(() => {
     if (!mounted) return;
     let interval;
+    let isCancelled = false;
     const fetchStatus = async () => {
       try {
-        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://ax-zyxe.onrender.com';
-        const res = await fetch(`${backendUrl}/api/train/status`).catch(() => null);
-        if (res && res.ok) {
+        const res = await backendFetch('/api/train/status').catch(() => null);
+        if (res && res.ok && !isCancelled) {
           const data = await res.json();
           setTrainingState(data);
         }
@@ -463,7 +486,10 @@ export default function CreateYourGlynneModelPage() {
     fetchStatus();
     interval = setInterval(fetchStatus, 2000);
 
-    return () => clearInterval(interval);
+    return () => {
+      isCancelled = true;
+      clearInterval(interval);
+    };
   }, [mounted]);
 
   // Auto scroll logs
@@ -535,8 +561,7 @@ export default function CreateYourGlynneModelPage() {
         logs: ['[CLIENT] Dispatching training job to GLYNNE CORE (https://ax-zyxe.onrender.com)...']
       }));
 
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://ax-zyxe.onrender.com';
-      const res = await fetch(`${backendUrl}/api/train`, {
+      const res = await backendFetch('/api/train', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -585,8 +610,7 @@ export default function CreateYourGlynneModelPage() {
     setIsInferring(true);
 
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://ax-zyxe.onrender.com';
-      const res = await fetch(`${backendUrl}/api/train/test_chat`, {
+      const res = await backendFetch('/api/train/test_chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -648,16 +672,24 @@ export default function CreateYourGlynneModelPage() {
     setTimeout(() => setCopied(false), 2500);
   };
 
-  const handleDirectDownload = () => {
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://ax-zyxe.onrender.com';
-    window.open(`${backendUrl}/api/train/download`, '_blank');
+  const handleDirectDownload = async () => {
+    try {
+      const backendUrl = getBackendUrl();
+      const token = await getAuthToken();
+      const downloadUrl = token
+        ? `${backendUrl}/api/train/download?access_token=${encodeURIComponent(token)}`
+        : `${backendUrl}/api/train/download`;
+      window.open(downloadUrl, '_blank');
+    } catch {
+      const backendUrl = getBackendUrl();
+      window.open(`${backendUrl}/api/train/download`, '_blank');
+    }
   };
 
   const handleResetAll = async () => {
     if (window.confirm('Are you sure you want to reset everything? This will clear current settings, terminal logs, and reset state for a new session.')) {
       try {
-        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://ax-zyxe.onrender.com';
-        await fetch(`${backendUrl}/api/train/reset`, { method: 'POST' }).catch(() => null);
+        await backendFetch('/api/train/reset', { method: 'POST' }).catch(() => null);
       } catch (err) {
         // Silencioso
       }
@@ -2762,18 +2794,32 @@ export default function CreateYourGlynneModelPage() {
           </div>
         )}
 
-        {/* MODAL DE CONFIRMACIÓN DE SALIDA (EXACTAMENTE IGUAL A AX_CHAT) */}
+        {/* MODAL DE CONFIRMACIÓN DE SALIDA */}
         {showExitModal && (
           <div className="md-logout-overlay">
             <div className="md-logout-modal">
-              <h3>End Session?</h3>
-              <p>Your fine-tuning configuration, prompt parameters, and dataset buffer are securely stored. Are you sure you want to leave the AI model training studio?</p>
+              <h3>{trainingState.status === 'running' ? 'Cancel & Exit Studio?' : 'End Session?'}</h3>
+              <p>
+                {trainingState.status === 'running' ? (
+                  <span>
+                    <strong style={{ color: '#ef4444', display: 'block', marginBottom: '8px' }}>
+                      ⚠️ Active Fine-Tuning Job In Progress
+                    </strong>
+                    A training job is actively running on the GPU cloud cluster. Leaving the studio now will safely stop and cancel the process to release resources. Are you sure you want to exit?
+                  </span>
+                ) : (
+                  'Your fine-tuning configuration, prompt parameters, and dataset buffer are securely stored. Are you sure you want to leave the AI model training studio?'
+                )}
+              </p>
               <div className="md-logout-actions">
                 <button className="md-btn-cancel" onClick={() => setShowExitModal(false)}>Cancel</button>
                 <button className="md-btn-confirm" onClick={() => {
                   window.onbeforeunload = null;
+                  if (trainingState.status === 'running') {
+                    cancelTrainingOnExit();
+                  }
                   router.push('/Panel');
-                }}>Exit Studio</button>
+                }}>{trainingState.status === 'running' ? 'Stop & Exit' : 'Exit Studio'}</button>
               </div>
             </div>
           </div>

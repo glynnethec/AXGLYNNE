@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { getCurrentUser } from '@/lib/supabaseClient';
+import { getBackendUrl, backendFetch } from '@/lib/backendFetch';
 import Header from '@/app/components/Header';
 import Footer from '@/app/components/Footer';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
@@ -281,7 +282,7 @@ export default function LibraryModelPage() {
   const categories = ['All', 'Reasoning & General', 'Reasoning & Math', 'Code & Software', 'Lightweight & Local'];
 
   // Backend API URL
-  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://ax-zyxe.onrender.com';
+  const backendUrl = getBackendUrl();
 
   // 🛡️ INTERCEPTAR NAVEGACIÓN (BOTÓN ATRÁS DEL NAVEGADOR & REFRESH)
   useEffect(() => {
@@ -311,7 +312,7 @@ export default function LibraryModelPage() {
     setIsLoadingFiles(true);
     try {
       const modelId = model.id;
-      const res = await fetch(`${backendUrl}/api/library/files?model_id=${encodeURIComponent(modelId)}`);
+      const res = await backendFetch(`/api/library/files?model_id=${encodeURIComponent(modelId)}`);
       const data = await res.json();
       if (res.ok && data.status === 'success' && Array.isArray(data.files)) {
         setModelFiles(data.files);

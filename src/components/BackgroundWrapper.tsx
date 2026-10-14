@@ -30,6 +30,7 @@ export default function BackgroundWrapper({ children, theme: explicitTheme, disa
     if (typeof window === 'undefined' || window.innerWidth > 700 || disableAutoAnimate) return;
 
     const intervalId = setInterval(() => {
+      if (typeof document !== 'undefined' && document.hidden) return;
       if (!wrapperRef.current) return;
 
       const rect = wrapperRef.current.getBoundingClientRect();
