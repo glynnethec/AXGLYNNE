@@ -17,40 +17,68 @@ type HoverStep = {
 
 export default function LoginPage() {
   const router = useRouter();
-  const { theme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
   const isDark = theme === 'dark';
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [history, setHistory] = useState<HoverStep[]>([]);
   const stepIdRef = useRef(0);
 
+  // Safe exit to home to prevent infinite history loops
+  const handleExitToHome = () => {
+    window.location.href = '/';
+  };
+
+  // 1. Session check: use router.replace instead of push to avoid stacking /login in history
   useEffect(() => {
     const checkSession = async () => {
       const { data } = await supabaseGoogle.auth.getSession();
-      if (data.session) {
-        router.push('/Panel');
+      if (data?.session) {
+        router.replace('/Panel');
       }
     };
     checkSession();
   }, [router]);
 
+  // 2. Intercept popstate (browser Back button / swipe back) on /login
+  // This prevents the user from being trapped in redirect loops between protected routes or OAuth redirects.
+  useEffect(() => {
+    // Push a sentinel history state
+    window.history.pushState({ glynne_auth_guard: true }, '', window.location.href);
+
+    const onPopState = (e: PopStateEvent) => {
+      e.preventDefault();
+      // Cleanly navigate to Home instead of reloading /login or looping
+      window.location.href = '/';
+    };
+
+    window.addEventListener('popstate', onPopState);
+    return () => {
+      window.removeEventListener('popstate', onPopState);
+    };
+  }, []);
+
   const handleGoogleLogin = async () => {
     try {
-      const { error } = await supabaseGoogle.auth.signInWithOAuth({
+      const { data, error } = await supabaseGoogle.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/Panel`,
+          skipBrowserRedirect: true,
         },
       });
 
       if (error) {
         console.error('Login error:', error.message);
         alert('Google authentication failed. Please try again.');
+        return;
+      }
+
+      if (data?.url) {
+        // Use window.location.replace to prevent stacking multiple redirect entries
+        window.location.replace(data.url);
       }
     } catch (err) {
-      console.error(err);
+      console.error('OAuth initiation failed:', err);
     }
   };
 
@@ -144,10 +172,55 @@ export default function LoginPage() {
         </div>
       </div>
 
+      {/* TOP TACTICAL HEADER NAVBAR */}
+      <header className="panel-login-header">
+        <div className="header-left-info">
+          <Link href="/" className="panel-logo-link" onClick={(e) => { e.preventDefault(); handleExitToHome(); }}>
+            <span className="logo-tag">[AXGLYNNE]</span>
+            <span>SYSTEM_CORE</span>
+          </Link>
+          <span className="header-badge">SECURE_GATEWAY_V5.2</span>
+        </div>
 
+        <div className="header-right-controls">
+          <div className="status-indicator">
+            <span className="status-dot"></span>
+            <span>GATEWAY: ONLINE</span>
+          </div>
+
+          <button
+            type="button"
+            className="panel-exit-btn"
+            onClick={handleExitToHome}
+            title="Regresar a la página principal"
+          >
+            [ &larr; VOLVER AL INICIO ]
+          </button>
+
+          <button
+            type="button"
+            className="panel-theme-btn"
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+          >
+            {isDark ? 'LIGHT MODE' : 'DARK MODE'}
+          </button>
+        </div>
+      </header>
 
       {/* MAIN CONTAINER (ASSEMBLY PANEL STYLE) */}
       <main className="panel-login-card">
+
+        {/* CORNER EXIT CLOSE BUTTON */}
+        <button
+          type="button"
+          className="panel-card-close-btn"
+          onClick={handleExitToHome}
+          title="Cerrar y volver al inicio"
+          aria-label="Cerrar y volver al inicio"
+        >
+          ✕
+        </button>
         
         {/* LEFT COLUMN: TACTICAL FORM */}
         <div className="panel-card-left">
@@ -181,9 +254,20 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <button type="button" className="panel-btn-submit" onClick={handleGoogleLogin}>
-            [ CONTINUE WITH GOOGLE &rarr; ]
-          </button>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <button type="button" className="panel-btn-submit" onClick={handleGoogleLogin}>
+              [ CONTINUE WITH GOOGLE &rarr; ]
+            </button>
+
+            <button
+              type="button"
+              className="panel-btn-cancel"
+              onClick={handleExitToHome}
+              title="Cancelar autenticación y volver al inicio"
+            >
+              [ &larr; CANCELAR Y VOLVER AL INICIO ]
+            </button>
+          </div>
 
           {/* SYSTEM CONSOLE FOOTER */}
           <div className="panel-term-footer">
