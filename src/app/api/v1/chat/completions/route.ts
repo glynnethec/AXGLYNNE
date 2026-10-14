@@ -1,18 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-// Mapping of GLYNNE public model IDs to build.nvidia.com / NVIDIA NIM model IDs
-const MODEL_MAPPING: Record<string, string> = {
-  'llama-3.2-11b-vision': 'meta/llama-3.2-11b-vision-instruct',
-  'llama-3.2-90b-vision': 'meta/llama-3.2-90b-vision-instruct',
-  'deepseek-coder-6.7b': 'deepseek-ai/deepseek-coder-6.7b-instruct',
-  'deepseek-v4-flash': 'deepseek-ai/deepseek-v4.1-flash',
-  'nvidia-nemotron-70b': 'nvidia/llama-3.1-nemotron-70b-instruct',
-  'mistral-nemo-12b': 'nv-mistralai/mistral-nemo-12b-instruct',
-  'phi-3.5-moe': 'microsoft/phi-3.5-moe-instruct',
-};
-
-
-const NVIDIA_NIM_BASE_URL = 'https://integrate.api.nvidia.com/v1';
+import { getBackendUrl } from '@/lib/backendFetch';
 
 // Handle CORS Preflight (OPTIONS)
 export async function OPTIONS() {
@@ -21,14 +8,17 @@ export async function OPTIONS() {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With, X-NVIDIA-API-KEY, X-Glynne-User-Token',
     },
   });
 }
 
 export async function POST(req: NextRequest) {
   try {
-    // 1. Validate incoming Authorization Header (Client Sub-API Key)
+    const backendBase = getBackendUrl();
+    const targetUrl = `${backendBase}/api/v1/chat/completions`;
+
+    // 1. Validar incoming Authorization Header (Client Sub-API Key)
     const authHeader = req.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return NextResponse.json(
@@ -40,164 +30,102 @@ export async function POST(req: NextRequest) {
             code: 'unauthorized_sub_api_key',
           },
         },
-        { status: 401 }
+        {
+          status: 401,
+          headers: { 'Access-Control-Allow-Origin': '*' },
+        }
       );
     }
 
     const clientApiKey = authHeader.replace('Bearer ', '').trim();
-    // Validate Sub-API key prefix or format if desired (e.g., must start with gly_sub_ live_ or be valid)
     if (!clientApiKey) {
       return NextResponse.json(
         { error: { message: 'Invalid API Key provided.', type: 'invalid_request_error' } },
-        { status: 401 }
+        {
+          status: 401,
+          headers: { 'Access-Control-Allow-Origin': '*' },
+        }
       );
     }
 
-    // 2. Extract Server NVIDIA API Key from Environment or Header Override (Supports general & model-specific keys)
-    const body = await req.json();
-    const { model, messages, temperature = 0.7, max_tokens = 2048, stream = false, top_p } = body;
-
-    const headerOverrideKey = req.headers.get('x-nvidia-api-key');
-    const modelEnvVar = model ? `NVIDIA_API_KEY_${model.toUpperCase().replace(/[-.]/g, '_')}` : undefined;
-    const specificModelKey = modelEnvVar ? process.env[modelEnvVar] : undefined;
-    
-    const nvidiaApiKey = headerOverrideKey || specificModelKey || process.env.NVIDIA_API_KEY || process.env.NEXT_PUBLIC_NVIDIA_API_KEY;
-
-    if (!messages || !Array.isArray(messages) || messages.length === 0) {
-      return NextResponse.json(
-        { error: { message: 'Array of "messages" is required.', type: 'invalid_request_error' } },
-        { status: 400 }
-      );
-    }
-
-    // Resolve mapped model or fallback to passed model if already in NVIDIA format
-    const targetNvidiaModel = MODEL_MAPPING[model] || model || 'meta/llama-3.3-70b-instruct';
-
-    // 4. Construct Payload for build.nvidia.com
-    const nvidiaPayload: Record<string, unknown> = {
-      model: targetNvidiaModel,
-      messages,
-      temperature,
-      max_tokens,
-      stream,
+    const forwardHeaders: Record<string, string> = {
+      'Content-Type': 'application/json',
+      'Authorization': authHeader,
     };
 
-    if (top_p !== undefined) {
-      nvidiaPayload.top_p = top_p;
+    const nvidiaOverrideKey = req.headers.get('x-nvidia-api-key');
+    if (nvidiaOverrideKey) {
+      forwardHeaders['x-nvidia-api-key'] = nvidiaOverrideKey;
     }
 
-    // 5. Proxy Request to NVIDIA NIM API with Fallback for Account-restricted / Unhosted models
-    let nvidiaResponse = await fetch(`${NVIDIA_NIM_BASE_URL}/chat/completions`, {
+    const glynneUserToken = req.headers.get('x-glynne-user-token');
+    if (glynneUserToken) {
+      forwardHeaders['x-glynne-user-token'] = glynneUserToken;
+    }
+
+    // 2. Extraer payload JSON
+    const body = await req.json();
+
+    // 3. Reenviar al Gateway centralizado de GLYNNE_LOGIC (FastAPI) donde se auditan tokens y cuotas
+    const backendResponse = await fetch(targetUrl, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${nvidiaApiKey}`,
-        'Accept': stream ? 'text/event-stream' : 'application/json',
-      },
-      body: JSON.stringify(nvidiaPayload),
+      headers: forwardHeaders,
+      body: JSON.stringify(body),
     });
 
-    // Smart Fallback: If NVIDIA NIM returns 404 ("Function ... Not found for account"), fallback to active Flagship Llama 3.2 Vision model
-    if (!nvidiaResponse.ok && nvidiaResponse.status === 404 && targetNvidiaModel !== 'meta/llama-3.2-11b-vision-instruct') {
-      const fallbackPayload = {
-        ...nvidiaPayload,
-        model: 'meta/llama-3.2-11b-vision-instruct'
-      };
-      
-      nvidiaResponse = await fetch(`${NVIDIA_NIM_BASE_URL}/chat/completions`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${nvidiaApiKey}`,
-          'Accept': stream ? 'text/event-stream' : 'application/json',
-        },
-        body: JSON.stringify(fallbackPayload),
-      });
-    }
+    const isStream = Boolean(body?.stream);
 
-    if (!nvidiaResponse.ok) {
-      const errorText = await nvidiaResponse.text();
-      let parsedError;
-      try {
-        parsedError = JSON.parse(errorText);
-      } catch {
-        parsedError = { message: errorText };
-      }
-
-      return NextResponse.json(
-        {
-          error: {
-            message: parsedError?.detail || parsedError?.message || 'Upstream GLYNNE AI Provider error',
-            type: 'glynne_provider_error',
-            code: nvidiaResponse.status,
-          },
-        },
-        { status: nvidiaResponse.status }
-      );
-    }
-
-    // 6. Handle Streaming SSE (Stream = true)
-    if (stream) {
-      const nvidiaBody = nvidiaResponse.body;
-      if (!nvidiaBody) {
-        return NextResponse.json(
-          { error: { message: 'Failed to receive stream from AI provider stream pipeline.' } },
-          { status: 500 }
-        );
-      }
-
-      const transformStream = new TransformStream({
-        transform(chunk, controller) {
-          // Pass-through text event stream chunks intact
-          controller.enqueue(chunk);
-        },
-      });
-
-      const responseStream = nvidiaBody.pipeThrough(transformStream);
-
-      return new NextResponse(responseStream, {
-        status: 200,
+    // Manejar Streaming SSE transparente
+    if (isStream && backendResponse.ok && backendResponse.body) {
+      return new NextResponse(backendResponse.body as any, {
+        status: backendResponse.status,
         headers: {
           'Content-Type': 'text/event-stream',
           'Cache-Control': 'no-cache, no-transform',
           'Connection': 'keep-alive',
           'Access-Control-Allow-Origin': '*',
-          'X-Powered-By': 'AXGLYNNE Model Provider Engine',
+          'X-Powered-By': 'AXGLYNNE Model Provider Engine (Proxy)',
           'Server': 'GLYNNE-AI-Gateway/1.0',
         },
       });
     }
 
-    // 7. Handle Non-Streaming JSON Response
-    const data = await nvidiaResponse.json();
-
-    // White-label response: replace model name with user's requested model or GLYNNE branding
-    if (data && data.model) {
-      data.model = model || data.model;
+    // Manejar Respuesta JSON
+    const contentType = backendResponse.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+      const data = await backendResponse.json();
+      return NextResponse.json(data, {
+        status: backendResponse.status,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'X-Powered-By': 'AXGLYNNE Model Provider Engine (Proxy)',
+          'Server': 'GLYNNE-AI-Gateway/1.0',
+        },
+      });
     }
-    if (data && !data.owned_by) {
-      data.owned_by = 'axglynne-ai-provider';
-    }
 
-    return NextResponse.json(data, {
-      status: 200,
+    const textData = await backendResponse.text();
+    return new NextResponse(textData, {
+      status: backendResponse.status,
       headers: {
         'Access-Control-Allow-Origin': '*',
-        'X-Powered-By': 'AXGLYNNE Model Provider Engine',
-        'Server': 'GLYNNE-AI-Gateway/1.0',
+        'Content-Type': contentType || 'text/plain',
       },
     });
   } catch (error: unknown) {
     const err = error as Error;
-    console.error('Error in /api/v1/chat/completions:', err);
+    console.error('Error in /api/v1/chat/completions proxy:', err);
     return NextResponse.json(
       {
         error: {
-          message: err.message || 'Internal GLYNNE AI Gateway Server Error',
+          message: err.message || 'GLYNNE AI Gateway Proxy unreachable.',
           type: 'glynne_gateway_exception',
         },
       },
-      { status: 500 }
+      {
+        status: 503,
+        headers: { 'Access-Control-Allow-Origin': '*' },
+      }
     );
   }
 }

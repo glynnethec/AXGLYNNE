@@ -1052,10 +1052,15 @@ export default function ModelsProviderPage() {
         if (user.email) setUserEmail(user.email);
         setIsAuthenticated(true);
 
-        const { data, error } = await supabaseGoogle
+        let keysQuery = supabaseGoogle
           .from('sub_api_keys')
-          .select('*')
-          .order('created_at', { ascending: false });
+          .select('*');
+
+        if (user.id) {
+          keysQuery = keysQuery.eq('user_id', user.id);
+        }
+
+        const { data, error } = await keysQuery.order('created_at', { ascending: false });
 
         if (!error && data && data.length > 0) {
           const formatted: SubApiKeyItem[] = data.map((row: any) => ({

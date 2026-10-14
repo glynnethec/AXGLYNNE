@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { supabase, signOut } from '@/lib/supabaseClient';
+import { getCurrentUser, signOut } from '@/lib/supabaseClient';
 import { FaSignOutAlt } from 'react-icons/fa';
 import { 
   FiMessageSquare, 
@@ -156,12 +156,19 @@ export default function AssemblyDashboard() {
   useEffect(() => {
     // Fetch Supabase session for mini profile
     const getSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      if (data.session?.user) {
-        setUserProfile({
-          ...data.session.user.user_metadata,
-          email: data.session.user.email
-        });
+      try {
+        const user = await getCurrentUser();
+        if (user && user.raw) {
+          const meta = user.raw.user_metadata || {};
+          setUserProfile({
+            ...meta,
+            email: user.email,
+            avatar_url: meta.avatar_url || meta.picture || null,
+            full_name: meta.full_name || meta.name || user.email?.split('@')[0] || 'AX_user'
+          });
+        }
+      } catch (err) {
+        console.warn('Error fetching user profile in AssemblyDashboard:', err);
       }
     };
     getSession();

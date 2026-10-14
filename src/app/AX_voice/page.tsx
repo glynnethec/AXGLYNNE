@@ -39,6 +39,7 @@ export default function AXVoicePage() {
   const [userId, setUserId] = useState<string>('default_user');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [unsupportedBrowser, setUnsupportedBrowser] = useState(false);
 
   // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS
   useEffect(() => {
@@ -384,6 +385,7 @@ export default function AXVoicePage() {
         recognitionRef.current = recognition;
       } else {
         console.warn('SpeechRecognition API not supported in this browser.');
+        setUnsupportedBrowser(true);
       }
       if (typeof window !== 'undefined') {
         audioRef.current = new Audio();
@@ -1243,6 +1245,30 @@ export default function AXVoicePage() {
       </div>
     )
   }
+
+  {/* ⚠️ BROWSER COMPATIBILITY NOTICE MODAL */}
+  {unsupportedBrowser && (
+    <div className="md-logout-overlay">
+      <div className="md-logout-modal">
+        <div style={{ fontSize: '11px', letterSpacing: '0.15em', opacity: 0.6, marginBottom: '8px', textTransform: 'uppercase' }}>
+          {"/// HARDWARE_COMPATIBILITY_ALERT"}
+        </div>
+        <h3>Browser Voice Engine Required</h3>
+        <p>
+          Your current browser does not natively support the Web Speech API required for real-time acoustic transcription.
+          For optimal voice performance, please use <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong>.
+        </p>
+        <div className="md-logout-actions">
+          <button className="md-btn-confirm" onClick={() => router.push('/Panel')}>
+            Return to Panel
+          </button>
+          <button className="md-btn-cancel" onClick={() => setUnsupportedBrowser(false)}>
+            Dismiss
+          </button>
+        </div>
+      </div>
+    </div>
+  )}
 
   <style dangerouslySetInnerHTML={{
     __html: `
