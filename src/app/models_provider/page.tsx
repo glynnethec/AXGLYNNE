@@ -1020,10 +1020,9 @@ export default function ModelsProviderPage() {
   const [isChatLoading, setIsChatLoading] = useState(false);
   const [chatError, setChatError] = useState<string | null>(null);
 
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS (TEMPORALMENTE COMENTADO PARA EDICIÓN)
-  /*
+  // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS
   useEffect(() => {
     const checkAuth = async () => {
       const user = await getCurrentUser();
@@ -1031,6 +1030,7 @@ export default function ModelsProviderPage() {
         router.replace('/login');
       } else {
         setIsAuthenticated(true);
+        setCurrentUserObj(user);
         if (user.email) {
           setUserEmail(user.email);
         }
@@ -1038,7 +1038,6 @@ export default function ModelsProviderPage() {
     };
     checkAuth();
   }, [router]);
-  */
 
   const [isLoadingDbKeys, setIsLoadingDbKeys] = useState(false);
   const [currentUserObj, setCurrentUserObj] = useState<any>(null);
@@ -1106,6 +1105,7 @@ export default function ModelsProviderPage() {
   useEffect(() => {
     let isMounted = true;
     const init = async () => {
+      if (!isAuthenticated) return;
       await fetchKeysFromSupabase();
       if (isMounted && typeof window !== 'undefined') {
         const savedKey = localStorage.getItem('glynne_nvidia_master_key');
@@ -1116,7 +1116,7 @@ export default function ModelsProviderPage() {
     };
     init();
     return () => { isMounted = false; };
-  }, []);
+  }, [isAuthenticated]);
 
   const handleSaveMasterKey = () => {
     if (nvidiaMasterKey) {

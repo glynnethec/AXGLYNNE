@@ -3,6 +3,15 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTheme } from '@/lib/ThemeContext';
+import {
+  FiSearch,
+  FiMic,
+  FiArrowUp,
+  FiClock,
+  FiMoreHorizontal,
+  FiX,
+  FiPlus
+} from 'react-icons/fi';
 
 interface LinPromptSectionProps {
   hideCard?: boolean;
@@ -16,20 +25,40 @@ interface LinPromptSectionProps {
 
 const LIN_PROMPT_TEXT = {
   es: {
+    tag: "GLYNNE AI ENGINEERING & AUTONOMOUS REASONING",
     title: "Razonamiento de IA basado en la experiencia",
-    description: "Interactúa con AX, el motor de razonamiento autónomo que opera bajo la capa de control de GLYNNE, para explorar cómo funciona la autonomía empresarial segura.",
+    description: "Interactúa con AX, el motor de razonamiento autónomo que se ejecuta bajo la capa de control de GLYNNE, para explorar cómo funciona la autonomía empresarial segura.",
     newModel: 'Nuevo: Modelo AX 5.2 disponible',
     tryModel: 'Probar AX 5.2',
-    placeholder: 'Pregunta cualquier cosa...',
-    promptLibrary: 'Biblioteca de prompts'
+    placeholder: 'Consulta a AX sobre automatización de procesos, agentes o infraestructura...',
+    promptLibrary: 'Biblioteca de prompts',
+    addFiles: '+ Adjuntar archivos o contexto',
+    inviteTitle: 'Nuevo: Modelo AX 5.2 disponible',
+    inviteDesc: 'Accede a inferencia directa, pesos abiertos y fine-tuning acelerado en NVIDIA H100 para transformar procesos empresariales con autonomía total.',
+    tags: [
+      { label: '/ orquestacion-agentes', prompt: '¿Cómo diseñar un pipeline multi-agente seguro con la capa de control de GLYNNE?' },
+      { label: '/ automatizacion-b2b', prompt: '¿Cómo automatizar flujos operativos y conciliaciones complejas con modelos propios?' },
+      { label: '/ hardware-nvidia', prompt: 'Explorar infraestructura NVIDIA H100 para inferencia de baja latencia y fine-tuning dedicado.' },
+      { label: '+ Fine-Tuning', prompt: 'Reentrenar modelo base con datos empresariales propios en clúster seguro.' }
+    ]
   },
   en: {
-    title: "Experience-driven AI reasoning",
-    description: "Interact with AX, the autonomous reasoning engine running under GLYNNE's control layer, to explore how secure enterprise autonomy works.",
+    tag: "GLYNNE AI ENGINEERING & AUTONOMOUS REASONING",
+    title: "Razonamiento de IA basado en la experiencia",
+    description: "Interactúa con AX, el motor de razonamiento autónomo que se ejecuta bajo la capa de control de GLYNNE, para explorar cómo funciona la autonomía empresarial segura.",
     newModel: 'New: AX 5.2 model available',
     tryModel: 'Try AX 5.2',
-    placeholder: 'Ask anything...',
-    promptLibrary: 'Prompt library'
+    placeholder: 'Ask AX about workflow automation, multi-agent pipelines, or infrastructure...',
+    promptLibrary: 'Prompt library',
+    addFiles: '+ Attach files or context',
+    inviteTitle: 'New: AX 5.2 model available',
+    inviteDesc: 'Direct inference, open weights, and accelerated fine-tuning on NVIDIA H100 architecture to power secure enterprise autonomy.',
+    tags: [
+      { label: '/ agent-orchestration', prompt: 'How to design a secure multi-agent workflow with GLYNNE control layer?' },
+      { label: '/ enterprise-b2b', prompt: 'How to automate mission-critical operations and complex pipelines with private models?' },
+      { label: '/ nvidia-compute', prompt: 'Explore NVIDIA H100 infrastructure for dedicated low-latency inference and training.' },
+      { label: '+ Fine-Tuning', prompt: 'Fine-tune open models with custom datasets on secure enclaves.' }
+    ]
   }
 };
 
@@ -46,6 +75,7 @@ export default function LinPromptSection({
   customTitle = customTitle ?? t.title;
   customDescription = customDescription ?? t.description;
   const [inputValue, setInputValue] = useState('');
+  const [showBanner, setShowBanner] = useState(true);
   const router = useRouter();
   const { theme } = useTheme();
   const isDark = theme === 'dark';
@@ -265,145 +295,114 @@ export default function LinPromptSection({
       {/* 4. MAIN CENTRAL CONTENT DISPLAY (BOUNDED BOX) */}
       <div className="central-blueprint-box" style={{
         position: 'absolute',
-        top: '24%',
-        left: '27%',
-        width: '53%',
-        height: '47%',
+        top: '46%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '100%',
+        maxWidth: '720px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        paddingLeft: 'clamp(20px, 2vw, 40px)',
-        paddingRight: 'clamp(20px, 2vw, 40px)',
+        paddingLeft: '20px',
+        paddingRight: '20px',
         zIndex: 5,
         boxSizing: 'border-box'
       }}>
-        {/* Title Block with Magenta Underline */}
+        {/* Tag matching Hero and other Home sections */}
         <div style={{
-          position: 'relative',
-          marginBottom: '10px',
           display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center'
+          alignItems: 'center',
+          gap: '8px',
+          fontSize: '11px',
+          fontWeight: 500,
+          color: isDark ? '#8f8f96' : '#71717a',
+          letterSpacing: '0.14em',
+          textTransform: 'uppercase',
+          marginBottom: '10px'
         }}>
-          <h2 style={{
-            fontSize: 'clamp(22px, 3vw, 36px)',
-            fontWeight: 700,
-            color: textColor,
-            letterSpacing: '-0.02em',
-            margin: 0,
-            lineHeight: 1.15,
-            textAlign: 'center'
-          }}>
-            {customTitle}
-          </h2>
-
-          {/* Magenta Underline */}
-          <div style={{
-            position: 'absolute',
-            bottom: '-4px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '100%',
-            maxWidth: '100%',
-            display: 'flex',
-            alignItems: 'center'
-          }}>
-            <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: magentaAccent, display: 'inline-block' }} />
-            <span style={{ flex: 1, height: '1.5px', backgroundColor: magentaAccent }} />
-            <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: magentaAccent, display: 'inline-block' }} />
-          </div>
+          <span style={{ fontSize: '13px', color: isDark ? '#ffffff' : '#111111' }}>⬡</span>
+          <span>{t.tag}</span>
         </div>
 
-        {/* Subtitle / Description */}
+        {/* Big Headline matching the rest of the Home */}
+        <h2 style={{
+          margin: '0 0 12px 0',
+          textAlign: 'center',
+          fontSize: 'clamp(28px, 3.6vw, 44px)',
+          fontWeight: 400,
+          color: textColor,
+          lineHeight: 1.15,
+          letterSpacing: '-0.025em',
+          maxWidth: '940px'
+        }}>
+          {customTitle}
+        </h2>
+
+        {/* Paragraph matching Home body typography */}
         <p style={{
-          fontSize: 'clamp(12px, 1.1vw, 14px)',
-          color: subtextColor,
+          margin: '0 auto 16px auto',
+          textAlign: 'center',
+          fontSize: 'clamp(13.5px, 1.15vw, 15px)',
+          lineHeight: 1.6,
+          color: isDark ? '#a1a1aa' : '#666666',
           fontWeight: 300,
-          lineHeight: 1.5,
           letterSpacing: '0.01em',
-          margin: '12px auto 20px auto',
-          maxWidth: '580px',
-          textAlign: 'center'
+          maxWidth: '760px'
         }}>
           {customDescription}
         </p>
 
-        {/* Interactive AI Input Box (Matching GLYNNE Design Language) */}
+        {/* Dome Avatar / Silhouette Icon (Matching Screenshot Top Element) */}
+        <div
+          style={{
+            width: '46px',
+            height: '28px',
+            backgroundColor: isDark ? '#2e2e34' : '#e2e2e7',
+            borderTopLeftRadius: '23px',
+            borderTopRightRadius: '23px',
+            borderBottomLeftRadius: '5px',
+            borderBottomRightRadius: '5px',
+            margin: '0 auto 16px auto',
+            opacity: 0.9,
+            transition: 'opacity 0.2s ease'
+          }}
+          title="AX Core"
+        />
+
+        {/* Interactive AI Input Box (Matching Reference Screenshot Design) */}
         <form
           onSubmit={handleSend}
           className="prompt-input-form"
           style={{
             width: '100%',
-            maxWidth: '680px',
-            backgroundColor: isDark ? 'rgba(14, 14, 18, 0.75)' : 'rgba(255, 255, 255, 0.85)',
-            backdropFilter: 'blur(24px)',
-            WebkitBackdropFilter: 'blur(24px)',
+            maxWidth: '640px',
+            backgroundColor: isDark ? '#1f2024' : '#ffffff',
             borderRadius: '24px',
-            padding: '16px',
-            border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.08)',
+            padding: '16px 20px 14px 20px',
+            border: isDark ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid rgba(0, 0, 0, 0.08)',
             boxShadow: isDark
-              ? '0 30px 60px rgba(0, 0, 0, 0.5), 0 0 1px rgba(255, 255, 255, 0.1)'
-              : '0 20px 40px rgba(0, 0, 0, 0.06)',
+              ? '0 20px 50px rgba(0, 0, 0, 0.55)'
+              : '0 16px 40px rgba(0, 0, 0, 0.08)',
             display: 'flex',
             flexDirection: 'column',
-            gap: '12px',
+            gap: '14px',
             textAlign: 'left',
-            transition: 'all 0.3s ease'
+            boxSizing: 'border-box',
+            transition: 'border-color 0.2s ease, box-shadow 0.2s ease'
           }}
         >
-          {/* Top Announcement Bar */}
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '2px 8px 8px 8px',
-            fontSize: '11px',
-            fontFamily: "'SF Mono', Monaco, monospace",
-            letterSpacing: '0.04em',
-            borderBottom: isDark ? '1px solid rgba(255, 255, 255, 0.06)' : '1px solid rgba(0, 0, 0, 0.05)',
-            color: isDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span className="prompt-input-icon" style={{ color: isDark ? '#ffffff' : '#111111', fontSize: '11px', opacity: 0.8 }}>⬡</span>
-              <span style={{ textTransform: 'uppercase', fontWeight: 500 }}>{t.newModel}</span>
-            </div>
-            <button
-              type="button"
-              onClick={() => router.push('/TrainModel')}
+          {/* Top Row: Search Magnifying Glass Icon + Textarea */}
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+            <FiSearch
+              size={18}
               style={{
-                background: 'transparent',
-                border: 'none',
-                color: textColor,
-                fontSize: '11px',
-                fontWeight: 600,
-                fontFamily: "'SF Mono', Monaco, monospace",
-                letterSpacing: '0.04em',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px',
-                opacity: 0.9,
-                transition: 'opacity 0.2s ease'
+                color: isDark ? 'rgba(255, 255, 255, 0.45)' : 'rgba(0, 0, 0, 0.45)',
+                flexShrink: 0,
+                marginTop: '2px'
               }}
-              onMouseOver={(e) => { e.currentTarget.style.opacity = '1'; }}
-              onMouseOut={(e) => { e.currentTarget.style.opacity = '0.9'; }}
-            >
-              <span>{t.tryModel} →</span>
-            </button>
-          </div>
-
-          {/* Inner Textarea Input Box */}
-          <div style={{
-            backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.025)',
-            borderRadius: '16px',
-            padding: '14px 16px',
-            border: isDark ? '1px solid rgba(255, 255, 255, 0.06)' : '1px solid rgba(0, 0, 0, 0.04)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px'
-          }}>
+            />
             <textarea
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
@@ -414,7 +413,7 @@ export default function LinPromptSection({
                 }
               }}
               placeholder={t.placeholder}
-              rows={2}
+              rows={1}
               style={{
                 border: 'none',
                 outline: 'none',
@@ -424,240 +423,319 @@ export default function LinPromptSection({
                 backgroundColor: 'transparent',
                 fontFamily: 'inherit',
                 resize: 'none',
-                lineHeight: 1.5,
-                fontWeight: 300,
-                letterSpacing: '0.01em'
+                lineHeight: 1.45,
+                fontWeight: 400,
+                letterSpacing: '0.01em',
+                padding: 0
               }}
             />
-
-            {/* Inner Bottom Controls (+ Left, Mic & Send Right) */}
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center'
-            }}>
-              {/* Left Plus Attachment Icon Button */}
-              <button
-                type="button"
-                className="prompt-input-icon-btn"
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  color: isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.45)',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '6px',
-                  borderRadius: '8px',
-                  transition: 'all 0.2s ease'
-                }}
-                onMouseOver={(e) => { e.currentTarget.style.color = textColor; e.currentTarget.style.backgroundColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'; }}
-                onMouseOut={(e) => { e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.45)'; e.currentTarget.style.backgroundColor = 'transparent'; }}
-              >
-                <svg className="prompt-input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                  <line x1="12" y1="5" x2="12" y2="19" />
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                </svg>
-              </button>
-
-              {/* Right Controls: Microphone & Circular Arrow Button */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <button
-                  type="button"
-                  className="prompt-input-icon-btn"
-                  style={{
-                    background: 'transparent',
-                    border: 'none',
-                    color: isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.45)',
-                    cursor: 'pointer',
-                    padding: '6px',
-                    borderRadius: '8px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    transition: 'all 0.2s ease'
-                  }}
-                  onMouseOver={(e) => { e.currentTarget.style.color = textColor; e.currentTarget.style.backgroundColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'; }}
-                  onMouseOut={(e) => { e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.45)'; e.currentTarget.style.backgroundColor = 'transparent'; }}
-                >
-                  <svg className="prompt-input-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-                    <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                    <line x1="12" y1="19" x2="12" y2="23" />
-                    <line x1="8" y1="23" x2="16" y2="23" />
-                  </svg>
-                </button>
-
-                {/* Circular Send Button with Up Arrow */}
-                <button
-                  type="submit"
-                  disabled={!inputValue.trim()}
-                  style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '50%',
-                    backgroundColor: inputValue.trim()
-                      ? (isDark ? '#ffffff' : '#111111')
-                      : (isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)'),
-                    color: inputValue.trim()
-                      ? (isDark ? '#000000' : '#ffffff')
-                      : (isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'),
-                    border: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: inputValue.trim() ? 'pointer' : 'default',
-                    transition: 'all 0.2s ease',
-                    boxShadow: inputValue.trim() ? '0 2px 8px rgba(0,0,0,0.2)' : 'none'
-                  }}
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="12" y1="19" x2="12" y2="5" />
-                    <polyline points="5 12 12 5 19 12" />
-                  </svg>
-                </button>
-              </div>
-            </div>
           </div>
 
-          {/* Bottom Action Pill Bar */}
+          {/* Bottom Row: + Add tabs or files (Left) & Mic + Circular Up-Arrow Button (Right) */}
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '2px 4px 0 4px',
-            gap: '8px',
-            flexWrap: 'wrap'
+            alignItems: 'center'
           }}>
-            {/* Left Pill Group */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              {/* Model Pill Badge */}
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '5px 12px',
-                borderRadius: '999px',
-                border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
-                backgroundColor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.02)',
-                fontSize: '12px',
-                fontWeight: 500,
-                color: textColor,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease'
-              }}>
-                <svg className="prompt-input-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                </svg>
-                <span>AX 5.2</span>
-              </div>
-
-              {/* Sync Icon Pill Button */}
-              <button
-                type="button"
-                className="prompt-input-icon-btn"
-                style={{
-                  width: '30px',
-                  height: '30px',
-                  borderRadius: '50%',
-                  border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
-                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
-                  color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease'
-                }}
-                onMouseOver={(e) => { e.currentTarget.style.color = textColor; e.currentTarget.style.backgroundColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'; }}
-                onMouseOut={(e) => { e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)'; e.currentTarget.style.backgroundColor = isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)'; }}
-              >
-                <svg className="prompt-input-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                  <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2" />
-                </svg>
-              </button>
-
-              {/* Sparkle/Pointer Icon Pill Button */}
-              <button
-                type="button"
-                className="prompt-input-icon-btn"
-                style={{
-                  width: '30px',
-                  height: '30px',
-                  borderRadius: '50%',
-                  border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
-                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
-                  color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease'
-                }}
-                onMouseOver={(e) => { e.currentTarget.style.color = textColor; e.currentTarget.style.backgroundColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'; }}
-                onMouseOut={(e) => { e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)'; e.currentTarget.style.backgroundColor = isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)'; }}
-              >
-                <svg className="prompt-input-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-                </svg>
-              </button>
-
-              {/* Web Globe Search Icon Pill Button */}
-              <button
-                type="button"
-                className="prompt-input-icon-btn"
-                style={{
-                  width: '30px',
-                  height: '30px',
-                  borderRadius: '50%',
-                  border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
-                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
-                  color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease'
-                }}
-                onMouseOver={(e) => { e.currentTarget.style.color = textColor; e.currentTarget.style.backgroundColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'; }}
-                onMouseOut={(e) => { e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)'; e.currentTarget.style.backgroundColor = isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)'; }}
-              >
-                <svg className="prompt-input-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                  <circle cx="12" cy="12" r="10" />
-                  <line x1="2" y1="12" x2="22" y2="12" />
-                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Right Side: Prompt Library Pill */}
             <button
               type="button"
               style={{
-                display: 'flex',
+                background: 'transparent',
+                border: 'none',
+                color: isDark ? 'rgba(255, 255, 255, 0.45)' : 'rgba(0, 0, 0, 0.45)',
+                fontSize: '13px',
+                fontWeight: 400,
+                cursor: 'pointer',
+                display: 'inline-flex',
                 alignItems: 'center',
                 gap: '6px',
-                padding: '5px 12px',
-                borderRadius: '999px',
-                border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
-                backgroundColor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.02)',
-                fontSize: '12px',
-                fontWeight: 500,
-                color: textColor,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease'
+                padding: 0,
+                transition: 'color 0.2s ease'
               }}
-              onMouseOver={(e) => { e.currentTarget.style.backgroundColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'; }}
-              onMouseOut={(e) => { e.currentTarget.style.backgroundColor = isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.02)'; }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = textColor;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = isDark ? 'rgba(255, 255, 255, 0.45)' : 'rgba(0, 0, 0, 0.45)';
+              }}
             >
-              <svg className="prompt-input-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                <rect x="4" y="4" width="16" height="16" rx="2" />
-                <path d="M9 9h6M9 13h6M9 17h4" />
-              </svg>
-              <span>{t.promptLibrary}</span>
+              <FiPlus size={14} />
+              <span>{t.addFiles}</span>
             </button>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <button
+                type="button"
+                onClick={() => router.push('/AX_voice')}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: isDark ? 'rgba(255, 255, 255, 0.45)' : 'rgba(0, 0, 0, 0.45)',
+                  cursor: 'pointer',
+                  padding: '4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'color 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = textColor;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = isDark ? 'rgba(255, 255, 255, 0.45)' : 'rgba(0, 0, 0, 0.45)';
+                }}
+                title="Voice reasoning"
+              >
+                <FiMic size={17} />
+              </button>
+
+              <button
+                type="submit"
+                disabled={!inputValue.trim()}
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  backgroundColor: inputValue.trim()
+                    ? (isDark ? '#ffffff' : '#111111')
+                    : (isDark ? '#2e2e34' : '#e4e4e7'),
+                  color: inputValue.trim()
+                    ? (isDark ? '#000000' : '#ffffff')
+                    : (isDark ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)'),
+                  border: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: inputValue.trim() ? 'pointer' : 'default',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <FiArrowUp size={16} style={{ strokeWidth: 2.2 }} />
+              </button>
+            </div>
           </div>
         </form>
+
+        {/* Quick Tag Pills Row (Directly below input box matching reference screenshot) */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          marginTop: '12px',
+          flexWrap: 'wrap',
+          justifyContent: 'center'
+        }}>
+          {/* Clock History Icon */}
+          <div style={{
+            color: isDark ? 'rgba(255, 255, 255, 0.35)' : 'rgba(0, 0, 0, 0.35)',
+            display: 'flex',
+            alignItems: 'center',
+            padding: '0 4px'
+          }}>
+            <FiClock size={15} />
+          </div>
+
+          {/* Tags */}
+          {t.tags.map((tag, idx) => (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => setInputValue(tag.prompt)}
+              style={{
+                background: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)',
+                border: isDark ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid rgba(0, 0, 0, 0.08)',
+                borderRadius: '8px',
+                padding: '5px 12px',
+                fontSize: '12px',
+                color: isDark ? '#d4d4d8' : '#3f3f46',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                fontWeight: 400
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)';
+                e.currentTarget.style.color = textColor;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)';
+                e.currentTarget.style.color = isDark ? '#d4d4d8' : '#3f3f46';
+              }}
+            >
+              {tag.label}
+            </button>
+          ))}
+
+          {/* More Dots */}
+          <button
+            type="button"
+            onClick={() => router.push('/ia_vailable')}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              color: isDark ? 'rgba(255, 255, 255, 0.35)' : 'rgba(0, 0, 0, 0.35)',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              padding: '4px'
+            }}
+            title="More options"
+          >
+            <FiMoreHorizontal size={16} />
+          </button>
+        </div>
+
+        {/* Floating Invite Banner Card (Monochrome Black, Grey, White) */}
+        {showBanner && (
+          <div style={{
+            position: 'relative',
+            marginTop: '20px',
+            width: '100%',
+            maxWidth: '520px',
+            borderRadius: '18px',
+            overflow: 'hidden',
+            background: isDark
+              ? 'linear-gradient(110deg, #18191d 0%, #1c1d22 55%, #25262c 80%, #2f3037 100%)'
+              : 'linear-gradient(110deg, #ffffff 0%, #f7f7f8 55%, #ebebef 80%, #e2e2e8 100%)',
+            border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.08)',
+            boxShadow: isDark ? '0 16px 36px rgba(0, 0, 0, 0.55)' : '0 12px 30px rgba(0, 0, 0, 0.08)',
+            padding: '16px 20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            textAlign: 'left'
+          }}>
+            {/* Close Button */}
+            <button
+              type="button"
+              onClick={() => setShowBanner(false)}
+              style={{
+                position: 'absolute',
+                top: '10px',
+                right: '10px',
+                width: '22px',
+                height: '22px',
+                borderRadius: '50%',
+                backgroundColor: isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)',
+                border: 'none',
+                color: isDark ? '#ffffff' : '#000000',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                zIndex: 5,
+                transition: 'all 0.2s ease'
+              }}
+              title="Dismiss"
+            >
+              <FiX size={12} />
+            </button>
+
+            {/* Text Content */}
+            <div style={{ flex: 1, paddingRight: '16px', zIndex: 2 }}>
+              <h4 style={{
+                margin: '0 0 6px 0',
+                fontSize: '14px',
+                fontWeight: 600,
+                color: textColor
+              }}>
+                {t.inviteTitle}
+              </h4>
+              <p style={{
+                margin: '0 0 8px 0',
+                fontSize: '12px',
+                lineHeight: 1.45,
+                color: subtextColor,
+                maxWidth: '280px'
+              }}>
+                {t.inviteDesc}
+              </p>
+              <button
+                type="button"
+                onClick={() => router.push('/TrainModel')}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: isDark ? '#ffffff' : '#111111',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  padding: 0,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  opacity: 0.9,
+                  transition: 'opacity 0.2s ease'
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.opacity = '1')}
+                onMouseLeave={(e) => (e.currentTarget.style.opacity = '0.9')}
+              >
+                <span>{t.tryModel} →</span>
+              </button>
+            </div>
+
+            {/* Right Side: 3D Floating Translucent Cards Graphic (Monochrome Glass) */}
+            <div style={{
+              position: 'relative',
+              width: '110px',
+              height: '76px',
+              flexShrink: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              {/* Back card */}
+              <div style={{
+                position: 'absolute',
+                width: '52px',
+                height: '66px',
+                borderRadius: '10px',
+                backgroundColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)',
+                border: isDark ? '1px solid rgba(255, 255, 255, 0.16)' : '1px solid rgba(0, 0, 0, 0.08)',
+                transform: 'rotate(-10deg) translate(-14px, -4px)',
+                backdropFilter: 'blur(8px)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <div style={{
+                  width: '18px',
+                  height: '12px',
+                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.22)' : 'rgba(0, 0, 0, 0.15)',
+                  borderTopLeftRadius: '10px',
+                  borderTopRightRadius: '10px',
+                  borderBottomLeftRadius: '3px',
+                  borderBottomRightRadius: '3px'
+                }} />
+              </div>
+
+              {/* Front card */}
+              <div style={{
+                position: 'absolute',
+                width: '52px',
+                height: '66px',
+                borderRadius: '10px',
+                backgroundColor: isDark ? 'rgba(255, 255, 255, 0.16)' : 'rgba(0, 0, 0, 0.08)',
+                border: isDark ? '1px solid rgba(255, 255, 255, 0.26)' : '1px solid rgba(0, 0, 0, 0.12)',
+                transform: 'rotate(8deg) translate(8px, 4px)',
+                backdropFilter: 'blur(8px)',
+                boxShadow: isDark ? '0 8px 24px rgba(0, 0, 0, 0.6)' : '0 8px 20px rgba(0, 0, 0, 0.08)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <div style={{
+                  width: '20px',
+                  height: '14px',
+                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.45)' : 'rgba(0, 0, 0, 0.25)',
+                  borderTopLeftRadius: '10px',
+                  borderTopRightRadius: '10px',
+                  borderBottomLeftRadius: '3px',
+                  borderBottomRightRadius: '3px'
+                }} />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

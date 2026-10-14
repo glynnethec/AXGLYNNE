@@ -124,10 +124,57 @@ export default function AboutManifesto() {
           font-size: 12px;
           letter-spacing: 0.05em;
         }
+        .dual-engine-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+          gap: 24px;
+          width: 100%;
+          max-width: 900px;
+          margin: 48px auto 0 auto;
+          text-align: left;
+        }
+        .dual-engine-card {
+          padding: 36px 32px;
+          border-radius: 20px;
+          border: 1px solid ${isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)'};
+          background-color: ${isDark ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.015)'};
+          backdrop-filter: blur(10px);
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+        .metric-banner {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 48px;
+          margin: 48px auto 24px auto;
+          text-align: center;
+        }
+        .metric-item {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+        }
+        .metric-val {
+          font-family: monospace;
+          font-size: clamp(32px, 4vw, 48px);
+          font-weight: 500;
+          letter-spacing: -0.02em;
+          color: ${isDark ? '#ffffff' : '#111111'};
+        }
+        .metric-label {
+          font-size: 11px;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: ${isDark ? '#a1a1aa' : '#86868b'};
+        }
         @media (max-width: 768px) {
           .work-process { flex-direction: column; gap: 24px; }
           .work-process-item { flex-direction: column; gap: 24px; }
           .work-process-item span.arrow { transform: rotate(90deg); }
+          .dual-engine-grid { grid-template-columns: 1fr; }
+          .metric-banner { gap: 28px; }
         }
         @media (max-width: 700px) {
           .glynne-section {
@@ -168,14 +215,41 @@ export default function AboutManifesto() {
         <div className="glynne-label">Who We Are</div>
 
         <p className="glynne-text">
-          <strong style={{ color: isDark ? '#ffffff' : '#111111', fontWeight: 400 }}>GLYNNE S.A.S.</strong> is a technology company founded in Bogotá, Colombia, dedicated to software architecture, artificial intelligence, and systems automation.
+          <strong style={{ color: isDark ? '#ffffff' : '#111111', fontWeight: 400 }}>GLYNNE S.A.S.</strong> is an enterprise software architecture and autonomous intelligence engineering firm founded in Bogotá, Colombia.
         </p>
         <p className="glynne-text">
-          We build technology for companies that need to solve complex problems through software tailored specifically to their operations. Our work combines software engineering, systems architecture, artificial intelligence, and solution design to create robust, scalable platforms ready to evolve.
+          We do not sell superficial AI wrappers or generic SaaS subscriptions. Our core business is designing and building mission-critical software ecosystems tailored for organizations that need artificial intelligence to operate, decide, and execute complex workflows with mathematical precision, strict deterministic containment, and absolute data sovereignty.
         </p>
         <p className="glynne-text">
-          Although we were born in Colombia, our work is not limited by location. We work with companies and projects around the world, developing technological solutions that integrate across different industries, infrastructures, and operating models.
+          Although we were born in Colombia, our engineering operates globally. We partner with enterprises worldwide, turning chaotic operational bottlenecks into fully autonomous, auditable technological platforms.
         </p>
+
+        {/* The Two Symmetrical Engines */}
+        <div className="dual-engine-grid">
+          <div className="dual-engine-card">
+            <span style={{ fontFamily: 'monospace', fontSize: '11px', letterSpacing: '0.15em', textTransform: 'uppercase', color: isDark ? '#ffffff' : '#111111', opacity: 0.7 }}>
+              {"// 01 · THE ENTERPRISE CORE"}
+            </span>
+            <h3 style={{ fontSize: '20px', fontWeight: 400, color: isDark ? '#ffffff' : '#111111', margin: 0, letterSpacing: '-0.01em' }}>
+              GLYNNE S.A.S.
+            </h3>
+            <p style={{ fontSize: '14px', lineHeight: 1.6, color: isDark ? '#a1a1aa' : '#86868b', margin: 0, fontWeight: 300 }}>
+              Tailored software ecosystems for corporations. We engineer the underlying architecture, data pipelines, and deterministic guardrails required for autonomous AI agents to run back-office operations without human latency or data leakage.
+            </p>
+          </div>
+
+          <div className="dual-engine-card">
+            <span style={{ fontFamily: 'monospace', fontSize: '11px', letterSpacing: '0.15em', textTransform: 'uppercase', color: isDark ? '#ffffff' : '#111111', opacity: 0.7 }}>
+              {"// 02 · RESEARCH & COMMUNITY LAB"}
+            </span>
+            <h3 style={{ fontSize: '20px', fontWeight: 400, color: isDark ? '#ffffff' : '#111111', margin: 0, letterSpacing: '-0.01em' }}>
+              AX GLYNNE
+            </h3>
+            <p style={{ fontSize: '14px', lineHeight: 1.6, color: isDark ? '#a1a1aa' : '#86868b', margin: 0, fontWeight: 300 }}>
+              Our public technological frontier. We provide developers, researchers, and creators with open-weights repositories, QLoRA fine-tuning studios, and GPU-accelerated sub-APIs to stimulate independent technological innovation and build an open AI community.
+            </p>
+          </div>
+        </div>
       </section>
 
       <div className="glynne-arrow">↓</div>
@@ -188,16 +262,16 @@ export default function AboutManifesto() {
         </h2>
 
         <p className="glynne-text">
-          At Glynne, we believe that a good technological solution doesn't depend solely on an AI model, a framework, or a specific tool.
+          Injecting generative AI into a broken operational process only automates inefficiency. At Glynne, we believe that real technological sovereignty doesn't depend solely on an isolated LLM, a framework, or a trendy tool.
         </p>
         <p className="glynne-text" style={{ color: isDark ? '#ffffff' : '#111111', fontWeight: 400, fontSize: '20px', margin: '16px auto 32px auto' }}>
-          It depends on how all the pieces work together.
+          Software is the fortress. Artificial intelligence is the engine inside.
         </p>
         <p className="glynne-text">
-          That's why our process starts by understanding the problem, the operation, and the technological context of each project. From there, we design the architecture, select the right technologies, and build each component striving for a balance between performance, scalability, security, maintainability, and evolution.
+          Language models hallucinate by design when left unconstrained. That is why our architecture enforces strict deterministic sandboxing: strict schema validation, constrained tool calls, role-based memory buffers, and Human-in-the-Loop checkpoints for high-risk decisions.
         </p>
         <p className="glynne-text">
-          Artificial intelligence is a fundamental part of our engineering, but we don't treat it as a trend or an isolated element. We integrate it into real systems, connecting it with data, processes, applications, APIs, agents, and services.
+          Our execution sequence is immutable: <span style={{ fontFamily: 'monospace', color: isDark ? '#ffffff' : '#111111' }}>Business Context → Software Architecture → Sandboxed Tools → AI Engine → Deterministic Action → Complete Auditability.</span>
         </p>
       </section>
 
@@ -298,6 +372,43 @@ export default function AboutManifesto() {
         </p>
         <p className="glynne-text" style={{ color: isDark ? '#ffffff' : '#111111', fontWeight: 400, fontSize: '20px', marginTop: '32px' }}>
           It's about building with what works best today<br />and designing for what will be needed tomorrow.
+        </p>
+      </section>
+
+      <div className="glynne-arrow">↓</div>
+
+      {/* 5.4 Caso de Estudio e Impacto Real */}
+      <section className="glynne-section" style={{ paddingTop: '40px' }}>
+        <div className="glynne-label">Engineering in Action</div>
+        <h2 className="glynne-title" style={{ fontSize: 'clamp(28px, 4vw, 44px)' }}>
+          Compressing weeks into minutes.<br />Autonomous systems in production.
+        </h2>
+
+        <p className="glynne-text">
+          Enterprise transformation is measured in operational reality, not theoretical benchmarks. In contract furniture modeling and CET extensions for US manufacturers, validating and synchronizing complex technical catalogs and multi-layered XML matrices historically took three weeks of tedious manual human auditing.
+        </p>
+        <p className="glynne-text">
+          GLYNNE engineered an autonomous backend ecosystem where artificial intelligence operates invisibly inside deterministic software rails: extracting matrix structures, comparing delta catalogs, and generating audit traces with zero human intervention.
+        </p>
+
+        {/* Impact Metrics Banner */}
+        <div className="metric-banner">
+          <div className="metric-item">
+            <span className="metric-val">99%</span>
+            <span className="metric-label">Operational Time Saved</span>
+          </div>
+          <div className="metric-item">
+            <span className="metric-val">3 Wks → 4 Min</span>
+            <span className="metric-label">Cycle Compression</span>
+          </div>
+          <div className="metric-item">
+            <span className="metric-val">100%</span>
+            <span className="metric-label">Deterministic XML Precision</span>
+          </div>
+        </div>
+
+        <p className="glynne-text" style={{ color: isDark ? '#ffffff' : '#111111', fontWeight: 400, fontSize: '18px', marginTop: '16px' }}>
+          This is the core of GLYNNE S.A.S.: building software so robust that artificial intelligence can run enterprise operations autonomously.
         </p>
       </section>
 
