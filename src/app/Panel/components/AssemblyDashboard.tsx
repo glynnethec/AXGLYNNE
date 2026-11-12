@@ -23,6 +23,7 @@ import {
   FiX
 } from 'react-icons/fi';
 import LiquidOrb from '@/app/AX_chat/components/LiquidOrb';
+import Topography from './Topography';
 import { useTheme } from '@/lib/ThemeContext';
 import './AssemblyDashboard.css';
 
@@ -48,76 +49,66 @@ interface PlatformTool {
   icon: React.ReactNode;
 }
 
-function ToolEditorialArtwork({ name }: { name: string }) {
-  switch (name) {
-    case 'Librarymodel':
-      return (
-        <svg viewBox="0 0 320 180" className="hub-artwork-svg" aria-hidden="true">
-          <defs>
-            <pattern id="art-grid-lib" width="20" height="20" patternUnits="userSpaceOnUse">
-              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="currentColor" strokeOpacity="0.12" strokeWidth="1" />
-            </pattern>
-          </defs>
-          <rect width="320" height="180" fill="url(#art-grid-lib)" />
-          <rect x="85" y="28" width="150" height="124" fill="none" stroke="currentColor" strokeWidth="1.5" />
-          <rect x="105" y="48" width="110" height="84" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" />
-          <circle cx="160" cy="90" r="28" fill="currentColor" fillOpacity="0.1" stroke="currentColor" strokeWidth="1.5" />
-          <line x1="85" y1="90" x2="235" y2="90" stroke="currentColor" strokeOpacity="0.35" strokeWidth="1" />
-          <line x1="160" y1="28" x2="160" y2="152" stroke="currentColor" strokeOpacity="0.35" strokeWidth="1" />
-        </svg>
-      );
-    case 'Create_you_GLYNNE_model':
-      return (
-        <svg viewBox="0 0 320 180" className="hub-artwork-svg" aria-hidden="true">
-          <circle cx="90" cy="90" r="46" fill="none" stroke="currentColor" strokeOpacity="0.3" strokeWidth="1" />
-          <circle cx="160" cy="90" r="46" fill="none" stroke="currentColor" strokeWidth="1.5" />
-          <circle cx="230" cy="90" r="46" fill="none" stroke="currentColor" strokeOpacity="0.3" strokeWidth="1" />
-          <circle cx="160" cy="90" r="10" fill="currentColor" />
-          <line x1="44" y1="90" x2="276" y2="90" stroke="currentColor" strokeOpacity="0.4" strokeWidth="1" />
-        </svg>
-      );
-    case 'models_provider':
-      return (
-        <svg viewBox="0 0 320 180" className="hub-artwork-svg" aria-hidden="true">
-          <polygon points="160,22 250,148 70,148" fill="none" stroke="currentColor" strokeWidth="1.5" />
-          <polygon points="160,54 220,136 100,136" fill="currentColor" fillOpacity="0.08" stroke="currentColor" strokeWidth="1" />
-          <circle cx="160" cy="108" r="14" fill="none" stroke="currentColor" strokeWidth="1.5" />
-          <circle cx="160" cy="108" r="4" fill="currentColor" />
-          <line x1="30" y1="148" x2="290" y2="148" stroke="currentColor" strokeOpacity="0.25" strokeWidth="1" />
-        </svg>
-      );
-    case 'AX_chat':
-      return (
-        <svg viewBox="0 0 320 180" className="hub-artwork-svg" aria-hidden="true">
-          <rect x="45" y="34" width="230" height="112" fill="none" stroke="currentColor" strokeOpacity="0.22" strokeWidth="1" />
-          <path d="M45 90 Q 102 35, 160 90 T 275 90" fill="none" stroke="currentColor" strokeWidth="1.8" />
-          <path d="M45 90 Q 102 145, 160 90 T 275 90" fill="none" stroke="currentColor" strokeOpacity="0.35" strokeWidth="1.2" />
-          <circle cx="160" cy="90" r="6" fill="currentColor" />
-        </svg>
-      );
-    default:
-      return (
-        <svg viewBox="0 0 320 180" className="hub-artwork-svg" aria-hidden="true">
-          {[55, 75, 95, 115, 135, 155, 175, 195, 215, 235, 255].map((x, idx) => {
-            const heights = [24, 52, 86, 44, 110, 128, 92, 58, 102, 46, 28];
-            const h = heights[idx] || 40;
-            const y = 90 - h / 2;
-            return (
-              <rect
-                key={x}
-                x={x}
-                y={y}
-                width="6"
-                height={h}
-                fill="currentColor"
-                fillOpacity={idx === 5 ? 0.9 : 0.35}
-              />
-            );
-          })}
-        </svg>
-      );
+const TOPO_VARIANTS: Record<
+  string,
+  {
+    direction: 'forward' | 'backward' | 'left' | 'right';
+    tilt: number;
+    scale: number;
+    elevation: number;
+    foreground: number;
+    offsetTransform: string;
   }
-}
+> = {
+  Librarymodel: {
+    direction: 'left',
+    tilt: 90,
+    scale: 1.25,
+    elevation: 0.75,
+    foreground: 0.3,
+    offsetTransform: 'translate(-6%, 4%) scale(1.12)'
+  },
+  Create_you_GLYNNE_model: {
+    direction: 'right',
+    tilt: 56,
+    scale: 1.05,
+    elevation: 0.95,
+    foreground: 0.18,
+    offsetTransform: 'translate(8%, -6%) scale(1.16)'
+  },
+  models_provider: {
+    direction: 'forward',
+    tilt: 72,
+    scale: 1.4,
+    elevation: 0.65,
+    foreground: 0.42,
+    offsetTransform: 'translate(0%, 10%) scale(1.18)'
+  },
+  AX_chat: {
+    direction: 'backward',
+    tilt: 42,
+    scale: 0.95,
+    elevation: 0.85,
+    foreground: 0.22,
+    offsetTransform: 'translate(-8%, -8%) scale(1.12)'
+  },
+  AX_voice: {
+    direction: 'left',
+    tilt: 82,
+    scale: 1.35,
+    elevation: 1.05,
+    foreground: 0.35,
+    offsetTransform: 'translate(6%, 6%) scale(1.16)'
+  },
+  'orb-core': {
+    direction: 'right',
+    tilt: 64,
+    scale: 1.15,
+    elevation: 0.7,
+    foreground: 0.25,
+    offsetTransform: 'translate(-4%, 8%) scale(1.12)'
+  }
+};
 
 export default function AssemblyDashboard() {
   const router = useRouter();
@@ -131,6 +122,7 @@ export default function AssemblyDashboard() {
   const [mainTab, setMainTab] = useState<MainTab>('tools');
   const [toolFilter, setToolFilter] = useState<ToolFilter>('all');
   const [activeTool, setActiveTool] = useState<string>('Librarymodel');
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [isFading, setIsFading] = useState(false);
 
   const [userProfile, setUserProfile] = useState<any>(null);
@@ -287,8 +279,6 @@ export default function AssemblyDashboard() {
   });
 
   const userName = userProfile?.full_name || 'AX_user';
-  const mastheadTitle =
-    mainTab === 'tools' ? 'TOOLS' : mainTab === 'orb' ? 'ORB STUDIO' : 'ROUTES';
 
   return (
     <div
@@ -373,11 +363,6 @@ export default function AssemblyDashboard() {
           </div>
         </header>
 
-        {/* ── MASTHEAD TITLE ── */}
-        <section className="hub-masthead">
-          <h1 className="hub-masthead-title">{mastheadTitle}</h1>
-        </section>
-
         {/* ── CATEGORIES ROW ── */}
         <section className="hub-categories-bar">
           <span className="hub-categories-label">
@@ -442,12 +427,45 @@ export default function AssemblyDashboard() {
             <div className="hub-editorial-grid">
               {filteredTools.map(tool => {
                 const isSelected = activeTool === tool.name;
+                const isHovered = hoveredCard === tool.name;
+                const topo = TOPO_VARIANTS[tool.name] || TOPO_VARIANTS.Librarymodel;
                 return (
                   <article
                     key={tool.name}
                     className={`hub-cell ${isSelected ? 'is-selected' : ''}`}
                     onClick={() => handleSelectTool(tool.name)}
+                    onMouseEnter={() => setHoveredCard(tool.name)}
+                    onMouseLeave={() => setHoveredCard(null)}
                   >
+                    <div
+                      className="hub-cell-bg"
+                      style={{ transform: topo.offsetTransform }}
+                    >
+                      <Topography
+                        color="#4f7cff"
+                        lineCount={11}
+                        lineWidth={0.9}
+                        elevation={topo.elevation}
+                        foreground={topo.foreground}
+                        tilt={topo.tilt}
+                        speed={isHovered ? 0.25 : 0}
+                        direction={topo.direction}
+                        glow={0.6}
+                        depthOfField={0.4}
+                        fog={0.17}
+                        hoverEffect="lift"
+                        clickEffect="pulse"
+                        majorLines={false}
+                        scale={topo.scale}
+                        detail={1}
+                        brightness={1.4}
+                        intro={false}
+                        lightMode={theme === 'light'}
+                        dpr={undefined}
+                        style={{ width: '100%', height: '100%' }}
+                      />
+                    </div>
+
                     <div className="hub-cell-meta">
                       <span className="hub-cell-date">
                         {`${tool.num} · ${tool.metrics.status}`}
@@ -455,12 +473,7 @@ export default function AssemblyDashboard() {
                       <span className="hub-cell-tag-pill">{tool.badge}</span>
                     </div>
 
-                    <div className="hub-cell-artwork">
-                      <ToolEditorialArtwork name={tool.name} />
-                      <span className="hub-artwork-badge">{tool.model}</span>
-                    </div>
-
-                    <div className="hub-cell-body">
+                    <div className="hub-cell-body" style={{ marginTop: 'auto' }}>
                       <h2 className="hub-cell-title">{tool.shortTitle}</h2>
                       <p className="hub-cell-desc">{tool.desc}</p>
                     </div>
@@ -511,26 +524,44 @@ export default function AssemblyDashboard() {
                 <article
                   className="hub-cell"
                   onClick={() => setMainTab('orb')}
+                  onMouseEnter={() => setHoveredCard('orb-core')}
+                  onMouseLeave={() => setHoveredCard(null)}
                 >
+                  <div
+                    className="hub-cell-bg"
+                    style={{ transform: TOPO_VARIANTS['orb-core'].offsetTransform }}
+                  >
+                    <Topography
+                      color="#4f7cff"
+                      lineCount={11}
+                      lineWidth={0.9}
+                      elevation={TOPO_VARIANTS['orb-core'].elevation}
+                      foreground={TOPO_VARIANTS['orb-core'].foreground}
+                      tilt={TOPO_VARIANTS['orb-core'].tilt}
+                      speed={hoveredCard === 'orb-core' ? 0.25 : 0}
+                      direction={TOPO_VARIANTS['orb-core'].direction}
+                      glow={0.6}
+                      depthOfField={0.4}
+                      fog={0.17}
+                      hoverEffect="lift"
+                      clickEffect="pulse"
+                      majorLines={false}
+                      scale={TOPO_VARIANTS['orb-core'].scale}
+                      detail={1}
+                      brightness={1.4}
+                      intro={false}
+                      lightMode={theme === 'light'}
+                      dpr={undefined}
+                      style={{ width: '100%', height: '100%' }}
+                    />
+                  </div>
+
                   <div className="hub-cell-meta">
                     <span className="hub-cell-date">ORB · Live Telemetry</span>
                     <span className="hub-cell-tag-pill">3D CORE</span>
                   </div>
 
-                  <div className="hub-cell-artwork">
-                    <div style={{ width: 155, height: 155, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <LiquidOrb
-                        theme={theme}
-                        wireframe={theme === 'light'}
-                        customRotX={rotX}
-                        customRotY={rotY}
-                        customRotZ={rotZ}
-                      />
-                    </div>
-                    <span className="hub-artwork-badge">LiquidOrb</span>
-                  </div>
-
-                  <div className="hub-cell-body">
+                  <div className="hub-cell-body" style={{ marginTop: 'auto' }}>
                     <h2 className="hub-cell-title">Orb Core Studio</h2>
                     <p className="hub-cell-desc">
                       Interactive 3D LiquidOrb visualizer synchronized in real-time with your active GLYNNE engine and optical telemetry controls.
@@ -684,18 +715,6 @@ export default function AssemblyDashboard() {
             </div>
           )}
         </main>
-
-        {/* ── PAGE FOOTER ── */}
-        <footer className="hub-footer">
-          <span className="hub-footer-meta">
-            {`ACTIVE ENGINE: ${currentToolData.num} // ${currentToolData.shortTitle.toUpperCase()} · ${currentToolData.metrics.latency}`}
-          </span>
-
-          <Link href={`/${activeTool}`} className="hub-cta-btn">
-            <span>{`DEPLOY ${currentToolData.shortTitle}`}</span>
-            <FiArrowRight size={14} />
-          </Link>
-        </footer>
       </div>
 
       {/* ── TOOL INSPECTOR MODAL ── */}

@@ -265,13 +265,37 @@
 }
 
 .hub-cell {
-  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  padding: 22px;
+  min-height: 290px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 16px;
   cursor: pointer;
   transition: background-color 0.15s ease;
+}
+
+.hub-cell-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.36;
+  transition: opacity 0.25s ease;
+}
+
+.hub-cell:hover .hub-cell-bg {
+  opacity: 0.68;
+}
+
+.hub-cell-meta,
+.hub-cell-body,
+.hub-cell-footer,
+.hub-cell-orb-slot {
+  position: relative;
+  z-index: 1;
 }
 
 .hub-outer[data-theme='light'] .hub-cell {
