@@ -21,7 +21,7 @@ import {
   FiMoon,
   FiX
 } from 'react-icons/fi';
-import Topography from './Topography';
+import PixelBlast from './PixelBlast';
 import DotGrid from './DotGrid';
 import { useTheme } from '@/lib/ThemeContext';
 import './AssemblyDashboard.css';
@@ -396,7 +396,6 @@ export default function AssemblyDashboard() {
               {filteredTools.map((tool, index) => {
                 const isSelected = activeTool === tool.name;
                 const isHovered = hoveredCard === tool.name;
-                const topo = TOPO_VARIANTS[tool.name] || TOPO_VARIANTS.Librarymodel;
                 const spanPattern =
                   filteredTools.length === 2
                     ? ['hub-span-7', 'hub-span-5']
@@ -412,32 +411,25 @@ export default function AssemblyDashboard() {
                     onMouseEnter={() => setHoveredCard(tool.name)}
                     onMouseLeave={() => setHoveredCard(null)}
                   >
-                    <div
-                      className="hub-cell-bg"
-                      style={{ transform: topo.offsetTransform }}
-                    >
-                      <Topography
-                        color={theme === 'light' ? '#71717a' : '#a1a1aa'}
-                        lineCount={11}
-                        lineWidth={0.9}
-                        elevation={topo.elevation}
-                        foreground={topo.foreground}
-                        tilt={topo.tilt}
-                        speed={isHovered ? 0.25 : 0}
-                        direction={topo.direction}
-                        glow={0.6}
-                        depthOfField={0.4}
-                        fog={0.17}
-                        hoverEffect="lift"
-                        clickEffect="pulse"
-                        majorLines={false}
-                        scale={topo.scale}
-                        detail={1}
-                        brightness={1.4}
+                    <div className="hub-cell-bg">
+                      <PixelBlast
+                        variant="square"
+                        pixelSize={3}
+                        color={theme === 'dark' ? '#f8f8f8' : '#3f3f46'}
+                        patternScale={2}
+                        patternDensity={1}
+                        softness={0.6}
+                        glow={0.4}
+                        twinkle={isHovered ? 0.25 : 0}
+                        drift={isHovered ? 0.2 : 0}
+                        speed={isHovered ? 0.5 : 0}
+                        driftAngle={index * 60 + 25}
+                        variation={index + 1}
+                        hoverEffect="reveal"
+                        enableRipples
+                        edgeFade={0.25}
                         intro={false}
                         lightMode={theme === 'light'}
-                        dpr={undefined}
-                        style={{ width: '100%', height: '100%' }}
                       />
                     </div>
 
