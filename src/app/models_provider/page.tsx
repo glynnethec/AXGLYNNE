@@ -52,44 +52,54 @@ interface ModelCard {
 
 const FEATURED_MODELS: ModelCard[] = [
   {
-    id: 'llama-3.2-11b-vision',
-    name: 'Meta Llama 3.2 11B Vision',
-    provider: 'Meta AI / NVIDIA NIM',
-    category: 'meta',
-    params: '11B Multimodal',
+    id: 'mistral-nemo-12b',
+    name: 'Mistral NeMo 12B',
+    provider: 'Mistral AI / NVIDIA NIM',
+    category: 'frontier',
+    params: '12B Parameters',
     context: '128K Context',
-    latency: '14ms / tok',
-    badge: 'Vision Multimodal'
+    latency: '11ms / tok',
+    badge: 'Real-Time Voice & Chat'
   },
   {
-    id: 'llama-3.2-90b-vision',
-    name: 'Meta Llama 3.2 90B Vision',
+    id: 'llama-3.3-70b',
+    name: 'Meta Llama 3.3 70B',
     provider: 'Meta AI / NVIDIA NIM',
     category: 'meta',
-    params: '90B Multimodal',
+    params: '70B Instruct',
     context: '128K Context',
-    latency: '26ms / tok',
-    badge: 'Flagship Vision'
+    latency: '18ms / tok',
+    badge: 'Flagship Reasoning'
   },
   {
-    id: 'deepseek-coder-6.7b',
-    name: 'DeepSeek Coder 6.7B',
-    provider: 'DeepSeek AI',
-    category: 'chinese',
-    params: '6.7B Code Optimized',
-    context: '64K Context',
+    id: 'llama-3.1-8b',
+    name: 'Meta Llama 3.1 8B',
+    provider: 'Meta AI / NVIDIA NIM',
+    category: 'meta',
+    params: '8B Instruct',
+    context: '128K Context',
     latency: '10ms / tok',
-    badge: 'Ultra Fast Code'
+    badge: 'Ultra Fast'
   },
   {
-    id: 'deepseek-v4-flash',
-    name: 'DeepSeek V4.1 Flash',
-    provider: 'DeepSeek AI',
+    id: 'qwen-2.5-coder-32b',
+    name: 'Qwen 2.5 Coder 32B',
+    provider: 'Qwen / NVIDIA NIM',
     category: 'chinese',
-    params: 'MoE Flash Inactive',
-    context: '64K Context',
+    params: '32B Code Specialist',
+    context: '128K Context',
     latency: '12ms / tok',
-    badge: 'High Efficiency'
+    badge: 'Top Code Model'
+  },
+  {
+    id: 'deepseek-r1',
+    name: 'DeepSeek R1',
+    provider: 'DeepSeek AI / NVIDIA NIM',
+    category: 'chinese',
+    params: 'MoE Reasoning Engine',
+    context: '64K Context',
+    latency: '15ms / tok',
+    badge: 'Deep Reasoning'
   },
   {
     id: 'nvidia-nemotron-70b',
@@ -100,16 +110,6 @@ const FEATURED_MODELS: ModelCard[] = [
     context: '128K Context',
     latency: '15ms / tok',
     badge: 'NVIDIA Accelerated'
-  },
-  {
-    id: 'mistral-nemo-12b',
-    name: 'Mistral NeMo 12B',
-    provider: 'Mistral AI (EU)',
-    category: 'frontier',
-    params: '12B Parameters',
-    context: '128K Context',
-    latency: '11ms / tok',
-    badge: 'Real-Time Voice & Chat'
   },
   {
     id: 'phi-3.5-moe',
@@ -972,7 +972,7 @@ export default function ModelsProviderPage() {
 
   const [activeTab, setActiveTab] = useState<TabType>('chat');
   const [userEmail, setUserEmail] = useState<string>('guest@axglynne.com');
-  const [selectedModel, setSelectedModel] = useState('llama-3.2-11b-vision');
+  const [selectedModel, setSelectedModel] = useState('mistral-nemo-12b');
 
   // Groq-style Sub-API Keys State
   const [subApiKeys, setSubApiKeys] = useState<SubApiKeyItem[]>([
@@ -980,7 +980,7 @@ export default function ModelsProviderPage() {
       id: 'default-1',
       name: 'Production Client Key',
       key: 'gly_sub_live_a8f9c2d1e4b56789',
-      model: 'llama-3.2-11b-vision',
+      model: 'mistral-nemo-12b',
       rpm: '120',
       quota: '5,000,000',
       createdAt: '11 oct 2026',
@@ -990,7 +990,7 @@ export default function ModelsProviderPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [createStep, setCreateStep] = useState<1 | 2>(1);
   const [newKeyFormName, setNewKeyFormName] = useState('Production Client Key');
-  const [newKeyFormModel, setNewKeyFormModel] = useState('llama-3.2-11b-vision');
+  const [newKeyFormModel, setNewKeyFormModel] = useState('mistral-nemo-12b');
   const [newKeyFormRpm, setNewKeyFormRpm] = useState('120');
   const [newKeyFormQuota, setNewKeyFormQuota] = useState('5,000,000');
   const [createdKeyItem, setCreatedKeyItem] = useState<SubApiKeyItem | null>(null);
@@ -1066,7 +1066,7 @@ export default function ModelsProviderPage() {
             id: String(row.id),
             name: row.name || 'Client Key',
             key: row.api_key || '',
-            model: row.default_model || 'llama-3.2-11b-vision',
+            model: row.default_model || 'mistral-nemo-12b',
             rpm: String(row.rate_limit_rpm ?? 120),
             quota: Number(row.monthly_quota ?? 5000000).toLocaleString('en-US'),
             tokensUsed: Number(row.tokens_used ?? 0),
@@ -1237,7 +1237,7 @@ export default function ModelsProviderPage() {
   const handleOpenCreateModal = () => {
     setCreateStep(1);
     setNewKeyFormName(`Production Client Key ${subApiKeys.length + 1}`);
-    setNewKeyFormModel(selectedModel || 'llama-3.2-11b-vision');
+    setNewKeyFormModel(selectedModel || 'mistral-nemo-12b');
     setNewKeyFormRpm('120');
     setNewKeyFormQuota('5,000,000');
     setCreatedKeyItem(null);
@@ -1348,7 +1348,7 @@ export default function ModelsProviderPage() {
 
   const getCodeSnippet = (customKey?: string, customModel?: string) => {
     const currentKey = customKey || generatedKey || subApiKeys[0]?.key || 'gly_sub_live_a8f9c2d1e4b56789';
-    const targetModel = customModel || selectedModel || 'llama-3.2-11b-vision';
+    const targetModel = customModel || selectedModel || 'mistral-nemo-12b';
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://ax-zyxe.onrender.com';
     const baseUrl = `${backendUrl}/api/v1`;
 
