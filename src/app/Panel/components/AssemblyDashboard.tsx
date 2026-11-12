@@ -371,14 +371,21 @@ export default function AssemblyDashboard() {
         <main>
           {mainTab === 'tools' && (
             <div className="hub-editorial-grid">
-              {filteredTools.map(tool => {
+              {filteredTools.map((tool, index) => {
                 const isSelected = activeTool === tool.name;
                 const isHovered = hoveredCard === tool.name;
                 const topo = TOPO_VARIANTS[tool.name] || TOPO_VARIANTS.Librarymodel;
+                const spanPattern =
+                  filteredTools.length === 2
+                    ? ['hub-span-7', 'hub-span-5']
+                    : filteredTools.length === 3
+                    ? ['hub-span-4', 'hub-span-8', 'hub-span-12']
+                    : ['hub-span-4', 'hub-span-8', 'hub-span-7', 'hub-span-5', 'hub-span-12'];
+                const spanClass = spanPattern[index % spanPattern.length];
                 return (
                   <article
                     key={tool.name}
-                    className={`hub-cell ${isSelected ? 'is-selected' : ''}`}
+                    className={`hub-cell ${spanClass} ${isSelected ? 'is-selected' : ''}`}
                     onClick={() => handleSelectTool(tool.name)}
                     onMouseEnter={() => setHoveredCard(tool.name)}
                     onMouseLeave={() => setHoveredCard(null)}
@@ -469,10 +476,13 @@ export default function AssemblyDashboard() {
 
           {mainTab === 'routes' && (
             <div className="hub-editorial-grid">
-              {externalLinks.map(item => (
+              {externalLinks.map((item, index) => {
+                const spanPattern = ['hub-span-4', 'hub-span-8', 'hub-span-12'];
+                const spanClass = spanPattern[index % spanPattern.length];
+                return (
                 <article
                   key={item.num}
-                  className="hub-cell"
+                  className={`hub-cell ${spanClass}`}
                   onClick={() => router.push(item.href)}
                 >
                   <div className="hub-cell-meta">
@@ -502,7 +512,8 @@ export default function AssemblyDashboard() {
                     </Link>
                   </div>
                 </article>
-              ))}
+                );
+              })}
             </div>
           )}
         </main>
