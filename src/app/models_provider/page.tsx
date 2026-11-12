@@ -971,8 +971,6 @@ export default function ModelsProviderPage() {
   const isDark = theme === 'dark';
 
   const [activeTab, setActiveTab] = useState<TabType>('chat');
-  const [workspaceView, setWorkspaceView] = useState<'hub' | 'keys' | 'playground' | 'catalog' | 'docs' | 'usage'>('hub');
-  const [hubFilter, setHubFilter] = useState<'all' | 'keys' | 'models'>('all');
   const [userEmail, setUserEmail] = useState<string>('guest@axglynne.com');
   const [selectedModel, setSelectedModel] = useState('llama-3.2-90b-vision');
 
@@ -1511,498 +1509,19 @@ run();`;
             </div>
           </div>
 
-          {/* ========================================================================= */}
-          {/* WORKSPACE HUB MINIMALISTA (ESTILO CARDS / TOOLS)                          */}
-          {/* ========================================================================= */}
-          <style>{`
-            .mp-ws-card {
-              position: relative;
-              border-radius: 28px;
-              padding: 28px 32px;
-              margin-bottom: 48px;
-              overflow: hidden;
-              box-sizing: border-box;
-            }
-            .mp-ws-topbar {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              flex-wrap: wrap;
-              gap: 12px;
-              margin-bottom: 28px;
-              position: relative;
-              z-index: 2;
-            }
-            .mp-ws-tabs {
-              display: flex;
-              align-items: baseline;
-              flex-wrap: wrap;
-              gap: 24px;
-              margin-bottom: 14px;
-              position: relative;
-              z-index: 2;
-            }
-            .mp-ws-subtabs {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              flex-wrap: wrap;
-              gap: 16px;
-              padding-bottom: 12px;
-              margin-bottom: 28px;
-              position: relative;
-              z-index: 2;
-            }
-            .mp-tools-grid {
-              display: grid;
-              grid-template-columns: repeat(3, minmax(0, 1fr));
-              gap: 18px;
-              position: relative;
-              z-index: 2;
-            }
-            .mp-tool-card {
-              border-radius: 20px;
-              padding: 22px;
-              min-height: 192px;
-              display: flex;
-              flex-direction: column;
-              justify-content: space-between;
-              cursor: pointer;
-              transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-              box-sizing: border-box;
-            }
-            .mp-tool-card:hover {
-              transform: translateY(-2px);
-            }
-            .mp-ws-footer {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              flex-wrap: wrap;
-              gap: 12px;
-              margin-top: 28px;
-              position: relative;
-              z-index: 2;
-            }
-            @media (max-width: 1024px) {
-              .mp-tools-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-              }
-            }
-            @media (max-width: 640px) {
-              .mp-ws-card {
-                padding: 18px 16px;
-                border-radius: 20px;
-              }
-              .mp-tools-grid {
-                grid-template-columns: 1fr;
-                gap: 14px;
-              }
-              .mp-tool-card {
-                min-height: 165px;
-                padding: 18px;
-              }
-              .mp-ws-tabs {
-                gap: 16px;
-              }
-            }
-          `}</style>
-
-          <div
-            className="mp-ws-card"
-            style={{
-              border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.08)',
-              backgroundColor: isDark ? 'rgba(12, 12, 15, 0.72)' : 'rgba(255, 255, 255, 0.82)',
-              backdropFilter: 'blur(28px)',
-              WebkitBackdropFilter: 'blur(28px)',
-              boxShadow: isDark
-                ? '0 24px 60px rgba(0, 0, 0, 0.55)'
-                : '0 24px 60px rgba(0, 0, 0, 0.06)'
-            }}
-          >
-            {/* Resplandor superior sutil estilo Minimalist Workspace */}
-            <div
-              style={{
-                position: 'absolute',
-                top: '-120px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '60%',
-                height: '240px',
-                background: isDark
-                  ? 'radial-gradient(ellipse at center, rgba(99, 102, 241, 0.18) 0%, transparent 70%)'
-                  : 'radial-gradient(ellipse at center, rgba(59, 130, 246, 0.16) 0%, transparent 70%)',
-                pointerEvents: 'none',
-                zIndex: 0
-              }}
-            />
-
-            {/* TOP BAR */}
-            <div className="mp-ws-topbar">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '6px 14px 6px 8px',
-                  borderRadius: '999px',
-                  backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : '#ffffff',
-                  border: isDark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(0,0,0,0.08)',
-                  boxShadow: isDark ? 'none' : '0 2px 8px rgba(0,0,0,0.04)',
-                  fontSize: '12px',
-                  fontWeight: 500
-                }}>
-                  <span style={{
-                    width: '22px',
-                    height: '22px',
-                    borderRadius: '50%',
-                    backgroundColor: isDark ? '#ffffff' : '#111111',
-                    color: isDark ? '#111111' : '#ffffff',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '11px',
-                    fontWeight: 700
-                  }}>
-                    {userEmail.charAt(0).toUpperCase()}
-                  </span>
-                  <span style={{ maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {userEmail}
-                  </span>
-                </div>
-
-                <button
-                  onClick={fetchKeysFromSupabase}
-                  disabled={isLoadingDbKeys}
-                  title="Sincronizar con Supabase"
-                  style={{
-                    width: '34px',
-                    height: '34px',
-                    borderRadius: '50%',
-                    backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : '#ffffff',
-                    border: isDark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(0,0,0,0.08)',
-                    color: isDark ? '#ffffff' : '#111111',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer'
-                  }}
-                >
-                  <FiRefreshCw size={13} style={{ animation: isLoadingDbKeys ? 'spin 1s linear infinite' : 'none' }} />
-                </button>
-              </div>
-
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                <button
-                  onClick={() => setWorkspaceView('catalog')}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    padding: '7px 14px',
-                    borderRadius: '999px',
-                    backgroundColor: isDark ? '#ffffff' : '#111111',
-                    color: isDark ? '#111111' : '#ffffff',
-                    border: 'none',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    cursor: 'pointer'
-                  }}
-                >
-                  <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: '#10b981' }} />
-                  <span>{FEATURED_MODELS.find(m => m.id === selectedModel)?.name || selectedModel}</span>
-                </button>
-
-                <button
-                  onClick={toggleTheme}
-                  title="Cambiar tema"
-                  style={{
-                    width: '34px',
-                    height: '34px',
-                    borderRadius: '50%',
-                    backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : '#ffffff',
-                    border: isDark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(0,0,0,0.08)',
-                    color: isDark ? '#ffffff' : '#111111',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer'
-                  }}
-                >
-                  {isDark ? <FiSun size={14} /> : <FiMoon size={14} />}
-                </button>
-              </div>
-            </div>
-
-            {/* LARGE NAVIGATION TABS (Fit / Build / Launch style) */}
-            <div className="mp-ws-tabs">
-              {[
-                { id: 'hub', label: 'Tools' },
-                { id: 'playground', label: 'Playground' },
-                { id: 'keys', label: 'API Keys' },
-                { id: 'catalog', label: 'Modelos' }
-              ].map((t) => {
-                const isAct = workspaceView === t.id;
-                return (
-                  <button
-                    key={t.id}
-                    onClick={() => setWorkspaceView(t.id as any)}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      padding: 0,
-                      cursor: 'pointer',
-                      fontSize: 'clamp(22px, 3vw, 32px)',
-                      fontWeight: isAct ? 600 : 400,
-                      letterSpacing: '-0.03em',
-                      color: isAct
-                        ? (isDark ? '#ffffff' : '#111111')
-                        : (isDark ? '#52525b' : '#b4b4bc'),
-                      transition: 'color 0.2s ease',
-                      fontFamily: 'var(--font-geist-sans), sans-serif'
-                    }}
-                  >
-                    {t.label}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* SUB-TABS / BREADCRUMB BAR */}
-            <div
-              className="mp-ws-subtabs"
-              style={{
-                borderBottom: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.07)'
-              }}
-            >
-              {workspaceView === 'hub' ? (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
-                  {[
-                    { id: 'all', label: 'Todas las Tools' },
-                    { id: 'keys', label: 'Credenciales & Consumo' },
-                    { id: 'models', label: 'Inferencia & SDK' }
-                  ].map((sub) => {
-                    const activeSub = hubFilter === sub.id;
-                    return (
-                      <button
-                        key={sub.id}
-                        onClick={() => setHubFilter(sub.id as any)}
-                        style={{
-                          background: 'none',
-                          border: 'none',
-                          padding: '0 0 8px 0',
-                          marginBottom: '-13px',
-                          borderBottom: activeSub
-                            ? (isDark ? '2px solid #ffffff' : '2px solid #111111')
-                            : '2px solid transparent',
-                          cursor: 'pointer',
-                          fontSize: '13px',
-                          fontWeight: activeSub ? 600 : 400,
-                          color: activeSub
-                            ? (isDark ? '#ffffff' : '#111111')
-                            : (isDark ? '#71717a' : '#71717a'),
-                          transition: 'all 0.15s ease'
-                        }}
-                      >
-                        {sub.label}
-                      </button>
-                    );
-                  })}
-                </div>
-              ) : (
-                <button
-                  onClick={() => setWorkspaceView('hub')}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    padding: 0,
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    color: isDark ? '#ffffff' : '#111111'
-                  }}
-                >
-                  <FiChevronLeft size={16} />
-                  <span>Volver al Panel de Tools</span>
-                </button>
-              )}
-
-              <span style={{ fontSize: '12px', color: isDark ? '#71717a' : '#8e8e93' }}>
-                GLYNNE AI Gateway · OpenAI Compatible
-              </span>
-            </div>
-
-            {/* ========================================================================= */}
-            {/* VISTA 1: HUB DE TOOLS (GRID 3x2 COMO EN LA IMAGEN)                        */}
-            {/* ========================================================================= */}
-            {workspaceView === 'hub' && (
-              <div className="mp-tools-grid">
-                {[
-                  {
-                    id: 'create-key',
-                    group: 'keys',
-                    title: 'Crear API Key',
-                    subtitle: 'Genera una llave independiente para tu proyecto.',
-                    preview: 'Configura nombre, límite RPM y cuota mensual.',
-                    icon: <FiPlus size={15} />,
-                    onClick: () => handleOpenCreateModal(),
-                  },
-                  {
-                    id: 'manage-keys',
-                    group: 'keys',
-                    title: 'Mis API Keys',
-                    subtitle: 'Administra, copia o revoca tus llaves activas.',
-                    preview: `${subApiKeys.filter((k) => k.status === 'active').length} llave(s) activa(s) · ${subApiKeys[0]?.key ? subApiKeys[0].key.slice(0, 18) + '...' : 'Sin llaves'}`,
-                    icon: <FiKey size={14} />,
-                    onClick: () => setWorkspaceView('keys'),
-                  },
-                  {
-                    id: 'chat-playground',
-                    group: 'models',
-                    title: 'Chat Playground',
-                    subtitle: 'Prueba latencia y respuestas en tiempo real.',
-                    preview: `Activo: ${FEATURED_MODELS.find((m) => m.id === selectedModel)?.name || selectedModel}`,
-                    icon: <FiMessageSquare size={14} />,
-                    onClick: () => setWorkspaceView('playground'),
-                  },
-                  {
-                    id: 'sdk-integration',
-                    group: 'models',
-                    title: 'Integración SDK',
-                    subtitle: 'Código listo para Python, Colab, Node y cURL.',
-                    preview: 'Incluye CLI interactivo de pruebas en vivo.',
-                    icon: <FiCode size={14} />,
-                    onClick: () => {
-                      setInspectKeyItem(subApiKeys[0] || null);
-                      setIsCodeModalOpen(true);
-                    },
-                  },
-                  {
-                    id: 'model-catalog',
-                    group: 'models',
-                    title: 'Catálogo Modelos',
-                    subtitle: 'Explora y cambia entre los modelos disponibles.',
-                    preview: `${FEATURED_MODELS.length} modelos open-weights habilitados.`,
-                    icon: <FiLayers size={14} />,
-                    onClick: () => setWorkspaceView('catalog'),
-                  },
-                  {
-                    id: 'usage-quota',
-                    group: 'keys',
-                    title: 'Consumo & Cuotas',
-                    subtitle: 'Monitorea tokens usados y estado de red.',
-                    preview: `${subApiKeys.reduce((acc, k) => acc + (k.tokensUsed || 0), 0).toLocaleString('en-US')} tokens consumidos · Gateway Online`,
-                    icon: <FiActivity size={14} />,
-                    onClick: () => setWorkspaceView('usage'),
-                  },
-                ]
-                  .filter((tool) => hubFilter === 'all' || tool.group === hubFilter)
-                  .map((tool) => (
-                    <div
-                      key={tool.id}
-                      className="mp-tool-card"
-                      onClick={tool.onClick}
-                      style={{
-                        backgroundColor: isDark ? 'rgba(24, 24, 28, 0.85)' : '#ffffff',
-                        border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.06)',
-                        boxShadow: isDark
-                          ? '0 8px 24px rgba(0, 0, 0, 0.35)'
-                          : '0 6px 24px rgba(0, 0, 0, 0.04)'
-                      }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px' }}>
-                        <div>
-                          <div style={{
-                            fontSize: '17px',
-                            fontWeight: 600,
-                            color: isDark ? '#ffffff' : '#111111',
-                            letterSpacing: '-0.02em',
-                            marginBottom: '4px'
-                          }}>
-                            {tool.title}
-                          </div>
-                          <div style={{
-                            fontSize: '12px',
-                            color: isDark ? '#a1a1aa' : '#8e8e93',
-                            lineHeight: 1.4
-                          }}>
-                            {tool.subtitle}
-                          </div>
-                        </div>
-
-                        <span style={{
-                          width: '32px',
-                          height: '28px',
-                          borderRadius: '10px',
-                          border: isDark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(0,0,0,0.08)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: '13px',
-                          fontWeight: 700,
-                          color: isDark ? '#a1a1aa' : '#555555',
-                          flexShrink: 0,
-                          letterSpacing: '1px'
-                        }}>
-                          ••
-                        </span>
-                      </div>
-
-                      <div style={{
-                        display: 'flex',
-                        alignItems: 'flex-end',
-                        justifyContent: 'space-between',
-                        gap: '12px',
-                        marginTop: '24px'
-                      }}>
-                        <span style={{
-                          fontSize: '12px',
-                          color: isDark ? '#d4d4d8' : '#52525b',
-                          lineHeight: 1.4,
-                          fontWeight: 400
-                        }}>
-                          {tool.preview}
-                        </span>
-
-                        <div style={{
-                          width: '36px',
-                          height: '36px',
-                          borderRadius: '50%',
-                          backgroundColor: isDark ? '#ffffff' : '#111111',
-                          color: isDark ? '#111111' : '#ffffff',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flexShrink: 0,
-                          boxShadow: isDark
-                            ? '0 4px 12px rgba(255,255,255,0.15)'
-                            : '0 4px 12px rgba(0,0,0,0.15)'
-                        }}>
-                          {tool.icon}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            )}
-
-            {/* ========================================================================= */}
-            {/* VISTA 2: MIS API KEYS (ENFOCADA)                                          */}
-            {/* ========================================================================= */}
-            {workspaceView === 'keys' && (
-              <div style={{ width: '100%' }}>
-                <div style={{
-                  border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.08)',
-                  backgroundColor: isDark ? 'rgba(18, 18, 22, 0.65)' : '#ffffff',
-                  borderRadius: '20px',
-                  padding: '24px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '20px'
-                }}>
+          {/* GROQ-STYLE API KEYS MANAGEMENT CONSOLE (FIRST SECTION) */}
+          <div style={{ marginBottom: '40px', width: '100%' }}>
+            <div style={{
+              border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
+              backgroundColor: isDark ? 'rgba(10, 10, 10, 0.65)' : 'rgba(255, 255, 255, 0.8)',
+              backdropFilter: 'blur(24px)',
+              WebkitBackdropFilter: 'blur(24px)',
+              borderRadius: '16px',
+              padding: '28px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '24px'
+            }}>
               {/* CONSOLE HEADER: Title, Subtitle & Action Button */}
               <div style={{
                 display: 'flex',
@@ -2342,42 +1861,136 @@ run();`;
               </div>
             </div>
           </div>
-            )}
 
-            {/* ========================================================================= */}
-            {/* VISTA 3: PLAYGROUND DE CHAT ENFOCADO (ANCHO COMPLETO, LIMPIO)             */}
-            {/* ========================================================================= */}
-            {workspaceView === 'playground' && (
-              <div style={{ width: '100%' }}>
-                <style>{`
-                  .mp-chat-panel {
-                    padding: 20px;
-                    border-radius: 20px;
-                    height: 600px;
-                  }
-                  @media (max-width: 640px) {
-                    .mp-chat-panel {
-                      height: 500px;
-                      padding: 14px;
-                      border-radius: 16px;
-                    }
-                  }
-                `}</style>
-                <div
-                  className="mp-chat-panel"
-                  style={{
-                    border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.08)',
-                    backgroundColor: isDark ? 'rgba(18, 18, 22, 0.65)' : '#ffffff',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    gap: '16px',
-                    boxSizing: 'border-box',
-                    position: 'relative',
-                    width: '100%',
-                    minWidth: 0
-                  }}
-                >
+          {/* RESPONSIVE STYLES FOR PLAYGROUND & CATALOG */}
+          <style>{`
+            .mp-playground-header {
+              display: flex;
+              align-items: center;
+              flex-wrap: wrap;
+              gap: 8px;
+              margin-bottom: 6px;
+            }
+            .mp-playground-grid {
+              display: grid;
+              grid-template-columns: minmax(0, 7fr) minmax(320px, 3fr);
+              gap: 24px;
+              align-items: stretch;
+              width: 100%;
+            }
+            .mp-chat-panel {
+              padding: 24px;
+              border-radius: 24px;
+              height: 680px;
+            }
+            .mp-catalog-panel {
+              padding: 24px;
+              border-radius: 24px;
+              height: 680px;
+            }
+            .mp-catalog-header {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              flex-wrap: wrap;
+              gap: 8px;
+            }
+            .mp-catalog-list {
+              display: flex;
+              flex-direction: column;
+              gap: 12px;
+            }
+            @media (max-width: 1080px) {
+              .mp-playground-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+              }
+              .mp-chat-panel {
+                height: 580px;
+                padding: 18px;
+                border-radius: 20px;
+              }
+              .mp-catalog-panel {
+                height: auto;
+                max-height: 560px;
+                padding: 18px;
+                border-radius: 20px;
+              }
+              .mp-catalog-list {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+              }
+            }
+            @media (max-width: 640px) {
+              .mp-chat-panel {
+                height: 520px;
+                padding: 14px;
+                border-radius: 16px;
+              }
+              .mp-catalog-panel {
+                max-height: 500px;
+                padding: 14px;
+                border-radius: 16px;
+              }
+              .mp-catalog-list {
+                grid-template-columns: 1fr;
+                gap: 10px;
+              }
+            }
+          `}</style>
+
+          {/* SECTION HEADER: CHAT TESTING STUDIO & PLAYGROUND */}
+          <div style={{ marginBottom: '20px' }}>
+            <div className="mp-playground-header">
+              <h3 style={{
+                fontSize: '18px',
+                fontWeight: 700,
+                color: isDark ? '#ffffff' : '#000000',
+                margin: 0,
+                letterSpacing: '-0.02em',
+                fontFamily: 'var(--font-geist-sans), sans-serif'
+              }}>
+                Playground de Chat & Prueba de Modelos
+              </h3>
+              <span style={{
+                fontSize: '11px',
+                fontWeight: 600,
+                padding: '2px 8px',
+                borderRadius: '6px',
+                backgroundColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.05)',
+                color: isDark ? '#a1a1aa' : '#71717a'
+              }}>
+                Tiempo Real
+              </span>
+            </div>
+            <p style={{ fontSize: '13px', color: isDark ? '#a1a1aa' : '#71717a', margin: 0, lineHeight: 1.5 }}>
+              Interactúa con los modelos open-weights para validar latencia, razonamiento y visión multimodal antes de distribuirlos con tu API.
+            </p>
+          </div>
+
+          {/* MAIN WORKSPACE 1: INTERACTIVE MODEL CHAT TESTING STUDIO & MODEL CATALOG (RESPONSIVE) */}
+          <div className="mp-playground-grid">
+            {/* LEFT PANEL (70%): AX_CHAT INTERFACE */}
+            <div
+              className="mp-chat-panel"
+              style={{
+                border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
+                backgroundColor: isDark ? 'rgba(10, 10, 10, 0.55)' : 'rgba(255, 255, 255, 0.65)',
+                backdropFilter: 'blur(24px)',
+                WebkitBackdropFilter: 'blur(24px)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                gap: '16px',
+                boxSizing: 'border-box',
+                position: 'relative',
+                minWidth: 0,
+                boxShadow: isDark
+                  ? '0 20px 50px rgba(0, 0, 0, 0.6), 0 0 1px rgba(255, 255, 255, 0.15)'
+                  : '0 20px 50px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.12)'
+              }}
+            >
               {/* STUDIO CHAT HEADER */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', borderBottom: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.08)', paddingBottom: '14px', flexShrink: 0, zIndex: 10 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
@@ -2736,15 +2349,51 @@ run();`;
                 </div>
               )}
             </div>
-              </div>
-            )}
 
-            {/* ========================================================================= */}
-            {/* VISTA 4: CATÁLOGO DE MODELOS ENFOCADO (GRID 3x2 LIMPIO)                   */}
-            {/* ========================================================================= */}
-            {workspaceView === 'catalog' && (
-              <div style={{ width: '100%' }}>
-                <div className="mp-tools-grid">
+            {/* RIGHT PANEL (30%): MODEL CATALOG SELECTION CARDS */}
+            <div
+              className="mp-catalog-panel"
+              style={{
+                border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
+                backgroundColor: isDark ? 'rgba(10, 10, 10, 0.55)' : 'rgba(255, 255, 255, 0.65)',
+                backdropFilter: 'blur(24px)',
+                WebkitBackdropFilter: 'blur(24px)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '16px',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                boxShadow: isDark
+                  ? '0 20px 50px rgba(0, 0, 0, 0.6), 0 0 1px rgba(255, 255, 255, 0.15)'
+                  : '0 20px 50px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.12)'
+              }}
+            >
+              <div
+                className="mp-catalog-header"
+                style={{
+                  borderBottom: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.08)',
+                  paddingBottom: '14px',
+                  flexShrink: 0
+                }}
+              >
+                <div style={{ fontSize: '15px', fontWeight: 600, color: isDark ? '#ffffff' : '#000000', fontFamily: 'var(--font-geist-sans), sans-serif' }}>
+                  Catálogo de Modelos Habilitados
+                </div>
+                <span style={{ fontSize: '11px', color: isDark ? '#a1a1aa' : '#71717a' }}>
+                  Haz clic para cambiar de modelo
+                </span>
+              </div>
+
+              {/* SCROLLABLE MODEL CARDS LIST */}
+              <div
+                className="mp-catalog-list"
+                style={{
+                  overflowY: 'auto',
+                  paddingRight: '4px',
+                  flex: 1,
+                  minHeight: 0
+                }}
+              >
                 {FEATURED_MODELS.map((model) => {
                   const isSelected = selectedModel === model.id;
                   return (
@@ -2813,139 +2462,6 @@ run();`;
                   );
                 })}
               </div>
-              </div>
-            )}
-
-            {/* ========================================================================= */}
-            {/* VISTA 5: CONSUMO & CUOTAS (ENFOCADA)                                      */}
-            {/* ========================================================================= */}
-            {workspaceView === 'usage' && (
-              <div className="mp-tools-grid">
-                <div
-                  className="mp-tool-card"
-                  style={{
-                    backgroundColor: isDark ? 'rgba(24, 24, 28, 0.85)' : '#ffffff',
-                    border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.06)',
-                    cursor: 'default'
-                  }}
-                >
-                  <div>
-                    <div style={{ fontSize: '12px', color: isDark ? '#a1a1aa' : '#71717a', marginBottom: '6px' }}>
-                      Tokens Totales Consumidos
-                    </div>
-                    <div style={{ fontSize: '28px', fontWeight: 700, letterSpacing: '-0.03em' }}>
-                      {subApiKeys.reduce((acc, k) => acc + (k.tokensUsed || 0), 0).toLocaleString('en-US')}
-                    </div>
-                  </div>
-                  <div style={{ fontSize: '12px', color: '#10b981', fontWeight: 600 }}>
-                    ✓ Auditoría en tiempo real (Supabase)
-                  </div>
-                </div>
-
-                <div
-                  className="mp-tool-card"
-                  style={{
-                    backgroundColor: isDark ? 'rgba(24, 24, 28, 0.85)' : '#ffffff',
-                    border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.06)',
-                    cursor: 'default'
-                  }}
-                >
-                  <div>
-                    <div style={{ fontSize: '12px', color: isDark ? '#a1a1aa' : '#71717a', marginBottom: '6px' }}>
-                      Sub-API Keys Activas
-                    </div>
-                    <div style={{ fontSize: '28px', fontWeight: 700, letterSpacing: '-0.03em' }}>
-                      {subApiKeys.filter((k) => k.status === 'active').length}
-                    </div>
-                  </div>
-                  <div style={{ fontSize: '12px', color: isDark ? '#a1a1aa' : '#71717a' }}>
-                    Aislamiento independiente por proyecto
-                  </div>
-                </div>
-
-                <div
-                  className="mp-tool-card"
-                  onClick={() => setWorkspaceView('keys')}
-                  style={{
-                    backgroundColor: isDark ? 'rgba(24, 24, 28, 0.85)' : '#ffffff',
-                    border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.06)'
-                  }}
-                >
-                  <div>
-                    <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '6px' }}>
-                      Estado del Gateway
-                    </div>
-                    <div style={{ fontSize: '12px', color: isDark ? '#a1a1aa' : '#71717a' }}>
-                      ax-zyxe.onrender.com/api/v1
-                    </div>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <span style={{ fontSize: '12px', color: '#10b981', fontWeight: 600 }}>
-                      ● Operativo (&lt; 1s latencia)
-                    </span>
-                    <div style={{
-                      width: '34px',
-                      height: '34px',
-                      borderRadius: '50%',
-                      backgroundColor: isDark ? '#ffffff' : '#111111',
-                      color: isDark ? '#111111' : '#ffffff',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}>
-                      <FiKey size={14} />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* WORKSPACE FOOTER (Estilo Add area de la imagen) */}
-            <div className="mp-ws-footer">
-              <button
-                onClick={() => setWorkspaceView('usage')}
-                title="Estado del Gateway y Consumo"
-                style={{
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: '50%',
-                  backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : '#ffffff',
-                  border: isDark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(0,0,0,0.08)',
-                  color: isDark ? '#a1a1aa' : '#555555',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  fontSize: '13px',
-                  fontWeight: 700
-                }}
-              >
-                i
-              </button>
-
-              <button
-                onClick={handleOpenCreateModal}
-                style={{
-                  padding: '10px 20px',
-                  backgroundColor: isDark ? '#ffffff' : '#111111',
-                  color: isDark ? '#111111' : '#ffffff',
-                  border: 'none',
-                  borderRadius: '999px',
-                  fontSize: '13px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  boxShadow: isDark
-                    ? '0 6px 20px rgba(255, 255, 255, 0.15)'
-                    : '0 6px 20px rgba(0, 0, 0, 0.18)',
-                  transition: 'transform 0.15s ease'
-                }}
-              >
-                <FiPlus size={15} />
-                <span>Nueva API Key</span>
-              </button>
             </div>
           </div>
 
