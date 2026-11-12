@@ -11,7 +11,6 @@ import {
   FiZap,
   FiSliders,
   FiDatabase,
-  FiChevronDown,
   FiHome,
   FiInfo,
   FiMail,
@@ -49,6 +48,77 @@ interface PlatformTool {
   icon: React.ReactNode;
 }
 
+function ToolEditorialArtwork({ name }: { name: string }) {
+  switch (name) {
+    case 'Librarymodel':
+      return (
+        <svg viewBox="0 0 320 180" className="hub-artwork-svg" aria-hidden="true">
+          <defs>
+            <pattern id="art-grid-lib" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="currentColor" strokeOpacity="0.12" strokeWidth="1" />
+            </pattern>
+          </defs>
+          <rect width="320" height="180" fill="url(#art-grid-lib)" />
+          <rect x="85" y="28" width="150" height="124" fill="none" stroke="currentColor" strokeWidth="1.5" />
+          <rect x="105" y="48" width="110" height="84" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" />
+          <circle cx="160" cy="90" r="28" fill="currentColor" fillOpacity="0.1" stroke="currentColor" strokeWidth="1.5" />
+          <line x1="85" y1="90" x2="235" y2="90" stroke="currentColor" strokeOpacity="0.35" strokeWidth="1" />
+          <line x1="160" y1="28" x2="160" y2="152" stroke="currentColor" strokeOpacity="0.35" strokeWidth="1" />
+        </svg>
+      );
+    case 'Create_you_GLYNNE_model':
+      return (
+        <svg viewBox="0 0 320 180" className="hub-artwork-svg" aria-hidden="true">
+          <circle cx="90" cy="90" r="46" fill="none" stroke="currentColor" strokeOpacity="0.3" strokeWidth="1" />
+          <circle cx="160" cy="90" r="46" fill="none" stroke="currentColor" strokeWidth="1.5" />
+          <circle cx="230" cy="90" r="46" fill="none" stroke="currentColor" strokeOpacity="0.3" strokeWidth="1" />
+          <circle cx="160" cy="90" r="10" fill="currentColor" />
+          <line x1="44" y1="90" x2="276" y2="90" stroke="currentColor" strokeOpacity="0.4" strokeWidth="1" />
+        </svg>
+      );
+    case 'models_provider':
+      return (
+        <svg viewBox="0 0 320 180" className="hub-artwork-svg" aria-hidden="true">
+          <polygon points="160,22 250,148 70,148" fill="none" stroke="currentColor" strokeWidth="1.5" />
+          <polygon points="160,54 220,136 100,136" fill="currentColor" fillOpacity="0.08" stroke="currentColor" strokeWidth="1" />
+          <circle cx="160" cy="108" r="14" fill="none" stroke="currentColor" strokeWidth="1.5" />
+          <circle cx="160" cy="108" r="4" fill="currentColor" />
+          <line x1="30" y1="148" x2="290" y2="148" stroke="currentColor" strokeOpacity="0.25" strokeWidth="1" />
+        </svg>
+      );
+    case 'AX_chat':
+      return (
+        <svg viewBox="0 0 320 180" className="hub-artwork-svg" aria-hidden="true">
+          <rect x="45" y="34" width="230" height="112" fill="none" stroke="currentColor" strokeOpacity="0.22" strokeWidth="1" />
+          <path d="M45 90 Q 102 35, 160 90 T 275 90" fill="none" stroke="currentColor" strokeWidth="1.8" />
+          <path d="M45 90 Q 102 145, 160 90 T 275 90" fill="none" stroke="currentColor" strokeOpacity="0.35" strokeWidth="1.2" />
+          <circle cx="160" cy="90" r="6" fill="currentColor" />
+        </svg>
+      );
+    default:
+      return (
+        <svg viewBox="0 0 320 180" className="hub-artwork-svg" aria-hidden="true">
+          {[55, 75, 95, 115, 135, 155, 175, 195, 215, 235, 255].map((x, idx) => {
+            const heights = [24, 52, 86, 44, 110, 128, 92, 58, 102, 46, 28];
+            const h = heights[idx] || 40;
+            const y = 90 - h / 2;
+            return (
+              <rect
+                key={x}
+                x={x}
+                y={y}
+                width="6"
+                height={h}
+                fill="currentColor"
+                fillOpacity={idx === 5 ? 0.9 : 0.35}
+              />
+            );
+          })}
+        </svg>
+      );
+  }
+}
+
 export default function AssemblyDashboard() {
   const router = useRouter();
   const { theme, toggleTheme } = useTheme();
@@ -56,7 +126,7 @@ export default function AssemblyDashboard() {
   const [rotX, setRotX] = useState(-20);
   const [rotY, setRotY] = useState(35);
   const [rotZ, setRotZ] = useState(0);
-  const [brightness, setBrightness] = useState(95);
+  const [brightness, setBrightness] = useState(100);
 
   const [mainTab, setMainTab] = useState<MainTab>('tools');
   const [toolFilter, setToolFilter] = useState<ToolFilter>('all');
@@ -75,12 +145,12 @@ export default function AssemblyDashboard() {
       label: 'Open-Source Weights Library',
       tag: 'Mathematical Sovereignty & Offline Deployment',
       category: 'engines',
-      badge: '100% SOBERANÍA',
-      desc: 'Access and download full mathematical weights of open models (GGUF, FP16, EXL2) for local, offline, and air-gapped deployments. Ensure complete data sovereignty, zero data retention, and enterprise security without relying on external clouds.',
-      model: 'Open-Weights Repository',
+      badge: 'SOBERANÍA',
+      desc: 'Access and download full mathematical weights of open models (GGUF, FP16, EXL2) for local, offline, and air-gapped deployments with zero external cloud reliance.',
+      model: 'Open-Weights',
       details: 'Full quantized model weights (GGUF, FP16, EXL2) ready for local inference.',
       metrics: { latency: '<10ms', security: 'Air-Gapped', status: 'Operational' },
-      icon: <FiDatabase size={15} />
+      icon: <FiDatabase size={14} />
     },
     {
       num: '002',
@@ -90,11 +160,11 @@ export default function AssemblyDashboard() {
       tag: 'QLoRA Fine-Tuning & Private Data',
       category: 'engines',
       badge: 'QLORA TUNING',
-      desc: 'Train a model on your proprietary enterprise data, shaping its name, personality, and analytical criteria. Specialized weight retraining (QLoRA) aligns the LLM cognitive core with your workflows.',
-      model: 'QLoRA / Unsloth Core',
+      desc: 'Train a model on your proprietary enterprise data, shaping its name, personality, and analytical criteria through specialized QLoRA weight retraining.',
+      model: 'QLoRA / Unsloth',
       details: 'Private model training protocols active for custom enterprise weights.',
       metrics: { latency: 'Batch FP16', security: 'Private VPC', status: 'Ready' },
-      icon: <FiSliders size={15} />
+      icon: <FiSliders size={14} />
     },
     {
       num: '003',
@@ -103,12 +173,12 @@ export default function AssemblyDashboard() {
       label: 'AI Model APIs & Gateway',
       tag: 'API Provider & Enterprise Gateway',
       category: 'engines',
-      badge: 'GATEWAY & SUB-APIS',
-      desc: 'Enterprise LLM APIs engineered for existing projects. Ultra-low latency inference, GPU cluster elasticity, and dedicated Sub-API keys ready to plug directly into your codebase.',
-      model: 'vLLM / NVIDIA NIM Gateway',
+      badge: 'API GATEWAY',
+      desc: 'Enterprise LLM APIs engineered for existing projects. Ultra-low latency inference, GPU cluster elasticity, and dedicated Sub-API keys ready to plug in.',
+      model: 'NVIDIA NIM',
       details: 'Sub-10ms latency streaming and dedicated API key management ready.',
-      metrics: { latency: '<10ms / tok', security: 'Sub-API Key', status: 'High Throughput' },
-      icon: <FiZap size={15} />
+      metrics: { latency: '<10ms / tok', security: 'Sub-API Key', status: 'Active' },
+      icon: <FiZap size={14} />
     },
     {
       num: '004',
@@ -117,12 +187,12 @@ export default function AssemblyDashboard() {
       label: 'Chat with AX · Intelligent Assistant',
       tag: 'Cognitive Conversational Core',
       category: 'conversational',
-      badge: 'FRONTIER REASONING',
+      badge: 'REASONING',
       desc: 'Connect instantly with GLYNNE’s conversational engine. Solve complex inquiries, analyze enterprise data, and generate code or strategic blueprints in real-time.',
-      model: 'GPT OSS 120B OpenAI',
+      model: 'GPT OSS 120B',
       details: 'High-parameter natural language processing and multimodal vision ready.',
       metrics: { latency: 'Real-Time', security: 'Encrypted', status: 'Connected' },
-      icon: <FiMessageSquare size={15} />
+      icon: <FiMessageSquare size={14} />
     },
     {
       num: '005',
@@ -131,12 +201,12 @@ export default function AssemblyDashboard() {
       label: 'AX Voice · Real-Time Voice Synthesis',
       tag: 'Neural Acoustic Modulation',
       category: 'conversational',
-      badge: 'VOX SYNTHESIS',
+      badge: 'VOX SYNTH',
       desc: 'Experience ultra-natural, zero-latency voice conversations powered by artificial intelligence. Instant acoustic modulation and real-time comprehension.',
-      model: 'VOX-SYNTH V2.0',
+      model: 'VOX-SYNTH V2',
       details: 'Acoustic waveform modulation standing by for full-duplex voice.',
       metrics: { latency: '<50ms Audio', security: 'Full Duplex', status: 'Streaming' },
-      icon: <FiMic size={15} />
+      icon: <FiMic size={14} />
     }
   ];
 
@@ -144,26 +214,29 @@ export default function AssemblyDashboard() {
     {
       num: '006',
       title: 'Home · Main Portal',
-      subtitle: 'Root Platform Overview',
+      subtitle: 'Root Route',
+      badge: 'PORTAL',
       href: '/',
       desc: 'Explore our core platform, homepage, and comprehensive overview of AX GLYNNE services.',
-      icon: <FiHome size={15} />
+      icon: <FiHome size={14} />
     },
     {
       num: '007',
       title: 'About · Company',
-      subtitle: 'Architecture & Mission',
+      subtitle: 'Architecture',
+      badge: 'COMPANY',
       href: '/About',
       desc: 'Discover our architecture, technological mission, and the visionary team engineering GLYNNE.',
-      icon: <FiInfo size={15} />
+      icon: <FiInfo size={14} />
     },
     {
       num: '008',
       title: 'Contact · Solutions',
-      subtitle: 'Engineering & Enterprise',
+      subtitle: 'Enterprise',
+      badge: 'SOLUTIONS',
       href: '/contact',
       desc: 'Connect directly with our systems engineers and architects for deployments, custom quotes, and integrations.',
-      icon: <FiMail size={15} />
+      icon: <FiMail size={14} />
     }
   ];
 
@@ -187,7 +260,7 @@ export default function AssemblyDashboard() {
     getSession();
 
     const originalBg = document.body.style.backgroundColor;
-    document.body.style.backgroundColor = theme === 'light' ? '#f8f9fc' : '#000000';
+    document.body.style.backgroundColor = theme === 'light' ? '#f4f4f4' : '#000000';
 
     return () => {
       document.body.style.backgroundColor = originalBg;
@@ -205,7 +278,7 @@ export default function AssemblyDashboard() {
     setTimeout(() => {
       setActiveTool(toolName);
       setIsFading(false);
-    }, 260);
+    }, 220);
   };
 
   const filteredTools = platformTools.filter(tool => {
@@ -214,7 +287,8 @@ export default function AssemblyDashboard() {
   });
 
   const userName = userProfile?.full_name || 'AX_user';
-  const userInitial = userName.charAt(0).toUpperCase();
+  const mastheadTitle =
+    mainTab === 'tools' ? 'TOOLS' : mainTab === 'orb' ? 'ORB STUDIO' : 'ROUTES';
 
   return (
     <div
@@ -222,209 +296,191 @@ export default function AssemblyDashboard() {
       data-theme={theme}
       style={{ filter: `brightness(${brightness}%)` }}
     >
-      {/* Perspective floor grid from previous GLYNNE interface */}
-      <div className="hub-bg-grid" aria-hidden="true">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="hub-floor-grid" width="60" height="60" patternUnits="userSpaceOnUse">
-              <path
-                d="M 60 0 L 0 0 0 60"
-                fill="none"
-                className="hub-bg-grid-line"
-                strokeWidth="1"
-              />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#hub-floor-grid)" />
-        </svg>
-      </div>
+      <div className="hub-page">
+        {/* ── TOP EDITORIAL BAR ── */}
+        <header className="hub-topbar">
+          <div className="hub-topbar-left">
+            <Link href="/" className="hub-brand-link">
+              AX GLYNNE
+            </Link>
+            <button
+              type="button"
+              className="hub-user-trigger"
+              onClick={() => setShowLogoutModal(true)}
+              title={userProfile?.email || 'Account session'}
+            >
+              <span>/</span>
+              <span>{userName}</span>
+            </button>
+          </div>
 
-      <div className="hub-frame">
-        <div className="hub-ambient-glow" />
-
-        <div className="hub-layer">
-          {/* ── TOP BAR ── */}
-          <header className="hub-topbar">
-            <div className="hub-topbar-left">
-              <Link href="/" className="hub-brand-btn" title="GLYNNE Home">
-                <span className="hub-brand-mark">AX</span>
-              </Link>
-
+          <div className="hub-topbar-right">
+            <nav className="hub-nav-links" aria-label="Primary navigation">
               <button
                 type="button"
-                className="hub-pill"
-                onClick={() => setShowLogoutModal(true)}
-                title={userProfile?.email || 'Account session'}
-              >
-                {userProfile?.avatar_url ? (
-                  <img
-                    src={userProfile.avatar_url}
-                    alt={userName}
-                    className="hub-avatar"
-                  />
-                ) : (
-                  <span className="hub-avatar">{userInitial}</span>
-                )}
-                <span>{userName}</span>
-                <FiChevronDown size={13} style={{ opacity: 0.55 }} />
-              </button>
-
-              <button
-                type="button"
-                className="hub-circle-btn"
-                onClick={() => setInspectedTool(currentToolData)}
-                title="Active tool specifications"
-                aria-label="Active tool specifications"
-              >
-                <FiInfo size={15} />
-              </button>
-            </div>
-
-            <div className="hub-topbar-right">
-              <button
-                type="button"
-                className="hub-active-pill"
-                onClick={() => setMainTab('orb')}
-                title="Open Orb Studio"
-              >
-                <span>{`${currentToolData.shortTitle} · ${currentToolData.num}`}</span>
-                <span className="hub-active-pill-badge">
-                  <FiChevronDown size={13} />
-                </span>
-              </button>
-
-              <button
-                type="button"
-                className="hub-circle-btn"
-                onClick={toggleTheme}
-                title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-                aria-label="Toggle theme"
-              >
-                {theme === 'dark' ? <FiSun size={15} /> : <FiMoon size={15} />}
-              </button>
-
-              <button
-                type="button"
-                className="hub-circle-btn"
-                onClick={() => setMainTab(mainTab === 'orb' ? 'tools' : 'orb')}
-                title="Toggle Orb Studio"
-                aria-label="Toggle Orb Studio"
-              >
-                <FiDisc size={15} />
-              </button>
-
-              <button
-                type="button"
-                className="hub-circle-btn"
-                onClick={() => setShowLogoutModal(true)}
-                title="Disconnect session"
-                aria-label="Disconnect session"
-              >
-                <FaSignOutAlt size={13} />
-                <span className="hub-status-dot" />
-              </button>
-            </div>
-          </header>
-
-          {/* ── LARGE TABS & SUBTABS ── */}
-          <section className="hub-nav-section">
-            <div className="hub-main-tabs" role="tablist" aria-label="Workspace sections">
-              <button
-                type="button"
-                role="tab"
-                aria-selected={mainTab === 'tools'}
-                className={`hub-main-tab ${mainTab === 'tools' ? 'is-active' : ''}`}
+                className={`hub-nav-link ${mainTab === 'tools' ? 'is-active' : ''}`}
                 onClick={() => setMainTab('tools')}
               >
                 Tools
               </button>
               <button
                 type="button"
-                role="tab"
-                aria-selected={mainTab === 'orb'}
-                className={`hub-main-tab ${mainTab === 'orb' ? 'is-active' : ''}`}
+                className={`hub-nav-link ${mainTab === 'orb' ? 'is-active' : ''}`}
                 onClick={() => setMainTab('orb')}
               >
                 Orb Studio
               </button>
               <button
                 type="button"
-                role="tab"
-                aria-selected={mainTab === 'routes'}
-                className={`hub-main-tab ${mainTab === 'routes' ? 'is-active' : ''}`}
+                className={`hub-nav-link ${mainTab === 'routes' ? 'is-active' : ''}`}
                 onClick={() => setMainTab('routes')}
               >
                 Routes
               </button>
+            </nav>
+
+            <span className="hub-topbar-divider" aria-hidden="true" />
+
+            <div className="hub-icon-actions">
+              <button
+                type="button"
+                className="hub-icon-btn"
+                onClick={() => setInspectedTool(currentToolData)}
+                title="Active tool specifications"
+                aria-label="Active tool specifications"
+              >
+                <FiInfo size={15} />
+              </button>
+              <button
+                type="button"
+                className="hub-icon-btn"
+                onClick={toggleTheme}
+                title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                aria-label="Toggle theme"
+              >
+                {theme === 'dark' ? <FiSun size={15} /> : <FiMoon size={15} />}
+              </button>
+              <button
+                type="button"
+                className="hub-icon-btn"
+                onClick={() => setShowLogoutModal(true)}
+                title="Disconnect session"
+                aria-label="Disconnect session"
+              >
+                <FaSignOutAlt size={14} />
+              </button>
             </div>
+          </div>
+        </header>
 
-            {mainTab === 'tools' && (
-              <div className="hub-subtabs">
+        {/* ── MASTHEAD TITLE ── */}
+        <section className="hub-masthead">
+          <h1 className="hub-masthead-title">{mastheadTitle}</h1>
+        </section>
+
+        {/* ── CATEGORIES ROW ── */}
+        <section className="hub-categories-bar">
+          <span className="hub-categories-label">
+            {mainTab === 'tools'
+              ? 'Categories'
+              : mainTab === 'orb'
+              ? '3D Neural Core'
+              : 'Platform Routes'}
+          </span>
+
+          {mainTab === 'tools' && (
+            <div className="hub-category-pills">
+              <button
+                type="button"
+                className={`hub-cat-pill ${toolFilter === 'all' ? 'is-active' : ''}`}
+                onClick={() => setToolFilter('all')}
+              >
+                All
+              </button>
+              <button
+                type="button"
+                className={`hub-cat-pill ${toolFilter === 'engines' ? 'is-active' : ''}`}
+                onClick={() => setToolFilter('engines')}
+              >
+                AI Engines
+              </button>
+              <button
+                type="button"
+                className={`hub-cat-pill ${toolFilter === 'conversational' ? 'is-active' : ''}`}
+                onClick={() => setToolFilter('conversational')}
+              >
+                Chat & Voice
+              </button>
+            </div>
+          )}
+
+          {mainTab === 'orb' && (
+            <div className="hub-category-pills">
+              {platformTools.map(tool => (
                 <button
+                  key={tool.name}
                   type="button"
-                  className={`hub-subtab ${toolFilter === 'all' ? 'is-active' : ''}`}
-                  onClick={() => setToolFilter('all')}
+                  className={`hub-cat-pill ${activeTool === tool.name ? 'is-active' : ''}`}
+                  onClick={() => handleSelectTool(tool.name)}
                 >
-                  All Tools
+                  {tool.shortTitle}
                 </button>
-                <button
-                  type="button"
-                  className={`hub-subtab ${toolFilter === 'engines' ? 'is-active' : ''}`}
-                  onClick={() => setToolFilter('engines')}
-                >
-                  AI Engines
-                </button>
-                <button
-                  type="button"
-                  className={`hub-subtab ${toolFilter === 'conversational' ? 'is-active' : ''}`}
-                  onClick={() => setToolFilter('conversational')}
-                >
-                  Chat & Voice
-                </button>
-              </div>
-            )}
+              ))}
+            </div>
+          )}
 
-            {mainTab === 'orb' && (
-              <div className="hub-subtabs">
-                <button type="button" className="hub-subtab is-active">
-                  Interactive 3D Core
-                </button>
-              </div>
-            )}
+          {mainTab === 'routes' && (
+            <div className="hub-category-pills">
+              <span className="hub-cat-pill is-active">Directory</span>
+            </div>
+          )}
+        </section>
 
-            {mainTab === 'routes' && (
-              <div className="hub-subtabs">
-                <button type="button" className="hub-subtab is-active">
-                  Platform Links
-                </button>
-              </div>
-            )}
-          </section>
+        {/* ── MAIN CONTENT ── */}
+        <main>
+          {mainTab === 'tools' && (
+            <div className="hub-editorial-grid">
+              {filteredTools.map(tool => {
+                const isSelected = activeTool === tool.name;
+                return (
+                  <article
+                    key={tool.name}
+                    className={`hub-cell ${isSelected ? 'is-selected' : ''}`}
+                    onClick={() => handleSelectTool(tool.name)}
+                  >
+                    <div className="hub-cell-meta">
+                      <span className="hub-cell-date">
+                        {`${tool.num} · ${tool.metrics.status}`}
+                      </span>
+                      <span className="hub-cell-tag-pill">{tool.badge}</span>
+                    </div>
 
-          {/* ── MAIN WORKSPACE CONTENT ── */}
-          <main className="hub-grid-wrap">
-            {mainTab === 'tools' && (
-              <div className="hub-cards-grid">
-                {filteredTools.map(tool => {
-                  const isSelected = activeTool === tool.name;
-                  return (
-                    <div
-                      key={tool.name}
-                      className={`hub-card ${isSelected ? 'is-selected' : ''}`}
-                      onClick={() => handleSelectTool(tool.name)}
-                    >
-                      <div className="hub-card-top">
-                        <div className="hub-card-title-group">
-                          <span className="hub-card-meta-badge">
-                            {tool.icon}
-                            <span>{`${tool.num} // ${tool.badge}`}</span>
-                          </span>
-                          <h3 className="hub-card-title">{tool.shortTitle}</h3>
-                          <p className="hub-card-subtitle">{tool.tag}</p>
-                        </div>
+                    <div className="hub-cell-artwork">
+                      <ToolEditorialArtwork name={tool.name} />
+                      <span className="hub-artwork-badge">{tool.model}</span>
+                    </div>
+
+                    <div className="hub-cell-body">
+                      <h2 className="hub-cell-title">{tool.shortTitle}</h2>
+                      <p className="hub-cell-desc">{tool.desc}</p>
+                    </div>
+
+                    <div className="hub-cell-footer">
+                      <div className="hub-cell-specs">
+                        <span className="hub-spec-pair">
+                          <strong>Model</strong>
+                          <span>{tool.model}</span>
+                        </span>
+                        <span className="hub-spec-pair">
+                          <strong>Latency</strong>
+                          <span>{tool.metrics.latency}</span>
+                        </span>
+                      </div>
+
+                      <div className="hub-cell-actions">
                         <button
                           type="button"
-                          className="hub-card-more-btn"
+                          className="hub-cell-btn"
                           title={`Inspect ${tool.shortTitle}`}
                           aria-label={`Inspect ${tool.shortTitle}`}
                           onClick={e => {
@@ -433,124 +489,113 @@ export default function AssemblyDashboard() {
                             setInspectedTool(tool);
                           }}
                         >
-                          <FiMoreHorizontal size={15} />
+                          <FiMoreHorizontal size={14} />
                         </button>
-                      </div>
-
-                      <div className="hub-card-bottom">
-                        <div className="hub-card-summary-wrap">
-                          <p className="hub-card-summary">{tool.details}</p>
-                          <span className="hub-card-metric-line">
-                            {`${tool.metrics.latency} · ${tool.metrics.security} · ${tool.metrics.status}`}
-                          </span>
-                        </div>
                         <Link
                           href={`/${tool.name}`}
-                          className="hub-card-action-btn"
+                          className="hub-cell-btn is-primary"
                           title={`Launch ${tool.shortTitle}`}
                           aria-label={`Launch ${tool.shortTitle}`}
                           onClick={e => e.stopPropagation()}
                         >
-                          <FiArrowUpRight size={16} />
+                          <FiArrowUpRight size={14} />
                         </Link>
                       </div>
                     </div>
-                  );
-                })}
+                  </article>
+                );
+              })}
 
-                {/* 6th Card on 'All Tools' to keep a balanced 3x2 grid & direct access to the LiquidOrb */}
-                {toolFilter === 'all' && (
-                  <div
-                    className="hub-card"
-                    onClick={() => setMainTab('orb')}
-                  >
-                    <div className="hub-card-top">
-                      <div className="hub-card-title-group">
-                        <span className="hub-card-meta-badge">
-                          <FiDisc size={13} />
-                          <span>{'ORB // 3D NEURAL CORE'}</span>
-                        </span>
-                        <h3 className="hub-card-title">Orb Core</h3>
-                        <p className="hub-card-subtitle">Interactive LiquidOrb Visualizer</p>
-                      </div>
-                      <button
-                        type="button"
-                        className="hub-card-more-btn"
-                        title="Open Orb Studio"
-                        aria-label="Open Orb Studio"
-                        onClick={e => {
-                          e.stopPropagation();
-                          setMainTab('orb');
-                        }}
-                      >
-                        <FiMoreHorizontal size={15} />
-                      </button>
-                    </div>
-
-                    <div className="hub-card-bottom">
-                      <div className="hub-card-summary-wrap">
-                        <p className="hub-card-summary">
-                          Interactive 3D LiquidOrb core synchronized with your active GLYNNE engine.
-                        </p>
-                        <span className="hub-card-metric-line">
-                          {'WebGL · 60fps · Live Telemetry'}
-                        </span>
-                      </div>
-                      <button
-                        type="button"
-                        className="hub-card-action-btn"
-                        title="Open Orb Studio"
-                        aria-label="Open Orb Studio"
-                        onClick={e => {
-                          e.stopPropagation();
-                          setMainTab('orb');
-                        }}
-                      >
-                        <FiDisc size={15} />
-                      </button>
-                    </div>
+              {/* 6th Editorial Cell: Live LiquidOrb Core */}
+              {toolFilter === 'all' && (
+                <article
+                  className="hub-cell"
+                  onClick={() => setMainTab('orb')}
+                >
+                  <div className="hub-cell-meta">
+                    <span className="hub-cell-date">ORB · Live Telemetry</span>
+                    <span className="hub-cell-tag-pill">3D CORE</span>
                   </div>
-                )}
-              </div>
-            )}
 
-            {mainTab === 'orb' && (
-              <div className="hub-orb-studio">
-                <div className="hub-orb-stage">
-                  <div className={`hub-orb-wrapper ${isFading ? 'is-fading' : ''}`}>
-                    <LiquidOrb
-                      theme={theme}
-                      wireframe={theme === 'light'}
-                      customRotX={rotX}
-                      customRotY={rotY}
-                      customRotZ={rotZ}
-                    />
+                  <div className="hub-cell-artwork">
+                    <div style={{ width: 155, height: 155, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <LiquidOrb
+                        theme={theme}
+                        wireframe={theme === 'light'}
+                        customRotX={rotX}
+                        customRotY={rotY}
+                        customRotZ={rotZ}
+                      />
+                    </div>
+                    <span className="hub-artwork-badge">LiquidOrb</span>
                   </div>
-                </div>
 
-                <div className="hub-orb-panel">
-                  <div>
-                    <h3 className="hub-card-title" style={{ marginBottom: 4 }}>
-                      {currentToolData.label}
-                    </h3>
-                    <p className="hub-card-subtitle">
-                      {`${currentToolData.model} · ${currentToolData.metrics.latency} · ${currentToolData.metrics.status}`}
+                  <div className="hub-cell-body">
+                    <h2 className="hub-cell-title">Orb Core Studio</h2>
+                    <p className="hub-cell-desc">
+                      Interactive 3D LiquidOrb visualizer synchronized in real-time with your active GLYNNE engine and optical telemetry controls.
                     </p>
                   </div>
 
-                  <div className="hub-orb-tool-chips">
-                    {platformTools.map(tool => (
-                      <button
-                        key={tool.name}
-                        type="button"
-                        className={`hub-orb-chip ${activeTool === tool.name ? 'is-active' : ''}`}
-                        onClick={() => handleSelectTool(tool.name)}
-                      >
-                        {tool.shortTitle}
-                      </button>
-                    ))}
-                  </div>
+                  <div className="hub-cell-footer">
+                    <div className="hub-cell-specs">
+                      <span className="hub-spec-pair">
+                        <strong>Engine</strong>
+                        <span>WebGL</span>
+                      </span>
+                      <span className="hub-spec-pair">
+                        <strong>Active</strong>
+                        <span>{currentToolData.shortTitle}</span>
+                      </span>
+                    </div>
 
+                    <div className="hub-cell-actions">
+                      <button
+                        type="button"
+                        className="hub-cell-btn is-primary"
+                        title="Open Orb Studio"
+                        aria-label="Open Orb Studio"
+                        onClick={e => {
+                          e.stopPropagation();
+                          setMainTab('orb');
+                        }}
+                      >
+                        <FiDisc size={14} />
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              )}
+            </div>
+          )}
+
+          {mainTab === 'orb' && (
+            <div className="hub-orb-studio">
+              <div className="hub-orb-stage">
+                <div className={`hub-orb-wrapper ${isFading ? 'is-fading' : ''}`}>
+                  <LiquidOrb
+                    theme={theme}
+                    wireframe={theme === 'light'}
+                    customRotX={rotX}
+                    customRotY={rotY}
+                    customRotZ={rotZ}
+                  />
+                </div>
+              </div>
+
+              <div className="hub-orb-panel">
+                <div>
+                  <div className="hub-cell-meta" style={{ marginBottom: 12 }}>
+                    <span className="hub-cell-date">{`${currentToolData.num} · ${currentToolData.metrics.status}`}</span>
+                    <span className="hub-cell-tag-pill">{currentToolData.badge}</span>
+                  </div>
+                  <h2 className="hub-cell-title" style={{ marginBottom: 6 }}>
+                    {currentToolData.label}
+                  </h2>
+                  <p className="hub-cell-desc">{currentToolData.desc}</p>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
                   <div className="hub-slider-row">
                     <div className="hub-slider-label">
                       <span>Orb Rotation X</span>
@@ -597,87 +642,82 @@ export default function AssemblyDashboard() {
                   </div>
                 </div>
               </div>
-            )}
+            </div>
+          )}
 
-            {mainTab === 'routes' && (
-              <div className="hub-cards-grid">
-                {externalLinks.map(item => (
-                  <div
-                    key={item.num}
-                    className="hub-card"
-                    onClick={() => router.push(item.href)}
-                  >
-                    <div className="hub-card-top">
-                      <div className="hub-card-title-group">
-                        <h3 className="hub-card-title">{item.title}</h3>
-                        <p className="hub-card-subtitle">{item.subtitle}</p>
-                      </div>
-                      <span className="hub-card-more-btn" aria-hidden="true">
-                        {item.icon}
+          {mainTab === 'routes' && (
+            <div className="hub-editorial-grid">
+              {externalLinks.map(item => (
+                <article
+                  key={item.num}
+                  className="hub-cell"
+                  onClick={() => router.push(item.href)}
+                >
+                  <div className="hub-cell-meta">
+                    <span className="hub-cell-date">{`${item.num} · ${item.subtitle}`}</span>
+                    <span className="hub-cell-tag-pill">{item.badge}</span>
+                  </div>
+
+                  <div className="hub-cell-body">
+                    <h2 className="hub-cell-title">{item.title}</h2>
+                    <p className="hub-cell-desc">{item.desc}</p>
+                  </div>
+
+                  <div className="hub-cell-footer">
+                    <div className="hub-cell-specs">
+                      <span className="hub-spec-pair">
+                        <strong>Path</strong>
+                        <span>{item.href}</span>
                       </span>
                     </div>
-
-                    <div className="hub-card-bottom">
-                      <p className="hub-card-summary">{item.desc}</p>
-                      <Link
-                        href={item.href}
-                        className="hub-card-action-btn"
-                        title={`Open ${item.title}`}
-                        onClick={e => e.stopPropagation()}
-                      >
-                        <FiArrowUpRight size={16} />
-                      </Link>
-                    </div>
+                    <Link
+                      href={item.href}
+                      className="hub-cell-btn is-primary"
+                      title={`Open ${item.title}`}
+                      onClick={e => e.stopPropagation()}
+                    >
+                      <FiArrowUpRight size={14} />
+                    </Link>
                   </div>
-                ))}
-              </div>
-            )}
-          </main>
+                </article>
+              ))}
+            </div>
+          )}
+        </main>
 
-          {/* ── BOTTOM FOOTER BAR ── */}
-          <footer className="hub-footer">
-            <button
-              type="button"
-              className="hub-circle-btn"
-              onClick={() => setInspectedTool(currentToolData)}
-              title="View active tool info"
-              aria-label="View active tool info"
-            >
-              <FiInfo size={15} />
-            </button>
+        {/* ── PAGE FOOTER ── */}
+        <footer className="hub-footer">
+          <span className="hub-footer-meta">
+            {`ACTIVE ENGINE: ${currentToolData.num} // ${currentToolData.shortTitle.toUpperCase()} · ${currentToolData.metrics.latency}`}
+          </span>
 
-            <Link href={`/${activeTool}`} className="hub-cta-pill">
-              <span>{`Deploy ${currentToolData.shortTitle}`}</span>
-              <FiArrowRight size={15} />
-            </Link>
-          </footer>
-        </div>
+          <Link href={`/${activeTool}`} className="hub-cta-btn">
+            <span>{`DEPLOY ${currentToolData.shortTitle}`}</span>
+            <FiArrowRight size={14} />
+          </Link>
+        </footer>
       </div>
 
       {/* ── TOOL INSPECTOR MODAL ── */}
       {inspectedTool && (
         <div className="hub-modal-overlay" onClick={() => setInspectedTool(null)}>
           <div className="hub-modal-card" onClick={e => e.stopPropagation()}>
-            <div className="hub-card-top" style={{ marginBottom: 12 }}>
-              <div>
-                <p className="hub-card-subtitle" style={{ marginBottom: 4 }}>
-                  {`${inspectedTool.num} · ${inspectedTool.badge}`}
-                </p>
-                <h3 className="hub-card-title" style={{ fontSize: 20 }}>
-                  {inspectedTool.label}
-                </h3>
-              </div>
+            <div className="hub-cell-meta" style={{ marginBottom: 14 }}>
+              <span className="hub-cell-date">{`${inspectedTool.num} · ${inspectedTool.badge}`}</span>
               <button
                 type="button"
-                className="hub-card-more-btn"
+                className="hub-cell-btn"
                 onClick={() => setInspectedTool(null)}
                 aria-label="Close modal"
               >
-                <FiX size={16} />
+                <FiX size={14} />
               </button>
             </div>
 
-            <p className="hub-card-summary" style={{ WebkitLineClamp: 'unset', fontSize: 13.5 }}>
+            <h3 className="hub-cell-title" style={{ marginBottom: 8 }}>
+              {inspectedTool.label}
+            </h3>
+            <p className="hub-cell-desc" style={{ WebkitLineClamp: 'unset' }}>
               {inspectedTool.desc}
             </p>
 
@@ -704,7 +744,7 @@ export default function AssemblyDashboard() {
               >
                 Close
               </button>
-              <Link href={`/${inspectedTool.name}`} className="hub-cta-pill">
+              <Link href={`/${inspectedTool.name}`} className="hub-cta-btn">
                 <span>Launch Tool</span>
                 <FiArrowRight size={14} />
               </Link>
@@ -717,13 +757,13 @@ export default function AssemblyDashboard() {
       {showLogoutModal && (
         <div className="hub-modal-overlay" onClick={() => setShowLogoutModal(false)}>
           <div className="hub-modal-card" onClick={e => e.stopPropagation()}>
-            <p className="hub-card-subtitle" style={{ marginBottom: 6 }}>
-              {'// SECURITY DISCONNECT PROTOCOL'}
-            </p>
-            <h3 className="hub-card-title" style={{ fontSize: 20, marginBottom: 8 }}>
+            <div className="hub-cell-meta" style={{ marginBottom: 12 }}>
+              <span className="hub-cell-date">{'// SECURITY DISCONNECT PROTOCOL'}</span>
+            </div>
+            <h3 className="hub-cell-title" style={{ marginBottom: 8 }}>
               System Disconnect
             </h3>
-            <p className="hub-card-summary" style={{ WebkitLineClamp: 'unset', fontSize: 13.5 }}>
+            <p className="hub-cell-desc" style={{ WebkitLineClamp: 'unset' }}>
               Are you sure you want to log out and terminate this secure session?
             </p>
             <div className="hub-modal-actions">
@@ -736,7 +776,7 @@ export default function AssemblyDashboard() {
               </button>
               <button
                 type="button"
-                className="hub-cta-pill"
+                className="hub-cta-btn"
                 onClick={async () => {
                   await signOut();
                   router.push('/');
