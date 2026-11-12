@@ -27,7 +27,7 @@ interface QuickstartDocumentationSectionProps {
 export default function QuickstartDocumentationSection({
   isDark,
   apiKey,
-  selectedModel = 'mistral-nemo-12b',
+  selectedModel = 'llama-3.2-90b-vision',
   onOpenKeyModal,
   onSelectTab
 }: QuickstartDocumentationSectionProps) {
@@ -73,9 +73,9 @@ export default function QuickstartDocumentationSection({
 
   // Available models to test
   const modelOptions = [
-    { id: 'mistral-nemo-12b', label: 'Mistral NeMo 12B', badge: 'Ultra Fast' },
-    { id: 'llama-3.3-70b', label: 'Llama 3.3 70B', badge: 'Flagship' },
-    { id: 'llama-3.1-8b', label: 'Llama 3.1 8B', badge: 'Low Latency' },
+    { id: 'llama-3.2-90b-vision', label: 'Llama 3.2 90B Vision', badge: 'Flagship' },
+    { id: 'llama-3.2-11b-vision', label: 'Llama 3.2 Vision (Compat)', badge: 'Vision' },
+    { id: 'mistral-nemo-12b', label: 'Mistral NeMo 12B', badge: 'Fast' },
     { id: 'nvidia-nemotron-70b', label: 'NVIDIA Nemotron 70B', badge: 'RLAIF' },
     { id: 'qwen-2.5-coder-32b', label: 'Qwen 2.5 Coder 32B', badge: 'Coding' },
     { id: 'deepseek-r1', label: 'DeepSeek R1', badge: 'Reasoning' }

@@ -972,7 +972,7 @@ export default function ModelsProviderPage() {
 
   const [activeTab, setActiveTab] = useState<TabType>('chat');
   const [userEmail, setUserEmail] = useState<string>('guest@axglynne.com');
-  const [selectedModel, setSelectedModel] = useState('mistral-nemo-12b');
+  const [selectedModel, setSelectedModel] = useState('llama-3.2-90b-vision');
 
   // Groq-style Sub-API Keys State
   const [subApiKeys, setSubApiKeys] = useState<SubApiKeyItem[]>([
@@ -980,7 +980,7 @@ export default function ModelsProviderPage() {
       id: 'default-1',
       name: 'Production Client Key',
       key: 'gly_sub_live_a8f9c2d1e4b56789',
-      model: 'mistral-nemo-12b',
+      model: 'llama-3.2-90b-vision',
       rpm: '120',
       quota: '5,000,000',
       createdAt: '11 oct 2026',
@@ -990,7 +990,7 @@ export default function ModelsProviderPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [createStep, setCreateStep] = useState<1 | 2>(1);
   const [newKeyFormName, setNewKeyFormName] = useState('Production Client Key');
-  const [newKeyFormModel, setNewKeyFormModel] = useState('mistral-nemo-12b');
+  const [newKeyFormModel, setNewKeyFormModel] = useState('llama-3.2-90b-vision');
   const [newKeyFormRpm, setNewKeyFormRpm] = useState('120');
   const [newKeyFormQuota, setNewKeyFormQuota] = useState('5,000,000');
   const [createdKeyItem, setCreatedKeyItem] = useState<SubApiKeyItem | null>(null);
@@ -1066,7 +1066,7 @@ export default function ModelsProviderPage() {
             id: String(row.id),
             name: row.name || 'Client Key',
             key: row.api_key || '',
-            model: row.default_model || 'mistral-nemo-12b',
+            model: row.default_model || 'llama-3.2-90b-vision',
             rpm: String(row.rate_limit_rpm ?? 120),
             quota: Number(row.monthly_quota ?? 5000000).toLocaleString('en-US'),
             tokensUsed: Number(row.tokens_used ?? 0),
@@ -1237,7 +1237,7 @@ export default function ModelsProviderPage() {
   const handleOpenCreateModal = () => {
     setCreateStep(1);
     setNewKeyFormName(`Production Client Key ${subApiKeys.length + 1}`);
-    setNewKeyFormModel(selectedModel || 'mistral-nemo-12b');
+    setNewKeyFormModel(selectedModel || 'llama-3.2-90b-vision');
     setNewKeyFormRpm('120');
     setNewKeyFormQuota('5,000,000');
     setCreatedKeyItem(null);
@@ -1348,7 +1348,7 @@ export default function ModelsProviderPage() {
 
   const getCodeSnippet = (customKey?: string, customModel?: string) => {
     const currentKey = customKey || generatedKey || subApiKeys[0]?.key || 'gly_sub_live_a8f9c2d1e4b56789';
-    const targetModel = customModel || selectedModel || 'mistral-nemo-12b';
+    const targetModel = customModel || selectedModel || 'llama-3.2-90b-vision';
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://ax-zyxe.onrender.com';
     const baseUrl = `${backendUrl}/api/v1`;
 
