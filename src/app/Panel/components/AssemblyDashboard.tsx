@@ -395,7 +395,7 @@ export default function AssemblyDashboard() {
                       style={{ transform: topo.offsetTransform }}
                     >
                       <Topography
-                        color="#4f7cff"
+                        color={theme === 'light' ? '#71717a' : '#a1a1aa'}
                         lineCount={11}
                         lineWidth={0.9}
                         elevation={topo.elevation}
