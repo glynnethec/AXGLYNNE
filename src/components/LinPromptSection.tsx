@@ -116,27 +116,98 @@ export default function LinPromptSection({
           .section-wrapper {
             height: auto !important;
             min-height: auto !important;
-            padding: 4rem 1rem !important;
+            padding: 4.5rem 1.25rem 3.5rem 1.25rem !important;
           }
           .central-blueprint-box {
             position: relative !important;
             top: auto !important;
             left: auto !important;
+            transform: none !important;
             width: 100% !important;
+            max-width: 680px !important;
             height: auto !important;
-            padding: 2rem 1rem !important;
+            padding: 0 !important;
+            margin: 0 auto !important;
+          }
+          .blueprint-svg-canvas {
+            opacity: 0.25 !important;
           }
         }
         @media (max-width: 700px) {
-          .prompt-input-icon-btn,
-          .prompt-input-icon {
+          .section-wrapper {
+            padding: 3.5rem 1rem 3rem 1rem !important;
+          }
+          .prompt-tag-badge {
+            font-size: 10px !important;
+            letter-spacing: 0.1em !important;
+          }
+          .prompt-headline {
+            font-size: clamp(22px, 5.5vw, 30px) !important;
+            line-height: 1.2 !important;
+            margin-bottom: 10px !important;
+            padding: 0 4px !important;
+          }
+          .prompt-subheadline {
+            font-size: 13.5px !important;
+            line-height: 1.55 !important;
+            margin-bottom: 14px !important;
+            padding: 0 6px !important;
+          }
+          .prompt-input-form {
+            padding: 13px 15px 11px 15px !important;
+            border-radius: 18px !important;
+            gap: 12px !important;
+          }
+          .prompt-textarea {
+            font-size: 14px !important;
+          }
+          .prompt-tags-row {
+            gap: 6px !important;
+            margin-top: 10px !important;
+          }
+          .prompt-tag-btn {
+            font-size: 11px !important;
+            padding: 4px 10px !important;
+          }
+          .prompt-invite-banner {
+            padding: 14px 16px !important;
+            border-radius: 16px !important;
+            margin-top: 16px !important;
+          }
+          .prompt-invite-desc {
+            max-width: 100% !important;
+            font-size: 11.5px !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .section-wrapper {
+            padding: 2.75rem 0.75rem 2.5rem 0.75rem !important;
+          }
+          .prompt-input-form {
+            padding: 12px 12px 10px 12px !important;
+            border-radius: 16px !important;
+          }
+          .prompt-add-files-btn {
+            font-size: 12px !important;
+          }
+          .prompt-add-files-text {
+            max-width: 170px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+          .prompt-invite-graphic {
             display: none !important;
+          }
+          .prompt-invite-content {
+            padding-right: 18px !important;
           }
         }
       `}</style>
 
       {/* SVG Canvas for Blueprint Lines, Grid Patches & Technical Marks */}
       <svg
+        className="blueprint-svg-canvas"
         width="100%"
         height="100%"
         style={{
@@ -311,7 +382,7 @@ export default function LinPromptSection({
         boxSizing: 'border-box'
       }}>
         {/* Tag matching Hero and other Home sections */}
-        <div style={{
+        <div className="prompt-tag-badge" style={{
           display: 'flex',
           alignItems: 'center',
           gap: '8px',
@@ -327,7 +398,7 @@ export default function LinPromptSection({
         </div>
 
         {/* Big Headline matching the rest of the Home */}
-        <h2 style={{
+        <h2 className="prompt-headline" style={{
           margin: '0 0 12px 0',
           textAlign: 'center',
           fontSize: 'clamp(28px, 3.6vw, 44px)',
@@ -341,7 +412,7 @@ export default function LinPromptSection({
         </h2>
 
         {/* Paragraph matching Home body typography */}
-        <p style={{
+        <p className="prompt-subheadline" style={{
           margin: '0 auto 16px auto',
           textAlign: 'center',
           fontSize: 'clamp(13.5px, 1.15vw, 15px)',
@@ -414,6 +485,7 @@ export default function LinPromptSection({
               }}
               placeholder={t.placeholder}
               rows={1}
+              className="prompt-textarea"
               style={{
                 border: 'none',
                 outline: 'none',
@@ -432,13 +504,15 @@ export default function LinPromptSection({
           </div>
 
           {/* Bottom Row: + Add tabs or files (Left) & Mic + Circular Up-Arrow Button (Right) */}
-          <div style={{
+          <div className="prompt-form-bottom" style={{
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center'
+            alignItems: 'center',
+            gap: '8px'
           }}>
             <button
               type="button"
+              className="prompt-add-files-btn"
               style={{
                 background: 'transparent',
                 border: 'none',
@@ -450,7 +524,8 @@ export default function LinPromptSection({
                 alignItems: 'center',
                 gap: '6px',
                 padding: 0,
-                transition: 'color 0.2s ease'
+                transition: 'color 0.2s ease',
+                minWidth: 0
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.color = textColor;
@@ -459,11 +534,11 @@ export default function LinPromptSection({
                 e.currentTarget.style.color = isDark ? 'rgba(255, 255, 255, 0.45)' : 'rgba(0, 0, 0, 0.45)';
               }}
             >
-              <FiPlus size={14} />
-              <span>{t.addFiles}</span>
+              <FiPlus size={14} style={{ flexShrink: 0 }} />
+              <span className="prompt-add-files-text">{t.addFiles}</span>
             </button>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
               <button
                 type="button"
                 onClick={() => router.push('/AX_voice')}
@@ -517,20 +592,22 @@ export default function LinPromptSection({
         </form>
 
         {/* Quick Tag Pills Row (Directly below input box matching reference screenshot) */}
-        <div style={{
+        <div className="prompt-tags-row" style={{
           display: 'flex',
           alignItems: 'center',
           gap: '8px',
           marginTop: '12px',
           flexWrap: 'wrap',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          width: '100%'
         }}>
           {/* Clock History Icon */}
           <div style={{
             color: isDark ? 'rgba(255, 255, 255, 0.35)' : 'rgba(0, 0, 0, 0.35)',
             display: 'flex',
             alignItems: 'center',
-            padding: '0 4px'
+            padding: '0 4px',
+            flexShrink: 0
           }}>
             <FiClock size={15} />
           </div>
@@ -540,6 +617,7 @@ export default function LinPromptSection({
             <button
               key={idx}
               type="button"
+              className="prompt-tag-btn"
               onClick={() => setInputValue(tag.prompt)}
               style={{
                 background: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)',
@@ -576,7 +654,8 @@ export default function LinPromptSection({
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              padding: '4px'
+              padding: '4px',
+              flexShrink: 0
             }}
             title="More options"
           >
@@ -586,7 +665,7 @@ export default function LinPromptSection({
 
         {/* Floating Invite Banner Card (Monochrome Black, Grey, White) */}
         {showBanner && (
-          <div style={{
+          <div className="prompt-invite-banner" style={{
             position: 'relative',
             marginTop: '20px',
             width: '100%',
@@ -602,7 +681,8 @@ export default function LinPromptSection({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            textAlign: 'left'
+            textAlign: 'left',
+            boxSizing: 'border-box'
           }}>
             {/* Close Button */}
             <button
@@ -631,7 +711,7 @@ export default function LinPromptSection({
             </button>
 
             {/* Text Content */}
-            <div style={{ flex: 1, paddingRight: '16px', zIndex: 2 }}>
+            <div className="prompt-invite-content" style={{ flex: 1, paddingRight: '16px', zIndex: 2 }}>
               <h4 style={{
                 margin: '0 0 6px 0',
                 fontSize: '14px',
@@ -640,7 +720,7 @@ export default function LinPromptSection({
               }}>
                 {t.inviteTitle}
               </h4>
-              <p style={{
+              <p className="prompt-invite-desc" style={{
                 margin: '0 0 8px 0',
                 fontSize: '12px',
                 lineHeight: 1.45,
@@ -674,7 +754,7 @@ export default function LinPromptSection({
             </div>
 
             {/* Right Side: 3D Floating Translucent Cards Graphic (Monochrome Glass) */}
-            <div style={{
+            <div className="prompt-invite-graphic" style={{
               position: 'relative',
               width: '110px',
               height: '76px',
