@@ -1361,15 +1361,64 @@ client = OpenAI(
     api_key="${currentKey}"
 )
 
+# Inferencia simple
 response = client.chat.completions.create(
     model="${targetModel}",
     messages=[
         {"role": "system", "content": "You are GLYNNE AI Provider Engine."},
         {"role": "user", "content": "Execute high-performance inference."}
-    ]
+    ],
+    temperature=0.7,
+    max_tokens=2048
 )
 
-print(response.choices[0].message.content)`;
+print("--- RESPUESTA INICIAL ---")
+print(response.choices[0].message.content)
+
+# ==============================================================================
+# ⚠️ [SECCIÓN DE PRUEBAS INTERACTIVAS - CHAT CLI] ⚠️
+# NOTA: Borra o comenta todo este bloque inferior al integrar en producción.
+# Solo sirve para probar la conversación continua en tiempo real desde la terminal.
+# ==============================================================================
+print("\\n" + "=" * 55)
+print(f"💬 MODO CHAT CLI ACTIVADO // Modelo: ${targetModel}")
+print("Escribe un mensaje y presiona Enter. Escribe 'salir' para terminar.")
+print("=" * 55 + "\\n")
+
+historial = [
+    {"role": "system", "content": "You are GLYNNE AI Provider Engine."}
+]
+
+while True:
+    try:
+        user_msg = input("\\n👤 Tú: ").strip()
+        if not user_msg:
+            continue
+        if user_msg.lower() in ("salir", "exit", "quit"):
+            print("👋 Sesión de chat finalizada con éxito.")
+            break
+
+        historial.append({"role": "user", "content": user_msg})
+
+        chat_response = client.chat.completions.create(
+            model="${targetModel}",
+            messages=historial,
+            temperature=0.7,
+            max_tokens=2048
+        )
+
+        reply = chat_response.choices[0].message.content
+        print(f"\\n🤖 GLYNNE: {reply}")
+        historial.append({"role": "assistant", "content": reply})
+    except KeyboardInterrupt:
+        print("\\n👋 Chat interrumpido por el usuario.")
+        break
+    except Exception as err:
+        print(f"\\n⚠️ Error en la inferencia: {err}")
+        break
+# ==============================================================================
+# ⚠️ [FIN DE LA SECCIÓN DE PRUEBA - BORRAR PARA PRODUCCIÓN]
+# ==============================================================================`;
     }
 
     if (activeCodeTab === 'node') {

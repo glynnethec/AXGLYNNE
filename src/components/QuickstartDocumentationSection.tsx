@@ -106,13 +106,59 @@ response = client.chat.completions.create(
 )
 
 # 3. Imprimir respuesta generada
-print(response.choices[0].message.content)`
+print("--- RESPUESTA INICIAL ---")
+print(response.choices[0].message.content)
+
+# ==============================================================================
+# ⚠️ [SECCIÓN DE PRUEBAS INTERACTIVAS - CHAT CLI] ⚠️
+# NOTA: Borra o comenta todo este bloque inferior al integrar en producción.
+# Solo sirve para probar la conversación continua en tiempo real desde la terminal/Colab.
+# ==============================================================================
+print("\\n" + "=" * 55)
+print(f"💬 MODO CHAT CLI ACTIVADO // Modelo: ${currentModel}")
+print("Escribe un mensaje y presiona Enter. Escribe 'salir' para terminar.")
+print("=" * 55 + "\\n")
+
+historial = [
+    {"role": "system", "content": "You are a specialized AI assistant powered by GLYNNE AI Gateway."}
+]
+
+while True:
+    try:
+        user_msg = input("\\n👤 Tú: ").strip()
+        if not user_msg:
+            continue
+        if user_msg.lower() in ("salir", "exit", "quit"):
+            print("👋 Sesión de chat finalizada con éxito.")
+            break
+
+        historial.append({"role": "user", "content": user_msg})
+
+        chat_response = client.chat.completions.create(
+            model="${currentModel}",
+            messages=historial,
+            temperature=0.7,
+            max_tokens=2048
+        )
+
+        reply = chat_response.choices[0].message.content
+        print(f"\\n🤖 GLYNNE: {reply}")
+        historial.append({"role": "assistant", "content": reply})
+    except KeyboardInterrupt:
+        print("\\n👋 Chat interrumpido por el usuario.")
+        break
+    except Exception as err:
+        print(f"\\n⚠️ Error en la inferencia: {err}")
+        break
+# ==============================================================================
+# ⚠️ [FIN DE LA SECCIÓN DE PRUEBA - BORRAR PARA PRODUCCIÓN]
+# ==============================================================================`
     },
     colab: {
       filename: 'google_colab_cell.py',
       installCmd: '!pip install -q openai',
       code: `# ============================================================
-# Google Colab: Inferencia con aceleración NVIDIA H100
+# Google Colab: Inferencia y Chat Interactivo con GLYNNE AI
 # ============================================================
 
 # 1. Instalar el SDK oficial de OpenAI en el entorno de Colab
@@ -131,10 +177,58 @@ response = client.chat.completions.create(
     messages=[
         {"role": "system", "content": "You are a specialized AI assistant."},
         {"role": "user", "content": "Execute high-performance inference."}
-    ]
+    ],
+    temperature=0.7,
+    max_tokens=2048
 )
 
-print(response.choices[0].message.content)`
+print("--- RESPUESTA INICIAL ---")
+print(response.choices[0].message.content)
+
+# ==============================================================================
+# ⚠️ [SECCIÓN DE PRUEBAS INTERACTIVAS - CHAT CLI] ⚠️
+# NOTA: Borra o comenta todo este bloque inferior al integrar en producción.
+# Solo sirve para probar la conversación continua en tiempo real desde la terminal/Colab.
+# ==============================================================================
+print("\\n" + "=" * 55)
+print(f"💬 MODO CHAT CLI ACTIVADO // Modelo: ${currentModel}")
+print("Escribe un mensaje en el campo inferior. Escribe 'salir' para terminar.")
+print("=" * 55 + "\\n")
+
+historial = [
+    {"role": "system", "content": "You are a specialized AI assistant powered by GLYNNE AI Gateway."}
+]
+
+while True:
+    try:
+        user_msg = input("\\n👤 Tú: ").strip()
+        if not user_msg:
+            continue
+        if user_msg.lower() in ("salir", "exit", "quit"):
+            print("👋 Sesión de chat finalizada con éxito.")
+            break
+
+        historial.append({"role": "user", "content": user_msg})
+
+        chat_response = client.chat.completions.create(
+            model="${currentModel}",
+            messages=historial,
+            temperature=0.7,
+            max_tokens=2048
+        )
+
+        reply = chat_response.choices[0].message.content
+        print(f"\\n🤖 GLYNNE: {reply}")
+        historial.append({"role": "assistant", "content": reply})
+    except KeyboardInterrupt:
+        print("\\n👋 Chat interrumpido por el usuario.")
+        break
+    except Exception as err:
+        print(f"\\n⚠️ Error en la inferencia: {err}")
+        break
+# ==============================================================================
+# ⚠️ [FIN DE LA SECCIÓN DE PRUEBA - BORRAR PARA PRODUCCIÓN]
+# ==============================================================================`
     },
     curl: {
       filename: 'request.sh',
