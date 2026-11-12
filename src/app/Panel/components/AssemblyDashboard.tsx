@@ -1,160 +1,173 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { getCurrentUser, signOut } from '@/lib/supabaseClient';
 import { FaSignOutAlt } from 'react-icons/fa';
-import { 
-  FiMessageSquare, 
-  FiMic, 
-  FiZap, 
-  FiSliders, 
-  FiDatabase, 
-  FiChevronRight,
-  FiChevronLeft,
+import {
+  FiMessageSquare,
+  FiMic,
+  FiZap,
+  FiSliders,
+  FiDatabase,
+  FiChevronDown,
   FiHome,
   FiInfo,
   FiMail,
-  FiArrowRight
+  FiArrowRight,
+  FiArrowUpRight,
+  FiMoreHorizontal,
+  FiSun,
+  FiMoon,
+  FiDisc,
+  FiX
 } from 'react-icons/fi';
-import PanelFooter from './PanelFooter';
 import LiquidOrb from '@/app/AX_chat/components/LiquidOrb';
 import { useTheme } from '@/lib/ThemeContext';
 import './AssemblyDashboard.css';
 
-type HoverStep = {
-  id: number;
-  cx: number;
-  cy: number;
-  neighbors: { dx: number; dy: number; opacity: number }[];
-};
+type MainTab = 'tools' | 'orb' | 'routes';
+type ToolFilter = 'all' | 'engines' | 'conversational';
+
+interface PlatformTool {
+  num: string;
+  name: string;
+  shortTitle: string;
+  label: string;
+  tag: string;
+  category: 'engines' | 'conversational';
+  badge: string;
+  desc: string;
+  model: string;
+  details: string;
+  metrics: {
+    latency: string;
+    security: string;
+    status: string;
+  };
+  icon: React.ReactNode;
+}
 
 export default function AssemblyDashboard() {
   const router = useRouter();
+  const { theme, toggleTheme } = useTheme();
+
   const [rotX, setRotX] = useState(-20);
   const [rotY, setRotY] = useState(35);
   const [rotZ, setRotZ] = useState(0);
-  
-  const [brightness, setBrightness] = useState(80);
-  const [shadowDensity, setShadowDensity] = useState(60);
-  
-  const [activeForm, setActiveForm] = useState('cube');
-  const [activeTool, setActiveTool] = useState('Librarymodel');
+  const [brightness, setBrightness] = useState(95);
+
+  const [mainTab, setMainTab] = useState<MainTab>('tools');
+  const [toolFilter, setToolFilter] = useState<ToolFilter>('all');
+  const [activeTool, setActiveTool] = useState<string>('Librarymodel');
   const [isFading, setIsFading] = useState(false);
-  const [isLoadingTool, setIsLoadingTool] = useState(false);
-  const [loadingProgress, setLoadingProgress] = useState(100);
-  const [currentDate] = useState(() => {
-    const date = new Date();
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    return `${days[date.getDay()]} \u2014 ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
-  });
+
   const [userProfile, setUserProfile] = useState<any>(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const { theme, toggleTheme } = useTheme();
+  const [inspectedTool, setInspectedTool] = useState<PlatformTool | null>(null);
 
-  const platformTools = [
-    { 
+  const platformTools: PlatformTool[] = [
+    {
       num: '001',
-      name: 'Librarymodel', 
-      label: 'Open-Source Weights Library', 
+      name: 'Librarymodel',
+      shortTitle: 'Library Model',
+      label: 'Open-Source Weights Library',
       tag: 'Mathematical Sovereignty & Offline Deployment',
+      category: 'engines',
       badge: '100% SOBERANÍA',
-      desc: 'Access and download full mathematical weights of open models (GGUF, FP16, EXL2) for local, offline, and air-gapped deployments. Ensure complete data sovereignty, zero data retention, and enterprise security without relying on external clouds.', 
-      model: 'Open-Weights Repository', 
+      desc: 'Access and download full mathematical weights of open models (GGUF, FP16, EXL2) for local, offline, and air-gapped deployments. Ensure complete data sovereignty, zero data retention, and enterprise security without relying on external clouds.',
+      model: 'Open-Weights Repository',
       details: 'Full quantized model weights (GGUF, FP16, EXL2) ready for local inference.',
       metrics: { latency: '<10ms', security: 'Air-Gapped', status: 'Operational' },
       icon: <FiDatabase size={15} />
     },
-    { 
+    {
       num: '002',
-      name: 'Create_you_GLYNNE_model', 
-      label: 'Create & Train Your Custom AI Model', 
+      name: 'Create_you_GLYNNE_model',
+      shortTitle: 'Create Model',
+      label: 'Create & Train Your Custom AI Model',
       tag: 'QLoRA Fine-Tuning & Private Data',
+      category: 'engines',
       badge: 'QLORA TUNING',
-      desc: 'Train a model on your proprietary enterprise data, shaping its name, personality, and analytical criteria. We provide specialized weight retraining (QLoRA) to align the LLM’s cognitive core with your workflows: greater cost savings, optimized processing, and a tailored intelligent workforce.', 
-      model: 'QLoRA / Unsloth Core', 
-      details: 'Private model training protocols active.',
+      desc: 'Train a model on your proprietary enterprise data, shaping its name, personality, and analytical criteria. Specialized weight retraining (QLoRA) aligns the LLM cognitive core with your workflows.',
+      model: 'QLoRA / Unsloth Core',
+      details: 'Private model training protocols active for custom enterprise weights.',
       metrics: { latency: 'Batch FP16', security: 'Private VPC', status: 'Ready' },
       icon: <FiSliders size={15} />
     },
-    { 
+    {
       num: '003',
-      name: 'models_provider', 
-      label: 'AI Model APIs & Gateway', 
+      name: 'models_provider',
+      shortTitle: 'Models Provider',
+      label: 'AI Model APIs & Gateway',
       tag: 'API Provider & Enterprise Gateway',
+      category: 'engines',
       badge: 'GATEWAY & SUB-APIS',
-      desc: 'If you have an existing project and need seamless, production-ready AI integration, we deliver enterprise LLM APIs engineered to power your operations. Ultra-low latency inference, GPU cluster elasticity, and dedicated Sub-API keys ready to plug directly into your codebase.', 
-      model: 'vLLM / NVIDIA NIM Gateway', 
+      desc: 'Enterprise LLM APIs engineered for existing projects. Ultra-low latency inference, GPU cluster elasticity, and dedicated Sub-API keys ready to plug directly into your codebase.',
+      model: 'vLLM / NVIDIA NIM Gateway',
       details: 'Sub-10ms latency streaming and dedicated API key management ready.',
       metrics: { latency: '<10ms / tok', security: 'Sub-API Key', status: 'High Throughput' },
       icon: <FiZap size={15} />
     },
-    { 
+    {
       num: '004',
-      name: 'AX_chat', 
-      label: 'Chat with AX · Intelligent Assistant', 
+      name: 'AX_chat',
+      shortTitle: 'AX Chat',
+      label: 'Chat with AX · Intelligent Assistant',
       tag: 'Cognitive Conversational Core',
+      category: 'conversational',
       badge: 'FRONTIER REASONING',
-      desc: 'Connect instantly with GLYNNE’s conversational engine. Solve complex inquiries, analyze enterprise data, and generate code or strategic blueprints in real-time powered by frontier reasoning and multimodal vision models.', 
-      model: 'GPT OSS 120B OpenAI', 
-      details: 'High-parameter natural language processing ready.',
+      desc: 'Connect instantly with GLYNNE’s conversational engine. Solve complex inquiries, analyze enterprise data, and generate code or strategic blueprints in real-time.',
+      model: 'GPT OSS 120B OpenAI',
+      details: 'High-parameter natural language processing and multimodal vision ready.',
       metrics: { latency: 'Real-Time', security: 'Encrypted', status: 'Connected' },
       icon: <FiMessageSquare size={15} />
     },
-    { 
+    {
       num: '005',
-      name: 'AX_voice', 
-      label: 'AX Voice · Real-Time Voice Synthesis', 
+      name: 'AX_voice',
+      shortTitle: 'AX Voice',
+      label: 'AX Voice · Real-Time Voice Synthesis',
       tag: 'Neural Acoustic Modulation',
+      category: 'conversational',
       badge: 'VOX SYNTHESIS',
-      desc: 'Experience ultra-natural, zero-latency voice conversations powered by artificial intelligence. Instant acoustic modulation and real-time comprehension built for contact centers, executive assistants, and next-generation voice interfaces.', 
-      model: 'VOX-SYNTH V2.0', 
-      details: 'Acoustic waveform modulation standing by.',
+      desc: 'Experience ultra-natural, zero-latency voice conversations powered by artificial intelligence. Instant acoustic modulation and real-time comprehension.',
+      model: 'VOX-SYNTH V2.0',
+      details: 'Acoustic waveform modulation standing by for full-duplex voice.',
       metrics: { latency: '<50ms Audio', security: 'Full Duplex', status: 'Streaming' },
       icon: <FiMic size={15} />
-    },
+    }
   ];
 
-  // External navigation links that open in a new tab without altering the orb
   const externalLinks = [
     {
       num: '006',
       title: 'Home · Main Portal',
-      badge: 'ROOT ROUTE',
+      subtitle: 'Root Platform Overview',
       href: '/',
       desc: 'Explore our core platform, homepage, and comprehensive overview of AX GLYNNE services.',
-      icon: <FiHome size={14} />
+      icon: <FiHome size={15} />
     },
     {
       num: '007',
       title: 'About · Company',
-      badge: 'ARCHITECTURE',
+      subtitle: 'Architecture & Mission',
       href: '/About',
       desc: 'Discover our architecture, technological mission, and the visionary team engineering GLYNNE.',
-      icon: <FiInfo size={14} />
+      icon: <FiInfo size={15} />
     },
     {
       num: '008',
       title: 'Contact · Solutions',
-      badge: 'SOLUTIONS',
+      subtitle: 'Engineering & Enterprise',
       href: '/contact',
       desc: 'Connect directly with our systems engineers and architects for deployments, custom quotes, and integrations.',
-      icon: <FiMail size={14} />
+      icon: <FiMail size={15} />
     }
   ];
 
-
-
-  const [history, setHistory] = useState<HoverStep[]>([]);
-  const stepIdRef = useRef(0);
-  const lastCellRef = useRef({ x: -1, y: -1 });
-
   useEffect(() => {
-    // Fetch Supabase session for mini profile
     const getSession = async () => {
       try {
         const user = await getCurrentUser();
@@ -173,500 +186,529 @@ export default function AssemblyDashboard() {
     };
     getSession();
 
-    // Sync body background color with active theme
     const originalBg = document.body.style.backgroundColor;
-    document.body.style.backgroundColor = theme === 'light' ? '#f8f9fc' : '#0b0b0d';
-
-    // Handle resize for mobile layout
-    const handleResize = () => setIsMobile(window.innerWidth <= 700);
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
-    // Auto hover animator
-    const intervalId = setInterval(() => {
-      const cx = Math.floor(Math.random() * 20);
-      const cy = Math.floor(Math.random() * 10);
-      const numNeighbors = Math.floor(Math.random() * 4) + 1;
-      const neighbors: { dx: number; dy: number; opacity: number }[] = [];
-      const possibleOffsets = [
-        [-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, -1], [-1, 1], [1, 1], [-2, 0], [2, 0], [0, -2], [0, 2]
-      ];
-      const shuffled = possibleOffsets.sort(() => 0.5 - Math.random());
-      for (let i = 0; i < numNeighbors; i++) {
-        neighbors.push({ dx: shuffled[i][0], dy: shuffled[i][1], opacity: (Math.random() * 0.06) + 0.03 });
-      }
-      setHistory(prev => [{ id: stepIdRef.current++, cx, cy, neighbors }, ...prev].slice(0, 8));
-    }, 1200);
+    document.body.style.backgroundColor = theme === 'light' ? '#eef0f5' : '#050507';
 
     return () => {
-      clearInterval(intervalId);
       document.body.style.backgroundColor = originalBg;
-      window.removeEventListener('resize', handleResize);
     };
   }, [theme]);
 
-  const currentToolData = platformTools.find(t => t.name === activeTool);
+  const currentToolData = platformTools.find(t => t.name === activeTool) || platformTools[0];
 
   const handleSelectTool = (toolName: string) => {
-    if (activeTool === toolName) {
-      router.push(`/${toolName}`);
-      return;
-    }
-    if (isLoadingTool || isFading) return;
-
-    setIsLoadingTool(true);
+    if (activeTool === toolName) return;
     setIsFading(true);
-    setLoadingProgress(0);
-
-    // Giro orbital dinámico de 360 grados de la esfera
     setRotY(prev => prev + 360);
-    setRotX(prev => prev + (Math.random() > 0.5 ? 90 : -90));
-    setRotZ(prev => prev + (Math.random() > 0.5 ? 45 : -45));
-
-    // Animación de llenado de la barra de carga
-    let currentP = 0;
-    const interval = setInterval(() => {
-      currentP += Math.floor(Math.random() * 16) + 12;
-      if (currentP >= 100) {
-        currentP = 100;
-        clearInterval(interval);
-      }
-      setLoadingProgress(currentP);
-    }, 45);
-
+    setRotX(prev => prev + (Math.random() > 0.5 ? 60 : -60));
+    setRotZ(prev => prev + (Math.random() > 0.5 ? 35 : -35));
     setTimeout(() => {
       setActiveTool(toolName);
       setIsFading(false);
-      setTimeout(() => {
-        setIsLoadingTool(false);
-      }, 350);
-    }, 550);
+    }, 260);
   };
 
-  const renderCenterCanvas = () => (
-    <div className="md-center">
-      <div className={`md-info-card ${isFading ? 'fading-out' : 'fading-in'}`}>
-        <div className="md-info-header-meta">
-          <span className="md-info-num">{currentToolData?.num || '001'}</span>
-          <span className="md-info-status-pill">
-            <span className="md-info-pulse-dot"></span>
-            CLUSTER ACTIVE
-          </span>
-          <span className="md-info-divider-slash">/</span>
-          <div className="info-title">{currentToolData?.label}</div>
-        </div>
-      </div>
+  const filteredTools = platformTools.filter(tool => {
+    if (toolFilter === 'all') return true;
+    return tool.category === toolFilter;
+  });
 
-      <div className="md-3d-scene">
-        <div className="md-sphere" style={{ overflow: 'visible', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <div style={{ width: '400px', height: '400px', transform: 'scale(1.12)' }}>
-            <LiquidOrb theme={theme} wireframe={theme === 'light'} customRotX={rotX} customRotY={rotY} customRotZ={rotZ} />
-          </div>
-        </div>
-        <div className="md-shadow" style={{ opacity: shadowDensity / 100, transform: `translateY(200px) rotateX(75deg) rotateZ(${-rotY}deg)` }}></div>
-      </div>
-
-      <div className="md-rotation-track">
-        <div className="md-rotation-circle"></div>
-        <div className="md-rotation-marker" style={{ transform: `translateX(-50%) rotate(${rotY}deg)` }}>
-          <div className="md-marker-line"></div>
-        </div>
-      </div>
-
-      {/* Componente sutil animado de barra de carga y telemetría debajo de la esfera */}
-      <div className="md-orb-loading-dock">
-        <div className="md-orb-loading-header">
-          <div className="md-orb-loading-status-group">
-            <span className={`md-orb-loading-dot ${isLoadingTool ? 'active' : ''}`}></span>
-            <span className="md-orb-loading-text">
-              {isLoadingTool
-                ? `SYNCHRONIZING ENGINE // [${currentToolData?.num || '001'}]`
-                : `CLUSTER SYNCHRONIZED // ${currentToolData?.badge || 'OPERATIONAL'}`}
-            </span>
-          </div>
-          <span className={`md-orb-loading-percent ${isLoadingTool ? 'active' : ''}`}>
-            {isLoadingTool ? `[ ${loadingProgress}% ]` : '[ 100% READY ]'}
-          </span>
-        </div>
-
-        <div className={`md-orb-progress-track ${!isLoadingTool ? 'idle' : ''}`}>
-          <div
-            className="md-orb-progress-fill"
-            style={{ width: `${isLoadingTool ? loadingProgress : 100}%` }}
-          ></div>
-        </div>
-
-        <div className="md-orb-loading-meta">
-          <span className="md-orb-loading-meta-item">
-            TOOL: <span className="md-orb-loading-meta-val">{currentToolData?.name || 'CORE'}</span>
-          </span>
-          <span className="md-orb-loading-meta-item">
-            ORB SPIN: <span className="md-orb-loading-meta-val">{isLoadingTool ? 'ROTATING 360°' : 'STANDBY'}</span>
-          </span>
-          <span className="md-orb-loading-meta-item">
-            LATENCY: <span className="md-orb-loading-meta-val">{currentToolData?.metrics?.latency || '<10MS'}</span>
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    if (typeof window !== 'undefined' && window.innerWidth <= 700) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    const cx = Math.floor(x / 80);
-    const cy = Math.floor(y / 80);
-
-    if (cx !== lastCellRef.current.x || cy !== lastCellRef.current.y) {
-      lastCellRef.current = { x: cx, y: cy };
-      const numNeighbors = Math.floor(Math.random() * 4) + 1;
-      const neighbors: { dx: number; dy: number; opacity: number }[] = [];
-      const possibleOffsets = [
-        [-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, -1], [-1, 1], [1, 1], [-2, 0], [2, 0], [0, -2], [0, 2]
-      ];
-      const shuffled = possibleOffsets.sort(() => 0.5 - Math.random());
-      for (let i = 0; i < numNeighbors; i++) {
-        neighbors.push({ dx: shuffled[i][0], dy: shuffled[i][1], opacity: (Math.random() * 0.06) + 0.03 });
-      }
-      setHistory(prev => [{ id: stepIdRef.current++, cx, cy, neighbors }, ...prev].slice(0, 8));
-    }
-  };
-
-  const handleMouseLeave = () => {
-    setHistory([]);
-    lastCellRef.current = { x: -1, y: -1 };
-  };
+  const userName = userProfile?.full_name || 'AX_user';
+  const userInitial = userName.charAt(0).toUpperCase();
 
   return (
-    <div data-theme={theme} style={{ background: theme === 'light' ? '#f5f5f7' : '#000', minHeight: '100vh', width: '100vw', maxWidth: '100vw', overflowX: 'hidden' }}>
-      <div className="md-container" style={{ '--brightness-filter': `brightness(${0.5 + brightness / 100})` } as React.CSSProperties}
-           onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
-      
-      {/* Dynamic Background Perspective Grid Wrapper */}
-      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', zIndex: 0, pointerEvents: 'none' }}>
-        <div className="md-bg-grid">
-          <style>{`
-            @keyframes cellFadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
-          `}</style>
-          <svg width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0, zIndex: 0 }}>
-            <defs>
-              <pattern id="floor-grid" width="80" height="80" patternUnits="userSpaceOnUse">
-                <path d="M 80 0 L 0 0 0 80" fill="none" stroke={theme === 'light' ? 'rgba(15, 23, 42, 0.15)' : 'rgba(255, 255, 255, 0.04)'} strokeWidth="1" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#floor-grid)" />
-            {history.map((step, index) => {
-              const isCurrent = index === 0;
-              const cellColor = theme === 'light' ? '15, 23, 42' : '255, 255, 255';
-              const opacityScale = theme === 'light' ? 5 : 1;
-              return (
-                <g key={step.id} style={{ animation: 'cellFadeIn 0.8s ease forwards' }}>
-                  {step.neighbors.map((n, i) => (
-                    <rect key={i} x={(step.cx + n.dx) * 80} y={(step.cy + n.dy) * 80} width="80" height="80" 
-                          fill={`rgba(${cellColor},${isCurrent ? n.opacity * opacityScale : 0})`} style={{ transition: 'fill 1s ease' }} />
-                  ))}
-                  <rect x={step.cx * 80} y={step.cy * 80} width="80" height="80" 
-                        fill={`rgba(${cellColor},${isCurrent ? 0.08 * opacityScale : 0})`} style={{ transition: 'fill 1s ease' }} />
-                </g>
-              );
-            })}
-          </svg>
+    <div
+      className="hub-outer"
+      data-theme={theme}
+      style={{ filter: `brightness(${brightness}%)` }}
+    >
+      <div className="hub-frame">
+        <div className="hub-ambient-glow" />
+
+        <div className="hub-layer">
+          {/* ── TOP BAR ── */}
+          <header className="hub-topbar">
+            <div className="hub-topbar-left">
+              <Link href="/" className="hub-brand-btn" title="GLYNNE Home">
+                <span className="hub-brand-mark">AX</span>
+              </Link>
+
+              <button
+                type="button"
+                className="hub-pill"
+                onClick={() => setShowLogoutModal(true)}
+                title={userProfile?.email || 'Account session'}
+              >
+                {userProfile?.avatar_url ? (
+                  <img
+                    src={userProfile.avatar_url}
+                    alt={userName}
+                    className="hub-avatar"
+                  />
+                ) : (
+                  <span className="hub-avatar">{userInitial}</span>
+                )}
+                <span>{userName}</span>
+                <FiChevronDown size={13} style={{ opacity: 0.55 }} />
+              </button>
+
+              <button
+                type="button"
+                className="hub-circle-btn"
+                onClick={() => setInspectedTool(currentToolData)}
+                title="Active tool specifications"
+                aria-label="Active tool specifications"
+              >
+                <FiInfo size={15} />
+              </button>
+            </div>
+
+            <div className="hub-topbar-right">
+              <button
+                type="button"
+                className="hub-active-pill"
+                onClick={() => setMainTab('orb')}
+                title="Open Orb Studio"
+              >
+                <span>{`${currentToolData.shortTitle} · ${currentToolData.num}`}</span>
+                <span className="hub-active-pill-badge">
+                  <FiChevronDown size={13} />
+                </span>
+              </button>
+
+              <button
+                type="button"
+                className="hub-circle-btn"
+                onClick={toggleTheme}
+                title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                aria-label="Toggle theme"
+              >
+                {theme === 'dark' ? <FiSun size={15} /> : <FiMoon size={15} />}
+              </button>
+
+              <button
+                type="button"
+                className="hub-circle-btn"
+                onClick={() => setMainTab(mainTab === 'orb' ? 'tools' : 'orb')}
+                title="Toggle Orb Studio"
+                aria-label="Toggle Orb Studio"
+              >
+                <FiDisc size={15} />
+              </button>
+
+              <button
+                type="button"
+                className="hub-circle-btn"
+                onClick={() => setShowLogoutModal(true)}
+                title="Disconnect session"
+                aria-label="Disconnect session"
+              >
+                <FaSignOutAlt size={13} />
+                <span className="hub-status-dot" />
+              </button>
+            </div>
+          </header>
+
+          {/* ── LARGE TABS & SUBTABS ── */}
+          <section className="hub-nav-section">
+            <div className="hub-main-tabs" role="tablist" aria-label="Workspace sections">
+              <button
+                type="button"
+                role="tab"
+                aria-selected={mainTab === 'tools'}
+                className={`hub-main-tab ${mainTab === 'tools' ? 'is-active' : ''}`}
+                onClick={() => setMainTab('tools')}
+              >
+                Tools
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={mainTab === 'orb'}
+                className={`hub-main-tab ${mainTab === 'orb' ? 'is-active' : ''}`}
+                onClick={() => setMainTab('orb')}
+              >
+                Orb Studio
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={mainTab === 'routes'}
+                className={`hub-main-tab ${mainTab === 'routes' ? 'is-active' : ''}`}
+                onClick={() => setMainTab('routes')}
+              >
+                Routes
+              </button>
+            </div>
+
+            {mainTab === 'tools' && (
+              <div className="hub-subtabs">
+                <button
+                  type="button"
+                  className={`hub-subtab ${toolFilter === 'all' ? 'is-active' : ''}`}
+                  onClick={() => setToolFilter('all')}
+                >
+                  All Tools
+                </button>
+                <button
+                  type="button"
+                  className={`hub-subtab ${toolFilter === 'engines' ? 'is-active' : ''}`}
+                  onClick={() => setToolFilter('engines')}
+                >
+                  AI Engines
+                </button>
+                <button
+                  type="button"
+                  className={`hub-subtab ${toolFilter === 'conversational' ? 'is-active' : ''}`}
+                  onClick={() => setToolFilter('conversational')}
+                >
+                  Chat & Voice
+                </button>
+              </div>
+            )}
+
+            {mainTab === 'orb' && (
+              <div className="hub-subtabs">
+                <button type="button" className="hub-subtab is-active">
+                  Interactive 3D Core
+                </button>
+              </div>
+            )}
+
+            {mainTab === 'routes' && (
+              <div className="hub-subtabs">
+                <button type="button" className="hub-subtab is-active">
+                  Platform Links
+                </button>
+              </div>
+            )}
+          </section>
+
+          {/* ── MAIN WORKSPACE CONTENT ── */}
+          <main className="hub-grid-wrap">
+            {mainTab === 'tools' && (
+              <div className="hub-cards-grid">
+                {filteredTools.map(tool => {
+                  const isSelected = activeTool === tool.name;
+                  return (
+                    <div
+                      key={tool.name}
+                      className={`hub-card ${isSelected ? 'is-selected' : ''}`}
+                      onClick={() => handleSelectTool(tool.name)}
+                    >
+                      <div className="hub-card-top">
+                        <div className="hub-card-title-group">
+                          <h3 className="hub-card-title">{tool.shortTitle}</h3>
+                          <p className="hub-card-subtitle">{tool.tag}</p>
+                        </div>
+                        <button
+                          type="button"
+                          className="hub-card-more-btn"
+                          title={`Inspect ${tool.shortTitle}`}
+                          aria-label={`Inspect ${tool.shortTitle}`}
+                          onClick={e => {
+                            e.stopPropagation();
+                            handleSelectTool(tool.name);
+                            setInspectedTool(tool);
+                          }}
+                        >
+                          <FiMoreHorizontal size={15} />
+                        </button>
+                      </div>
+
+                      <div className="hub-card-bottom">
+                        <p className="hub-card-summary">{tool.details}</p>
+                        <Link
+                          href={`/${tool.name}`}
+                          className="hub-card-action-btn"
+                          title={`Launch ${tool.shortTitle}`}
+                          aria-label={`Launch ${tool.shortTitle}`}
+                          onClick={e => e.stopPropagation()}
+                        >
+                          <FiArrowUpRight size={16} />
+                        </Link>
+                      </div>
+                    </div>
+                  );
+                })}
+
+                {/* 6th Card on 'All Tools' to keep a balanced 3x2 grid & direct access to the LiquidOrb */}
+                {toolFilter === 'all' && (
+                  <div
+                    className="hub-card"
+                    onClick={() => setMainTab('orb')}
+                  >
+                    <div className="hub-card-top">
+                      <div className="hub-card-title-group">
+                        <h3 className="hub-card-title">Orb Core</h3>
+                        <p className="hub-card-subtitle">3D Neural Visualizer · ORB</p>
+                      </div>
+                      <button
+                        type="button"
+                        className="hub-card-more-btn"
+                        title="Open Orb Studio"
+                        aria-label="Open Orb Studio"
+                        onClick={e => {
+                          e.stopPropagation();
+                          setMainTab('orb');
+                        }}
+                      >
+                        <FiMoreHorizontal size={15} />
+                      </button>
+                    </div>
+
+                    <div className="hub-card-bottom">
+                      <p className="hub-card-summary">
+                        Interactive 3D LiquidOrb core synchronized with your active GLYNNE engine.
+                      </p>
+                      <button
+                        type="button"
+                        className="hub-card-action-btn"
+                        title="Open Orb Studio"
+                        aria-label="Open Orb Studio"
+                        onClick={e => {
+                          e.stopPropagation();
+                          setMainTab('orb');
+                        }}
+                      >
+                        <FiDisc size={15} />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {mainTab === 'orb' && (
+              <div className="hub-orb-studio">
+                <div className="hub-orb-stage">
+                  <div className={`hub-orb-wrapper ${isFading ? 'is-fading' : ''}`}>
+                    <LiquidOrb
+                      theme={theme}
+                      wireframe={theme === 'light'}
+                      customRotX={rotX}
+                      customRotY={rotY}
+                      customRotZ={rotZ}
+                    />
+                  </div>
+                </div>
+
+                <div className="hub-orb-panel">
+                  <div>
+                    <h3 className="hub-card-title" style={{ marginBottom: 4 }}>
+                      {currentToolData.label}
+                    </h3>
+                    <p className="hub-card-subtitle">
+                      {`${currentToolData.model} · ${currentToolData.metrics.latency} · ${currentToolData.metrics.status}`}
+                    </p>
+                  </div>
+
+                  <div className="hub-orb-tool-chips">
+                    {platformTools.map(tool => (
+                      <button
+                        key={tool.name}
+                        type="button"
+                        className={`hub-orb-chip ${activeTool === tool.name ? 'is-active' : ''}`}
+                        onClick={() => handleSelectTool(tool.name)}
+                      >
+                        {tool.shortTitle}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="hub-slider-row">
+                    <div className="hub-slider-label">
+                      <span>Orb Rotation X</span>
+                      <span>{rotX}°</span>
+                    </div>
+                    <input
+                      type="range"
+                      min={-180}
+                      max={180}
+                      value={rotX}
+                      onChange={e => setRotX(Number(e.target.value))}
+                      className="hub-slider"
+                    />
+                  </div>
+
+                  <div className="hub-slider-row">
+                    <div className="hub-slider-label">
+                      <span>Orb Rotation Y</span>
+                      <span>{rotY}°</span>
+                    </div>
+                    <input
+                      type="range"
+                      min={-180}
+                      max={180}
+                      value={rotY}
+                      onChange={e => setRotY(Number(e.target.value))}
+                      className="hub-slider"
+                    />
+                  </div>
+
+                  <div className="hub-slider-row">
+                    <div className="hub-slider-label">
+                      <span>Display Luminance</span>
+                      <span>{brightness}%</span>
+                    </div>
+                    <input
+                      type="range"
+                      min={70}
+                      max={115}
+                      value={brightness}
+                      onChange={e => setBrightness(Number(e.target.value))}
+                      className="hub-slider"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {mainTab === 'routes' && (
+              <div className="hub-cards-grid">
+                {externalLinks.map(item => (
+                  <div
+                    key={item.num}
+                    className="hub-card"
+                    onClick={() => router.push(item.href)}
+                  >
+                    <div className="hub-card-top">
+                      <div className="hub-card-title-group">
+                        <h3 className="hub-card-title">{item.title}</h3>
+                        <p className="hub-card-subtitle">{item.subtitle}</p>
+                      </div>
+                      <span className="hub-card-more-btn" aria-hidden="true">
+                        {item.icon}
+                      </span>
+                    </div>
+
+                    <div className="hub-card-bottom">
+                      <p className="hub-card-summary">{item.desc}</p>
+                      <Link
+                        href={item.href}
+                        className="hub-card-action-btn"
+                        title={`Open ${item.title}`}
+                        onClick={e => e.stopPropagation()}
+                      >
+                        <FiArrowUpRight size={16} />
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </main>
+
+          {/* ── BOTTOM FOOTER BAR ── */}
+          <footer className="hub-footer">
+            <button
+              type="button"
+              className="hub-circle-btn"
+              onClick={() => setInspectedTool(currentToolData)}
+              title="View active tool info"
+              aria-label="View active tool info"
+            >
+              <FiInfo size={15} />
+            </button>
+
+            <Link href={`/${activeTool}`} className="hub-cta-pill">
+              <span>{`Deploy ${currentToolData.shortTitle}`}</span>
+              <FiArrowRight size={15} />
+            </Link>
+          </footer>
         </div>
       </div>
 
-      {/* Main Layout */}
-      <div className="md-main">
-        {/* Left Sidebar (Collapsible in width 'w', constant 'h') */}
-        <div className={`md-left ${isSidebarOpen ? 'is-expanded' : 'is-collapsed'}`}>
-          {/* Top Toggle Bar */}
-          <div className="md-sidebar-toggle-bar">
-            {isSidebarOpen && (
-              <div className="md-sidebar-brand-group">
-                <span className="md-sidebar-brand">AX INFRASTRUCTURE</span>
-                <span className="md-sidebar-status-tag">
-                  <span className="md-status-pulse"></span>
-                  ONLINE
-                </span>
+      {/* ── TOOL INSPECTOR MODAL ── */}
+      {inspectedTool && (
+        <div className="hub-modal-overlay" onClick={() => setInspectedTool(null)}>
+          <div className="hub-modal-card" onClick={e => e.stopPropagation()}>
+            <div className="hub-card-top" style={{ marginBottom: 12 }}>
+              <div>
+                <p className="hub-card-subtitle" style={{ marginBottom: 4 }}>
+                  {`${inspectedTool.num} · ${inspectedTool.badge}`}
+                </p>
+                <h3 className="hub-card-title" style={{ fontSize: 20 }}>
+                  {inspectedTool.label}
+                </h3>
               </div>
-            )}
-            <button 
-              type="button" 
-              className="md-sidebar-toggle-btn"
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              title={isSidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
-              aria-label={isSidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
-            >
-              {isSidebarOpen ? <FiChevronLeft size={15} /> : <FiChevronRight size={15} />}
-            </button>
-          </div>
-
-          {/* VISTA CERRADA EN W (Rail compacto de iconos coherentes, altura constante) */}
-          {!isSidebarOpen ? (
-            <>
-              {/* Mini Profile Indicator */}
-              <div 
-                className="md-profile-mini" 
-                title={`${userProfile?.full_name || 'AX_user'} · ${userProfile?.email || 'Authenticated'}`}
+              <button
+                type="button"
+                className="hub-card-more-btn"
+                onClick={() => setInspectedTool(null)}
+                aria-label="Close modal"
               >
-                {userProfile?.avatar_url ? (
-                  <img src={userProfile.avatar_url} alt="Profile" className="md-profile-avatar-sm" />
-                ) : (
-                  <div className="md-profile-avatar-placeholder-sm">AX</div>
-                )}
-                <span className="md-status-dot"></span>
-              </div>
-
-              {/* Tools Icon Rail */}
-              <div className="md-tools-rail">
-                {platformTools.map(tool => (
-                  <button 
-                    key={tool.name}
-                    className={`md-tool-rail-btn ${activeTool === tool.name && !isFading ? 'active' : ''}`}
-                    onClick={() => handleSelectTool(tool.name)}
-                    title={`[${tool.num}] ${tool.label} — ${tool.desc}`}
-                  >
-                    <span className="md-rail-num">{tool.num.replace('00', '0')}</span>
-                    <span className="md-tool-icon">{tool.icon}</span>
-                  </button>
-                ))}
-
-                {/* Separador sutil para los 3 botones de navegación */}
-                <div className="md-rail-nav-separator"></div>
-
-                {/* 3 Botones de navegación (misma página) */}
-                {externalLinks.map(link => (
-                  <Link
-                    key={link.title}
-                    href={link.href}
-                    className="md-ext-rail-btn"
-                    title={`[${link.num}] ${link.title} — ${link.desc}`}
-                  >
-                    <span className="md-ext-rail-icon">{link.icon}</span>
-                    <span className="md-ext-rail-indicator">→</span>
-                  </Link>
-                ))}
-              </div>
-
-              {/* Bottom Rail Sign Out */}
-              <div className="md-sidebar-bottom-rail">
-                <button 
-                  onClick={() => setShowLogoutModal(true)} 
-                  className="md-rail-signout-btn" 
-                  title="Sign out"
-                >
-                  <FaSignOutAlt size={12} />
-                </button>
-              </div>
-            </>
-          ) : (
-            /* VISTA ABIERTA EN W (Contenido completo como actualmente se ve) */
-            <div className="md-sidebar-expanded-content">
-              {/* Compact Profile Card (Solo foto, nombre y botones) */}
-              <div className="md-profile-card">
-                <div className="md-profile-compact">
-                  <div className="md-profile-user-info">
-                    {userProfile?.avatar_url ? (
-                      <img src={userProfile.avatar_url} alt="Profile" className="md-profile-avatar-compact" />
-                    ) : (
-                      <div className="md-profile-avatar-placeholder-compact">AX</div>
-                    )}
-                    <div className="md-profile-text-group">
-                      <span className="md-profile-name-compact">
-                        {userProfile?.full_name || 'AX_user'}
-                      </span>
-                      <span className="md-profile-role-badge">OPERATOR // SECURE</span>
-                    </div>
-                  </div>
-                  <div className="md-profile-actions">
-                    <button
-                      onClick={toggleTheme}
-                      title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-                      className="md-theme-toggle-btn"
-                    >
-                      {theme === 'dark' ? (
-                        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-                      ) : (
-                        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
-                      )}
-                      <span>{theme === 'dark' ? 'DARK' : 'LIGHT'}</span>
-                    </button>
-                    <button 
-                      onClick={() => setShowLogoutModal(true)}
-                      className="md-signout-btn"
-                      title="Sign out"
-                    >
-                      <FaSignOutAlt size={10} />
-                      <span>EXIT</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Full Tools Section */}
-              <div className="md-section">
-                <div className="md-section-header">
-                  <h3 className="md-title">
-                    Infrastructure Engines
-                  </h3>
-                  <span className="md-section-badge">[05 UNITS]</span>
-                </div>
-                <p className="md-tools-desc">
-                  Select an enterprise AI workload to reorient the cognitive core or deploy dedicated model infrastructure.
-                </p>
-                <ul className="md-tools-list">
-                  {platformTools.map(tool => (
-                    <li key={tool.name} className="md-tool-item">
-                      <button 
-                        className={`md-tool-btn ${activeTool === tool.name && !isFading ? 'active' : ''}`} 
-                        onClick={() => handleSelectTool(tool.name)}
-                      >
-                        <div className="md-tool-btn-left">
-                          <span className="md-tool-num">{tool.num}</span>
-                          <span className="md-tool-icon">
-                            {tool.icon}
-                          </span>
-                          <div className="md-tool-content-group">
-                            <span className="md-tool-label">{tool.label}</span>
-                            <span className="md-tool-badge-pill">{tool.badge}</span>
-                          </div>
-                        </div>
-                        <span className="md-tool-arrow-indicator">&rarr;</span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Navigation Section (Home, About, Contact) */}
-              <div className="md-ext-section">
-                <div className="md-ext-header">
-                  <span className="md-ext-title">
-                    Network Routing
-                  </span>
-                  <span className="md-ext-badge">[03 ROUTES] →</span>
-                </div>
-                <div className="md-ext-list">
-                  {externalLinks.map(link => (
-                    <Link
-                      key={link.title}
-                      href={link.href}
-                      className="md-ext-card-btn"
-                    >
-                      <div className="md-ext-card-top">
-                        <div className="md-ext-card-title-group">
-                          <span className="md-ext-num">{link.num}</span>
-                          <span className="md-ext-icon">{link.icon}</span>
-                          <span className="md-ext-name">{link.title}</span>
-                        </div>
-                        <span className="md-ext-badge-pill">{link.badge}</span>
-                        <FiArrowRight size={13} className="md-ext-arrow" />
-                      </div>
-                      <p className="md-ext-desc">{link.desc}</p>
-                    </Link>
-                  ))}
-                </div>
-              </div>
+                <FiX size={16} />
+              </button>
             </div>
-          )}
-        </div>
 
-        {/* Center Canvas */}
-        {!isMobile && renderCenterCanvas()}
+            <p className="hub-card-summary" style={{ WebkitLineClamp: 'unset', fontSize: 13.5 }}>
+              {inspectedTool.desc}
+            </p>
 
-        {/* Right Specification Container (Mirror of Left Sidebar) */}
-        {!isMobile && currentToolData && (
-          <div className={`md-right ${isFading ? 'fading-out' : 'fading-in'}`}>
-            <div className="md-right-content">
-              {/* Header Bar */}
-              <div className="md-right-header">
-                <div className="md-right-brand-group">
-                  <span className="md-right-num">{currentToolData.num}</span>
-                  <span className="md-right-category">{"// SPECIFICATION"}</span>
-                </div>
-                {currentToolData.badge && (
-                  <span className="md-right-badge">{currentToolData.badge}</span>
-                )}
+            <div className="hub-modal-metrics">
+              <div className="hub-metric-box">
+                <div style={{ opacity: 0.55, marginBottom: 2 }}>Latency</div>
+                <strong>{inspectedTool.metrics.latency}</strong>
               </div>
-
-              {/* Tool Title & Tag */}
-              <div className="md-right-title-section">
-                <div className="md-right-icon-wrapper">
-                  {currentToolData.icon}
-                </div>
-                <div className="md-right-title-group">
-                  <h3 className="md-right-tool-label">{currentToolData.label}</h3>
-                  <span className="md-right-tool-tag">{currentToolData.tag}</span>
-                </div>
+              <div className="hub-metric-box">
+                <div style={{ opacity: 0.55, marginBottom: 2 }}>Security</div>
+                <strong>{inspectedTool.metrics.security}</strong>
               </div>
-
-              {/* Commercial & Technical Description */}
-              <div className="md-right-desc-section">
-                <div className="md-right-section-title">OVERVIEW & ARCHITECTURE</div>
-                <p className="md-right-desc-text">
-                  {currentToolData.desc}
-                </p>
-                {currentToolData.details && (
-                  <div className="md-right-details-box">
-                    <span className="md-right-details-tag">RUNTIME CONFIG</span>
-                    <p className="md-right-details-text">{currentToolData.details}</p>
-                  </div>
-                )}
-              </div>
-
-              {/* Infrastructure Micro-Metrics */}
-              <div className="md-right-metrics-section">
-                <div className="md-right-section-title">CLUSTER METRICS</div>
-                <div className="md-right-metrics-list">
-                  <div className="md-right-metric-card">
-                    <span className="md-right-metric-label">LATENCY</span>
-                    <span className="md-right-metric-val">{currentToolData.metrics?.latency || '<10MS'}</span>
-                  </div>
-                  <div className="md-right-metric-card">
-                    <span className="md-right-metric-label">SECURITY</span>
-                    <span className="md-right-metric-val">{currentToolData.metrics?.security || 'AIR-GAPPED'}</span>
-                  </div>
-                  <div className="md-right-metric-card">
-                    <span className="md-right-metric-label">ENGINE</span>
-                    <span className="md-right-metric-val">{currentToolData.model}</span>
-                  </div>
-                  <div className="md-right-metric-card">
-                    <span className="md-right-metric-label">STATUS</span>
-                    <span className="md-right-metric-val md-right-status-live">● OPERATIONAL</span>
-                  </div>
-                </div>
+              <div className="hub-metric-box">
+                <div style={{ opacity: 0.55, marginBottom: 2 }}>Status</div>
+                <strong>{inspectedTool.metrics.status}</strong>
               </div>
             </div>
 
-            {/* Bottom Action Footer */}
-            <div className="md-right-action-footer">
-              <Link href={`/${activeTool}`} className="md-right-deploy-btn">
-                <span>DEPLOY ENGINE</span>
+            <div className="hub-modal-actions">
+              <button
+                type="button"
+                className="hub-btn-secondary"
+                onClick={() => setInspectedTool(null)}
+              >
+                Close
+              </button>
+              <Link href={`/${inspectedTool.name}`} className="hub-cta-pill">
+                <span>Launch Tool</span>
                 <FiArrowRight size={14} />
               </Link>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-      </div>
-
-      </div>
-
-      {/* Logout Confirmation Modal */}
+      {/* ── LOGOUT CONFIRMATION MODAL ── */}
       {showLogoutModal && (
-        <div className="md-logout-overlay">
-          <div className="md-logout-modal">
-            <div className="md-modal-header-tag">{"// SECURITY DISCONNECT PROTOCOL"}</div>
-            <h3>System Disconnect</h3>
-            <p>Are you sure you want to log out and terminate this secure session?</p>
-            <div className="md-logout-actions">
-              <button className="md-btn-cancel" onClick={() => setShowLogoutModal(false)}>CANCEL</button>
-              <button className="md-btn-confirm" onClick={async () => {
-                await signOut();
-                router.push('/');
-              }}>CONFIRM DISCONNECT</button>
+        <div className="hub-modal-overlay" onClick={() => setShowLogoutModal(false)}>
+          <div className="hub-modal-card" onClick={e => e.stopPropagation()}>
+            <p className="hub-card-subtitle" style={{ marginBottom: 6 }}>
+              {'// SECURITY DISCONNECT PROTOCOL'}
+            </p>
+            <h3 className="hub-card-title" style={{ fontSize: 20, marginBottom: 8 }}>
+              System Disconnect
+            </h3>
+            <p className="hub-card-summary" style={{ WebkitLineClamp: 'unset', fontSize: 13.5 }}>
+              Are you sure you want to log out and terminate this secure session?
+            </p>
+            <div className="hub-modal-actions">
+              <button
+                type="button"
+                className="hub-btn-secondary"
+                onClick={() => setShowLogoutModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="hub-cta-pill"
+                onClick={async () => {
+                  await signOut();
+                  router.push('/');
+                }}
+              >
+                Confirm Disconnect
+              </button>
             </div>
           </div>
         </div>
