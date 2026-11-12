@@ -1862,9 +1862,87 @@ run();`;
             </div>
           </div>
 
+          {/* RESPONSIVE STYLES FOR PLAYGROUND & CATALOG */}
+          <style>{`
+            .mp-playground-header {
+              display: flex;
+              align-items: center;
+              flex-wrap: wrap;
+              gap: 8px;
+              margin-bottom: 6px;
+            }
+            .mp-playground-grid {
+              display: grid;
+              grid-template-columns: minmax(0, 7fr) minmax(320px, 3fr);
+              gap: 24px;
+              align-items: stretch;
+              width: 100%;
+            }
+            .mp-chat-panel {
+              padding: 24px;
+              border-radius: 24px;
+              height: 680px;
+            }
+            .mp-catalog-panel {
+              padding: 24px;
+              border-radius: 24px;
+              height: 680px;
+            }
+            .mp-catalog-header {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              flex-wrap: wrap;
+              gap: 8px;
+            }
+            .mp-catalog-list {
+              display: flex;
+              flex-direction: column;
+              gap: 12px;
+            }
+            @media (max-width: 1080px) {
+              .mp-playground-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+              }
+              .mp-chat-panel {
+                height: 580px;
+                padding: 18px;
+                border-radius: 20px;
+              }
+              .mp-catalog-panel {
+                height: auto;
+                max-height: 560px;
+                padding: 18px;
+                border-radius: 20px;
+              }
+              .mp-catalog-list {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+              }
+            }
+            @media (max-width: 640px) {
+              .mp-chat-panel {
+                height: 520px;
+                padding: 14px;
+                border-radius: 16px;
+              }
+              .mp-catalog-panel {
+                max-height: 500px;
+                padding: 14px;
+                border-radius: 16px;
+              }
+              .mp-catalog-list {
+                grid-template-columns: 1fr;
+                gap: 10px;
+              }
+            }
+          `}</style>
+
           {/* SECTION HEADER: CHAT TESTING STUDIO & PLAYGROUND */}
           <div style={{ marginBottom: '20px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+            <div className="mp-playground-header">
               <h3 style={{
                 fontSize: '18px',
                 fontWeight: 700,
@@ -1886,38 +1964,33 @@ run();`;
                 Tiempo Real
               </span>
             </div>
-            <p style={{ fontSize: '13px', color: isDark ? '#a1a1aa' : '#71717a', margin: 0 }}>
+            <p style={{ fontSize: '13px', color: isDark ? '#a1a1aa' : '#71717a', margin: 0, lineHeight: 1.5 }}>
               Interactúa con los modelos open-weights para validar latencia, razonamiento y visión multimodal antes de distribuirlos con tu API.
             </p>
           </div>
 
-          {/* MAIN WORKSPACE 1: INTERACTIVE MODEL CHAT TESTING STUDIO & MODEL CATALOG (70-30 SPLIT) */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '7fr 3fr',
-            gap: '24px',
-            alignItems: 'stretch',
-            width: '100%'
-          }}>
+          {/* MAIN WORKSPACE 1: INTERACTIVE MODEL CHAT TESTING STUDIO & MODEL CATALOG (RESPONSIVE) */}
+          <div className="mp-playground-grid">
             {/* LEFT PANEL (70%): AX_CHAT INTERFACE */}
-            <div style={{
-              border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
-              backgroundColor: isDark ? 'rgba(10, 10, 10, 0.55)' : 'rgba(255, 255, 255, 0.65)',
-              backdropFilter: 'blur(24px)',
-              WebkitBackdropFilter: 'blur(24px)',
-              borderRadius: '24px',
-              padding: '24px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              gap: '16px',
-              boxSizing: 'border-box',
-              height: '680px',
-              position: 'relative',
-              boxShadow: isDark
-                ? '0 20px 50px rgba(0, 0, 0, 0.6), 0 0 1px rgba(255, 255, 255, 0.15)'
-                : '0 20px 50px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.12)'
-            }}>
+            <div
+              className="mp-chat-panel"
+              style={{
+                border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
+                backgroundColor: isDark ? 'rgba(10, 10, 10, 0.55)' : 'rgba(255, 255, 255, 0.65)',
+                backdropFilter: 'blur(24px)',
+                WebkitBackdropFilter: 'blur(24px)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                gap: '16px',
+                boxSizing: 'border-box',
+                position: 'relative',
+                minWidth: 0,
+                boxShadow: isDark
+                  ? '0 20px 50px rgba(0, 0, 0, 0.6), 0 0 1px rgba(255, 255, 255, 0.15)'
+                  : '0 20px 50px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.12)'
+              }}
+            >
               {/* STUDIO CHAT HEADER */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', borderBottom: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.08)', paddingBottom: '14px', flexShrink: 0, zIndex: 10 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
@@ -2278,30 +2351,31 @@ run();`;
             </div>
 
             {/* RIGHT PANEL (30%): MODEL CATALOG SELECTION CARDS */}
-            <div style={{
-              border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
-              backgroundColor: isDark ? 'rgba(10, 10, 10, 0.55)' : 'rgba(255, 255, 255, 0.65)',
-              backdropFilter: 'blur(24px)',
-              WebkitBackdropFilter: 'blur(24px)',
-              borderRadius: '24px',
-              padding: '24px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '16px',
-              boxSizing: 'border-box',
-              height: '680px',
-              boxShadow: isDark
-                ? '0 20px 50px rgba(0, 0, 0, 0.6), 0 0 1px rgba(255, 255, 255, 0.15)'
-                : '0 20px 50px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.12)'
-            }}>
-              <div style={{
+            <div
+              className="mp-catalog-panel"
+              style={{
+                border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(0, 0, 0, 0.1)',
+                backgroundColor: isDark ? 'rgba(10, 10, 10, 0.55)' : 'rgba(255, 255, 255, 0.65)',
+                backdropFilter: 'blur(24px)',
+                WebkitBackdropFilter: 'blur(24px)',
                 display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                borderBottom: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.08)',
-                paddingBottom: '14px',
-                flexShrink: 0
-              }}>
+                flexDirection: 'column',
+                gap: '16px',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                boxShadow: isDark
+                  ? '0 20px 50px rgba(0, 0, 0, 0.6), 0 0 1px rgba(255, 255, 255, 0.15)'
+                  : '0 20px 50px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.12)'
+              }}
+            >
+              <div
+                className="mp-catalog-header"
+                style={{
+                  borderBottom: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.08)',
+                  paddingBottom: '14px',
+                  flexShrink: 0
+                }}
+              >
                 <div style={{ fontSize: '15px', fontWeight: 600, color: isDark ? '#ffffff' : '#000000', fontFamily: 'var(--font-geist-sans), sans-serif' }}>
                   Catálogo de Modelos Habilitados
                 </div>
@@ -2311,15 +2385,15 @@ run();`;
               </div>
 
               {/* SCROLLABLE MODEL CARDS LIST */}
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px',
-                overflowY: 'auto',
-                paddingRight: '4px',
-                flex: 1,
-                minHeight: 0
-              }}>
+              <div
+                className="mp-catalog-list"
+                style={{
+                  overflowY: 'auto',
+                  paddingRight: '4px',
+                  flex: 1,
+                  minHeight: 0
+                }}
+              >
                 {FEATURED_MODELS.map((model) => {
                   const isSelected = selectedModel === model.id;
                   return (
