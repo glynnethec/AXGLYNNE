@@ -420,11 +420,25 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Cell Title & Description */
+/* Cell Title & Description (Translucent Blur Container) */
 .hub-cell-body {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding: 14px 16px;
+  border: 1px solid transparent;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.hub-outer[data-theme='light'] .hub-cell-body {
+  background-color: rgba(255, 255, 255, 0.72);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.hub-outer[data-theme='dark'] .hub-cell-body {
+  background-color: rgba(8, 8, 10, 0.68);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .hub-cell-title {
@@ -439,7 +453,7 @@
   margin: 0;
   font-size: 12.5px;
   line-height: 1.5;
-  opacity: 0.72;
+  opacity: 0.88;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
