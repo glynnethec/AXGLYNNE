@@ -48,59 +48,6 @@ interface PlatformTool {
   icon: React.ReactNode;
 }
 
-const TOPO_VARIANTS: Record<
-  string,
-  {
-    direction: 'forward' | 'backward' | 'left' | 'right';
-    tilt: number;
-    scale: number;
-    elevation: number;
-    foreground: number;
-    offsetTransform: string;
-  }
-> = {
-  Librarymodel: {
-    direction: 'left',
-    tilt: 90,
-    scale: 1.25,
-    elevation: 0.75,
-    foreground: 0.3,
-    offsetTransform: 'translate(-6%, 4%) scale(1.12)'
-  },
-  Create_you_GLYNNE_model: {
-    direction: 'right',
-    tilt: 56,
-    scale: 1.05,
-    elevation: 0.95,
-    foreground: 0.18,
-    offsetTransform: 'translate(8%, -6%) scale(1.16)'
-  },
-  models_provider: {
-    direction: 'forward',
-    tilt: 72,
-    scale: 1.4,
-    elevation: 0.65,
-    foreground: 0.42,
-    offsetTransform: 'translate(0%, 10%) scale(1.18)'
-  },
-  AX_chat: {
-    direction: 'backward',
-    tilt: 42,
-    scale: 0.95,
-    elevation: 0.85,
-    foreground: 0.22,
-    offsetTransform: 'translate(-8%, -8%) scale(1.12)'
-  },
-  AX_voice: {
-    direction: 'left',
-    tilt: 82,
-    scale: 1.35,
-    elevation: 1.05,
-    foreground: 0.35,
-    offsetTransform: 'translate(6%, 6%) scale(1.16)'
-  }
-};
-
 export default function AssemblyDashboard() {
   const router = useRouter();
   const { theme, toggleTheme } = useTheme();
@@ -413,7 +360,7 @@ export default function AssemblyDashboard() {
                         pixelSize={3}
                         color={theme === 'dark' ? '#f8f8f8' : '#18181b'}
                         patternScale={2}
-                        patternDensity={1.45}
+                        patternDensity={1}
                         softness={0.6}
                         glow={0.4}
                         twinkle={0.25}
@@ -423,7 +370,7 @@ export default function AssemblyDashboard() {
                         variation={index + 1}
                         hoverEffect="reveal"
                         enableRipples
-                        edgeFade={0.15}
+                        edgeFade={0.25}
                         intro={true}
                         lightMode={theme === 'light'}
                       />
@@ -495,6 +442,28 @@ export default function AssemblyDashboard() {
                   className={`hub-cell ${spanClass}`}
                   onClick={() => router.push(item.href)}
                 >
+                  <div className="hub-cell-bg">
+                    <PixelBlast
+                      variant="square"
+                      pixelSize={3}
+                      color={theme === 'dark' ? '#f8f8f8' : '#18181b'}
+                      patternScale={2}
+                      patternDensity={1}
+                      softness={0.6}
+                      glow={0.4}
+                      twinkle={0.25}
+                      drift={0.2}
+                      speed={0.5}
+                      driftAngle={index * 60 + 25}
+                      variation={index + 10}
+                      hoverEffect="reveal"
+                      enableRipples
+                      edgeFade={0.25}
+                      intro={true}
+                      lightMode={theme === 'light'}
+                    />
+                  </div>
+
                   <div className="hub-cell-meta">
                     <span className="hub-cell-date">{`${item.num} · ${item.subtitle}`}</span>
                     <span className="hub-cell-tag-pill">{item.badge}</span>
