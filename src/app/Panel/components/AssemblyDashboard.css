@@ -328,12 +328,12 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.36;
+  opacity: 0.85;
   transition: opacity 0.25s ease;
 }
 
 .hub-cell:hover .hub-cell-bg {
-  opacity: 0.68;
+  opacity: 1;
 }
 
 .hub-cell-meta,

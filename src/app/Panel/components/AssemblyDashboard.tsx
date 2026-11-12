@@ -108,7 +108,6 @@ export default function AssemblyDashboard() {
   const [mainTab, setMainTab] = useState<MainTab>('tools');
   const [toolFilter, setToolFilter] = useState<ToolFilter>('all');
   const [activeTool, setActiveTool] = useState<string>('Librarymodel');
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   const [userProfile, setUserProfile] = useState<any>(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -395,7 +394,6 @@ export default function AssemblyDashboard() {
             <div className="hub-editorial-grid">
               {filteredTools.map((tool, index) => {
                 const isSelected = activeTool === tool.name;
-                const isHovered = hoveredCard === tool.name;
                 const spanPattern =
                   filteredTools.length === 2
                     ? ['hub-span-7', 'hub-span-5']
@@ -408,27 +406,25 @@ export default function AssemblyDashboard() {
                     key={tool.name}
                     className={`hub-cell ${spanClass} ${isSelected ? 'is-selected' : ''}`}
                     onClick={() => handleSelectTool(tool.name)}
-                    onMouseEnter={() => setHoveredCard(tool.name)}
-                    onMouseLeave={() => setHoveredCard(null)}
                   >
                     <div className="hub-cell-bg">
                       <PixelBlast
                         variant="square"
                         pixelSize={3}
-                        color={theme === 'dark' ? '#f8f8f8' : '#3f3f46'}
+                        color={theme === 'dark' ? '#f8f8f8' : '#18181b'}
                         patternScale={2}
-                        patternDensity={1}
+                        patternDensity={1.45}
                         softness={0.6}
                         glow={0.4}
-                        twinkle={isHovered ? 0.25 : 0}
-                        drift={isHovered ? 0.2 : 0}
-                        speed={isHovered ? 0.5 : 0}
+                        twinkle={0.25}
+                        drift={0.2}
+                        speed={0.5}
                         driftAngle={index * 60 + 25}
                         variation={index + 1}
                         hoverEffect="reveal"
                         enableRipples
-                        edgeFade={0.25}
-                        intro={false}
+                        edgeFade={0.15}
+                        intro={true}
                         lightMode={theme === 'light'}
                       />
                     </div>
