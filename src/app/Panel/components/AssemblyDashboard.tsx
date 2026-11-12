@@ -22,6 +22,7 @@ import {
   FiX
 } from 'react-icons/fi';
 import Topography from './Topography';
+import DotGrid from './DotGrid';
 import { useTheme } from '@/lib/ThemeContext';
 import './AssemblyDashboard.css';
 
@@ -258,6 +259,27 @@ export default function AssemblyDashboard() {
 
   return (
     <div className="hub-outer" data-theme={theme}>
+      <div className="hub-dotgrid-bg" aria-hidden="true">
+        <DotGrid
+          baseColor={theme === 'dark' ? '#3a3446' : '#cbd5e1'}
+          activeColor={theme === 'dark' ? '#ffffff' : '#0b0b0d'}
+          shape="circle"
+          dotSize={5}
+          gap={18}
+          proximity={140}
+          strength={1}
+          bounce={0.6}
+          tension={0.4}
+          returnDuration={0.8}
+          shockRadius={320}
+          shockStrength={5}
+          swell={0.8}
+          stretch={0.5}
+          glow={0.5}
+          fade={0}
+          intro={true}
+        />
+      </div>
       <div className="hub-page">
         {/* ── TOP EDITORIAL BAR ── */}
         <header className="hub-topbar">

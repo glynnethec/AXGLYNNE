@@ -32,8 +32,18 @@
   box-sizing: border-box;
 }
 
+/* ── FULLSCREEN DOTGRID BACKGROUND ────────────────────────────────────────── */
+.hub-dotgrid-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
 /* ── EDITORIAL PAGE CONTAINER (80% VW, TRANSPARENT OVER BACKGROUND) ──────── */
 .hub-page {
+  position: relative;
+  z-index: 1;
   width: 80vw;
   max-width: 80vw;
   margin: 0 auto;
