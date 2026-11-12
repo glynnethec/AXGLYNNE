@@ -187,7 +187,7 @@ export default function AssemblyDashboard() {
     getSession();
 
     const originalBg = document.body.style.backgroundColor;
-    document.body.style.backgroundColor = theme === 'light' ? '#eef0f5' : '#050507';
+    document.body.style.backgroundColor = theme === 'light' ? '#f8f9fc' : '#000000';
 
     return () => {
       document.body.style.backgroundColor = originalBg;
@@ -222,6 +222,23 @@ export default function AssemblyDashboard() {
       data-theme={theme}
       style={{ filter: `brightness(${brightness}%)` }}
     >
+      {/* Perspective floor grid from previous GLYNNE interface */}
+      <div className="hub-bg-grid" aria-hidden="true">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="hub-floor-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+              <path
+                d="M 60 0 L 0 0 0 60"
+                fill="none"
+                className="hub-bg-grid-line"
+                strokeWidth="1"
+              />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#hub-floor-grid)" />
+        </svg>
+      </div>
+
       <div className="hub-frame">
         <div className="hub-ambient-glow" />
 
@@ -398,6 +415,10 @@ export default function AssemblyDashboard() {
                     >
                       <div className="hub-card-top">
                         <div className="hub-card-title-group">
+                          <span className="hub-card-meta-badge">
+                            {tool.icon}
+                            <span>{`${tool.num} // ${tool.badge}`}</span>
+                          </span>
                           <h3 className="hub-card-title">{tool.shortTitle}</h3>
                           <p className="hub-card-subtitle">{tool.tag}</p>
                         </div>
@@ -417,7 +438,12 @@ export default function AssemblyDashboard() {
                       </div>
 
                       <div className="hub-card-bottom">
-                        <p className="hub-card-summary">{tool.details}</p>
+                        <div className="hub-card-summary-wrap">
+                          <p className="hub-card-summary">{tool.details}</p>
+                          <span className="hub-card-metric-line">
+                            {`${tool.metrics.latency} · ${tool.metrics.security} · ${tool.metrics.status}`}
+                          </span>
+                        </div>
                         <Link
                           href={`/${tool.name}`}
                           className="hub-card-action-btn"
@@ -440,8 +466,12 @@ export default function AssemblyDashboard() {
                   >
                     <div className="hub-card-top">
                       <div className="hub-card-title-group">
+                        <span className="hub-card-meta-badge">
+                          <FiDisc size={13} />
+                          <span>{'ORB // 3D NEURAL CORE'}</span>
+                        </span>
                         <h3 className="hub-card-title">Orb Core</h3>
-                        <p className="hub-card-subtitle">3D Neural Visualizer · ORB</p>
+                        <p className="hub-card-subtitle">Interactive LiquidOrb Visualizer</p>
                       </div>
                       <button
                         type="button"
@@ -458,9 +488,14 @@ export default function AssemblyDashboard() {
                     </div>
 
                     <div className="hub-card-bottom">
-                      <p className="hub-card-summary">
-                        Interactive 3D LiquidOrb core synchronized with your active GLYNNE engine.
-                      </p>
+                      <div className="hub-card-summary-wrap">
+                        <p className="hub-card-summary">
+                          Interactive 3D LiquidOrb core synchronized with your active GLYNNE engine.
+                        </p>
+                        <span className="hub-card-metric-line">
+                          {'WebGL · 60fps · Live Telemetry'}
+                        </span>
+                      </div>
                       <button
                         type="button"
                         className="hub-card-action-btn"
