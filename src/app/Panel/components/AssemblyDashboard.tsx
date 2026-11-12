@@ -19,15 +19,13 @@ import {
   FiMoreHorizontal,
   FiSun,
   FiMoon,
-  FiDisc,
   FiX
 } from 'react-icons/fi';
-import LiquidOrb from '@/app/AX_chat/components/LiquidOrb';
 import Topography from './Topography';
 import { useTheme } from '@/lib/ThemeContext';
 import './AssemblyDashboard.css';
 
-type MainTab = 'tools' | 'orb' | 'routes';
+type MainTab = 'tools' | 'routes';
 type ToolFilter = 'all' | 'engines' | 'conversational';
 
 interface PlatformTool {
@@ -99,14 +97,6 @@ const TOPO_VARIANTS: Record<
     elevation: 1.05,
     foreground: 0.35,
     offsetTransform: 'translate(6%, 6%) scale(1.16)'
-  },
-  'orb-core': {
-    direction: 'right',
-    tilt: 64,
-    scale: 1.15,
-    elevation: 0.7,
-    foreground: 0.25,
-    offsetTransform: 'translate(-4%, 8%) scale(1.12)'
   }
 };
 
@@ -114,16 +104,10 @@ export default function AssemblyDashboard() {
   const router = useRouter();
   const { theme, toggleTheme } = useTheme();
 
-  const [rotX, setRotX] = useState(-20);
-  const [rotY, setRotY] = useState(35);
-  const [rotZ, setRotZ] = useState(0);
-  const [brightness, setBrightness] = useState(100);
-
   const [mainTab, setMainTab] = useState<MainTab>('tools');
   const [toolFilter, setToolFilter] = useState<ToolFilter>('all');
   const [activeTool, setActiveTool] = useState<string>('Librarymodel');
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
-  const [isFading, setIsFading] = useState(false);
 
   const [userProfile, setUserProfile] = useState<any>(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -262,15 +246,7 @@ export default function AssemblyDashboard() {
   const currentToolData = platformTools.find(t => t.name === activeTool) || platformTools[0];
 
   const handleSelectTool = (toolName: string) => {
-    if (activeTool === toolName) return;
-    setIsFading(true);
-    setRotY(prev => prev + 360);
-    setRotX(prev => prev + (Math.random() > 0.5 ? 60 : -60));
-    setRotZ(prev => prev + (Math.random() > 0.5 ? 35 : -35));
-    setTimeout(() => {
-      setActiveTool(toolName);
-      setIsFading(false);
-    }, 220);
+    setActiveTool(toolName);
   };
 
   const filteredTools = platformTools.filter(tool => {
@@ -281,11 +257,7 @@ export default function AssemblyDashboard() {
   const userName = userProfile?.full_name || 'AX_user';
 
   return (
-    <div
-      className="hub-outer"
-      data-theme={theme}
-      style={{ filter: `brightness(${brightness}%)` }}
-    >
+    <div className="hub-outer" data-theme={theme}>
       <div className="hub-page">
         {/* ── TOP EDITORIAL BAR ── */}
         <header className="hub-topbar">
@@ -312,13 +284,6 @@ export default function AssemblyDashboard() {
                 onClick={() => setMainTab('tools')}
               >
                 Tools
-              </button>
-              <button
-                type="button"
-                className={`hub-nav-link ${mainTab === 'orb' ? 'is-active' : ''}`}
-                onClick={() => setMainTab('orb')}
-              >
-                Orb Studio
               </button>
               <button
                 type="button"
@@ -366,11 +331,7 @@ export default function AssemblyDashboard() {
         {/* ── CATEGORIES ROW ── */}
         <section className="hub-categories-bar">
           <span className="hub-categories-label">
-            {mainTab === 'tools'
-              ? 'Categories'
-              : mainTab === 'orb'
-              ? '3D Neural Core'
-              : 'Platform Routes'}
+            {mainTab === 'tools' ? 'Categories' : 'Platform Routes'}
           </span>
 
           {mainTab === 'tools' && (
@@ -396,21 +357,6 @@ export default function AssemblyDashboard() {
               >
                 Chat & Voice
               </button>
-            </div>
-          )}
-
-          {mainTab === 'orb' && (
-            <div className="hub-category-pills">
-              {platformTools.map(tool => (
-                <button
-                  key={tool.name}
-                  type="button"
-                  className={`hub-cat-pill ${activeTool === tool.name ? 'is-active' : ''}`}
-                  onClick={() => handleSelectTool(tool.name)}
-                >
-                  {tool.shortTitle}
-                </button>
-              ))}
             </div>
           )}
 
@@ -518,161 +464,6 @@ export default function AssemblyDashboard() {
                   </article>
                 );
               })}
-
-              {/* 6th Editorial Cell: Live LiquidOrb Core */}
-              {toolFilter === 'all' && (
-                <article
-                  className="hub-cell"
-                  onClick={() => setMainTab('orb')}
-                  onMouseEnter={() => setHoveredCard('orb-core')}
-                  onMouseLeave={() => setHoveredCard(null)}
-                >
-                  <div
-                    className="hub-cell-bg"
-                    style={{ transform: TOPO_VARIANTS['orb-core'].offsetTransform }}
-                  >
-                    <Topography
-                      color="#4f7cff"
-                      lineCount={11}
-                      lineWidth={0.9}
-                      elevation={TOPO_VARIANTS['orb-core'].elevation}
-                      foreground={TOPO_VARIANTS['orb-core'].foreground}
-                      tilt={TOPO_VARIANTS['orb-core'].tilt}
-                      speed={hoveredCard === 'orb-core' ? 0.25 : 0}
-                      direction={TOPO_VARIANTS['orb-core'].direction}
-                      glow={0.6}
-                      depthOfField={0.4}
-                      fog={0.17}
-                      hoverEffect="lift"
-                      clickEffect="pulse"
-                      majorLines={false}
-                      scale={TOPO_VARIANTS['orb-core'].scale}
-                      detail={1}
-                      brightness={1.4}
-                      intro={false}
-                      lightMode={theme === 'light'}
-                      dpr={undefined}
-                      style={{ width: '100%', height: '100%' }}
-                    />
-                  </div>
-
-                  <div className="hub-cell-meta">
-                    <span className="hub-cell-date">ORB · Live Telemetry</span>
-                    <span className="hub-cell-tag-pill">3D CORE</span>
-                  </div>
-
-                  <div className="hub-cell-body" style={{ marginTop: 'auto' }}>
-                    <h2 className="hub-cell-title">Orb Core Studio</h2>
-                    <p className="hub-cell-desc">
-                      Interactive 3D LiquidOrb visualizer synchronized in real-time with your active GLYNNE engine and optical telemetry controls.
-                    </p>
-                  </div>
-
-                  <div className="hub-cell-footer">
-                    <div className="hub-cell-specs">
-                      <span className="hub-spec-pair">
-                        <strong>Engine</strong>
-                        <span>WebGL</span>
-                      </span>
-                      <span className="hub-spec-pair">
-                        <strong>Active</strong>
-                        <span>{currentToolData.shortTitle}</span>
-                      </span>
-                    </div>
-
-                    <div className="hub-cell-actions">
-                      <button
-                        type="button"
-                        className="hub-cell-btn is-primary"
-                        title="Open Orb Studio"
-                        aria-label="Open Orb Studio"
-                        onClick={e => {
-                          e.stopPropagation();
-                          setMainTab('orb');
-                        }}
-                      >
-                        <FiDisc size={14} />
-                      </button>
-                    </div>
-                  </div>
-                </article>
-              )}
-            </div>
-          )}
-
-          {mainTab === 'orb' && (
-            <div className="hub-orb-studio">
-              <div className="hub-orb-stage">
-                <div className={`hub-orb-wrapper ${isFading ? 'is-fading' : ''}`}>
-                  <LiquidOrb
-                    theme={theme}
-                    wireframe={theme === 'light'}
-                    customRotX={rotX}
-                    customRotY={rotY}
-                    customRotZ={rotZ}
-                  />
-                </div>
-              </div>
-
-              <div className="hub-orb-panel">
-                <div>
-                  <div className="hub-cell-meta" style={{ marginBottom: 12 }}>
-                    <span className="hub-cell-date">{`${currentToolData.num} · ${currentToolData.metrics.status}`}</span>
-                    <span className="hub-cell-tag-pill">{currentToolData.badge}</span>
-                  </div>
-                  <h2 className="hub-cell-title" style={{ marginBottom: 6 }}>
-                    {currentToolData.label}
-                  </h2>
-                  <p className="hub-cell-desc">{currentToolData.desc}</p>
-                </div>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                  <div className="hub-slider-row">
-                    <div className="hub-slider-label">
-                      <span>Orb Rotation X</span>
-                      <span>{rotX}°</span>
-                    </div>
-                    <input
-                      type="range"
-                      min={-180}
-                      max={180}
-                      value={rotX}
-                      onChange={e => setRotX(Number(e.target.value))}
-                      className="hub-slider"
-                    />
-                  </div>
-
-                  <div className="hub-slider-row">
-                    <div className="hub-slider-label">
-                      <span>Orb Rotation Y</span>
-                      <span>{rotY}°</span>
-                    </div>
-                    <input
-                      type="range"
-                      min={-180}
-                      max={180}
-                      value={rotY}
-                      onChange={e => setRotY(Number(e.target.value))}
-                      className="hub-slider"
-                    />
-                  </div>
-
-                  <div className="hub-slider-row">
-                    <div className="hub-slider-label">
-                      <span>Display Luminance</span>
-                      <span>{brightness}%</span>
-                    </div>
-                    <input
-                      type="range"
-                      min={70}
-                      max={115}
-                      value={brightness}
-                      onChange={e => setBrightness(Number(e.target.value))}
-                      className="hub-slider"
-                    />
-                  </div>
-                </div>
-              </div>
             </div>
           )}
 
