@@ -21,7 +21,7 @@ import {
   FiMoon,
   FiX
 } from 'react-icons/fi';
-import PixelBlast from './PixelBlast';
+import Dither from './Dither';
 import DotGrid from './DotGrid';
 import { useTheme } from '@/lib/ThemeContext';
 import './AssemblyDashboard.css';
@@ -355,24 +355,17 @@ export default function AssemblyDashboard() {
                     onClick={() => handleSelectTool(tool.name)}
                   >
                     <div className="hub-cell-bg">
-                      <PixelBlast
-                        variant="square"
-                        pixelSize={3}
-                        color={theme === 'dark' ? '#f8f8f8' : '#18181b'}
-                        patternScale={2}
-                        patternDensity={1}
-                        softness={0.6}
-                        glow={0.4}
-                        twinkle={0.25}
-                        drift={0.2}
-                        speed={0.5}
-                        driftAngle={index * 60 + 25}
-                        variation={index + 1}
-                        hoverEffect="reveal"
-                        enableRipples
-                        edgeFade={0.25}
-                        intro={true}
-                        lightMode={theme === 'light'}
+                      <Dither
+                        waveColor={theme === 'dark' ? '#bcbcbc' : '#52525b'}
+                        backgroundColor={theme === 'dark' ? '#120f17' : '#ffffff'}
+                        ditherMode="bayer"
+                        colorNum={4}
+                        pixelSize={2}
+                        waveSpeed={0.05}
+                        waveFrequency={3}
+                        waveAmplitude={0.3}
+                        mouseEffect="erase"
+                        mouseRadius={0.3}
                       />
                     </div>
 
@@ -443,24 +436,17 @@ export default function AssemblyDashboard() {
                   onClick={() => router.push(item.href)}
                 >
                   <div className="hub-cell-bg">
-                    <PixelBlast
-                      variant="square"
-                      pixelSize={3}
-                      color={theme === 'dark' ? '#f8f8f8' : '#18181b'}
-                      patternScale={2}
-                      patternDensity={1}
-                      softness={0.6}
-                      glow={0.4}
-                      twinkle={0.25}
-                      drift={0.2}
-                      speed={0.5}
-                      driftAngle={index * 60 + 25}
-                      variation={index + 10}
-                      hoverEffect="reveal"
-                      enableRipples
-                      edgeFade={0.25}
-                      intro={true}
-                      lightMode={theme === 'light'}
+                    <Dither
+                      waveColor={theme === 'dark' ? '#bcbcbc' : '#52525b'}
+                      backgroundColor={theme === 'dark' ? '#120f17' : '#ffffff'}
+                      ditherMode="bayer"
+                      colorNum={4}
+                      pixelSize={2}
+                      waveSpeed={0.05}
+                      waveFrequency={3}
+                      waveAmplitude={0.3}
+                      mouseEffect="erase"
+                      mouseRadius={0.3}
                     />
                   </div>
 
