@@ -279,6 +279,32 @@ const link = (gl, fragmentSource) => {
 
 const toLinear = value => (value <= 0.04045 ? value / 12.92 : Math.pow((value + 0.055) / 1.055, 2.4));
 
+/**
+ * @param {Object} props
+ * @param {number} [props.waveSpeed=0.05]
+ * @param {number} [props.waveFrequency=3]
+ * @param {number} [props.waveAmplitude=0.3]
+ * @param {string | number[]} [props.waveColor=[0.5, 0.5, 0.5]]
+ * @param {string | number[]} [props.backgroundColor=[0, 0, 0]]
+ * @param {number} [props.colorNum=4]
+ * @param {number} [props.pixelSize=2]
+ * @param {boolean} [props.disableAnimation=false]
+ * @param {boolean} [props.enableMouseInteraction=true]
+ * @param {number} [props.mouseRadius=1]
+ * @param {'bayer' | 'bayer4' | 'bayer2' | 'halftone' | 'lines' | 'crosshatch' | 'noise' | 'none'} [props.ditherMode='bayer']
+ * @param {(string | number[])[]} [props.palette]
+ * @param {number} [props.scale=1]
+ * @param {number} [props.contrast=1]
+ * @param {number} [props.brightness=0]
+ * @param {'erase' | 'reveal' | 'ripple'} [props.mouseEffect='erase']
+ * @param {number} [props.mouseStrength=1]
+ * @param {number} [props.trail=0.5]
+ * @param {boolean} [props.clickRipple=true]
+ * @param {boolean} [props.intro=true]
+ * @param {number} [props.dpr]
+ * @param {string} [props.className='']
+ * @param {import('react').CSSProperties} [props.style]
+ */
 const Dither = ({
   waveSpeed = 0.05,
   waveFrequency = 3,
