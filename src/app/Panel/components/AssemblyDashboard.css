@@ -774,32 +774,102 @@
 }
 
 /* ── RESPONSIVE ──────────────────────────────────────────────────────────── */
-@media (max-width: 1024px) {
+@media (max-width: 1100px) {
+  .hub-page {
+    width: 92vw;
+    max-width: 92vw;
+    padding: 10px 0 28px;
+  }
+
   .hub-span-4,
   .hub-span-5,
   .hub-span-7,
   .hub-span-8 {
     grid-column: span 6;
-    min-height: 240px;
+    min-height: 250px;
   }
 
   .hub-span-12 {
     grid-column: span 12;
-    min-height: 200px;
-  }
-
-  .hub-page {
-    padding: 22px;
+    min-height: 220px;
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .hub-outer {
-    padding: 10px;
+    height: 100dvh;
+    padding: 16px 16px 32px;
   }
 
   .hub-page {
-    padding: 16px;
+    width: 100%;
+    max-width: 100%;
+    padding: 4px 0 36px;
+  }
+
+  .hub-topbar {
+    gap: 12px;
+    padding-bottom: 12px;
+  }
+
+  .hub-topbar-left {
+    gap: 10px;
+  }
+
+  .hub-topbar-right {
+    width: 100%;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(128, 128, 128, 0.16);
+  }
+
+  .hub-topbar-divider {
+    display: none;
+  }
+
+  .hub-nav-links {
+    gap: 16px;
+  }
+
+  .hub-nav-link {
+    font-size: 13.5px;
+  }
+
+  .hub-icon-btn {
+    padding: 6px;
+  }
+
+  .hub-categories-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 0 18px;
+  }
+
+  .hub-category-pills {
+    width: 100%;
+    gap: 8px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 2px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .hub-category-pills::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hub-cat-pill {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    font-size: 10.5px;
+  }
+
+  .hub-editorial-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 
   .hub-span-4,
@@ -807,11 +877,107 @@
   .hub-span-7,
   .hub-span-8,
   .hub-span-12 {
-    grid-column: span 12;
-    min-height: 210px;
+    grid-column: 1 / -1;
+    min-height: 245px;
   }
 
   .hub-cell {
-    padding: 18px;
+    padding: 20px;
+    gap: 16px;
+  }
+
+  .hub-cell-date {
+    font-size: 11.5px;
+  }
+
+  .hub-cell-tag-pill {
+    font-size: 10px;
+    padding: 4px 11px;
+  }
+
+  .hub-cell-body {
+    padding: 14px 16px;
+    gap: 6px;
+  }
+
+  .hub-cell-title {
+    font-size: 19px;
+    line-height: 1.25;
+  }
+
+  .hub-cell-desc {
+    font-size: 13.5px;
+    line-height: 1.5;
+    -webkit-line-clamp: 3;
+  }
+
+  .hub-cell-footer {
+    padding-top: 8px;
+    gap: 12px;
+  }
+
+  .hub-cell-specs {
+    font-size: 12px;
+    gap: 12px;
+  }
+
+  .hub-cell-actions {
+    gap: 8px;
+  }
+
+  .hub-cell-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .hub-modal-overlay {
+    padding: 16px;
+    align-items: flex-end;
+  }
+
+  .hub-modal-card {
+    max-width: 100%;
+    padding: 22px 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hub-outer {
+    padding: 12px 12px 28px;
+  }
+
+  .hub-span-4,
+  .hub-span-5,
+  .hub-span-7,
+  .hub-span-8,
+  .hub-span-12 {
+    min-height: 235px;
+  }
+
+  .hub-cell {
+    padding: 18px 16px;
+  }
+
+  .hub-cell-title {
+    font-size: 18px;
+  }
+
+  .hub-cell-desc {
+    font-size: 13px;
+  }
+
+  .hub-modal-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .hub-modal-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .hub-btn-secondary,
+  .hub-cta-btn {
+    width: 100%;
+    justify-content: center;
   }
 }
