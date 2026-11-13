@@ -33,29 +33,14 @@ export default function AXVoicePage() {
   const [useMockTTS, setUseMockTTS] = useState(false);
   const [activeEngine, setActiveEngine] = useState<'elevenlabs' | 'edge'>('elevenlabs');
   const [charsUsed, setCharsUsed] = useState<number>(0);
-  const [maxChars, setMaxChars] = useState<number>(2000);
+  const [maxChars, setMaxChars] = useState<number>(7000);
   const [hoursUntilReset, setHoursUntilReset] = useState<number>(48);
 
   const [userId, setUserId] = useState<string>('default_user');
+  const userIdRef = useRef<string>('default_user');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [unsupportedBrowser, setUnsupportedBrowser] = useState(false);
-
-  // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS
-  useEffect(() => {
-    const checkUser = async () => {
-      const user = await getCurrentUser();
-      if (!user) {
-        router.replace('/login');
-      } else {
-        setIsAuthenticated(true);
-        if (user.id) {
-          setUserId(user.id);
-        }
-      }
-    };
-    checkUser();
-  }, [router]);
 
   const aiResponseRef = useRef(aiResponse);
   const isMutedRef = useRef(isMuted);
@@ -67,6 +52,102 @@ export default function AXVoicePage() {
   const useMockTTSRef = useRef(useMockTTS);
   const activeEngineRef = useRef(activeEngine);
   const languageRef = useRef(language);
+
+  // Sincroniza y persiste el estado de cuota de ElevenLabs (bloqueo de 48h al agotar los 7000 caracteres)
+  const applyQuotaSnapshot = (snapshot: any, uid: string) => {
+    if (!snapshot || typeof snapshot !== 'object') return;
+    const nowSec = Date.now() / 1000;
+    const resetAtSec = typeof snapshot.reset_at === 'number' ? snapshot.reset_at : null;
+    if (resetAtSec && nowSec >= resetAtSec) {
+      // El bloqueo de 48h ya expiró
+      setCharsUsed(0);
+      setMaxChars(7000);
+      setHoursUntilReset(48);
+      setActiveEngine('elevenlabs');
+      activeEngineRef.current = 'elevenlabs';
+      setUseMockTTS(false);
+      useMockTTSRef.current = false;
+      try { localStorage.removeItem(`ax_tts_quota_${uid}`); } catch { }
+      return;
+    }
+
+    const mChars = typeof snapshot.max_chars === 'number' && snapshot.max_chars > 0 ? snapshot.max_chars : 7000;
+    const cUsed = typeof snapshot.chars_used === 'number' ? Math.min(mChars, Math.max(0, snapshot.chars_used)) : 0;
+    const isExhausted = Boolean(snapshot.exhausted) || cUsed >= mChars || (mChars - cUsed <= 0);
+    const effectiveCharsUsed = isExhausted ? mChars : cUsed;
+    const engine: 'elevenlabs' | 'edge' =
+      isExhausted || snapshot.used_engine === 'edge' ? 'edge' : 'elevenlabs';
+
+    let hoursLeft = typeof snapshot.hours_until_reset === 'number' ? snapshot.hours_until_reset : 48;
+    if (resetAtSec) {
+      hoursLeft = Math.max(0.1, Math.round(((resetAtSec - nowSec) / 3600) * 10) / 10);
+    }
+
+    setMaxChars(mChars);
+    setCharsUsed(effectiveCharsUsed);
+    setHoursUntilReset(hoursLeft);
+    setActiveEngine(engine);
+    activeEngineRef.current = engine;
+    setUseMockTTS(engine === 'edge');
+    useMockTTSRef.current = engine === 'edge';
+
+    if (uid && uid !== 'default_user') {
+      try {
+        localStorage.setItem(
+          `ax_tts_quota_${uid}`,
+          JSON.stringify({
+            chars_used: effectiveCharsUsed,
+            max_chars: mChars,
+            exhausted: isExhausted,
+            used_engine: engine,
+            reset_at: resetAtSec || (nowSec + hoursLeft * 3600),
+            hours_until_reset: hoursLeft,
+          })
+        );
+      } catch { }
+    }
+  };
+
+  // 🔒 PROTECCIÓN DE RUTA Y SINCRONIZACIÓN DE CUOTA DE 48H POR CUENTA
+  useEffect(() => {
+    const checkUser = async () => {
+      const user = await getCurrentUser();
+      if (!user) {
+        router.replace('/login');
+        return;
+      }
+      const uid = user.id || 'default_user';
+      setUserId(uid);
+      userIdRef.current = uid;
+
+      // 1. Hidratación inmediata desde localStorage y metadata de Supabase de la cuenta
+      try {
+        const cachedRaw = localStorage.getItem(`ax_tts_quota_${uid}`);
+        if (cachedRaw) {
+          applyQuotaSnapshot(JSON.parse(cachedRaw), uid);
+        }
+      } catch { }
+
+      const metaUsage = (user as any)?.user_metadata?.ax_tts_usage;
+      if (metaUsage && typeof metaUsage === 'object') {
+        applyQuotaSnapshot(metaUsage, uid);
+      }
+
+      // 2. Sincronización autoritativa con el backend (/api/tts_status) antes de mostrar la sesión
+      try {
+        const res = await backendFetch(`/api/tts_status?user_id=${encodeURIComponent(uid)}`);
+        if (res.ok) {
+          const statusData = await res.json();
+          applyQuotaSnapshot(statusData, uid);
+        }
+      } catch (err) {
+        console.warn('Could not fetch initial TTS quota status:', err);
+      }
+
+      setIsAuthenticated(true);
+    };
+    checkUser();
+  }, [router]);
   const silenceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const fillerAudioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -682,13 +763,15 @@ export default function AXVoicePage() {
 
     // Fetch al backend enviando el motor activo garantizando coincidencia y cancelación al salir o interrumpir
     try {
+      const effectiveUserId = userIdRef.current || userId;
+      const forceBasicVoice = useMockTTSRef.current || currentEngine === 'edge';
       const res = await backendFetch('/api/voice_chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           messages: newMessages,
-          use_mock_tts: currentEngine === 'edge',
-          user_id: userId,
+          use_mock_tts: forceBasicVoice,
+          user_id: effectiveUserId,
           language: languageRef.current || 'es'
         }),
         signal: turnController.signal
@@ -724,10 +807,7 @@ export default function AXVoicePage() {
         return;
       }
 
-      if (data.used_engine) setActiveEngine(data.used_engine);
-      if (data.chars_used !== undefined) setCharsUsed(data.chars_used);
-      if (data.max_chars !== undefined) setMaxChars(data.max_chars);
-      if (data.hours_until_reset !== undefined) setHoursUntilReset(data.hours_until_reset);
+      applyQuotaSnapshot(data, effectiveUserId);
 
       const reply = data.reply;
       const audioBase64 = data.audio_base64;
@@ -1235,7 +1315,7 @@ export default function AXVoicePage() {
               }}>
                 {isElevenLabs
                   ? `ELEVENLABS HD • ${percentRemaining}% DISPONIBLE`
-                  : `MODO FREE • EDGE TTS (REINICIO EN 48H)`}
+                  : `MODO FREE • EDGE TTS (REINICIO EN ${hoursUntilReset}H)`}
               </span>
             </>
           );
