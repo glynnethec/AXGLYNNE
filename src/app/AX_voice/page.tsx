@@ -133,7 +133,9 @@ export default function AXVoicePage() {
         applyQuotaSnapshot(metaUsage, uid);
       }
 
-      // 2. Sincronización autoritativa con el backend (/api/tts_status) antes de mostrar la sesión
+      // 2. Mostrar interfaz de inmediato sin bloquear el micrófono y sincronizar /api/tts_status en paralelo
+      setIsAuthenticated(true);
+
       try {
         const res = await backendFetch(`/api/tts_status?user_id=${encodeURIComponent(uid)}`);
         if (res.ok) {
@@ -143,8 +145,6 @@ export default function AXVoicePage() {
       } catch (err) {
         console.warn('Could not fetch initial TTS quota status:', err);
       }
-
-      setIsAuthenticated(true);
     };
     checkUser();
   }, [router]);
@@ -170,6 +170,7 @@ export default function AXVoicePage() {
   const turnAbortRef = useRef<AbortController | null>(null);
   const lastSentUserTextRef = useRef<string>('');
   const messagesRef = useRef<{ role: string, content: string }[]>([]);
+  const handleSendTranscriptRef = useRef<() => void>(() => {});
 
   // Helper: evalúa si la frase parece incompleta (conector al final o muy corta) para dar más margen de pausa
   const isLikelyIncompleteThought = (text: string): boolean => {
@@ -315,12 +316,25 @@ export default function AXVoicePage() {
   }, [language]);
 
   const handleSelectLanguage = (lang: 'es' | 'en') => {
+    languageRef.current = lang;
     setLanguage(lang);
     if (typeof window !== 'undefined') {
       try {
         sessionStorage.setItem('ax_voice_language', lang);
       } catch { }
     }
+    // Activar sesión y micrófono inmediatamente desde el gesto del usuario
+    isProcessingRef.current = false;
+    isSessionActiveRef.current = true;
+    orbStateRef.current = 'listening';
+    setIsSessionActive(true);
+    setOrbState('listening');
+    try {
+      if (recognitionRef.current) {
+        recognitionRef.current.lang = lang === 'en' ? 'en-US' : 'es-CO';
+        recognitionRef.current.start();
+      }
+    } catch { }
   };
 
   // Reset mute state when session ends
@@ -356,6 +370,17 @@ export default function AXVoicePage() {
           }
         });
         micStreamRef.current = stream;
+
+        // En macOS/Chrome, abrir getUserMedia puede interrumpir un SpeechRecognition recién iniciado:
+        // aseguramos que siga activo en estado listening una vez abierto el stream de audio
+        if (isSessionActiveRef.current && orbStateRef.current === 'listening' && !isProcessingRef.current && !isMutedRef.current) {
+          try {
+            if (recognitionRef.current) {
+              recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
+              recognitionRef.current.start();
+            }
+          } catch { }
+        }
 
         const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
         if (!AudioCtx) return;
@@ -406,39 +431,13 @@ export default function AXVoicePage() {
           }
           const totalVolume = totalCount > 0 ? (totalSum / totalCount) : 0;
 
-          // Actualización adaptativa del nivel de ruido ambiental de fondo
+          // Actualización adaptativa del nivel de ruido ambiental de fondo cuando la IA no está hablando
           if (orbStateRef.current !== 'speaking' || totalVolume < noiseFloorRef.current + 10) {
             noiseFloorRef.current = noiseFloorRef.current * 0.95 + totalVolume * 0.05;
           }
 
-          // A. Si el usuario está hablando y el sistema está escuchando (orbState === 'listening')
-          if (orbStateRef.current === 'listening') {
-            const isSpeakingNow = totalVolume >= noiseFloorRef.current + 6 || vocalAvg >= 18;
-            if (isSpeakingNow) {
-              lastVoiceActivityRef.current = Date.now();
-              listeningSilenceHits = 0;
-            } else {
-              const currentText = transcriptRef.current.trim();
-              if (currentText.length > 0 && !isProcessingRef.current && !readyToSendRef.current) {
-                listeningSilenceHits++;
-                const now = Date.now();
-                const msSinceVoice = now - (lastVoiceActivityRef.current || now);
-                const msSinceStt = now - (lastSttResultTimeRef.current || now);
-                // Si la frase parece incompleta (termina en conector o <4 palabras sin signo), damos 1700ms de margen; si es completa, 1150ms
-                const requiredSilenceMs = isLikelyIncompleteThought(currentText) ? 1700 : 1150;
-                if (msSinceVoice >= requiredSilenceMs && msSinceStt >= requiredSilenceMs) {
-                  listeningSilenceHits = 0;
-                  triggerTurnSendWithFlush();
-                }
-              } else {
-                listeningSilenceHits = 0;
-              }
-            }
-            consecutiveVoiceHits = 0;
-          }
-          // B. Si la IA está hablando o pensando (orbState === 'speaking' || orbState === 'thinking')
-          else if (orbStateRef.current === 'speaking' || orbStateRef.current === 'thinking') {
-            listeningSilenceHits = 0;
+          // Barge-In: Si la IA está hablando o pensando (orbState === 'speaking' || orbState === 'thinking')
+          if (orbStateRef.current === 'speaking' || orbStateRef.current === 'thinking') {
             if (orbStateRef.current === 'speaking') {
               // Ventana de gracia inicial corta (200ms) al arrancar el audio de la IA
               const timeSpeaking = Date.now() - speechStartTimeRef.current;
@@ -468,7 +467,6 @@ export default function AXVoicePage() {
             }
           } else {
             consecutiveVoiceHits = 0;
-            listeningSilenceHits = 0;
           }
         }, 30);
       } catch (err: any) {
@@ -529,14 +527,11 @@ export default function AXVoicePage() {
             clearTimeout(silenceTimerRef.current);
           }
 
-          // Respaldo de silencio semántico: espera más tiempo si la frase parece estar a mitad de idea
-          const waitMs = isLikelyIncompleteThought(combined) ? 1800 : 1250;
+          // Silencio semántico: espera 1650ms si la frase termina en conector (pausa para pensar) o 1200ms si la idea está completa
+          const waitMs = isLikelyIncompleteThought(combined) ? 1650 : 1200;
           silenceTimerRef.current = setTimeout(() => {
             if (!isSessionActiveRef.current || orbStateRef.current !== 'listening' || isProcessingRef.current) return;
-            const msSinceMicVoice = Date.now() - (lastVoiceActivityRef.current || 0);
-            if (msSinceMicVoice >= 950) {
-              triggerTurnSendWithFlush();
-            }
+            handleSendTranscriptRef.current();
           }, waitMs);
         };
 
@@ -555,10 +550,9 @@ export default function AXVoicePage() {
                 clearTimeout(flushTimerRef.current);
                 flushTimerRef.current = null;
               }
-              handleSendTranscript();
+              handleSendTranscriptRef.current();
             } else {
-              // El navegador cerró la sesión de STT antes de que el usuario terminara de hablar:
-              // guardamos lo acumulado en committedTranscriptRef y reabrimos el micrófono sin cortar la frase
+              // El navegador cerró la sesión de STT en una pausa: preservamos lo dicho y reabrimos el micrófono al instante
               if (sessionTranscriptRef.current) {
                 committedTranscriptRef.current = [committedTranscriptRef.current, sessionTranscriptRef.current]
                   .filter(Boolean)
@@ -566,6 +560,14 @@ export default function AXVoicePage() {
                   .replace(/\s+/g, ' ')
                   .trim();
                 sessionTranscriptRef.current = '';
+              }
+              // Si ya había texto acumulado, programar envío tras 900ms si el usuario no sigue hablando
+              if (committedTranscriptRef.current && !silenceTimerRef.current) {
+                silenceTimerRef.current = setTimeout(() => {
+                  if (isSessionActiveRef.current && orbStateRef.current === 'listening' && !isProcessingRef.current && transcriptRef.current.trim()) {
+                    handleSendTranscriptRef.current();
+                  }
+                }, 900);
               }
               try {
                 if (recognitionRef.current) {
@@ -578,15 +580,15 @@ export default function AXVoicePage() {
         };
 
         recognition.onerror = (event: any) => {
-          if (event.error === 'no-speech' && isSessionActiveRef.current) {
-            // Ignorar no-speech
-          } else if (event.error === 'not-allowed') {
+          if ((event.error === 'no-speech' || event.error === 'aborted') && isSessionActiveRef.current) {
+            // Ignorar no-speech y aborted normales durante reinicios o Barge-In
+            return;
+          } else if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+            isSessionActiveRef.current = false;
             setIsSessionActive(false);
             setOrbState('idle');
           } else {
-            console.error('Speech recognition error', event.error);
-            setIsSessionActive(false);
-            setOrbState('idle');
+            console.warn('Speech recognition transient error:', event.error);
           }
         };
 
@@ -705,7 +707,11 @@ export default function AXVoicePage() {
       silenceTimerRef.current = null;
     }
 
-    const currentText = (transcriptRef.current || committedTranscriptRef.current || transcript).trim();
+    const currentText = (
+      transcriptRef.current ||
+      [committedTranscriptRef.current, sessionTranscriptRef.current].filter(Boolean).join(' ') ||
+      transcript
+    ).trim();
     committedTranscriptRef.current = '';
     sessionTranscriptRef.current = '';
     transcriptRef.current = '';
@@ -846,6 +852,8 @@ export default function AXVoicePage() {
     }
   };
 
+  handleSendTranscriptRef.current = handleSendTranscript;
+
   const playAudioFromBase64 = (base64Str: string) => {
     // Garantizar que temporizador y muletilla se apagan antes de reproducir la voz de la IA
     if (fillerTimerRef.current) {
@@ -979,9 +987,11 @@ export default function AXVoicePage() {
   useEffect(() => {
     if (userId && !isSessionActive && language !== null) {
       const timer = setTimeout(() => {
+        isProcessingRef.current = false;
+        isSessionActiveRef.current = true;
+        orbStateRef.current = 'listening';
         setIsSessionActive(true);
         setOrbState('listening');
-        isProcessingRef.current = false;
         try {
           if (recognitionRef.current) recognitionRef.current.lang = language === 'en' ? 'en-US' : 'es-CO';
           recognitionRef.current?.start();
