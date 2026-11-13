@@ -21,7 +21,7 @@ import {
   FiMoon,
   FiX
 } from 'react-icons/fi';
-import Dither from './Dither';
+import Topography from './Topography';
 import DotGrid from './DotGrid';
 import { useTheme } from '@/lib/ThemeContext';
 import './AssemblyDashboard.css';
@@ -355,17 +355,31 @@ export default function AssemblyDashboard() {
                     onClick={() => handleSelectTool(tool.name)}
                   >
                     <div className="hub-cell-bg">
-                      <Dither
-                        waveColor={theme === 'dark' ? '#bcbcbc' : '#52525b'}
-                        backgroundColor={theme === 'dark' ? '#120f17' : '#ffffff'}
-                        ditherMode="bayer"
-                        colorNum={4}
-                        pixelSize={2}
-                        waveSpeed={0.05}
-                        waveFrequency={3}
-                        waveAmplitude={0.3}
-                        mouseEffect="erase"
-                        mouseRadius={0.3}
+                      <Topography
+                        color={theme === 'dark' ? '#ffffff' : '#0b0b0d'}
+                        lightMode={theme === 'light'}
+                        lineCount={18}
+                        lineWidth={0.6}
+                        elevation={0.35}
+                        foreground={0.08}
+                        tilt={90}
+                        speed={0.12}
+                        direction="right"
+                        glow={0.15}
+                        depthOfField={0}
+                        fog={0.1}
+                        hoverEffect="trace"
+                        clickEffect="pulse"
+                        scale={0.65}
+                        detail={0.19}
+                        morph={0.08}
+                        brightness={0.4}
+                        opacity={0.43}
+                        mouseRadius={0.75}
+                        mouseStrength={0.3}
+                        trail={0.21}
+                        parallax={0.26}
+                        markers="plus"
                       />
                     </div>
 
@@ -436,17 +450,31 @@ export default function AssemblyDashboard() {
                   onClick={() => router.push(item.href)}
                 >
                   <div className="hub-cell-bg">
-                    <Dither
-                      waveColor={theme === 'dark' ? '#bcbcbc' : '#52525b'}
-                      backgroundColor={theme === 'dark' ? '#120f17' : '#ffffff'}
-                      ditherMode="bayer"
-                      colorNum={4}
-                      pixelSize={2}
-                      waveSpeed={0.05}
-                      waveFrequency={3}
-                      waveAmplitude={0.3}
-                      mouseEffect="erase"
-                      mouseRadius={0.3}
+                    <Topography
+                      color={theme === 'dark' ? '#ffffff' : '#0b0b0d'}
+                      lightMode={theme === 'light'}
+                      lineCount={18}
+                      lineWidth={0.6}
+                      elevation={0.35}
+                      foreground={0.08}
+                      tilt={90}
+                      speed={0.12}
+                      direction="right"
+                      glow={0.15}
+                      depthOfField={0}
+                      fog={0.1}
+                      hoverEffect="trace"
+                      clickEffect="pulse"
+                      scale={0.65}
+                      detail={0.19}
+                      morph={0.08}
+                      brightness={0.4}
+                      opacity={0.43}
+                      mouseRadius={0.75}
+                      mouseStrength={0.3}
+                      trail={0.21}
+                      parallax={0.26}
+                      markers="plus"
                     />
                   </div>
 

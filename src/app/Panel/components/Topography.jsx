@@ -666,6 +666,40 @@ const viewProjection = ({ eye, f, r, u }, aspect, out) => {
   return out;
 };
 
+/**
+ * @param {Object} props
+ * @param {string} [props.color='#4f7cff']
+ * @param {number} [props.lineCount=22]
+ * @param {number} [props.lineWidth=1.2]
+ * @param {boolean} [props.majorLines=true]
+ * @param {number} [props.elevation=1]
+ * @param {number} [props.foreground=0.2]
+ * @param {number} [props.scale=1]
+ * @param {number} [props.detail=0.35]
+ * @param {number} [props.tilt=32]
+ * @param {number} [props.speed=0.25]
+ * @param {'forward' | 'backward' | 'left' | 'right'} [props.direction='forward']
+ * @param {number} [props.morph=0.2]
+ * @param {number} [props.glow=0.6]
+ * @param {number} [props.depthOfField=0.4]
+ * @param {number} [props.fog=0.35]
+ * @param {number} [props.brightness=1]
+ * @param {number} [props.opacity=1]
+ * @param {boolean} [props.mouseInteraction=true]
+ * @param {'lift' | 'trace' | 'light'} [props.hoverEffect='lift']
+ * @param {number} [props.mouseRadius=1]
+ * @param {number} [props.mouseStrength=0.6]
+ * @param {number} [props.trail=0.3]
+ * @param {number} [props.parallax=0.5]
+ * @param {'pulse' | 'peak' | 'none'} [props.clickEffect='pulse']
+ * @param {'plus' | 'dots' | 'none'} [props.markers='none']
+ * @param {number} [props.glitch=0]
+ * @param {boolean} [props.intro=true]
+ * @param {boolean} [props.lightMode=false]
+ * @param {number} [props.dpr]
+ * @param {string} [props.className='']
+ * @param {import('react').CSSProperties} [props.style]
+ */
 const Topography = ({
   color = '#4f7cff',
   lineCount = 22,
