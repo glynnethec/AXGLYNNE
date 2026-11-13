@@ -170,7 +170,197 @@ export default function AXVoicePage() {
   const turnAbortRef = useRef<AbortController | null>(null);
   const lastSentUserTextRef = useRef<string>('');
   const messagesRef = useRef<{ role: string, content: string }[]>([]);
-  const handleSendTranscriptRef = useRef<() => void>(() => {});
+  const handleSendTranscriptRef = useRef<(overrideText?: string) => void>(() => {});
+
+  // ── MODO MÓVIL / WHISPER STT (MediaRecorder + /api/voice_transcribe) ─────────
+  const useWhisperSttRef = useRef<boolean>(false);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const mobileChunksRef = useRef<BlobPart[]>([]);
+  const mobileMimeTypeRef = useRef<string>('');
+  const mobileHasSpokenRef = useRef<boolean>(false);
+  const mobileSpeechFramesRef = useRef<number>(0);
+  const mobileRecordStartRef = useRef<number>(0);
+  const isTranscribingMobileRef = useRef<boolean>(false);
+
+  // Desbloquea la reproducción de HTMLAudioElement y AudioContext en iOS Safari / Android Chrome durante el toque del usuario
+  const unlockMobileAudio = () => {
+    if (typeof window === 'undefined') return;
+    if (!audioRef.current) {
+      audioRef.current = new Audio();
+    }
+    try {
+      audioRef.current.setAttribute('playsinline', 'true');
+      (audioRef.current as any).playsInline = true;
+      audioRef.current.muted = false;
+      audioRef.current.volume = 1.0;
+      // 1ms WAV silencioso para desbloquear Autoplay en iOS/Android
+      audioRef.current.src = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA';
+      const p = audioRef.current.play();
+      if (p !== undefined) {
+        p.then(() => {
+          if (audioRef.current && audioRef.current.src.startsWith('data:audio/wav')) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+          }
+        }).catch(() => {});
+      }
+    } catch { }
+
+    if (micAudioCtxRef.current && micAudioCtxRef.current.state === 'suspended') {
+      micAudioCtxRef.current.resume().catch(() => {});
+    }
+    if (window.speechSynthesis) {
+      try {
+        const u = new SpeechSynthesisUtterance('');
+        u.volume = 0;
+        window.speechSynthesis.speak(u);
+      } catch { }
+    }
+  };
+
+  const getSupportedMimeType = (): string => {
+    if (typeof window === 'undefined' || typeof MediaRecorder === 'undefined') return '';
+    const candidates = [
+      'audio/webm;codecs=opus',
+      'audio/webm',
+      'audio/mp4',
+      'audio/ogg;codecs=opus',
+      'audio/aac',
+    ];
+    for (const mime of candidates) {
+      try {
+        if (MediaRecorder.isTypeSupported(mime)) return mime;
+      } catch { }
+    }
+    return '';
+  };
+
+  const stopMobileRecorderSilent = () => {
+    const rec = mediaRecorderRef.current;
+    mediaRecorderRef.current = null;
+    mobileHasSpokenRef.current = false;
+    mobileSpeechFramesRef.current = 0;
+    mobileChunksRef.current = [];
+    if (rec) {
+      try {
+        rec.ondataavailable = null;
+        rec.onstop = null;
+        if (rec.state !== 'inactive') rec.stop();
+      } catch { }
+    }
+  };
+
+  const startMobileTurnRecording = () => {
+    if (!useWhisperSttRef.current) return;
+    if (!micStreamRef.current || !isSessionActiveRef.current || isProcessingRef.current || isMutedRef.current) return;
+    if (typeof MediaRecorder === 'undefined') return;
+
+    stopMobileRecorderSilent();
+
+    try {
+      const mime = mobileMimeTypeRef.current || getSupportedMimeType();
+      mobileMimeTypeRef.current = mime;
+      const options = mime ? { mimeType: mime } : undefined;
+      const recorder = new MediaRecorder(micStreamRef.current, options);
+      mobileChunksRef.current = [];
+      mobileHasSpokenRef.current = false;
+      mobileSpeechFramesRef.current = 0;
+      mobileRecordStartRef.current = Date.now();
+
+      recorder.ondataavailable = (e: BlobEvent) => {
+        if (e.data && e.data.size > 0) {
+          mobileChunksRef.current.push(e.data);
+        }
+      };
+
+      recorder.start(200);
+      mediaRecorderRef.current = recorder;
+    } catch (err) {
+      console.warn('Error starting mobile MediaRecorder:', err);
+    }
+  };
+
+  const finishMobileTurnAndSend = () => {
+    if (!useWhisperSttRef.current || isProcessingRef.current || isTranscribingMobileRef.current) return;
+    const rec = mediaRecorderRef.current;
+    if (!rec) return;
+
+    isTranscribingMobileRef.current = true;
+    mobileHasSpokenRef.current = false;
+    mobileSpeechFramesRef.current = 0;
+    mediaRecorderRef.current = null;
+
+    setOrbState('thinking');
+    orbStateRef.current = 'thinking';
+
+    const finalizeBlobAndSend = async () => {
+      const chunks = mobileChunksRef.current.slice();
+      mobileChunksRef.current = [];
+      const mime = mobileMimeTypeRef.current || 'audio/webm';
+      const blob = new Blob(chunks, { type: mime });
+
+      if (!blob || blob.size < 600) {
+        isTranscribingMobileRef.current = false;
+        if (isSessionActiveRef.current && !isProcessingRef.current) {
+          setOrbState('listening');
+          orbStateRef.current = 'listening';
+          startMobileTurnRecording();
+        }
+        return;
+      }
+
+      try {
+        const ext = mime.includes('mp4') || mime.includes('aac') ? 'm4a' : mime.includes('ogg') ? 'ogg' : 'webm';
+        const formData = new FormData();
+        formData.append('file', blob, `voice.${ext}`);
+        formData.append('language', languageRef.current || 'es');
+
+        const res = await backendFetch('/api/voice_transcribe', {
+          method: 'POST',
+          body: formData,
+        });
+        const data = await res.json();
+        const text = (data?.text || '').trim();
+        isTranscribingMobileRef.current = false;
+
+        if (!isMountedRef.current || !isSessionActiveRef.current) return;
+
+        if (text.length > 1) {
+          transcriptRef.current = text;
+          setTranscript(text);
+          handleSendTranscriptRef.current(text);
+        } else {
+          // Solo hubo ruido ambiente: volver a escuchar limpiamente
+          if (!isProcessingRef.current) {
+            setOrbState('listening');
+            orbStateRef.current = 'listening';
+            startMobileTurnRecording();
+          }
+        }
+      } catch (err) {
+        console.warn('Mobile STT error:', err);
+        isTranscribingMobileRef.current = false;
+        if (isSessionActiveRef.current && !isProcessingRef.current) {
+          setOrbState('listening');
+          orbStateRef.current = 'listening';
+          startMobileTurnRecording();
+        }
+      }
+    };
+
+    try {
+      if (rec.state !== 'inactive') {
+        rec.onstop = () => {
+          finalizeBlobAndSend();
+        };
+        rec.stop();
+      } else {
+        finalizeBlobAndSend();
+      }
+    } catch {
+      finalizeBlobAndSend();
+    }
+  };
 
   // Helper: evalúa si la frase parece incompleta (conector al final o muy corta) para dar más margen de pausa
   const isLikelyIncompleteThought = (text: string): boolean => {
@@ -209,8 +399,6 @@ export default function AXVoicePage() {
         audioRef.current.onerror = null;
         audioRef.current.pause();
         audioRef.current.currentTime = 0;
-        audioRef.current.removeAttribute('src');
-        audioRef.current.load();
       } catch { }
     }
     if (fillerAudioRef.current) {
@@ -227,6 +415,7 @@ export default function AXVoicePage() {
     urlToOpenRef.current = null;
     setAiResponse('');
     isProcessingRef.current = false;
+    isTranscribingMobileRef.current = false;
     readyToSendRef.current = false;
 
     if (preserveLastUserTurn && lastSentUserTextRef.current) {
@@ -250,13 +439,18 @@ export default function AXVoicePage() {
     }
 
     lastVoiceActivityRef.current = Date.now();
+    orbStateRef.current = 'listening';
     setOrbState('listening');
-    try {
-      if (recognitionRef.current) {
-        recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
-        recognitionRef.current.start();
-      }
-    } catch { }
+    if (useWhisperSttRef.current) {
+      startMobileTurnRecording();
+    } else {
+      try {
+        if (recognitionRef.current) {
+          recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
+          recognitionRef.current.start();
+        }
+      } catch { }
+    }
   };
 
   // Dispara el cierre de turno esperando un micro-flush (160ms) para no perder la última palabra del buffer STT
@@ -316,6 +510,9 @@ export default function AXVoicePage() {
   }, [language]);
 
   const handleSelectLanguage = (lang: 'es' | 'en') => {
+    // 🔓 Desbloquear salida de audio y AudioContext dentro del toque del usuario (crítico en iOS/Android)
+    unlockMobileAudio();
+
     languageRef.current = lang;
     setLanguage(lang);
     if (typeof window !== 'undefined') {
@@ -329,12 +526,14 @@ export default function AXVoicePage() {
     orbStateRef.current = 'listening';
     setIsSessionActive(true);
     setOrbState('listening');
-    try {
-      if (recognitionRef.current) {
-        recognitionRef.current.lang = lang === 'en' ? 'en-US' : 'es-CO';
-        recognitionRef.current.start();
-      }
-    } catch { }
+    if (!useWhisperSttRef.current) {
+      try {
+        if (recognitionRef.current) {
+          recognitionRef.current.lang = lang === 'en' ? 'en-US' : 'es-CO';
+          recognitionRef.current.start();
+        }
+      } catch { }
+    }
   };
 
   // Reset mute state when session ends
@@ -371,21 +570,28 @@ export default function AXVoicePage() {
         });
         micStreamRef.current = stream;
 
-        // En macOS/Chrome, abrir getUserMedia puede interrumpir un SpeechRecognition recién iniciado:
+        // En macOS/Chrome Desktop, abrir getUserMedia puede interrumpir un SpeechRecognition recién iniciado:
         // aseguramos que siga activo en estado listening una vez abierto el stream de audio
         if (isSessionActiveRef.current && orbStateRef.current === 'listening' && !isProcessingRef.current && !isMutedRef.current) {
-          try {
-            if (recognitionRef.current) {
-              recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
-              recognitionRef.current.start();
-            }
-          } catch { }
+          if (useWhisperSttRef.current) {
+            startMobileTurnRecording();
+          } else {
+            try {
+              if (recognitionRef.current) {
+                recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
+                recognitionRef.current.start();
+              }
+            } catch { }
+          }
         }
 
         const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
         if (!AudioCtx) return;
         const ctx = new AudioCtx();
         micAudioCtxRef.current = ctx;
+        if (ctx.state === 'suspended') {
+          try { await ctx.resume(); } catch { }
+        }
 
         const source = ctx.createMediaStreamSource(stream);
         const analyser = ctx.createAnalyser();
@@ -395,10 +601,12 @@ export default function AXVoicePage() {
         micAnalyserRef.current = analyser;
 
         let consecutiveVoiceHits = 0;
-        let listeningSilenceHits = 0;
 
         vadIntervalRef.current = setInterval(() => {
           if (!micAnalyserRef.current || !isSessionActiveRef.current || isMutedRef.current) return;
+          if (micAudioCtxRef.current && micAudioCtxRef.current.state === 'suspended') {
+            micAudioCtxRef.current.resume().catch(() => {});
+          }
 
           const binCount = micAnalyserRef.current.frequencyBinCount;
           const dataArray = new Uint8Array(binCount);
@@ -431,13 +639,44 @@ export default function AXVoicePage() {
           }
           const totalVolume = totalCount > 0 ? (totalSum / totalCount) : 0;
 
-          // Actualización adaptativa del nivel de ruido ambiental de fondo cuando la IA no está hablando
-          if (orbStateRef.current !== 'speaking' || totalVolume < noiseFloorRef.current + 10) {
+          // Actualización adaptativa del nivel de ruido ambiental cuando el usuario y la IA están en silencio
+          if (orbStateRef.current !== 'speaking' && !mobileHasSpokenRef.current && totalVolume < noiseFloorRef.current + 8) {
             noiseFloorRef.current = noiseFloorRef.current * 0.95 + totalVolume * 0.05;
           }
 
-          // Barge-In: Si la IA está hablando o pensando (orbState === 'speaking' || orbState === 'thinking')
-          if (orbStateRef.current === 'speaking' || orbStateRef.current === 'thinking') {
+          // A. MODO MÓVIL / WHISPER STT: Detectar inicio y fin de voz del usuario durante 'listening'
+          if (orbStateRef.current === 'listening' && useWhisperSttRef.current && !isProcessingRef.current && !isTranscribingMobileRef.current) {
+            consecutiveVoiceHits = 0;
+            if (!mediaRecorderRef.current || mediaRecorderRef.current.state === 'inactive') {
+              startMobileTurnRecording();
+            }
+
+            const voiceThreshold = Math.max(15, noiseFloorRef.current + 6);
+            const isUserSpeaking = totalVolume >= voiceThreshold && vocalAvg >= 13;
+
+            if (isUserSpeaking) {
+              mobileSpeechFramesRef.current++;
+              lastVoiceActivityRef.current = Date.now();
+              if (mobileSpeechFramesRef.current >= 4) {
+                mobileHasSpokenRef.current = true;
+              }
+            } else {
+              if (mobileHasSpokenRef.current) {
+                const silenceMs = Date.now() - (lastVoiceActivityRef.current || Date.now());
+                if (silenceMs >= 1100) {
+                  finishMobileTurnAndSend();
+                }
+              } else {
+                mobileSpeechFramesRef.current = Math.max(0, mobileSpeechFramesRef.current - 1);
+                // Reiniciar buffer silencioso cada 10s si aún no ha hablado para mantener el archivo ligero
+                if (mobileRecordStartRef.current && Date.now() - mobileRecordStartRef.current > 10000) {
+                  startMobileTurnRecording();
+                }
+              }
+            }
+          }
+          // B. Barge-In: Si la IA está hablando o pensando (orbState === 'speaking' || orbState === 'thinking')
+          else if (orbStateRef.current === 'speaking' || orbStateRef.current === 'thinking') {
             if (orbStateRef.current === 'speaking') {
               // Ventana de gracia inicial corta (200ms) al arrancar el audio de la IA
               const timeSpeaking = Date.now() - speechStartTimeRef.current;
@@ -494,11 +733,20 @@ export default function AXVoicePage() {
     };
   }, [isSessionActive]);
 
-  // Inicializar Web Speech API y gestionar limpieza automática al salir de AX_voice
+  // Inicializar Web Speech API (Desktop) o Whisper STT (Móvil / Safari / Firefox) y limpiar al salir
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      const ua = navigator.userAgent || '';
+      const isMobileDevice = /Android|iPhone|iPad|iPod|Mobile|CriOS|FxiOS|EdgiOS/i.test(ua);
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (SpeechRecognition) {
+
+      // En dispositivos móviles (iOS/Android) o navegadores sin SpeechRecognition nativo,
+      // usamos MediaRecorder + Groq Whisper STT para evitar conflictos de micrófono y bloqueos móviles
+      if (isMobileDevice || !SpeechRecognition) {
+        useWhisperSttRef.current = true;
+        setUnsupportedBrowser(false);
+      } else if (SpeechRecognition) {
+        useWhisperSttRef.current = false;
         const recognition = new SpeechRecognition();
         recognition.continuous = true;
         recognition.interimResults = true;
@@ -593,17 +841,18 @@ export default function AXVoicePage() {
         };
 
         recognitionRef.current = recognition;
-      } else {
-        console.warn('SpeechRecognition API not supported in this browser.');
-        setUnsupportedBrowser(true);
       }
       if (typeof window !== 'undefined') {
-        audioRef.current = new Audio();
+        const audioEl = new Audio();
+        audioEl.setAttribute('playsinline', 'true');
+        (audioEl as any).playsInline = true;
+        audioRef.current = audioEl;
       }
     }
 
     const stopAllAudioAndMic = () => {
       isSessionActiveRef.current = false;
+      stopMobileRecorderSilent();
       if (silenceTimerRef.current) {
         clearTimeout(silenceTimerRef.current);
         silenceTimerRef.current = null;
@@ -696,7 +945,7 @@ export default function AXVoicePage() {
     };
   }, []); // Run only on mount
 
-  const handleSendTranscript = async () => {
+  const handleSendTranscript = async (overrideText?: string) => {
     if (isProcessingRef.current) return;
     if (flushTimerRef.current) {
       clearTimeout(flushTimerRef.current);
@@ -708,6 +957,7 @@ export default function AXVoicePage() {
     }
 
     const currentText = (
+      (typeof overrideText === 'string' ? overrideText : '') ||
       transcriptRef.current ||
       [committedTranscriptRef.current, sessionTranscriptRef.current].filter(Boolean).join(' ') ||
       transcript
@@ -721,11 +971,16 @@ export default function AXVoicePage() {
     if (!currentText) {
       isProcessingRef.current = false;
       if (isSessionActiveRef.current) {
+        orbStateRef.current = 'listening';
         setOrbState('listening');
-        try {
-          if (recognitionRef.current) recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
-          recognitionRef.current?.start();
-        } catch (e) { }
+        if (useWhisperSttRef.current) {
+          startMobileTurnRecording();
+        } else {
+          try {
+            if (recognitionRef.current) recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
+            recognitionRef.current?.start();
+          } catch (e) { }
+        }
       } else {
         setOrbState('idle');
       }
@@ -735,9 +990,11 @@ export default function AXVoicePage() {
     isProcessingRef.current = true;
     lastSentUserTextRef.current = currentText;
 
-    // Detener el reconocimiento STT mientras la IA procesa y habla (el WebRTC VAD sigue activo para Barge-In)
+    // Detener el reconocimiento STT / MediaRecorder mientras la IA procesa y habla (el WebRTC VAD sigue activo para Barge-In)
+    stopMobileRecorderSilent();
     try { recognitionRef.current?.stop(); } catch (e) { }
 
+    orbStateRef.current = 'thinking';
     setOrbState('thinking');
 
     // Detener cualquier temporizador o muletilla previa si estaba activa
@@ -875,8 +1132,10 @@ export default function AXVoicePage() {
 
       audioRef.current.onplay = () => {
         speechStartTimeRef.current = Date.now();
+        orbStateRef.current = 'speaking';
         setOrbState('speaking');
-        // Detener micrófono para evitar que capte el audio de los altavoces (auto-interrupción)
+        // Detener micrófono/grabadora para evitar que capte el audio de los altavoces (auto-interrupción)
+        stopMobileRecorderSilent();
         try { recognitionRef.current?.stop(); } catch (e) { }
       };
 
@@ -888,11 +1147,16 @@ export default function AXVoicePage() {
         if (isSessionActiveRef.current) {
           setTimeout(() => {
             if (isSessionActiveRef.current && orbStateRef.current !== 'speaking') {
+              orbStateRef.current = 'listening';
               setOrbState('listening');
-              try {
-                if (recognitionRef.current) recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
-                recognitionRef.current?.start();
-              } catch (e) { }
+              if (useWhisperSttRef.current) {
+                startMobileTurnRecording();
+              } else {
+                try {
+                  if (recognitionRef.current) recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
+                  recognitionRef.current?.start();
+                } catch (e) { }
+              }
             }
           }, 150);
         } else {
@@ -903,20 +1167,37 @@ export default function AXVoicePage() {
       audioRef.current.onerror = (e) => {
         console.error('Audio playback error', e);
         isProcessingRef.current = false;
-        setIsSessionActive(false);
-        setOrbState('idle');
+        if (isSessionActiveRef.current) {
+          orbStateRef.current = 'listening';
+          setOrbState('listening');
+          if (useWhisperSttRef.current) {
+            startMobileTurnRecording();
+          } else {
+            try { recognitionRef.current?.start(); } catch { }
+          }
+        } else {
+          setOrbState('idle');
+        }
       };
 
       audioRef.current.play().catch(e => {
-        console.error('Error playing audio (Autoplay blocked)', e);
+        console.warn('Error playing audio (Autoplay blocked), falling back to speechSynthesis:', e);
+        if (aiResponseRef.current) {
+          speakResponseFallback(aiResponseRef.current);
+          return;
+        }
         isProcessingRef.current = false;
-        // Si el navegador bloquea el audio inicial, al menos abrimos el micrófono
         if (isSessionActiveRef.current) {
+          orbStateRef.current = 'listening';
           setOrbState('listening');
-          try {
-            if (recognitionRef.current) recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
-            recognitionRef.current?.start();
-          } catch (err) { }
+          if (useWhisperSttRef.current) {
+            startMobileTurnRecording();
+          } else {
+            try {
+              if (recognitionRef.current) recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
+              recognitionRef.current?.start();
+            } catch (err) { }
+          }
         }
       });
     }
@@ -940,11 +1221,16 @@ export default function AXVoicePage() {
         if (isSessionActiveRef.current) {
           setTimeout(() => {
             if (isSessionActiveRef.current && orbStateRef.current !== 'speaking') {
+              orbStateRef.current = 'listening';
               setOrbState('listening');
-              try {
-                if (recognitionRef.current) recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
-                recognitionRef.current?.start();
-              } catch (e) { }
+              if (useWhisperSttRef.current) {
+                startMobileTurnRecording();
+              } else {
+                try {
+                  if (recognitionRef.current) recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
+                  recognitionRef.current?.start();
+                } catch (e) { }
+              }
             }
           }, 150);
         } else {
@@ -956,30 +1242,31 @@ export default function AXVoicePage() {
   };
 
   const toggleListening = () => {
+    unlockMobileAudio();
     if (isSessionActive) {
       if (orbState === 'speaking' || orbState === 'thinking') {
         // Interrupción inmediata al tocar la orbe mientras la IA responde o piensa
         interruptAiImmediate(orbState === 'thinking');
-      } else {
-        isProcessingRef.current = false;
-        setIsSessionActive(false);
-        setOrbState('idle');
-        try { recognitionRef.current?.stop(); } catch (e) { }
-        if (audioRef.current) audioRef.current.pause();
+      } else if (useWhisperSttRef.current && mobileHasSpokenRef.current) {
+        // En móvil, tocar la orbe tras hablar envía inmediatamente la grabación
+        finishMobileTurnAndSend();
+      } else if (transcriptRef.current.trim()) {
+        handleSendTranscriptRef.current();
       }
     } else {
       isProcessingRef.current = false;
+      isSessionActiveRef.current = true;
+      orbStateRef.current = 'listening';
       setIsSessionActive(true);
       setTranscript('');
       setAiResponse('');
-
-      if (audioRef.current) {
-        audioRef.current.play().catch(() => { });
-      }
-
       urlToOpenRef.current = null;
       setOrbState('listening');
-      try { recognitionRef.current?.start(); } catch (e) { }
+      if (useWhisperSttRef.current) {
+        startMobileTurnRecording();
+      } else {
+        try { recognitionRef.current?.start(); } catch (e) { }
+      }
     }
   };
 
@@ -992,10 +1279,14 @@ export default function AXVoicePage() {
         orbStateRef.current = 'listening';
         setIsSessionActive(true);
         setOrbState('listening');
-        try {
-          if (recognitionRef.current) recognitionRef.current.lang = language === 'en' ? 'en-US' : 'es-CO';
-          recognitionRef.current?.start();
-        } catch { }
+        if (useWhisperSttRef.current) {
+          startMobileTurnRecording();
+        } else {
+          try {
+            if (recognitionRef.current) recognitionRef.current.lang = language === 'en' ? 'en-US' : 'es-CO';
+            recognitionRef.current?.start();
+          } catch { }
+        }
       }, 0);
       return () => clearTimeout(timer);
     }
@@ -1369,13 +1660,16 @@ export default function AXVoicePage() {
             {/* ORB Container with Floor Shadow matching Panel */}
             <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '400px' }}>
               <div
+                onClick={toggleListening}
                 style={{
                   animation: 'orbReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both',
                   width: '100%',
                   aspectRatio: '1/1',
                   filter: orbState === 'listening' ? (theme === 'light' ? 'brightness(1.1) drop-shadow(0 0 30px rgba(0,0,0,0.15))' : 'brightness(1.5) drop-shadow(0 0 30px rgba(255,255,255,0.2))') : 'none',
                   transition: 'filter 0.3s ease',
-                  zIndex: 20
+                  zIndex: 20,
+                  cursor: 'pointer',
+                  WebkitTapHighlightColor: 'transparent',
                 }}
               >
                 <VoiceOrb orbState={orbState} audioRef={audioRef} theme={theme} />
