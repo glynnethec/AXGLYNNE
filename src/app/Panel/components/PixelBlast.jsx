@@ -107,9 +107,9 @@ void main() {
   vec2 cellCoord = cellId * cellPixelSize;
   vec2 uv = cellCoord / uResolution * vec2(aspectRatio, 1.0);
 
-  float base = fbm2(uv + uDrift, uTime * 0.05);
-  base = base * 0.5 - 0.65;
-  float feed = base + (uDensity - 0.5) * 0.3;
+  float base = fbm2(uv + uDrift, uTime * 0.08);
+  base = base * 0.7 - 0.45;
+  float feed = base + (uDensity - 1.0) * 0.25;
   if (uEnableRipples == 1) {
     for (int i = 0; i < ${MAX_CLICKS}; ++i) {
       vec2 pos = uClickPos[i];
@@ -133,7 +133,7 @@ void main() {
     float shown = smoothstep(front + 0.04, front - 0.06, r);
     float ring = exp(-pow((r - front) / 0.07, 2.0)) * (1.0 - uIntro);
     feed = mix(-1.0, feed, shown);
-    feed = max(feed, ring * 1.4);
+    feed = max(feed, ring * 0.55);
   }
 
   float brush = 0.0;
