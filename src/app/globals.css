@@ -123,24 +123,34 @@ h1, h2, h3 {
 }
 
 /* ==================== SPLASH SCREEN ==================== */
+html[data-splash-skip="true"] .splash-screen {
+  display: none !important;
+}
+
 .splash-screen {
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   background-color: #ffffff;
-  z-index: 9999;
+  z-index: 999999;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+  opacity: 1;
+  visibility: visible;
+  will-change: opacity, transform;
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .splash-fade-out {
   opacity: 0;
   pointer-events: none;
-  transform: translateY(-20px);
+  transform: scale(1.02);
 }
 
 .splash-logo {
