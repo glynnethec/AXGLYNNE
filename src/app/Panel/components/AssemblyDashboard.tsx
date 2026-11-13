@@ -207,8 +207,8 @@ export default function AssemblyDashboard() {
     <div className="hub-outer" data-theme={theme}>
       <div className="hub-dotgrid-bg" aria-hidden="true">
         <DotGrid
-          baseColor="#bdbdbd"
-          activeColor={theme === 'dark' ? '#ffffff' : '#0b0b0d'}
+          baseColor={theme === 'dark' ? '#27272a' : '#d4d4d8'}
+          activeColor={theme === 'dark' ? '#a1a1aa' : '#52525b'}
           shape="circle"
           dotSize={3}
           gap={15}
@@ -221,8 +221,9 @@ export default function AssemblyDashboard() {
           shockStrength={5}
           swell={0.8}
           stretch={0.5}
-          glow={0.5}
+          glow={0.35}
           fade={0}
+          opacity={0.55}
           intro={true}
         />
       </div>
