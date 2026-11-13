@@ -54,7 +54,7 @@ export default function AssemblyDashboard() {
 
   const [mainTab, setMainTab] = useState<MainTab>('tools');
   const [toolFilter, setToolFilter] = useState<ToolFilter>('all');
-  const [activeTool, setActiveTool] = useState<string>('Librarymodel');
+  const [activeTool, setActiveTool] = useState<string>('AX_chat');
 
   const [userProfile, setUserProfile] = useState<any>(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -63,71 +63,71 @@ export default function AssemblyDashboard() {
   const platformTools: PlatformTool[] = [
     {
       num: '001',
-      name: 'Librarymodel',
-      shortTitle: 'Library Model',
-      label: 'Open-Source Weights Library',
-      tag: 'Mathematical Sovereignty & Offline Deployment',
-      category: 'engines',
-      badge: 'SOBERANÍA',
-      desc: 'Access and download full mathematical weights of open models (GGUF, FP16, EXL2) for local, offline, and air-gapped deployments with zero external cloud reliance.',
-      model: 'Open-Weights',
-      details: 'Full quantized model weights (GGUF, FP16, EXL2) ready for local inference.',
-      metrics: { latency: '<10ms', security: 'Air-Gapped', status: 'Operational' },
-      icon: <FiDatabase size={14} />
+      name: 'AX_chat',
+      shortTitle: 'GLYNNE Advisor (Chat)',
+      label: 'GLYNNE Advisor · Guidance Chat',
+      tag: 'Processes, Business Model & Platform',
+      category: 'conversational',
+      badge: 'ADVISOR',
+      desc: 'Get answers about GLYNNE, our processes, business model, and how to make the most of every tool.',
+      model: 'GPT OSS 120B',
+      details: 'Conversational advisor focused on GLYNNE methodology, solutions, and platform tools.',
+      metrics: { latency: 'Real-Time', security: 'Encrypted', status: 'Connected' },
+      icon: <FiMessageSquare size={14} />
     },
     {
       num: '002',
-      name: 'Create_you_GLYNNE_model',
-      shortTitle: 'Create Model',
-      label: 'Create & Train Your Custom AI Model',
-      tag: 'QLoRA Fine-Tuning & Private Data',
-      category: 'engines',
-      badge: 'QLORA TUNING',
-      desc: 'Train a model on your proprietary enterprise data, shaping its name, personality, and analytical criteria through specialized QLoRA weight retraining.',
-      model: 'QLoRA / Unsloth',
-      details: 'Private model training protocols active for custom enterprise weights.',
-      metrics: { latency: 'Batch FP16', security: 'Private VPC', status: 'Ready' },
-      icon: <FiSliders size={14} />
-    },
-    {
-      num: '003',
       name: 'models_provider',
-      shortTitle: 'Models Provider',
-      label: 'AI Model APIs & Gateway',
+      shortTitle: 'Free AI Models API',
+      label: 'Free AI Models API · Gateway',
       tag: 'API Provider & Enterprise Gateway',
       category: 'engines',
-      badge: 'API GATEWAY',
-      desc: 'Enterprise LLM APIs engineered for existing projects. Ultra-low latency inference, GPU cluster elasticity, and dedicated Sub-API keys ready to plug in.',
+      badge: 'FREE API',
+      desc: 'Get your free API key to connect AI models directly into your projects, apps, or automations.',
       model: 'NVIDIA NIM',
       details: 'Sub-10ms latency streaming and dedicated API key management ready.',
       metrics: { latency: '<10ms / tok', security: 'Sub-API Key', status: 'Active' },
       icon: <FiZap size={14} />
     },
     {
+      num: '003',
+      name: 'Create_you_GLYNNE_model',
+      shortTitle: 'Create Your Own Model',
+      label: 'Create & Train Your Custom AI Model',
+      tag: 'QLoRA Fine-Tuning & Private Data',
+      category: 'engines',
+      badge: 'TRAINING',
+      desc: 'Train an AI on your own data, defining its name, personality, and criteria for your business or project.',
+      model: 'QLoRA / Unsloth',
+      details: 'Private model training protocols active for custom enterprise weights.',
+      metrics: { latency: 'Batch FP16', security: 'Private VPC', status: 'Ready' },
+      icon: <FiSliders size={14} />
+    },
+    {
       num: '004',
-      name: 'AX_chat',
-      shortTitle: 'AX Chat',
-      label: 'Chat with AX · Intelligent Assistant',
-      tag: 'Cognitive Conversational Core',
-      category: 'conversational',
-      badge: 'REASONING',
-      desc: 'Connect instantly with GLYNNE’s conversational engine. Solve complex inquiries, analyze enterprise data, and generate code or strategic blueprints in real-time.',
-      model: 'GPT OSS 120B',
-      details: 'High-parameter natural language processing and multimodal vision ready.',
-      metrics: { latency: 'Real-Time', security: 'Encrypted', status: 'Connected' },
-      icon: <FiMessageSquare size={14} />
+      name: 'Librarymodel',
+      shortTitle: 'Model Library',
+      label: 'Open-Source Model Library',
+      tag: 'Mathematical Sovereignty & Offline Deployment',
+      category: 'engines',
+      badge: 'LOCAL DOWNLOAD',
+      desc: 'Download open-source models ready to run on your own machine or server, with zero internet reliance.',
+      model: 'Open-Weights',
+      details: 'Full quantized model weights (GGUF, FP16, EXL2) ready for local inference.',
+      metrics: { latency: '<10ms', security: 'Air-Gapped', status: 'Operational' },
+      icon: <FiDatabase size={14} />
     },
     {
       num: '005',
       name: 'AX_voice',
-      shortTitle: 'AX Voice',
-      label: 'AX Voice · Real-Time Voice Synthesis',
-      tag: 'Neural Acoustic Modulation',
+      shortTitle: 'GLYNNE Advisor (Voice)',
+      label: 'GLYNNE Advisor · Real-Time Voice',
+      tag: 'Live Voice Guidance',
       category: 'conversational',
-      badge: 'VOX SYNTH',
-      desc: 'Experience ultra-natural, zero-latency voice conversations powered by artificial intelligence. Instant acoustic modulation and real-time comprehension.',
+      badge: 'LIVE VOICE',
+      desc: 'Talk by voice with our advisor to understand our services, workflows, and how the platform works.',
       model: 'VOX-SYNTH V2',
-      details: 'Acoustic waveform modulation standing by for full-duplex voice.',
+      details: 'Real-time acoustic modulation for live voice guidance about GLYNNE.',
       metrics: { latency: '<50ms Audio', security: 'Full Duplex', status: 'Streaming' },
       icon: <FiMic size={14} />
     }
@@ -346,8 +346,8 @@ export default function AssemblyDashboard() {
                   filteredTools.length === 2
                     ? ['hub-span-7', 'hub-span-5']
                     : filteredTools.length === 3
-                    ? ['hub-span-4', 'hub-span-8', 'hub-span-12']
-                    : ['hub-span-4', 'hub-span-8', 'hub-span-7', 'hub-span-5', 'hub-span-12'];
+                      ? ['hub-span-4', 'hub-span-8', 'hub-span-12']
+                      : ['hub-span-4', 'hub-span-8', 'hub-span-7', 'hub-span-5', 'hub-span-12'];
                 const spanClass = spanPattern[index % spanPattern.length];
                 return (
                   <article
@@ -445,67 +445,67 @@ export default function AssemblyDashboard() {
                 const spanPattern = ['hub-span-4', 'hub-span-8', 'hub-span-12'];
                 const spanClass = spanPattern[index % spanPattern.length];
                 return (
-                <article
-                  key={item.num}
-                  className={`hub-cell ${spanClass}`}
-                  onClick={() => router.push(item.href)}
-                >
-                  <div className="hub-cell-bg">
-                    <Topography
-                      color={theme === 'dark' ? '#ffffff' : '#0b0b0d'}
-                      lightMode={theme === 'light'}
-                      lineCount={18}
-                      lineWidth={0.6}
-                      elevation={0.35}
-                      foreground={0.08}
-                      tilt={90}
-                      speed={0.12}
-                      direction="right"
-                      glow={0.15}
-                      depthOfField={0}
-                      fog={0.1}
-                      hoverEffect="trace"
-                      clickEffect="pulse"
-                      scale={0.65}
-                      detail={0.19}
-                      morph={0.08}
-                      brightness={0.4}
-                      opacity={0.43}
-                      mouseRadius={0.75}
-                      mouseStrength={0.3}
-                      trail={0.21}
-                      parallax={0.26}
-                      markers="plus"
-                    />
-                  </div>
-
-                  <div className="hub-cell-meta">
-                    <span className="hub-cell-date">{`${item.num} · ${item.subtitle}`}</span>
-                    <span className="hub-cell-tag-pill">{item.badge}</span>
-                  </div>
-
-                  <div className="hub-cell-body">
-                    <h2 className="hub-cell-title">{item.title}</h2>
-                    <p className="hub-cell-desc">{item.desc}</p>
-                  </div>
-
-                  <div className="hub-cell-footer">
-                    <div className="hub-cell-specs">
-                      <span className="hub-spec-pair">
-                        <strong>Path</strong>
-                        <span>{item.href}</span>
-                      </span>
+                  <article
+                    key={item.num}
+                    className={`hub-cell ${spanClass}`}
+                    onClick={() => router.push(item.href)}
+                  >
+                    <div className="hub-cell-bg">
+                      <Topography
+                        color={theme === 'dark' ? '#ffffff' : '#0b0b0d'}
+                        lightMode={theme === 'light'}
+                        lineCount={18}
+                        lineWidth={0.6}
+                        elevation={0.35}
+                        foreground={0.08}
+                        tilt={90}
+                        speed={0.12}
+                        direction="right"
+                        glow={0.15}
+                        depthOfField={0}
+                        fog={0.1}
+                        hoverEffect="trace"
+                        clickEffect="pulse"
+                        scale={0.65}
+                        detail={0.19}
+                        morph={0.08}
+                        brightness={0.4}
+                        opacity={0.43}
+                        mouseRadius={0.75}
+                        mouseStrength={0.3}
+                        trail={0.21}
+                        parallax={0.26}
+                        markers="plus"
+                      />
                     </div>
-                    <Link
-                      href={item.href}
-                      className="hub-cell-btn is-primary"
-                      title={`Open ${item.title}`}
-                      onClick={e => e.stopPropagation()}
-                    >
-                      <FiArrowUpRight size={14} />
-                    </Link>
-                  </div>
-                </article>
+
+                    <div className="hub-cell-meta">
+                      <span className="hub-cell-date">{`${item.num} · ${item.subtitle}`}</span>
+                      <span className="hub-cell-tag-pill">{item.badge}</span>
+                    </div>
+
+                    <div className="hub-cell-body">
+                      <h2 className="hub-cell-title">{item.title}</h2>
+                      <p className="hub-cell-desc">{item.desc}</p>
+                    </div>
+
+                    <div className="hub-cell-footer">
+                      <div className="hub-cell-specs">
+                        <span className="hub-spec-pair">
+                          <strong>Path</strong>
+                          <span>{item.href}</span>
+                        </span>
+                      </div>
+                      <Link
+                        href={item.href}
+                        className="hub-cell-btn is-primary"
+                        title={`Open ${item.title}`}
+                        onClick={e => e.stopPropagation()}
+                      >
+                        <FiArrowUpRight size={14} />
+                      </Link>
+                    </div>
+                  </article>
                 );
               })}
             </div>
