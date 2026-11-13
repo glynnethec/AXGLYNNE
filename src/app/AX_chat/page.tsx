@@ -128,7 +128,10 @@ export default function AXChatPage() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ messages: newMessages }),
+      body: JSON.stringify({
+        messages: newMessages,
+        user_name: userProfile?.full_name || userProfile?.name || undefined,
+      }),
       signal: pageSignal,
     });
 

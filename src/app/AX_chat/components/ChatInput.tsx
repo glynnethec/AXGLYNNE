@@ -69,7 +69,7 @@ export default function ChatInput({ inputValue, setInputValue, handleSend, hasSt
               handleSend(e as any);
             }
           }}
-          placeholder="Message AX Intelligence Core..."
+          placeholder="Ask about GLYNNE, our methodology, or how to use the Panel tools..."
           rows={hasStarted ? 1 : 3}
           style={{
             border: 'none',
@@ -171,6 +171,43 @@ export default function ChatInput({ inputValue, setInputValue, handleSend, hasSt
         </div>
       </form>
       
+      {/* Quick-Starter Suggestions (only before conversation starts) */}
+      {!hasStarted && (
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          gap: '8px',
+          marginTop: '14px',
+          maxWidth: '700px'
+        }}>
+          {[
+            'What is GLYNNE & how do you work?',
+            'Teach me how to use the Panel tools',
+            'How do I get a Free AI Model API key?',
+            'How do I train my own model (QLoRA)?'
+          ].map((promptText) => (
+            <button
+              key={promptText}
+              type="button"
+              onClick={() => setInputValue(promptText)}
+              style={{
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                borderRadius: '9999px',
+                padding: '7px 14px',
+                fontSize: '12px',
+                color: '#d4d4d8',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              {promptText}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* Subtext */}
       <div className="chat-subtext" style={{
         fontSize: '11px',
