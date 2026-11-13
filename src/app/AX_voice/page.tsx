@@ -80,7 +80,118 @@ export default function AXVoicePage() {
   const speechStartTimeRef = useRef<number>(0);
   const noiseFloorRef = useRef<number>(12);
   const transcriptRef = useRef<string>('');
+  const committedTranscriptRef = useRef<string>('');
+  const sessionTranscriptRef = useRef<string>('');
+  const readyToSendRef = useRef<boolean>(false);
+  const flushTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const lastVoiceActivityRef = useRef<number>(0);
+  const lastSttResultTimeRef = useRef<number>(0);
+  const turnAbortRef = useRef<AbortController | null>(null);
+  const lastSentUserTextRef = useRef<string>('');
   const messagesRef = useRef<{ role: string, content: string }[]>([]);
+
+  // Helper: evalúa si la frase parece incompleta (conector al final o muy corta) para dar más margen de pausa
+  const isLikelyIncompleteThought = (text: string): boolean => {
+    const cleaned = text.trim().toLowerCase().replace(/[.,;]+$/, '');
+    if (!cleaned) return false;
+    const words = cleaned.split(/\s+/);
+    if (words.length <= 3 && !/[?!)…]$/.test(text.trim())) return true;
+    const lastWord = words[words.length - 1];
+    const connectors = new Set([
+      'y', 'e', 'o', 'u', 'pero', 'porque', 'como', 'que', 'de', 'del', 'a', 'al',
+      'con', 'para', 'por', 'sin', 'sobre', 'entre', 'hacia', 'hasta', 'entonces',
+      'ademas', 'además', 'tambien', 'también', 'cuando', 'donde', 'dónde', 'si', 'aunque',
+      'and', 'or', 'but', 'because', 'as', 'that', 'of', 'to', 'with', 'for', 'from',
+      'about', 'into', 'so', 'also', 'when', 'where', 'if', 'although', 'like'
+    ]);
+    return connectors.has(lastWord);
+  };
+
+  // ⚡ Helper de interrupción instantánea (Barge-In <120ms en speaking o thinking)
+  const interruptAiImmediate = (preserveLastUserTurn: boolean = false) => {
+    if (turnAbortRef.current) {
+      try { turnAbortRef.current.abort(); } catch { }
+      turnAbortRef.current = null;
+    }
+    if (silenceTimerRef.current) {
+      clearTimeout(silenceTimerRef.current);
+      silenceTimerRef.current = null;
+    }
+    if (flushTimerRef.current) {
+      clearTimeout(flushTimerRef.current);
+      flushTimerRef.current = null;
+    }
+    if (audioRef.current) {
+      try {
+        audioRef.current.onended = null;
+        audioRef.current.onerror = null;
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+        audioRef.current.removeAttribute('src');
+        audioRef.current.load();
+      } catch { }
+    }
+    if (fillerAudioRef.current) {
+      try {
+        fillerAudioRef.current.pause();
+        fillerAudioRef.current.currentTime = 0;
+      } catch { }
+      fillerAudioRef.current = null;
+    }
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      try { window.speechSynthesis.cancel(); } catch { }
+    }
+
+    urlToOpenRef.current = null;
+    setAiResponse('');
+    isProcessingRef.current = false;
+    readyToSendRef.current = false;
+
+    if (preserveLastUserTurn && lastSentUserTextRef.current) {
+      // Si el usuario interrumpió mientras estaba "thinking", recuperamos lo que acababa de decir
+      // para concatenarlo con lo que sigue hablando y no perder su contexto
+      const prevMsgs = messagesRef.current;
+      if (prevMsgs.length > 0 && prevMsgs[prevMsgs.length - 1].role === 'user') {
+        setMessages(prevMsgs.slice(0, -1));
+      }
+      committedTranscriptRef.current = lastSentUserTextRef.current;
+      sessionTranscriptRef.current = '';
+      transcriptRef.current = lastSentUserTextRef.current;
+      setTranscript(lastSentUserTextRef.current);
+      lastSentUserTextRef.current = '';
+    } else {
+      committedTranscriptRef.current = '';
+      sessionTranscriptRef.current = '';
+      transcriptRef.current = '';
+      setTranscript('');
+      lastSentUserTextRef.current = '';
+    }
+
+    lastVoiceActivityRef.current = Date.now();
+    setOrbState('listening');
+    try {
+      if (recognitionRef.current) {
+        recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
+        recognitionRef.current.start();
+      }
+    } catch { }
+  };
+
+  // Dispara el cierre de turno esperando un micro-flush (160ms) para no perder la última palabra del buffer STT
+  const triggerTurnSendWithFlush = () => {
+    if (isProcessingRef.current || readyToSendRef.current) return;
+    readyToSendRef.current = true;
+    if (silenceTimerRef.current) {
+      clearTimeout(silenceTimerRef.current);
+      silenceTimerRef.current = null;
+    }
+    try { recognitionRef.current?.stop(); } catch { }
+    if (flushTimerRef.current) clearTimeout(flushTimerRef.current);
+    flushTimerRef.current = setTimeout(() => {
+      flushTimerRef.current = null;
+      handleSendTranscript();
+    }, 160);
+  };
 
   // Keep refs in sync
   useEffect(() => {
@@ -221,76 +332,55 @@ export default function AXVoicePage() {
 
           // A. Si el usuario está hablando y el sistema está escuchando (orbState === 'listening')
           if (orbStateRef.current === 'listening') {
-            const hasUserSpoken = (transcriptRef.current || transcript).trim().length > 0;
-            if (hasUserSpoken && !isProcessingRef.current) {
-              // Si el volumen del mic vuelve al nivel de ruido ambiente (silencio tras hablar)
-              if (totalVolume < noiseFloorRef.current + 8) {
+            const isSpeakingNow = totalVolume >= noiseFloorRef.current + 6 || vocalAvg >= 18;
+            if (isSpeakingNow) {
+              lastVoiceActivityRef.current = Date.now();
+              listeningSilenceHits = 0;
+            } else {
+              const currentText = transcriptRef.current.trim();
+              if (currentText.length > 0 && !isProcessingRef.current && !readyToSendRef.current) {
                 listeningSilenceHits++;
-                // 14 lecturas seguidas (~700ms de silencio) = Envío ultra-rápido instantáneo
-                if (listeningSilenceHits >= 14) {
+                const now = Date.now();
+                const msSinceVoice = now - (lastVoiceActivityRef.current || now);
+                const msSinceStt = now - (lastSttResultTimeRef.current || now);
+                // Si la frase parece incompleta (termina en conector o <4 palabras sin signo), damos 1700ms de margen; si es completa, 1150ms
+                const requiredSilenceMs = isLikelyIncompleteThought(currentText) ? 1700 : 1150;
+                if (msSinceVoice >= requiredSilenceMs && msSinceStt >= requiredSilenceMs) {
                   listeningSilenceHits = 0;
-                  try { recognitionRef.current?.stop(); } catch (e) { }
-                  handleSendTranscript();
+                  triggerTurnSendWithFlush();
                 }
               } else {
-                listeningSilenceHits = 0; // El usuario aún habla
+                listeningSilenceHits = 0;
               }
-            } else {
-              listeningSilenceHits = 0;
             }
             consecutiveVoiceHits = 0;
           }
-          // B. Si la IA está hablando (orbState === 'speaking')
-          else if (orbStateRef.current === 'speaking') {
+          // B. Si la IA está hablando o pensando (orbState === 'speaking' || orbState === 'thinking')
+          else if (orbStateRef.current === 'speaking' || orbStateRef.current === 'thinking') {
             listeningSilenceHits = 0;
-            // Ventana de gracia inicial: ignorar VAD durante los primeros 350ms del inicio del habla de la IA
-            const timeSpeaking = Date.now() - speechStartTimeRef.current;
-            if (timeSpeaking < 350) {
-              consecutiveVoiceHits = 0;
-              return;
+            if (orbStateRef.current === 'speaking') {
+              // Ventana de gracia inicial corta (200ms) al arrancar el audio de la IA
+              const timeSpeaking = Date.now() - speechStartTimeRef.current;
+              if (timeSpeaking < 200) {
+                consecutiveVoiceHits = 0;
+                return;
+              }
             }
 
-            // Umbral dinámico adaptativo: requiere superar el ruido ambiental + 35dB equiv. (mínimo absoluto 55)
-            const requiredThreshold = Math.max(55, noiseFloorRef.current + 35);
-
-            // Filtro de espectro vocal humano más estricto
-            const isHumanSpeech = totalVolume >= requiredThreshold &&
-              vocalAvg >= 35 &&
-              (highAvg < 10 || vocalAvg > highAvg * 1.3);
+            // Umbral calibrado con Hardware Echo Cancellation (AEC) para detectar voz humana real sin requerir gritar
+            const requiredThreshold = Math.max(26, noiseFloorRef.current + 15);
+            const isHumanSpeech =
+              totalVolume >= requiredThreshold &&
+              vocalAvg >= 20 &&
+              (highAvg < 12 || vocalAvg > highAvg * 1.15);
 
             if (isHumanSpeech) {
               consecutiveVoiceHits++;
-              // Requiere 10 lecturas consecutivas (~500ms de voz sostenida) para confirmar interrupción real
-              if (consecutiveVoiceHits >= 10) {
+              // 4 lecturas consecutivas a 30ms (~120ms) = Barge-In instantáneo y natural
+              if (consecutiveVoiceHits >= 4) {
                 consecutiveVoiceHits = 0;
-
-                // ⚡ ¡INTERRUPCIÓN POR VOZ HUMANA CONFIRMADA!
-                if (audioRef.current) {
-                  try {
-                    audioRef.current.pause();
-                    audioRef.current.currentTime = 0;
-                  } catch (e) { }
-                }
-                const activeFiller = fillerAudioRef.current as HTMLAudioElement | null;
-                if (activeFiller) {
-                  try {
-                    activeFiller.pause();
-                    activeFiller.currentTime = 0;
-                  } catch (e) { }
-                  fillerAudioRef.current = null;
-                }
-                if (window.speechSynthesis) {
-                  window.speechSynthesis.cancel();
-                }
-
-                setAiResponse('');
-                setTranscript('');
-                isProcessingRef.current = false;
-                setOrbState('listening');
-                try {
-                  if (recognitionRef.current) recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
-                  recognitionRef.current?.start();
-                } catch (e) { }
+                const wasThinking = orbStateRef.current === 'thinking';
+                interruptAiImmediate(wasThinking);
               }
             } else {
               consecutiveVoiceHits = Math.max(0, consecutiveVoiceHits - 1);
@@ -299,7 +389,7 @@ export default function AXVoicePage() {
             consecutiveVoiceHits = 0;
             listeningSilenceHits = 0;
           }
-        }, 50);
+        }, 30);
       } catch (err: any) {
         if (err?.name === 'NotAllowedError' || err?.name === 'PermissionDeniedError') {
           setIsSessionActive(false);
@@ -336,36 +426,73 @@ export default function AXVoicePage() {
         recognition.lang = 'es-ES';
 
         recognition.onresult = (event: any) => {
-          let currentTranscript = '';
-          for (let i = event.resultIndex; i < event.results.length; ++i) {
-            currentTranscript += event.results[i][0].transcript;
+          // Reconstruir SIEMPRE desde i = 0 para no perder las frases ya finalizadas en pausas intermedias
+          let fullSessionText = '';
+          for (let i = 0; i < event.results.length; ++i) {
+            const chunk = event.results[i][0]?.transcript || '';
+            fullSessionText += chunk;
           }
-          transcriptRef.current = currentTranscript;
-          setTranscript(currentTranscript);
+          sessionTranscriptRef.current = fullSessionText.trim();
+          const combined = [committedTranscriptRef.current, sessionTranscriptRef.current]
+            .filter(Boolean)
+            .join(' ')
+            .replace(/\s+/g, ' ')
+            .trim();
 
-          // Reiniciar el temporizador de silencio cada vez que el usuario habla (reducido a 750ms)
+          transcriptRef.current = combined;
+          setTranscript(combined);
+          lastSttResultTimeRef.current = Date.now();
+          lastVoiceActivityRef.current = Date.now();
+
           if (silenceTimerRef.current) {
             clearTimeout(silenceTimerRef.current);
           }
 
+          // Respaldo de silencio semántico: espera más tiempo si la frase parece estar a mitad de idea
+          const waitMs = isLikelyIncompleteThought(combined) ? 1800 : 1250;
           silenceTimerRef.current = setTimeout(() => {
-            if (recognitionRef.current && isSessionActiveRef.current && orbStateRef.current === 'listening') {
-              try { recognitionRef.current.stop(); } catch (e) { }
-              handleSendTranscript();
+            if (!isSessionActiveRef.current || orbStateRef.current !== 'listening' || isProcessingRef.current) return;
+            const msSinceMicVoice = Date.now() - (lastVoiceActivityRef.current || 0);
+            if (msSinceMicVoice >= 950) {
+              triggerTurnSendWithFlush();
             }
-          }, 750);
+          }, waitMs);
         };
 
         recognition.onend = () => {
           if (silenceTimerRef.current) {
             clearTimeout(silenceTimerRef.current);
+            silenceTimerRef.current = null;
           }
           if (!isSessionActiveRef.current) {
             setOrbState('idle');
             return;
           }
-          if (orbStateRef.current === 'listening') {
-            handleSendTranscript();
+          if (orbStateRef.current === 'listening' && !isProcessingRef.current) {
+            if (readyToSendRef.current) {
+              if (flushTimerRef.current) {
+                clearTimeout(flushTimerRef.current);
+                flushTimerRef.current = null;
+              }
+              handleSendTranscript();
+            } else {
+              // El navegador cerró la sesión de STT antes de que el usuario terminara de hablar:
+              // guardamos lo acumulado en committedTranscriptRef y reabrimos el micrófono sin cortar la frase
+              if (sessionTranscriptRef.current) {
+                committedTranscriptRef.current = [committedTranscriptRef.current, sessionTranscriptRef.current]
+                  .filter(Boolean)
+                  .join(' ')
+                  .replace(/\s+/g, ' ')
+                  .trim();
+                sessionTranscriptRef.current = '';
+              }
+              try {
+                if (recognitionRef.current) {
+                  recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
+                  recognitionRef.current.start();
+                }
+              } catch { }
+            }
           }
         };
 
@@ -488,13 +615,20 @@ export default function AXVoicePage() {
 
   const handleSendTranscript = async () => {
     if (isProcessingRef.current) return;
-    isProcessingRef.current = true;
+    if (flushTimerRef.current) {
+      clearTimeout(flushTimerRef.current);
+      flushTimerRef.current = null;
+    }
+    if (silenceTimerRef.current) {
+      clearTimeout(silenceTimerRef.current);
+      silenceTimerRef.current = null;
+    }
 
-    // Detener el micrófono mientras la IA procesa y habla para evitar auto-interrupción
-    try { recognitionRef.current?.stop(); } catch (e) { }
-
-    const currentText = (transcriptRef.current || transcript).trim();
+    const currentText = (transcriptRef.current || committedTranscriptRef.current || transcript).trim();
+    committedTranscriptRef.current = '';
+    sessionTranscriptRef.current = '';
     transcriptRef.current = '';
+    readyToSendRef.current = false;
     setTranscript('');
 
     if (!currentText) {
@@ -511,6 +645,12 @@ export default function AXVoicePage() {
       return;
     }
 
+    isProcessingRef.current = true;
+    lastSentUserTextRef.current = currentText;
+
+    // Detener el reconocimiento STT mientras la IA procesa y habla (el WebRTC VAD sigue activo para Barge-In)
+    try { recognitionRef.current?.stop(); } catch (e) { }
+
     setOrbState('thinking');
 
     // Detener cualquier temporizador o muletilla previa si estaba activa
@@ -526,13 +666,21 @@ export default function AXVoicePage() {
       fillerAudioRef.current = null;
     }
 
-    // Se removió la reproducción de muletillas/frases de relleno durante la espera del LLM.
     const currentEngine = activeEngineRef.current;
 
     const newMessages = [...messagesRef.current, { role: 'user', content: currentText }];
     setMessages(newMessages);
 
-    // Fetch al backend enviando el motor activo garantizando coincidencia y cancelación al salir
+    // AbortController dedicado a este turno para poder abortar al instante si el usuario interrumpe en "thinking"
+    if (turnAbortRef.current) {
+      try { turnAbortRef.current.abort(); } catch { }
+    }
+    const turnController = new AbortController();
+    turnAbortRef.current = turnController;
+    const onPageAbort = () => turnController.abort();
+    pageSignal?.addEventListener?.('abort', onPageAbort, { once: true });
+
+    // Fetch al backend enviando el motor activo garantizando coincidencia y cancelación al salir o interrumpir
     try {
       const res = await backendFetch('/api/voice_chat', {
         method: 'POST',
@@ -543,9 +691,10 @@ export default function AXVoicePage() {
           user_id: userId,
           language: languageRef.current || 'es'
         }),
-        signal: pageSignal
+        signal: turnController.signal
       });
       const data = await res.json();
+      lastSentUserTextRef.current = '';
 
       // Si el usuario navegó a otra página o cerró la sesión, abortar inmediatamente
       if (!isMountedRef.current || !isSessionActiveRef.current) {
@@ -671,11 +820,14 @@ export default function AXVoicePage() {
 
         if (isSessionActiveRef.current) {
           setTimeout(() => {
-            if (isSessionActiveRef.current) {
+            if (isSessionActiveRef.current && orbStateRef.current !== 'speaking') {
               setOrbState('listening');
-              try { recognitionRef.current?.start(); } catch (e) { }
+              try {
+                if (recognitionRef.current) recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
+                recognitionRef.current?.start();
+              } catch (e) { }
             }
-          }, 500);
+          }, 150);
         } else {
           setOrbState('idle');
         }
@@ -734,11 +886,14 @@ export default function AXVoicePage() {
 
         if (isSessionActiveRef.current) {
           setTimeout(() => {
-            if (isSessionActiveRef.current) {
+            if (isSessionActiveRef.current && orbStateRef.current !== 'speaking') {
               setOrbState('listening');
-              try { recognitionRef.current?.start(); } catch (e) { }
+              try {
+                if (recognitionRef.current) recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
+                recognitionRef.current?.start();
+              } catch (e) { }
             }
-          }, 500);
+          }, 150);
         } else {
           setOrbState('idle');
         }
@@ -750,31 +905,8 @@ export default function AXVoicePage() {
   const toggleListening = () => {
     if (isSessionActive) {
       if (orbState === 'speaking' || orbState === 'thinking') {
-        // Interrupción directa y limpia del usuario al tocar la orbe mientras la IA responde
-        if (audioRef.current) {
-          try {
-            audioRef.current.pause();
-            audioRef.current.currentTime = 0;
-          } catch (e) { }
-        }
-        if (fillerAudioRef.current) {
-          try {
-            fillerAudioRef.current.pause();
-            fillerAudioRef.current.currentTime = 0;
-          } catch (e) { }
-          fillerAudioRef.current = null;
-        }
-        if (window.speechSynthesis) {
-          window.speechSynthesis.cancel();
-        }
-        setAiResponse('');
-        setTranscript('');
-        isProcessingRef.current = false;
-        setOrbState('listening');
-        try {
-          if (recognitionRef.current) recognitionRef.current.lang = languageRef.current === 'en' ? 'en-US' : 'es-CO';
-          recognitionRef.current?.start();
-        } catch (e) { }
+        // Interrupción inmediata al tocar la orbe mientras la IA responde o piensa
+        interruptAiImmediate(orbState === 'thinking');
       } else {
         isProcessingRef.current = false;
         setIsSessionActive(false);
