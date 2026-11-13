@@ -612,52 +612,75 @@ export default function AXVoicePage() {
           const dataArray = new Uint8Array(binCount);
           micAnalyserRef.current.getByteFrequencyData(dataArray);
 
-          // 1. Energía en Banda Formante Vocal (~300Hz a 2600Hz, bins 3 a 27)
-          let vocalSum = 0;
-          let vocalCount = 0;
-          for (let i = 3; i <= 27 && i < binCount; i++) {
-            vocalSum += dataArray[i];
-            vocalCount++;
-          }
-          const vocalAvg = vocalCount > 0 ? (vocalSum / vocalCount) : 0;
+          // 0. Banda Sub-Grave (<180Hz, bins 0 a 1) para descartar golpes de mesa, pasos o impactos de silla
+          const subBassAvg = binCount > 1 ? (dataArray[0] + dataArray[1]) / 2 : 0;
 
-          // 2. Energía en Banda Alta (>3500Hz, bins 38 a 80) para detectar chasquidos/ruido blanco
+          // 1. Banda Fundamental + Primer Formante Vocal F1 (~185Hz a 850Hz, bins 2 a 9): núcleo de las cuerdas vocales humanas
+          let f1Sum = 0;
+          let f1Count = 0;
+          let activeF1Bins = 0;
+          for (let i = 2; i <= 9 && i < binCount; i++) {
+            const val = dataArray[i];
+            f1Sum += val;
+            f1Count++;
+            if (val >= 36) activeF1Bins++;
+          }
+          const f1Avg = f1Count > 0 ? f1Sum / f1Count : 0;
+
+          // 2. Segundo Formante Vocal F2 (~930Hz a 2250Hz, bins 10 a 24): articulación de vocales y palabras
+          let f2Sum = 0;
+          let f2Count = 0;
+          for (let i = 10; i <= 24 && i < binCount; i++) {
+            f2Sum += dataArray[i];
+            f2Count++;
+          }
+          const f2Avg = f2Count > 0 ? f2Sum / f2Count : 0;
+
+          // Energía combinada en banda vocal humana (bins 2 a 24)
+          const vocalAvg = (f1Sum + f2Sum) / Math.max(1, f1Count + f2Count);
+
+          // 3. Banda de Fricción / Aire / Jadeo / Chirridos (>3100Hz, bins 33 a 85)
           let highSum = 0;
           let highCount = 0;
-          for (let i = 38; i <= 80 && i < binCount; i++) {
+          for (let i = 33; i <= 85 && i < binCount; i++) {
             highSum += dataArray[i];
             highCount++;
           }
-          const highAvg = highCount > 0 ? (highSum / highCount) : 0;
+          const highAvg = highCount > 0 ? highSum / highCount : 0;
 
-          // 3. Volumen total del espectro conversacional (bins 2 a 35)
+          // 4. Volumen total del espectro conversacional (bins 2 a 32)
           let totalSum = 0;
           let totalCount = 0;
-          for (let i = 2; i <= 35 && i < binCount; i++) {
+          for (let i = 2; i <= 32 && i < binCount; i++) {
             totalSum += dataArray[i];
             totalCount++;
           }
-          const totalVolume = totalCount > 0 ? (totalSum / totalCount) : 0;
+          const totalVolume = totalCount > 0 ? totalSum / totalCount : 0;
 
           // Actualización adaptativa del nivel de ruido ambiental cuando el usuario y la IA están en silencio
           if (orbStateRef.current !== 'speaking' && !mobileHasSpokenRef.current && totalVolume < noiseFloorRef.current + 8) {
             noiseFloorRef.current = noiseFloorRef.current * 0.95 + totalVolume * 0.05;
           }
 
-          // A. MODO MÓVIL / WHISPER STT: Detectar inicio y fin de voz del usuario durante 'listening'
+          // A. MODO MÓVIL / WHISPER STT: Detectar inicio y fin de voz humana durante 'listening'
           if (orbStateRef.current === 'listening' && useWhisperSttRef.current && !isProcessingRef.current && !isTranscribingMobileRef.current) {
             consecutiveVoiceHits = 0;
             if (!mediaRecorderRef.current || mediaRecorderRef.current.state === 'inactive') {
               startMobileTurnRecording();
             }
 
-            const voiceThreshold = Math.max(15, noiseFloorRef.current + 6);
-            const isUserSpeaking = totalVolume >= voiceThreshold && vocalAvg >= 13;
+            const voiceThreshold = Math.max(22, noiseFloorRef.current + 10);
+            const isUserSpeaking =
+              totalVolume >= voiceThreshold &&
+              f1Avg >= 26 &&
+              f2Avg >= 16 &&
+              activeF1Bins >= 3 &&
+              f1Avg > highAvg * 1.85;
 
             if (isUserSpeaking) {
               mobileSpeechFramesRef.current++;
               lastVoiceActivityRef.current = Date.now();
-              if (mobileSpeechFramesRef.current >= 4) {
+              if (mobileSpeechFramesRef.current >= 5) {
                 mobileHasSpokenRef.current = true;
               }
             } else {
@@ -667,7 +690,7 @@ export default function AXVoicePage() {
                   finishMobileTurnAndSend();
                 }
               } else {
-                mobileSpeechFramesRef.current = Math.max(0, mobileSpeechFramesRef.current - 1);
+                mobileSpeechFramesRef.current = Math.max(0, mobileSpeechFramesRef.current - 2);
                 // Reiniciar buffer silencioso cada 10s si aún no ha hablado para mantener el archivo ligero
                 if (mobileRecordStartRef.current && Date.now() - mobileRecordStartRef.current > 10000) {
                   startMobileTurnRecording();
@@ -675,34 +698,43 @@ export default function AXVoicePage() {
               }
             }
           }
-          // B. Barge-In: Si la IA está hablando o pensando (orbState === 'speaking' || orbState === 'thinking')
+          // B. Barge-In Estricto de Voz Humana: Si la IA está hablando o pensando (orbState === 'speaking' || orbState === 'thinking')
           else if (orbStateRef.current === 'speaking' || orbStateRef.current === 'thinking') {
             if (orbStateRef.current === 'speaking') {
-              // Ventana de gracia inicial corta (200ms) al arrancar el audio de la IA
+              // Ventana de gracia inicial (250ms) al arrancar el audio de la IA
               const timeSpeaking = Date.now() - speechStartTimeRef.current;
-              if (timeSpeaking < 200) {
+              if (timeSpeaking < 250) {
                 consecutiveVoiceHits = 0;
                 return;
               }
             }
 
-            // Umbral calibrado con Hardware Echo Cancellation (AEC) para detectar voz humana real sin requerir gritar
-            const requiredThreshold = Math.max(26, noiseFloorRef.current + 15);
+            // Filtro discriminador de voz humana real vs. ruidos domésticos (jadeo de perro, chirrido de puerta, roce de silla):
+            // 1. f1Avg >= 42 y activeF1Bins >= 4: exige armónicos vocales reales en 185-850Hz (descarta chirridos finos de puerta/silla)
+            // 2. f2Avg >= 24 y f1Avg >= f2Avg * 0.85: exige presencia simultánea de F1 y F2 con balance humano
+            // 3. f1Avg > highAvg * 2.35: descarta jadeos, respiración fuerte y fricción de aire/silla (que suben la banda alta)
+            // 4. subBassAvg <= f1Avg * 1.45: descarta golpes secos a la mesa o silla
+            const requiredThreshold = Math.max(36, noiseFloorRef.current + 20);
             const isHumanSpeech =
               totalVolume >= requiredThreshold &&
-              vocalAvg >= 20 &&
-              (highAvg < 12 || vocalAvg > highAvg * 1.15);
+              f1Avg >= 42 &&
+              f2Avg >= 24 &&
+              activeF1Bins >= 4 &&
+              f1Avg >= f2Avg * 0.85 &&
+              f1Avg > highAvg * 2.35 &&
+              subBassAvg <= f1Avg * 1.45;
 
             if (isHumanSpeech) {
               consecutiveVoiceHits++;
-              // 4 lecturas consecutivas a 30ms (~120ms) = Barge-In instantáneo y natural
-              if (consecutiveVoiceHits >= 4) {
+              // 7 lecturas consecutivas a 30ms (~210ms = una sílaba hablada real como "oye", "espera")
+              if (consecutiveVoiceHits >= 7) {
                 consecutiveVoiceHits = 0;
                 const wasThinking = orbStateRef.current === 'thinking';
                 interruptAiImmediate(wasThinking);
               }
             } else {
-              consecutiveVoiceHits = Math.max(0, consecutiveVoiceHits - 1);
+              // Decaimiento rápido (-2) para que jadeos rítmicos o ruidos cortos nunca se acumulen
+              consecutiveVoiceHits = Math.max(0, consecutiveVoiceHits - 2);
             }
           } else {
             consecutiveVoiceHits = 0;
