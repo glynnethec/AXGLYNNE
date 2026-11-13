@@ -59,7 +59,7 @@ export default function VideoEcosystemSection() {
           margin: '0 0 12px 0',
           textAlign: 'center'
         }}>
-          The GLYNNE AI Architecture
+          The AXGLYNNE Enterprise AI Stack
         </h2>
         <p style={{
           fontSize: '13px',
@@ -68,10 +68,10 @@ export default function VideoEcosystemSection() {
           letterSpacing: '0.02em',
           margin: '0 0 40px 0',
           textAlign: 'center',
-          maxWidth: '600px',
+          maxWidth: '640px',
           lineHeight: 1.6
         }}>
-          Desde clusters acelerados por NVIDIA y modelos de pesos abiertos reentrenados, hasta orquestación MCP determinista y pipelines de inferencia de baja latencia. GLYNNE opera en la vanguardia técnica de la inteligencia artificial corporativa.
+          From NVIDIA H100 accelerated compute clusters and QLoRA-aligned open-weights models to deterministic MCP multi-agent orchestration and sub-10ms inference gateways, AXGLYNNE (GLYNNE S.A.S.) engineers the complete stack for corporate artificial intelligence.
         </p>
 
         </div>

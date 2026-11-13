@@ -64,8 +64,11 @@ export default function ContactPage() {
 
                 <div>
                   <strong style={{ display: 'block', fontSize: '16px', fontWeight: 500, marginBottom: '16px', color: isDark ? '#ffffff' : '#111111' }}>Social network</strong>
-                  <div style={{ display: 'flex', gap: '16px', color: isDark ? '#ffffff' : '#111111' }}>
-                    <a href="https://www.linkedin.com/in/alexander-quiroga-a992452b4/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none', fontWeight: 500 }}>in</a>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '14px', color: isDark ? '#ffffff' : '#111111', fontSize: '14px' }}>
+                    <a href="https://www.linkedin.com/company/glynne/posts/" target="_blank" rel="me noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline', fontWeight: 500 }}>LinkedIn (GLYNNE)</a>
+                    <a href="https://www.linkedin.com/in/alexander-quiroga-a992452b4/" target="_blank" rel="me noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline', fontWeight: 500 }}>LinkedIn (CEO)</a>
+                    <a href="https://www.instagram.com/axglynne/" target="_blank" rel="me noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline', fontWeight: 500 }}>Instagram (@axglynne)</a>
+                    <a href="https://www.youtube.com/@AXGLYNNE" target="_blank" rel="me noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline', fontWeight: 500 }}>YouTube (@AXGLYNNE)</a>
                   </div>
                 </div>
               </div>

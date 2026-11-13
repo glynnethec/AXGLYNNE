@@ -58,11 +58,20 @@ export default function AlexanderLayout({
       "legalName": "GLYNNE S.A.S.",
       "alternateName": ["AXGLYNNE Frontier AI Labs", "AXGLYNNE Data Science & AI Engineering"],
       "disambiguatingDescription": "AXGLYNNE (GLYNNE S.A.S.) is a technology research organization specializing in frontier Artificial Intelligence, open-weights model fine-tuning (QLoRA, Unsloth), MCP agent protocols, and data science founded by Alexander Quiroga.",
-      "url": "https://axglynne.com"
+      "url": "https://axglynne.com",
+      "sameAs": [
+        "https://www.linkedin.com/company/glynne/",
+        "https://www.linkedin.com/company/glynne/posts/",
+        "https://www.youtube.com/@AXGLYNNE",
+        "https://www.instagram.com/axglynne/"
+      ]
     },
     "url": "https://axglynne.com/CEO_GLYNNE",
     "sameAs": [
-      "https://www.linkedin.com/in/alexander-quiroga-a992452b4/"
+      "https://www.linkedin.com/in/alexander-quiroga-a992452b4/",
+      "https://www.instagram.com/axglynne/",
+      "https://www.youtube.com/@AXGLYNNE",
+      "https://www.linkedin.com/company/glynne/posts/"
     ],
     "knowsAbout": [
       "Frontier Artificial Intelligence Engineering",

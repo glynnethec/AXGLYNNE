@@ -59,22 +59,66 @@ export default function AlexanderQuirogaProfile() {
                 CEO, Enterprise AI Architect & Lead Researcher
               </h2>
 
-              <a href="https://www.linkedin.com/in/alexander-quiroga-a992452b4/" target="_blank" rel="noopener noreferrer" style={{
-                display: 'inline-block',
-                padding: '8px 16px',
-                backgroundColor: '#111',
-                color: '#fff',
-                fontSize: '13px',
-                fontWeight: 500,
-                borderRadius: '8px',
-                textDecoration: 'none',
-                transition: 'background-color 0.2s ease'
-              }}
-                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#333'}
-                onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#111'}
-              >
-                LinkedIn Profile
-              </a>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+                <a href="https://www.linkedin.com/in/alexander-quiroga-a992452b4/" target="_blank" rel="me noopener noreferrer" style={{
+                  display: 'inline-block',
+                  padding: '8px 16px',
+                  backgroundColor: '#111',
+                  color: '#fff',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  borderRadius: '8px',
+                  textDecoration: 'none',
+                  transition: 'background-color 0.2s ease'
+                }}
+                  onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#333'}
+                  onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#111'}
+                >
+                  LinkedIn (CEO)
+                </a>
+                <a href="https://www.linkedin.com/company/glynne/posts/" target="_blank" rel="me noopener noreferrer" style={{
+                  display: 'inline-block',
+                  padding: '8px 16px',
+                  backgroundColor: 'transparent',
+                  color: '#111',
+                  border: '1px solid rgba(0,0,0,0.2)',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  borderRadius: '8px',
+                  textDecoration: 'none',
+                  transition: 'all 0.2s ease'
+                }}>
+                  GLYNNE LinkedIn
+                </a>
+                <a href="https://www.instagram.com/axglynne/" target="_blank" rel="me noopener noreferrer" style={{
+                  display: 'inline-block',
+                  padding: '8px 16px',
+                  backgroundColor: 'transparent',
+                  color: '#111',
+                  border: '1px solid rgba(0,0,0,0.2)',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  borderRadius: '8px',
+                  textDecoration: 'none',
+                  transition: 'all 0.2s ease'
+                }}>
+                  Instagram (@axglynne)
+                </a>
+                <a href="https://www.youtube.com/@AXGLYNNE" target="_blank" rel="me noopener noreferrer" style={{
+                  display: 'inline-block',
+                  padding: '8px 16px',
+                  backgroundColor: 'transparent',
+                  color: '#111',
+                  border: '1px solid rgba(0,0,0,0.2)',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  borderRadius: '8px',
+                  textDecoration: 'none',
+                  transition: 'all 0.2s ease'
+                }}>
+                  YouTube (@AXGLYNNE)
+                </a>
+              </div>
             </div>
           </div>
 

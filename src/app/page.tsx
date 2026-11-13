@@ -36,7 +36,7 @@ export default function Home() {
           backgroundColor: 'transparent',
           padding: '0'
         }}>
-          <LinPromptSection hideCard={true} hideOrbCard={true} lang="es" />
+          <LinPromptSection hideCard={true} hideOrbCard={true} lang="en" />
         </div>
 
         {/* 2.5 ARCHITECTURAL STUDIO SHOWCASE SECTION */}

@@ -30,38 +30,38 @@ const SLIDES: SlideData[] = [
   {
     number: '01',
     total: '03',
-    title: 'Inteligencia artificial y modelos abiertos para automatizar tu empresa.',
-    desc: 'Somos GLYNNE, una empresa especializada en desarrollo de procesos e inteligencia artificial para automatizar operaciones de negocio. Proveemos herramientas open source para integrar, reentrenar y acceder a pesos de modelos libres, democratizando el desarrollo con estas tecnologías e incentivando la investigación para crear herramientas de impacto real.',
-    badge: '01 // QUIÉNES SOMOS & IDENTIDAD',
-    primaryCta: { label: 'Desplegar Clúster', href: '/models_provider' },
-    secondaryCta: { label: 'Ver Arquitectura •', href: '/About' },
+    title: 'Enterprise AI engineering and open-weights models to automate your business.',
+    desc: 'We are AXGLYNNE (GLYNNE S.A.S.), a technology corporation specializing in B2B process engineering and artificial intelligence to automate corporate operations. We provide both custom autonomous architectures and open-weights developer tools to integrate, fine-tune (QLoRA), and deploy foundation models with real operational impact.',
+    badge: '01 // WHO WE ARE & HYBRID MODEL',
+    primaryCta: { label: 'Deploy API Cluster', href: '/models_provider' },
+    secondaryCta: { label: 'Fine-Tune a Model •', href: '/TrainModel' },
     cadLabel: 'SCULPT_T-1 // CAD',
-    cadMetric: 'MÁQUINA & SISTEMA // ID: 83991',
-    cadCurve: 'CURVAS CONTROLADAS 92.8'
+    cadMetric: 'MACHINE & SYSTEM // ID: 83991',
+    cadCurve: 'CONTROLLED CURVES 92.8'
   },
   {
     number: '02',
     total: '03',
-    title: 'No todos necesitan el modelo más potente. Todos queremos acceso fácil y práctico.',
-    desc: 'Nuestra visión es escalar la eficiencia y rentabilidad de las empresas acercando tecnología de punta a desarrolladores y organizaciones. Creemos en una integración nativa de modelos propios: no todos los problemas exigen los modelos más gigantes o costosos del mercado, pero todos sí necesitamos acceso ágil, simple y funcional que resuelva el día a día.',
-    badge: '02 // NUESTRA VISIÓN',
-    primaryCta: { label: 'Explorar Modelos', href: '/ia_vailable' },
-    secondaryCta: { label: 'Auditar Pipelines •', href: '/Methodology' },
+    title: 'Not every problem requires the largest model. Every team needs fast, sovereign access.',
+    desc: 'Our vision is to scale enterprise profitability by bringing frontier AI infrastructure directly to developers and organizations. Compare real-time benchmarks across Llama 3.3, DeepSeek R1, Qwen 2.5, and AX 5.2, or download quantized .GGUF weights to run models locally and on air-gapped servers.',
+    badge: '02 // OUR PLATFORM & CATALOG',
+    primaryCta: { label: 'Explore Model Directory', href: '/ia_vailable' },
+    secondaryCta: { label: 'Open-Weights Library •', href: '/Librarymodel' },
     cadLabel: 'NEURAL_FP8 // TENSOR',
-    cadMetric: 'INFERENCIA EN STREAM // ID: 94102',
-    cadCurve: 'CUANTIZACIÓN DINÁMICA 98.4'
+    cadMetric: 'STREAM INFERENCE // ID: 94102',
+    cadCurve: 'DYNAMIC QUANTIZATION 98.4'
   },
   {
     number: '03',
     total: '03',
-    title: 'Construir el ecosistema que convierte la tecnología en autonomía real.',
-    desc: 'Nuestra misión es eliminar la fricción técnica y la dependencia de intermediarios cerrados. Ponemos a tu alcance infraestructura de cómputo, pipelines de reentrenamiento y flujos autónomos para que cualquier negocio transforme sus tareas manuales en sistemas inteligentes, manteniendo el control y la privacidad total de sus datos.',
-    badge: '03 // NUESTRA MISIÓN',
-    primaryCta: { label: 'Comenzar Ahora', href: '/login' },
-    secondaryCta: { label: 'Seguridad y Datos •', href: '/privacy-policy' },
-    cadLabel: 'VAULT_SXM // SEGURO',
-    cadMetric: 'ENCLAVE CRIPTOGRÁFICO // ID: 77204',
-    cadCurve: 'AISLAMIENTO TOTAL 100%'
+    title: 'Building the deterministic ecosystem that turns AI into auditable autonomy.',
+    desc: 'Our mission is to eliminate technical friction and closed-vendor lock-in. We put NVIDIA H100 compute clusters, QLoRA retraining studios, and zero-trust MCP agent pipelines within your reach so your enterprise can transform manual workflows into intelligent systems while retaining 100% data sovereignty.',
+    badge: '03 // OUR MISSION & GOVERNANCE',
+    primaryCta: { label: 'Enterprise Solutions', href: '/Servex_solution' },
+    secondaryCta: { label: 'Security & Governance •', href: '/Segurity' },
+    cadLabel: 'VAULT_SXM // SECURE',
+    cadMetric: 'CRYPTOGRAPHIC ENCLAVE // ID: 77204',
+    cadCurve: 'TOTAL ISOLATION 100%'
   }
 ];
 
@@ -175,7 +175,7 @@ export default function StudioShowcaseSection() {
                 fontWeight: 600
               }}
             >
-              GLYNNE STUDIO // PIPELINE DE ARQUITECTURA AUTÓNOMA
+              AXGLYNNE STUDIO // AUTONOMOUS ARCHITECTURE PIPELINE
             </span>
             <span style={{ opacity: 0.35 }}>|</span>
             <span
@@ -187,7 +187,7 @@ export default function StudioShowcaseSection() {
                 fontWeight: 600
               }}
             >
-              SUITE DEL SISTEMA V2.4
+              SYSTEM SUITE V2.4
             </span>
           </div>
 
@@ -213,7 +213,7 @@ export default function StudioShowcaseSection() {
                 backgroundColor: isDark ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)'
               }}
             />
-            <span>RUNTIME OPERATIVO // ACTIVO</span>
+            <span>OPERATIONAL RUNTIME // ACTIVE</span>
           </div>
         </div>
 
@@ -250,7 +250,7 @@ export default function StudioShowcaseSection() {
                     textTransform: 'uppercase'
                   }}
                 >
-                  01 // NAVEGACIÓN
+                  01 // CORE DIRECTORY
                 </span>
                 <span
                   style={{
@@ -260,20 +260,20 @@ export default function StudioShowcaseSection() {
                     color: textColor
                   }}
                 >
-                  GLYNNE STUDIO
+                  AXGLYNNE STUDIO
                 </span>
               </div>
 
               {/* Vertical Nav Links */}
               <nav style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {[
-                  { label: 'Visión General', href: '/' },
-                  { label: 'Modelos de IA & APIs', href: '/models_provider' },
-                  { label: 'Agentes Autónomos', href: '/AX_chat' },
-                  { label: 'Clústeres de Cómputo', href: '#nvidia-infrastructure' },
-                  { label: 'Industrias & Sectores', href: '/Industries' },
-                  { label: 'Metodología', href: '/Methodology' },
-                  { label: 'Acceso Directo', href: '/login' }
+                  { label: 'QLoRA Fine-Tuning Studio', href: '/TrainModel' },
+                  { label: 'AI Models & Benchmarks', href: '/ia_vailable' },
+                  { label: 'Enterprise Case (SERVEX)', href: '/Servex_solution' },
+                  { label: 'Models Provider & Sub-APIs', href: '/models_provider' },
+                  { label: 'Open-Weights GGUF Library', href: '/Librarymodel' },
+                  { label: 'Research Methodology', href: '/Methodology' },
+                  { label: 'Developer Documentation', href: '/docs' }
                 ].map((item, idx) => (
                   <Link
                     key={idx}

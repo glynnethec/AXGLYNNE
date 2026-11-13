@@ -7,27 +7,27 @@ import { useTheme } from '@/lib/ThemeContext';
 const STATIC_CARDS = [
   {
     id: 1,
-    title: "Terms of Service",
-    description: "Review the comprehensive legal framework governing autonomous AI infrastructure.",
-    path: "/terms-of-service"
+    title: "QLoRA Fine-Tuning Studio",
+    description: "Adapt open-weights LLMs (Llama, Qwen, Phi) with your proprietary business datasets in minutes.",
+    path: "/TrainModel"
   },
   {
     id: 2,
-    title: "Privacy Policy",
-    description: "Understand how enterprise data is securely processed, isolated, and audited.",
-    path: "/privacy-policy"
+    title: "Models Provider & Sub-APIs",
+    description: "Generate isolated OpenAI-compatible Sub-API keys with custom RPM and token quotas on H100 GPUs.",
+    path: "/models_provider"
   },
   {
     id: 3,
-    title: "Access Control Dashboard",
-    description: "Log in to monitor and configure your dedicated enterprise AI nodes and policies.",
-    path: "/login"
+    title: "Open-Weights GGUF Library",
+    description: "Download quantized 4-bit/8-bit model weights for local, private cloud, or air-gapped deployment.",
+    path: "/Librarymodel"
   },
   {
     id: 4,
-    title: "Architectural Vision",
-    description: "Discover the core principles, engineering team, and vision driving GLYNNE forward.",
-    path: "/About"
+    title: "Zero-Trust Security Architecture",
+    description: "Inspect our cryptographic isolation, zero-data-retention protocols, and deterministic governance.",
+    path: "/Segurity"
   }
 ];
 
@@ -155,10 +155,10 @@ export default function HomeSecondAuditSection() {
 
           <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
             <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: isDark ? '#ffffff' : '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
-              Enterprise Governance & Control Access
+              Direct Access to the AXGLYNNE Ecosystem
             </h2>
             <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: isDark ? '#a1a1aa' : '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
-              We operate on a foundation of zero-trust security and complete auditability. Review our legal frameworks, data privacy protocols, and architectural documentation, or log in to manage your dedicated enterprise AI nodes.
+              Everything your organization needs to fine-tune, deploy, and govern artificial intelligence in one unified platform. Launch our core developer studios directly or inspect our enterprise zero-trust security architecture.
             </p>
           </div>
 

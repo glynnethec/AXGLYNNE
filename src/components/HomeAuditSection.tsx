@@ -115,15 +115,15 @@ export default function HomeAuditSection() {
         <div style={{ position: 'relative', zIndex: 10, width: '100%', minHeight: '80vh', boxSizing: 'border-box', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '60px', padding: '0', backgroundColor: 'transparent' }}>
           <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
             <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: isDark ? '#ffffff' : '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
-              Dedicated AI Models & Advanced Fine-Tuning
+              Deterministic Multi-Agent Orchestration & ERP Integration
             </h2>
             <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: isDark ? '#a1a1aa' : '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
-              From specialized language models to deep reasoning architectures, we develop and adapt AI algorithms tailored to your enterprise. We perform continuous fine-tuning (QLoRA) on your own corporate data so agents resolve complex operational tasks with millimeter precision.
+              AI models alone don't run a company—governed workflows do. Through the AXGLYNNE Control Layer and Model Context Protocol (MCP), we connect custom-aligned models directly to your ERPs, CRMs, and SQL/vector databases under strict zero-trust permissions and immutable audit trails.
             </p>
 
-            <div style={{ display: 'flex', gap: '16px', marginTop: '24px', flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: '24px', marginTop: '24px', flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center' }}>
               <span
-                onClick={() => router.push('/ia_vailable')}
+                onClick={() => router.push('/Servex_solution')}
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -138,7 +138,7 @@ export default function HomeAuditSection() {
                 onMouseOver={(e) => { e.currentTarget.style.opacity = '0.7'; }}
                 onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
               >
-                Explore AI Models <span style={{ fontSize: '15px' }}>→</span>
+                Explore Enterprise Solutions (SERVEX) <span style={{ fontSize: '15px' }}>→</span>
               </span>
             </div>
           </div>
@@ -187,10 +187,10 @@ export default function HomeAuditSection() {
           boxShadow: 'none'
         }}>
           <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: isDark ? '#ffffff' : '#111111', lineHeight: 1.1, margin: '0 0 8px 0', letterSpacing: '-0.02em' }}>
-            Cognitive Automation & Dedicated AI Development
+            Self-Service Developer Platform or Turnkey Corporate Engineering
           </h2>
           <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: isDark ? '#a1a1aa' : '#86868b', fontWeight: 300, lineHeight: 1.6, margin: 0, maxWidth: '950px' }}>
-            We take your enterprise to the next level by designing advanced AI pipelines. We adapt models, fine-tune algorithms with your own operational data, and deploy governed infrastructures ready to execute massive tasks with total precision and auditability.
+            Whether your engineering team uses our public studios to fine-tune open-weights models and provision Sub-APIs independently, or you partner with GLYNNE S.A.S. architects to build a complete autonomous ecosystem from scratch, we deliver governed, production-ready infrastructure tailored to your operational scale.
           </p>
           <div style={{ display: 'flex', gap: '24px', alignItems: 'center', marginTop: '24px', flexWrap: 'wrap' }}>
             <span
@@ -209,12 +209,12 @@ export default function HomeAuditSection() {
               onMouseOver={(e) => { e.currentTarget.style.opacity = '0.7'; }}
               onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
             >
-              Explore Methodology <span style={{ fontSize: '15px' }}>→</span>
+              Explore Research Methodology <span style={{ fontSize: '15px' }}>→</span>
             </span>
 
             <button
               className="responsive-btn"
-              onClick={() => router.push('/AX_chat')}
+              onClick={() => router.push('/docs')}
               style={{
                 padding: '14px 28px',
                 borderRadius: '999px',
@@ -229,7 +229,7 @@ export default function HomeAuditSection() {
               onMouseOver={(e) => { e.currentTarget.style.borderColor = isDark ? '#ffffff' : '#111111'; e.currentTarget.style.backgroundColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.03)'; }}
               onMouseOut={(e) => { e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.2)'; e.currentTarget.style.backgroundColor = 'transparent'; }}
             >
-              Interact with AX
+              Developer Documentation
             </button>
           </div>
         </div>

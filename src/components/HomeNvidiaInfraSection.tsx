@@ -344,6 +344,66 @@ export default function HomeNvidiaInfraSection() {
                 <span>QLoRA Fine-Tuning Workflows</span>
                 <FiArrowRight size={13} />
               </Link>
+
+              <Link
+                href="/ia_vailable"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '10px 18px',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  color: subtextColor,
+                  backgroundColor: 'transparent',
+                  border: `1px solid ${borderLine}`,
+                  borderRadius: '999px',
+                  textDecoration: 'none',
+                  transition: 'all 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = textColor;
+                  e.currentTarget.style.borderColor = textColor;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = subtextColor;
+                  e.currentTarget.style.borderColor = borderLine;
+                }}
+              >
+                <FiCpu size={14} />
+                <span>AI Model Directory & Benchmarks</span>
+                <FiArrowRight size={13} />
+              </Link>
+
+              <Link
+                href="/Servex_solution"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '10px 18px',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  color: subtextColor,
+                  backgroundColor: 'transparent',
+                  border: `1px solid ${borderLine}`,
+                  borderRadius: '999px',
+                  textDecoration: 'none',
+                  transition: 'all 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = textColor;
+                  e.currentTarget.style.borderColor = textColor;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = subtextColor;
+                  e.currentTarget.style.borderColor = borderLine;
+                }}
+              >
+                <FiLayers size={14} />
+                <span>Enterprise AI Solutions (SERVEX)</span>
+                <FiArrowRight size={13} />
+              </Link>
             </div>
           </div>
 

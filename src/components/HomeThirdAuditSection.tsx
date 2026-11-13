@@ -98,15 +98,15 @@ export default function HomeThirdAuditSection() {
 
           <div style={{ flex: '1 1 300px', textAlign: 'left', position: 'relative', zIndex: 11 }}>
             <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 400, color: isDark ? '#ffffff' : '#111111', lineHeight: 1.1, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
-              Architectural Rigor & Engineering Vision
+              Architectural Rigor & Deterministic Governance
             </h2>
             <p style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', color: isDark ? '#a1a1aa' : '#86868b', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1.6, margin: 0 }}>
-              GLYNNE is engineered by systems architects who believe AI cannot enter enterprise operations without strict deterministic control. We design the infrastructure that makes AI predictable, secure, and fully auditable.
+              AXGLYNNE (GLYNNE S.A.S.) is engineered by systems architects and AI researchers who believe artificial intelligence cannot enter mission-critical enterprise operations without strict deterministic control. We design the infrastructure that makes AI predictable, sovereign, and 100% auditable.
             </p>
 
-            <div style={{ display: 'flex', gap: '16px', marginTop: '24px', flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: '24px', marginTop: '24px', flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'center' }}>
               <Link
-                href="/About"
+                href="/Segurity"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -122,7 +122,27 @@ export default function HomeThirdAuditSection() {
                 onMouseOver={(e) => { e.currentTarget.style.opacity = '0.7'; }}
                 onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
               >
-                Discover our vision & team <span style={{ fontSize: '15px' }}>→</span>
+                Explore Security Architecture <span style={{ fontSize: '15px' }}>→</span>
+              </Link>
+
+              <Link
+                href="/CEO_GLYNNE"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  color: isDark ? '#a1a1aa' : '#666666',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  textDecoration: 'none',
+                  cursor: 'pointer',
+                  letterSpacing: '0.01em',
+                  transition: 'opacity 0.2s ease',
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.opacity = '0.7'; }}
+                onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
+              >
+                Leadership & Vision <span style={{ fontSize: '15px' }}>→</span>
               </Link>
             </div>
           </div>

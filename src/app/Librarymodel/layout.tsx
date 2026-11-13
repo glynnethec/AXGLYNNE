@@ -50,16 +50,47 @@ export const metadata: Metadata = {
 export default function LibraryModelLayout({ children }: { children: React.ReactNode }) {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "DataCatalog",
-    "name": "AXGLYNNE Open-Weights & Offline AI Model Library",
-    "description": "Enterprise catalog of open-weights AI models, quantized GGUF adapters, and offline air-gapped runtimes.",
-    "provider": {
-      "@type": "Organization",
-      "name": "AXGLYNNE",
-      "legalName": "GLYNNE S.A.S.",
-      "url": "https://axglynne.com"
-    },
-    "url": "https://axglynne.com/Librarymodel"
+    "@graph": [
+      {
+        "@type": "DataCatalog",
+        "@id": "https://axglynne.com/Librarymodel#library",
+        "name": "AXGLYNNE Open-Weights & Air-Gapped AI Model Library",
+        "description": "Enterprise catalog of quantized GGUF (Q4_K_M, Q8_0, FP16) open-weights foundation models (Llama 3.3 70B, DeepSeek R1, Qwen 2.5 Coder, Mistral Large 2, Phi-4) ready for offline air-gapped corporate deployment.",
+        "provider": {
+          "@type": "Organization",
+          "@id": "https://axglynne.com/#organization",
+          "name": "AXGLYNNE",
+          "legalName": "GLYNNE S.A.S.",
+          "url": "https://axglynne.com",
+          "sameAs": [
+            "https://www.linkedin.com/company/glynne/",
+            "https://www.linkedin.com/company/glynne/posts/",
+            "https://www.youtube.com/@AXGLYNNE",
+            "https://www.instagram.com/axglynne/",
+            "https://www.linkedin.com/in/alexander-quiroga-a992452b4/",
+            "https://www.informacolombia.com/directorio-empresas/informacion-empresa/glynne-sas"
+          ]
+        },
+        "url": "https://axglynne.com/Librarymodel"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "AXGLYNNE (GLYNNE S.A.S.)",
+            "item": "https://axglynne.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Open-Weights AI Model Library",
+            "item": "https://axglynne.com/Librarymodel"
+          }
+        ]
+      }
+    ]
   };
 
   return (

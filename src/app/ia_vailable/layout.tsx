@@ -50,16 +50,47 @@ export const metadata: Metadata = {
 export default function IaAvailableLayout({ children }: { children: React.ReactNode }) {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "DataCatalog",
-    "name": "AXGLYNNE AI Model Catalog",
-    "url": "https://axglynne.com/ia_vailable",
-    "description": "Structured directory and catalog of Artificial Intelligence models available for integration and accelerated high-speed inference.",
-    "provider": {
-      "@type": "Organization",
-      "name": "AXGLYNNE",
-      "legalName": "GLYNNE S.A.S.",
-      "url": "https://axglynne.com"
-    }
+    "@graph": [
+      {
+        "@type": "DataCatalog",
+        "@id": "https://axglynne.com/ia_vailable#catalog",
+        "name": "AXGLYNNE AI Models Directory & Inference Benchmarks",
+        "url": "https://axglynne.com/ia_vailable",
+        "description": "Structured directory and technical benchmark catalog of open-weights and frontier Artificial Intelligence models (Llama 3.3 70B, DeepSeek R1, Qwen 2.5, Phi 3.5, AX 5.2, Whisper Large V3 Turbo) deployed on AXGLYNNE infrastructure.",
+        "provider": {
+          "@type": "Organization",
+          "@id": "https://axglynne.com/#organization",
+          "name": "AXGLYNNE",
+          "legalName": "GLYNNE S.A.S.",
+          "url": "https://axglynne.com",
+          "sameAs": [
+            "https://www.linkedin.com/company/glynne/",
+            "https://www.linkedin.com/company/glynne/posts/",
+            "https://www.youtube.com/@AXGLYNNE",
+            "https://www.instagram.com/axglynne/",
+            "https://www.linkedin.com/in/alexander-quiroga-a992452b4/",
+            "https://www.informacolombia.com/directorio-empresas/informacion-empresa/glynne-sas"
+          ]
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "AXGLYNNE (GLYNNE S.A.S.)",
+            "item": "https://axglynne.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "AI Models Directory & Benchmarks",
+            "item": "https://axglynne.com/ia_vailable"
+          }
+        ]
+      }
+    ]
   };
 
   return (

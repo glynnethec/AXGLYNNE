@@ -55,6 +55,14 @@ export default function ContactLayout({ children }: { children: React.ReactNode 
       "alternateName": ["AXGLYNNE Frontier AI Labs", "AXGLYNNE Open-Weights AI Research"],
       "url": "https://axglynne.com",
       "email": "alexglynne7@gmail.com",
+      "sameAs": [
+        "https://www.linkedin.com/company/glynne/",
+        "https://www.linkedin.com/company/glynne/posts/",
+        "https://www.youtube.com/@AXGLYNNE",
+        "https://www.instagram.com/axglynne/",
+        "https://www.linkedin.com/in/alexander-quiroga-a992452b4/",
+        "https://www.informacolombia.com/directorio-empresas/informacion-empresa/glynne-sas"
+      ],
       "contactPoint": [
         {
           "@type": "ContactPoint",

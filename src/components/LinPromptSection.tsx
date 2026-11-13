@@ -25,39 +25,39 @@ interface LinPromptSectionProps {
 
 const LIN_PROMPT_TEXT = {
   es: {
-    tag: "GLYNNE AI ENGINEERING & AUTONOMOUS REASONING",
-    title: "Razonamiento de IA basado en la experiencia",
-    description: "Interactúa con AX, el motor de razonamiento autónomo que se ejecuta bajo la capa de control de GLYNNE, para explorar cómo funciona la autonomía empresarial segura.",
+    tag: "AXGLYNNE LIVE SANDBOX // MOTOR DE RAZONAMIENTO AUTÓNOMO",
+    title: "Razonamiento de IA basado en la experiencia operativa",
+    description: "Interactúa con AX 5.2, el motor de razonamiento autónomo gobernado por la capa de control de AXGLYNNE, para diseñar flujos multi-agente, evaluar modelos abiertos o estructurar tu infraestructura.",
     newModel: 'Nuevo: Modelo AX 5.2 disponible',
     tryModel: 'Probar AX 5.2',
-    placeholder: 'Consulta a AX sobre automatización de procesos, agentes o infraestructura...',
+    placeholder: 'Consulta a AX sobre automatización B2B, fine-tuning QLoRA, Sub-APIs o infraestructura H100...',
     promptLibrary: 'Biblioteca de prompts',
     addFiles: '+ Adjuntar archivos o contexto',
-    inviteTitle: 'Nuevo: Modelo AX 5.2 disponible',
-    inviteDesc: 'Accede a inferencia directa, pesos abiertos y fine-tuning acelerado en NVIDIA H100 para transformar procesos empresariales con autonomía total.',
+    inviteTitle: 'Nuevo: Motor Empresarial AX 5.2 Disponible',
+    inviteDesc: 'Accede a inferencia directa en NVIDIA H100, descarga de pesos abiertos (.GGUF) y fine-tuning QLoRA 4-bit para impulsar la autonomía de tu negocio.',
     tags: [
-      { label: '/ orquestacion-agentes', prompt: '¿Cómo diseñar un pipeline multi-agente seguro con la capa de control de GLYNNE?' },
-      { label: '/ automatizacion-b2b', prompt: '¿Cómo automatizar flujos operativos y conciliaciones complejas con modelos propios?' },
-      { label: '/ hardware-nvidia', prompt: 'Explorar infraestructura NVIDIA H100 para inferencia de baja latencia y fine-tuning dedicado.' },
-      { label: '+ Fine-Tuning', prompt: 'Reentrenar modelo base con datos empresariales propios en clúster seguro.' }
+      { label: '/ orquestacion-agentes', prompt: '¿Cómo diseñar un pipeline multi-agente seguro con la capa de control de AXGLYNNE?' },
+      { label: '/ automatizacion-b2b', prompt: '¿Cómo automatizar flujos operativos y catálogos ERP complejos con modelos propios?' },
+      { label: '/ hardware-nvidia', prompt: 'Explorar infraestructura NVIDIA H100 para inferencia de baja latencia y Sub-APIs dedicadas.' },
+      { label: '+ Fine-Tuning QLoRA', prompt: 'Reentrenar un modelo open-weights con datos empresariales propios en el estudio GLYNNE Train.' }
     ]
   },
   en: {
-    tag: "GLYNNE AI ENGINEERING & AUTONOMOUS REASONING",
-    title: "Razonamiento de IA basado en la experiencia",
-    description: "Interactúa con AX, el motor de razonamiento autónomo que se ejecuta bajo la capa de control de GLYNNE, para explorar cómo funciona la autonomía empresarial segura.",
-    newModel: 'New: AX 5.2 model available',
+    tag: "AXGLYNNE LIVE SANDBOX // AUTONOMOUS REASONING ENGINE",
+    title: "Experience-Driven Enterprise AI Reasoning",
+    description: "Interact directly with AX 5.2—the autonomous reasoning engine governed by the AXGLYNNE control layer—to architect B2B workflow automation, evaluate open-weights models, or plan your private GPU deployment.",
+    newModel: 'New: AX 5.2 enterprise model available',
     tryModel: 'Try AX 5.2',
-    placeholder: 'Ask AX about workflow automation, multi-agent pipelines, or infrastructure...',
+    placeholder: 'Ask AX about B2B workflow automation, QLoRA fine-tuning, Sub-APIs, or H100 infrastructure...',
     promptLibrary: 'Prompt library',
     addFiles: '+ Attach files or context',
-    inviteTitle: 'New: AX 5.2 model available',
-    inviteDesc: 'Direct inference, open weights, and accelerated fine-tuning on NVIDIA H100 architecture to power secure enterprise autonomy.',
+    inviteTitle: 'New: AX 5.2 Enterprise Engine Available',
+    inviteDesc: 'Direct NVIDIA H100 inference, open-weights GGUF downloads, and accelerated 4-bit QLoRA fine-tuning to power governed enterprise autonomy.',
     tags: [
-      { label: '/ agent-orchestration', prompt: 'How to design a secure multi-agent workflow with GLYNNE control layer?' },
-      { label: '/ enterprise-b2b', prompt: 'How to automate mission-critical operations and complex pipelines with private models?' },
-      { label: '/ nvidia-compute', prompt: 'Explore NVIDIA H100 infrastructure for dedicated low-latency inference and training.' },
-      { label: '+ Fine-Tuning', prompt: 'Fine-tune open models with custom datasets on secure enclaves.' }
+      { label: '/ agent-orchestration', prompt: 'How to design a deterministic multi-agent workflow with the AXGLYNNE control layer?' },
+      { label: '/ enterprise-b2b', prompt: 'How to automate mission-critical ERP operations and complex XML pipelines with private models?' },
+      { label: '/ nvidia-compute', prompt: 'Explore NVIDIA H100 infrastructure for dedicated low-latency Sub-API inference and training.' },
+      { label: '+ QLoRA Fine-Tuning', prompt: 'Fine-tune open-weights models with proprietary corporate datasets in GLYNNE Train Studio.' }
     ]
   }
 };

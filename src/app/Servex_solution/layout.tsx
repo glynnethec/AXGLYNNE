@@ -45,40 +45,71 @@ export const metadata: Metadata = {
 export default function SolutionsLayout({ children }: { children: React.ReactNode }) {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "TechArticle",
-    "headline": "AI Ecosystem & Complex XML Catalog Automation for SERVEX",
-    "name": "Enterprise AI Solutions & XML Matrix Conversion",
-    "description": "Engineering solution developed for SERVEX: AI model integration for reading, converting, and autonomously updating highly complex XML catalogs (CET Designer), transforming schemas into structured data and executing automated analytics without manual user intervention.",
-    "url": "https://axglynne.com/Servex_solution",
-    "author": {
-      "@type": "Organization",
-      "name": "AXGLYNNE",
-      "legalName": "GLYNNE S.A.S.",
-      "alternateName": ["AXGLYNNE Frontier AI Labs", "AXGLYNNE Custom AI Labs"],
-      "url": "https://axglynne.com"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "AXGLYNNE",
-      "legalName": "GLYNNE S.A.S.",
-      "url": "https://axglynne.com"
-    },
-    "about": [
+    "@graph": [
       {
-        "@type": "Thing",
-        "name": "CET Designer XML Matrix Conversion"
+        "@type": "TechArticle",
+        "@id": "https://axglynne.com/Servex_solution#article",
+        "headline": "Enterprise AI Ecosystem & Autonomous XML Matrix Conversion for SERVEX",
+        "name": "Enterprise AI Solutions & SERVEX Case Study",
+        "description": "Production AI architecture engineered by AXGLYNNE (GLYNNE S.A.S.) for SERVEX: Autonomous conversion of complex XML catalogs (CET Designer), deterministic schema parsing, and multi-agent enterprise workflow execution.",
+        "url": "https://axglynne.com/Servex_solution",
+        "author": {
+          "@type": "Organization",
+          "@id": "https://axglynne.com/#organization",
+          "name": "AXGLYNNE",
+          "legalName": "GLYNNE S.A.S.",
+          "url": "https://axglynne.com",
+          "sameAs": [
+            "https://www.linkedin.com/company/glynne/",
+            "https://www.linkedin.com/company/glynne/posts/",
+            "https://www.youtube.com/@AXGLYNNE",
+            "https://www.instagram.com/axglynne/",
+            "https://www.linkedin.com/in/alexander-quiroga-a992452b4/",
+            "https://www.informacolombia.com/directorio-empresas/informacion-empresa/glynne-sas"
+          ]
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://axglynne.com/#organization",
+          "name": "AXGLYNNE",
+          "legalName": "GLYNNE S.A.S.",
+          "url": "https://axglynne.com"
+        },
+        "about": [
+          {
+            "@type": "Thing",
+            "name": "CET Designer XML Matrix Conversion"
+          },
+          {
+            "@type": "Thing",
+            "name": "Autonomous AI Data Processing & Execution"
+          },
+          {
+            "@type": "Thing",
+            "name": "Enterprise Catalog Automation for SERVEX"
+          },
+          {
+            "@type": "Thing",
+            "name": "Complex Schema Parsing & Model Fine-Tuning"
+          }
+        ]
       },
       {
-        "@type": "Thing",
-        "name": "Autonomous AI Data Processing & Execution"
-      },
-      {
-        "@type": "Thing",
-        "name": "Enterprise Catalog Automation for SERVEX"
-      },
-      {
-        "@type": "Thing",
-        "name": "Complex Schema Parsing & Model Fine-Tuning"
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "AXGLYNNE (GLYNNE S.A.S.)",
+            "item": "https://axglynne.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Enterprise AI Solutions & SERVEX",
+            "item": "https://axglynne.com/Servex_solution"
+          }
+        ]
       }
     ]
   };

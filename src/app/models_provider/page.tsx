@@ -1022,13 +1022,11 @@ export default function ModelsProviderPage() {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS
+  // 🔒 DETECCIÓN DE SESIÓN (Permite indexación pública SEO y solicita login al ejecutar acciones privadas)
   useEffect(() => {
     const checkAuth = async () => {
       const user = await getCurrentUser();
-      if (!user) {
-        router.replace('/login');
-      } else {
+      if (user) {
         setIsAuthenticated(true);
         setCurrentUserObj(user);
         if (user.email) {
@@ -1037,7 +1035,7 @@ export default function ModelsProviderPage() {
       }
     };
     checkAuth();
-  }, [router]);
+  }, []);
 
   const [isLoadingDbKeys, setIsLoadingDbKeys] = useState(false);
   const [currentUserObj, setCurrentUserObj] = useState<any>(null);
@@ -1128,6 +1126,10 @@ export default function ModelsProviderPage() {
 
   const handleSendChatMessage = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
+    if (!isAuthenticated) {
+      router.push('/login');
+      return;
+    }
     if ((!chatInput.trim() && !chatImageUrl.trim()) || isChatLoading) return;
 
     const userMessageContent = chatInput.trim();
@@ -1235,6 +1237,10 @@ export default function ModelsProviderPage() {
   };
 
   const handleOpenCreateModal = () => {
+    if (!isAuthenticated) {
+      router.push('/login');
+      return;
+    }
     setCreateStep(1);
     setNewKeyFormName(`Production Client Key ${subApiKeys.length + 1}`);
     setNewKeyFormModel(selectedModel || 'llama-3.2-90b-vision');
@@ -1450,8 +1456,6 @@ run();`;
     "stream": false
   }'`;
   };
-
-  if (!isAuthenticated) return null;
 
   return (
     <BackgroundWrapper>

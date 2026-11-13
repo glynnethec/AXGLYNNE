@@ -25,7 +25,7 @@ export default function HeroSection() {
       >
         {/* Small Tag */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', fontWeight: 500, color: '#8f8f96', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-          <span style={{ fontSize: '16px' }}>⬡</span> GLYNNE AI ENGINEERING & FINE-TUNING
+          <span style={{ fontSize: '16px' }}>⬡</span> AXGLYNNE (GLYNNE S.A.S.) · ENTERPRISE AI ENGINEERING & OPEN-WEIGHTS
         </div>
 
         {/* Big Headline */}
@@ -53,12 +53,12 @@ export default function HeroSection() {
           letterSpacing: '0.01em',
           maxWidth: '900px'
         }}>
-          We build AI technology with a clear purpose: eliminating operational friction. We provide the models that power decisions, the tools your team interacts with, and the autonomous workflows that keep your business moving forward without relying on manual processes.
+          We build AI technology with a clear purpose: eliminating operational friction. We provide the open-weights models that power decisions, the fine-tuning and Sub-API tools your team interacts with, and the autonomous workflows that keep your business moving forward without relying on manual processes.
         </p>
 
         {/* Text Links */}
         <div style={{ display: 'flex', gap: '32px', marginTop: '24px', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
-          <Link href="/Methodology" style={{
+          <Link href="/TrainModel" style={{
             display: 'inline-flex',
             alignItems: 'center',
             gap: '8px',
@@ -72,10 +72,10 @@ export default function HeroSection() {
             onMouseOver={(e) => { e.currentTarget.style.opacity = '0.7'; }}
             onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
           >
-            Explore the methodology <span style={{ fontSize: '15px' }}>→</span>
+            Explore Fine-Tuning Studio <span style={{ fontSize: '15px' }}>→</span>
           </Link>
 
-          <Link href="/About" style={{
+          <Link href="/ia_vailable" style={{
             display: 'inline-flex',
             alignItems: 'center',
             gap: '8px',
@@ -89,7 +89,24 @@ export default function HeroSection() {
             onMouseOver={(e) => { e.currentTarget.style.opacity = '0.7'; e.currentTarget.style.color = isDark ? '#ffffff' : '#111111'; }}
             onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.color = isDark ? '#a1a1aa' : '#666666'; }}
           >
-            Explore the architecture <span style={{ fontSize: '15px' }}>→</span>
+            Explore AI Models & Benchmarks <span style={{ fontSize: '15px' }}>→</span>
+          </Link>
+
+          <Link href="/Servex_solution" style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            color: isDark ? '#a1a1aa' : '#666666',
+            textDecoration: 'none',
+            fontWeight: 500,
+            fontSize: '14px',
+            letterSpacing: '0.01em',
+            transition: 'opacity 0.2s ease',
+          }}
+            onMouseOver={(e) => { e.currentTarget.style.opacity = '0.7'; e.currentTarget.style.color = isDark ? '#ffffff' : '#111111'; }}
+            onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.color = isDark ? '#a1a1aa' : '#666666'; }}
+          >
+            Enterprise Case Study (SERVEX) <span style={{ fontSize: '15px' }}>→</span>
           </Link>
         </div>
       </div>

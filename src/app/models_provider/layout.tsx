@@ -49,18 +49,49 @@ export const metadata: Metadata = {
 export default function ModelsProviderLayout({ children }: { children: React.ReactNode }) {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "AXGLYNNE Models Provider Gateway",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Cloud API Gateway",
-    "description": "Unified Multi-Model API Gateway for generating Sub-APIs to consume frontier open-source LLMs.",
-    "provider": {
-      "@type": "Organization",
-      "name": "AXGLYNNE",
-      "legalName": "GLYNNE S.A.S.",
-      "url": "https://axglynne.com"
-    },
-    "url": "https://axglynne.com/models_provider"
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://axglynne.com/models_provider#gateway",
+        "name": "AXGLYNNE Unified AI Models Provider & Sub-API Gateway",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Cloud NVIDIA H100 API Gateway",
+        "description": "Unified Multi-Model API Gateway by AXGLYNNE (GLYNNE S.A.S.) for generating isolated Sub-API keys with RPM and token quota controls to consume open-weights LLMs at ultra-low latency (<10ms/token).",
+        "provider": {
+          "@type": "Organization",
+          "@id": "https://axglynne.com/#organization",
+          "name": "AXGLYNNE",
+          "legalName": "GLYNNE S.A.S.",
+          "url": "https://axglynne.com",
+          "sameAs": [
+            "https://www.linkedin.com/company/glynne/",
+            "https://www.linkedin.com/company/glynne/posts/",
+            "https://www.youtube.com/@AXGLYNNE",
+            "https://www.instagram.com/axglynne/",
+            "https://www.linkedin.com/in/alexander-quiroga-a992452b4/",
+            "https://www.informacolombia.com/directorio-empresas/informacion-empresa/glynne-sas"
+          ]
+        },
+        "url": "https://axglynne.com/models_provider"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "AXGLYNNE (GLYNNE S.A.S.)",
+            "item": "https://axglynne.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Unified Models Provider & Sub-APIs",
+            "item": "https://axglynne.com/models_provider"
+          }
+        ]
+      }
+    ]
   };
 
   return (

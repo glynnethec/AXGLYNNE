@@ -252,18 +252,16 @@ export default function LibraryModelPage() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // 🔒 PROTECCIÓN DE RUTA PARA USUARIOS LOGUEADOS
+  // 🔒 DETECCIÓN DE SESIÓN (Permite indexación pública del catálogo y solicita login al descargar pesos)
   useEffect(() => {
     const checkAuth = async () => {
       const user = await getCurrentUser();
-      if (!user) {
-        router.replace('/login');
-      } else {
+      if (user) {
         setIsAuthenticated(true);
       }
     };
     checkAuth();
-  }, [router]);
+  }, []);
 
   // Modal de confirmación al intentar salir
   const [showExitModal, setShowExitModal] = useState(false);
@@ -284,8 +282,9 @@ export default function LibraryModelPage() {
   // Backend API URL
   const backendUrl = getBackendUrl();
 
-  // 🛡️ INTERCEPTAR NAVEGACIÓN (BOTÓN ATRÁS DEL NAVEGADOR & REFRESH)
+  // 🛡️ INTERCEPTAR NAVEGACIÓN (Solo para sesiones autenticadas activas)
   useEffect(() => {
+    if (!isAuthenticated) return;
     const handleBeforeUnload = (e) => {
       e.preventDefault();
       e.returnValue = '';
@@ -303,10 +302,14 @@ export default function LibraryModelPage() {
       window.removeEventListener('beforeunload', handleBeforeUnload);
       window.removeEventListener('popstate', handlePopState);
     };
-  }, []);
+  }, [isAuthenticated]);
 
   // Inspect downloadable weight files for a model
   const handleOpenDownloadModal = async (model) => {
+    if (!isAuthenticated) {
+      router.push('/login');
+      return;
+    }
     setSelectedModel(model);
     setModelFiles([]);
     setIsLoadingFiles(true);
@@ -339,8 +342,6 @@ export default function LibraryModelPage() {
     const matchesCategory = selectedCategory === 'All' || m.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
-
-  if (!isAuthenticated) return null;
 
   return (
     <>

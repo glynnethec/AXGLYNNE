@@ -50,23 +50,61 @@ export const metadata: Metadata = {
 export default function TrainModelLayout({ children }: { children: React.ReactNode }) {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "AXGLYNNE Model Fine-Tuning Studio",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Web Browser",
-    "url": "https://axglynne.com/TrainModel",
-    "description": "Accessible development platform and playground to re-train, align, and indoctrinate open-source Large Language Models (LLMs) using QLoRA 4-bit/8-bit, LoRA, and Unsloth kernel acceleration.",
-    "browserRequirements": "Requires JavaScript. Requires HTML5.",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "featureList": [
-      "Re-training of Qwen 2.5, Llama 3.2, and Phi 3.5 open-source models",
-      "Support for custom JSONL datasets and AI synthetic dataset generation",
-      "QLoRA 4-bit/8-bit NF4 quantization and Unsloth kernel optimization",
-      "Real-time interactive playground testing and live model inference"
+    "@graph": [
+      {
+        "@type": ["WebApplication", "SoftwareApplication"],
+        "@id": "https://axglynne.com/TrainModel#software",
+        "name": "GLYNNE Train · QLoRA LLM Fine-Tuning & Model Alignment Studio",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Web Browser / Cloud NVIDIA H100 GPU Cluster",
+        "url": "https://axglynne.com/TrainModel",
+        "description": "Enterprise development platform by AXGLYNNE (GLYNNE S.A.S.) to fine-tune, align, and adapt open-weights Large Language Models (Qwen 2.5, Llama 3.2, Phi 3.5) using QLoRA 4-bit/8-bit quantization and Unsloth kernel acceleration.",
+        "browserRequirements": "Requires JavaScript. Requires HTML5.",
+        "provider": {
+          "@type": "Organization",
+          "@id": "https://axglynne.com/#organization",
+          "name": "AXGLYNNE",
+          "legalName": "GLYNNE S.A.S.",
+          "url": "https://axglynne.com",
+          "sameAs": [
+            "https://www.linkedin.com/company/glynne/",
+            "https://www.linkedin.com/company/glynne/posts/",
+            "https://www.youtube.com/@AXGLYNNE",
+            "https://www.instagram.com/axglynne/",
+            "https://www.linkedin.com/in/alexander-quiroga-a992452b4/",
+            "https://www.informacolombia.com/directorio-empresas/informacion-empresa/glynne-sas"
+          ]
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        },
+        "featureList": [
+          "Re-training of Qwen 2.5, Llama 3.2, and Phi 3.5 open-weights models",
+          "Support for custom JSONL datasets and automated synthetic dataset generation",
+          "QLoRA 4-bit/8-bit NF4 quantization and Unsloth kernel optimization on NVIDIA H100",
+          "Export quantized .GGUF weights for local air-gapped or private API inference"
+        ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "AXGLYNNE (GLYNNE S.A.S.)",
+            "item": "https://axglynne.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "GLYNNE Train · LLM Fine-Tuning Studio",
+            "item": "https://axglynne.com/TrainModel"
+          }
+        ]
+      }
     ]
   };
 

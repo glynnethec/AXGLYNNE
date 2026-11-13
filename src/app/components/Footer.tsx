@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { FaTwitter, FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
+import { FaYoutube, FaLinkedin, FaInstagram, FaShieldAlt } from "react-icons/fa";
 import "./Footer.css";
 
 export default function Footer() {
@@ -57,35 +57,66 @@ export default function Footer() {
           </p>
           
           <div className="footer-socials">
-            <a href="#" className="footer-social-btn">
-              <FaTwitter size={18} />
-            </a>
-            <a href="#" className="footer-social-btn">
+            <a
+              href="https://www.linkedin.com/company/glynne/posts/"
+              target="_blank"
+              rel="me noopener noreferrer"
+              aria-label="AXGLYNNE (GLYNNE S.A.S.) Official LinkedIn Company Page"
+              title="AXGLYNNE (GLYNNE S.A.S.) Official LinkedIn Company Page"
+              className="footer-social-btn"
+            >
               <FaLinkedin size={18} />
             </a>
-            <a href="#" className="footer-social-btn">
-              <FaGithub size={18} />
+            <a
+              href="https://www.youtube.com/@AXGLYNNE"
+              target="_blank"
+              rel="me noopener noreferrer"
+              aria-label="AXGLYNNE Official YouTube Channel"
+              title="AXGLYNNE Official YouTube Channel (@AXGLYNNE)"
+              className="footer-social-btn"
+            >
+              <FaYoutube size={18} />
             </a>
-            <a href="#" className="footer-social-btn">
+            <a
+              href="https://www.instagram.com/axglynne/"
+              target="_blank"
+              rel="me noopener noreferrer"
+              aria-label="AXGLYNNE Official Instagram (@axglynne)"
+              title="AXGLYNNE Official Instagram (@axglynne)"
+              className="footer-social-btn"
+            >
               <FaInstagram size={18} />
+            </a>
+            <a
+              href="https://www.informacolombia.com/directorio-empresas/informacion-empresa/glynne-sas"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GLYNNE S.A.S. Corporate Registration NIT 901966512"
+              title="GLYNNE S.A.S. Official Corporate Registry"
+              className="footer-social-btn"
+            >
+              <FaShieldAlt size={17} />
             </a>
           </div>
         </div>
 
         {/* Links Section */}
         <div className="footer-links-col">
-          <h4 className="footer-title">Platform</h4>
-          <Link href="/Servex_solution" className="footer-link">Solutions</Link>
-          <Link href="/ia_vailable" className="footer-link">AI Available</Link>
-          <Link href="/AX_voice" className="footer-link">AX Voice</Link>
-          <Link href="/AX_chat" className="footer-link">AX Chat</Link>
+          <h4 className="footer-title">Platform & Tools</h4>
+          <Link href="/TrainModel" className="footer-link">QLoRA Fine-Tuning Studio</Link>
+          <Link href="/ia_vailable" className="footer-link">AI Models & Benchmarks</Link>
+          <Link href="/Servex_solution" className="footer-link">Enterprise AI (SERVEX)</Link>
+          <Link href="/models_provider" className="footer-link">Models Provider & Sub-APIs</Link>
+          <Link href="/Librarymodel" className="footer-link">Open-Weights Library</Link>
         </div>
 
         <div className="footer-links-col">
-          <h4 className="footer-title">Company</h4>
-          <Link href="/About" className="footer-link">About Us</Link>
-          <Link href="/contact" className="footer-link">Contact</Link>
-          <Link href="/login" className="footer-link">Customer Login</Link>
+          <h4 className="footer-title">Company & Engineering</h4>
+          <Link href="/Methodology" className="footer-link">AI Research Methodology</Link>
+          <Link href="/docs" className="footer-link">Developer Documentation</Link>
+          <Link href="/Segurity" className="footer-link">Enterprise Security</Link>
+          <Link href="/About" className="footer-link">About AXGLYNNE</Link>
+          <Link href="/contact" className="footer-link">Contact Engineering</Link>
         </div>
 
         {/* Newsletter Section */}
@@ -111,7 +142,7 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className="footer-bottom">
         <p className="footer-copyright">
-          © {new Date().getFullYear()} GLYNNE. All rights reserved.
+          © {new Date().getFullYear()} AXGLYNNE (GLYNNE S.A.S. · NIT 901966512). All rights reserved.
         </p>
         <div className="footer-legal">
           <Link href="/privacy-policy" className="footer-legal-link">Privacy Policy</Link>

@@ -287,7 +287,7 @@ export default function GraphitePlatformSection() {
               fontFamily: "var(--font-geist-sans), system-ui, -apple-system, sans-serif"
             }}
           >
-            Create Your API to Integrate Our LLMs into Your Projects
+            Unified AI Gateway: Generate Sub-APIs to Integrate Open-Weights LLMs into Your Projects
           </h2>
 
           {/* White Action Button */}
@@ -319,7 +319,7 @@ export default function GraphitePlatformSection() {
               e.currentTarget.style.boxShadow = '0 2px 12px rgba(255, 255, 255, 0.15)';
             }}
           >
-            Create AI API
+            Launch Models Provider & Sub-APIs
           </Link>
         </div>
       </div>

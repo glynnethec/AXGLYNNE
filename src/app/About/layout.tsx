@@ -61,8 +61,20 @@ export default function AboutLayout({ children }: { children: React.ReactNode })
         "@type": "Person",
         "name": "Alexander Quiroga",
         "jobTitle": "CEO, Software Architect & Lead AI Engineering Researcher",
-        "sameAs": "https://www.linkedin.com/in/alexander-quiroga-a992452b4/"
+        "sameAs": [
+          "https://www.linkedin.com/in/alexander-quiroga-a992452b4/",
+          "https://www.instagram.com/axglynne/",
+          "https://www.youtube.com/@AXGLYNNE"
+        ]
       },
+      "sameAs": [
+        "https://www.linkedin.com/company/glynne/",
+        "https://www.linkedin.com/company/glynne/posts/",
+        "https://www.youtube.com/@AXGLYNNE",
+        "https://www.instagram.com/axglynne/",
+        "https://www.linkedin.com/in/alexander-quiroga-a992452b4/",
+        "https://www.informacolombia.com/directorio-empresas/informacion-empresa/glynne-sas"
+      ],
       "knowsAbout": [
         "Frontier AI Process Optimization Research",
         "Open-Weights Model Re-training & Indoctrination (QLoRA / Unsloth)",

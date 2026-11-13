@@ -394,24 +394,45 @@ export default function GridAnalyticsSection() {
           Explore and download our curated catalog of open-source LLM architectures. From ultra-lightweight models for local device execution to heavy foundation engines pre-configured for retraining.
         </p>
 
-        <Link
-          href="/ia_vailable"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            color: textColor,
-            fontSize: '14px',
-            fontWeight: 500,
-            textDecoration: 'none',
-            letterSpacing: '0.01em',
-            transition: 'opacity 0.2s ease',
-          }}
-          onMouseOver={(e) => { e.currentTarget.style.opacity = '0.7'; }}
-          onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
-        >
-          Browse Full Model Library <span style={{ fontSize: '15px' }}>→</span>
-        </Link>
+        <div style={{ display: 'flex', gap: '28px', justifyContent: 'center', flexWrap: 'wrap', alignItems: 'center' }}>
+          <Link
+            href="/ia_vailable"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              color: textColor,
+              fontSize: '14px',
+              fontWeight: 500,
+              textDecoration: 'none',
+              letterSpacing: '0.01em',
+              transition: 'opacity 0.2s ease',
+            }}
+            onMouseOver={(e) => { e.currentTarget.style.opacity = '0.7'; }}
+            onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
+          >
+            Compare Model Benchmarks <span style={{ fontSize: '15px' }}>→</span>
+          </Link>
+
+          <Link
+            href="/Librarymodel"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              color: subtextColor,
+              fontSize: '14px',
+              fontWeight: 500,
+              textDecoration: 'none',
+              letterSpacing: '0.01em',
+              transition: 'opacity 0.2s ease',
+            }}
+            onMouseOver={(e) => { e.currentTarget.style.opacity = '0.7'; e.currentTarget.style.color = textColor; }}
+            onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.color = subtextColor; }}
+          >
+            Download Open-Weights (.GGUF) <span style={{ fontSize: '15px' }}>→</span>
+          </Link>
+        </div>
       </div>
 
       {/* 4 Cards Grid */}
