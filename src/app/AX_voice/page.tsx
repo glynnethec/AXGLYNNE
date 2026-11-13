@@ -729,13 +729,6 @@ export default function AXVoicePage() {
       if (data.max_chars !== undefined) setMaxChars(data.max_chars);
       if (data.hours_until_reset !== undefined) setHoursUntilReset(data.hours_until_reset);
 
-      if (data.url_to_open) {
-        // Guardamos la URL en una referencia para abrirla automáticamente cuando termine de hablar
-        urlToOpenRef.current = data.url_to_open;
-      } else {
-        urlToOpenRef.current = null;
-      }
-
       const reply = data.reply;
       const audioBase64 = data.audio_base64;
 
@@ -804,20 +797,6 @@ export default function AXVoicePage() {
         setAiResponse('');
         setTranscript('');
 
-        // 🚀 Si hay una URL pendiente, abrir en NUEVA PESTAÑA o redireccionar automáticamente
-        if (urlToOpenRef.current) {
-          try {
-            const win = window.open(urlToOpenRef.current, '_blank');
-            if (!win || win.closed || typeof win.closed === 'undefined') {
-              window.location.href = urlToOpenRef.current;
-            }
-          } catch (e) {
-            console.error('Popup blocked, redirecting in same window:', e);
-            window.location.href = urlToOpenRef.current;
-          }
-          urlToOpenRef.current = null;
-        }
-
         if (isSessionActiveRef.current) {
           setTimeout(() => {
             if (isSessionActiveRef.current && orbStateRef.current !== 'speaking') {
@@ -869,20 +848,6 @@ export default function AXVoicePage() {
         isProcessingRef.current = false;
         setAiResponse('');
         setTranscript('');
-
-        // 🚀 Si hay una URL pendiente, abrir en NUEVA PESTAÑA o redireccionar automáticamente
-        if (urlToOpenRef.current) {
-          try {
-            const win = window.open(urlToOpenRef.current, '_blank');
-            if (!win || win.closed || typeof win.closed === 'undefined') {
-              window.location.href = urlToOpenRef.current;
-            }
-          } catch (e) {
-            console.error('Popup blocked, redirecting in same window:', e);
-            window.location.href = urlToOpenRef.current;
-          }
-          urlToOpenRef.current = null;
-        }
 
         if (isSessionActiveRef.current) {
           setTimeout(() => {
